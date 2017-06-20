@@ -1,0 +1,19 @@
+dependencies:
+- name: consul
+  version: 0.3.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: mongodb
+  version: 0.4.11
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: postgresql
+  version: 0.7.1
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: redis
+  version: 0.7.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: rabbitmq
+  version: 0.5.3
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: nats
+  version: 0.1.0
+  repository: file://../nats

@@ -1,0 +1,45 @@
+dependencies:
+- condition: ""
+  enabled: false
+  import-values: null
+  name: consul
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.3.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: mongodb
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.4.11
+- condition: ""
+  enabled: false
+  import-values: null
+  name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.7.1
+- condition: ""
+  enabled: false
+  import-values: null
+  name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.7.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: rabbitmq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.5.3
+- condition: ""
+  enabled: false
+  import-values: null
+  name: nats
+  repository: file://../nats
+  tags: null
+  version: 0.1.0
+digest: sha256:d98524bcc570755df6d2a467839b94e916b49a51253afdc9ba45f5476c80453a
+generated: 2017-06-20T16:40:16.123864157+03:00

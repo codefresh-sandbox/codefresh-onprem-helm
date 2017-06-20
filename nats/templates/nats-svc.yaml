@@ -1,0 +1,32 @@
+---
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    test: "me"
+  name: {{ .Chart.Name }}
+spec:
+  ports:
+  - name: "{{ .Values.service.clientsPortName }}"
+    port: {{ .Values.service.clientsPort }}
+    protocol: TCP
+    targetPort: {{ .Values.service.clientsTargetPort }}
+  - name: "{{ .Values.service.monitoringPortName }}"
+    port: {{ .Values.service.monitoringPort }}
+    protocol: TCP
+    targetPort: {{ .Values.service.monitoringTargetPort }}
+  - name: "{{ .Values.service.routingPortName }}"
+    port: {{ .Values.service.routingPort }}
+    protocol: TCP
+    targetPort: {{ .Values.service.routingTargetPort }}
+  # This is a headless service, Kubernetes won't assign a VIP for it.
+  # *.nats.codefresh.svc.cluster.local
+  clusterIP: {{ .Values.clusterIP }}
+  selector:
+    app: {{ template "name" . }}
+

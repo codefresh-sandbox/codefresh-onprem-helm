@@ -1,0 +1,57 @@
+# number of replicas
+replicaCount: 1
+# StatefulSet name
+ssName: queue
+
+# K8s cluster default DNS domain
+clusterDomain: "cluster.local"
+
+# image configuration
+image:
+  repository: nats
+  tag: 0.9.4
+  pullPolicy: IfNotPresent
+
+# service configuration
+service:
+  # service type
+  type: ClusterIP
+  # cluser IP
+  clusterIP: None
+  # restart policy
+  restartPolicy: Always
+  # Nats port for clients
+  clientsPort: 4222
+  clientsTargetPort: 4222
+  clientsPortName: "clients"
+  # HTTP monitoring port
+  monitoringPort: 8222
+  monitoringTergetPort: 8222
+  monitoringPortName: "monitoring"
+  # Route connections to be received on any interface on port 6222
+  routingPort: 6222
+  routingTergetPort: 6222
+  routingPortName: "routing"
+  # Bind to host address (default: 0.0.0.0)
+  addr: 0.0.0.0
+  annotations:
+    pod.alpha.kubernetes.io/initialized: "true"
+    scheduler.alpha.kubernetes.io/affinity: >
+       {
+         "podAntiAffinity": {
+           "requiredDuringSchedulingIgnoredDuringExecution": [
+             {
+               "labelSelector": {
+                 "matchExpressions": [
+                   {
+                     "key": "app",
+                     "operator": "In",
+                     "values": ["queue"]
+                   }
+                 ]
+               },
+               "topologyKey": "kubernetes.io/hostname"
+           }
+           ]
+         }
+       }
