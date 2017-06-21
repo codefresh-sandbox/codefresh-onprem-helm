@@ -2,8 +2,8 @@
 # Requires Kubernetes 1.6.4+
 # rbacEnable: true
 
-# a Docker registry secret required to pull images from private registries
-imagePullSecrets: cf-onprem-registry-key
+# a Docker registry .dockercfg required to pull images from private registries
+imagePullSecrets: "{{ .Release.Name }}-registry-key"
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
