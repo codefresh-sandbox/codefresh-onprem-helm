@@ -2,4 +2,6 @@
 # Requires Kubernetes 1.6.4+
 # rbacEnable: true
 
-
+# customize consul chart
+consul:
+  Memory: 256Mi

@@ -6,27 +6,27 @@ metadata:
   labels:
     app: {{ template "name" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
-    test: "me"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
   name: {{ .Chart.Name }}
 spec:
+  type: {{ .Values.svcType }}
   ports:
-  - name: "{{ .Values.service.clientsPortName }}"
-    port: {{ .Values.service.clientsPort }}
+  - name: "client"
+    port: {{ .Values.clientPort }}
     protocol: TCP
-    targetPort: {{ .Values.service.clientsTargetPort }}
-  - name: "{{ .Values.service.monitoringPortName }}"
-    port: {{ .Values.service.monitoringPort }}
+    targetPort: {{ .Values.clientTargetPort }}
+  - name: "http"
+    port: {{ .Values.httpPort }}
     protocol: TCP
-    targetPort: {{ .Values.service.monitoringTargetPort }}
-  - name: "{{ .Values.service.routingPortName }}"
-    port: {{ .Values.service.routingPort }}
+    targetPort: {{ .Values.httpTargetPort }}
+  - name: "clusterig"
+    port: {{ .Values.clusterPort }}
     protocol: TCP
-    targetPort: {{ .Values.service.routingTargetPort }}
+    targetPort: {{ .Values.clusterTargetPort }}
   # This is a headless service, Kubernetes won't assign a VIP for it.
   # *.nats.codefresh.svc.cluster.local
-  clusterIP: {{ .Values.clusterIP }}
+  clusterIP: {{ .Values.svcClusterIP }}
   selector:
     app: {{ template "name" . }}
 
