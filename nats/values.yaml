@@ -15,9 +15,6 @@ imagePullPolicy: IfNotPresent
 # by default 1
 # replicaCount: 1
 
-# StatefulSet name
-ssName: queue
-
 # Nats port for clients
 clientPort: 4222
 clientTargetPort: 4222

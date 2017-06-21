@@ -3,19 +3,19 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.ssName }}
+  name: {{ template "fullname" . }}
   labels:
-    app: {{ template "name" . }}
+    app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  serviceName: {{ .Values.ssName }}
+  serviceName: {{ template "fullname" . }}
   replicas: {{ default 1 .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}
+        app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
-        name: {{ .Chart.Name }}
+        name: {{ template "fullname" . }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         args:
           - --addr
@@ -38,7 +38,7 @@ spec:
           - --cluster
           - nats://$(POD_IP):{{ .Values.clusterPort }}
           - --routes
-          - nats://{{ .Values.ssName }}-0.{{ .Chart.Name }}.svc.{{ .Values.clusterDomain }}:{{ .Values.clusterPort }}
+          - nats://{{ template "fullname" . }}-0.{{ .Chart.Name }}.svc.{{ .Values.clusterDomain }}:{{ .Values.clusterPort }}
         env:
           - name: POD_IP
             valueFrom:
