@@ -2,9 +2,6 @@
 # Requires Kubernetes 1.6.4+
 # rbacEnable: true
 
-# a Docker registry .dockercfg required to pull images from private registries
-imagePullSecrets: "{{ .Release.Name }}-registry-key"
-
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -15,82 +12,18 @@ imagePullPolicy: IfNotPresent
 consul:
   Memory: 256Mi
 
-# customize cfapi
+# overrride mongodb chart values
+mongo:
+  # chart name
+  nameOverride: mongodb
+  # image to use
+  image: bitnami/mongodb:3.4.5-r0
+
+# use mongodb service name; should be same as mongo.nameOverride
 cfapi:
-  replicas: 1
-  annotations:
-    scheduler.alpha.kubernetes.io/affinity: >
-        {
-          "podAntiAffinity": {
-            "prefferedDuringSchedulingIgnoredDuringExecution": [
-              {
-                "labelSelector": {
-                  "matchExpressions": [
-                    {
-                      "key": "app",
-                      "operator": "In",
-                      "values": ["cfapi"]
-                    }
-                  ]
-                },
-                "topologyKey": "kubernetes.io/hostname"
-            }
-            ]
-          }
-        }
-  image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v116
-  env:
-    APP_ENV: staging
-    EXTERNAL_URL: https://$APP_URL
-    NODE_ENV: kubernetes
-    PORT: 80
-    PROTOCOL: https
-    DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
-    DOCKER_NODE_CERT_PATH: /etc/ssl/cf
-    CF_HOST_NAME: $APP_URL
-    PROVIDERS_JSON_PATH: /etc/admin/providers.json
-    # TODO: Add the tls sign options here
-    TLS_SIGN_CLIENT_KEY: sdf
-    NEWRELIC_LICENSE_KEY: abc
-    MONGO_URI: mongodb://mongo:27017/local
-    CONSUL_HOST: consul
-    QUEUE_SERVERS: nats://queue:4222
-    STRIPE_SECRET_KEY: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
-    FIREBASE_SECRET: Bvh9gYA5LD1w5cbMngldCZVHh7al9UJeKUiZsf8t
-    FIREBASE_URL: https://codefresh-on-prem.firebaseio.com/on-prem=
-    GITHUB_API_HOST: REPLACE_GITHUB_HOST
-    GITHUB_API_PATH_PREFIX: /api/v3
-    GITHUB_LOGIN_HOST: REPLACE_GITHUB_HOST
-    GITHUB_CLIENT_ID: REPLACE_GITHUB_CLIENT_ID
-    GITHUB_CLIENT_SECRET: REPLACE_GITHUB_CLIENT_SECRET
-    GITHUB_PROTOCOL: REPLACE_GITHUB_PROTOCOL
-    GITLAB_LOGIN_HOST: REPLACE_GITLAB_HOST
-    GITLAB_CLIENT_ID: REPLACE_GITLAB_CLIENT_ID
-    GITLAB_CLIENT_SECRET: REPLACE_GITLAB_CLIENT_SECRET
-    GITLAB_PROTOCOL: REPLACE_GITLAB_PROTOCOL
-    OAUTH_ROUTER_CALLBACK:
-    BITBUCKET_CLIENT_ID: aaa
-    BITBUCKET_CLIENT_SECRET: aaa
-    # TODO: How are we going to generate the safe-secret for the first time?
-    API_SAFE_SECRET: fsd2wer5sdfsr244523SFDsdf
-    SEGMENT_KEY: asd
-    GOOGLE_COMPUTE_ENGINE_PROJECT: savvy-badge-103912
-    SLACK_INTERNAL: adsfa
-    SLACK_APP_SECRET: asdfa
-    LOGGLY_TOKEN: asdf
-    SLACK_APP_ID: 4027524866.63606411014
-    SEGMENT_ACTIVE: false
-    MAIL_ACTIVE: false
-    LOGS_PATH: /var/log/cf-api.log
-    LOGGER_LEVEL: error
-    LOGGER_MORAN_ACTIVE: false
-    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
-    INTERNAL_USE_GITHUB_ACCESS_TOKEN: asdf
-    RABBIT_URL: amqp://rabbit
-    POSTGRES_HOST: postgres
-    POSTGRES_DATABASE: postgres
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    REDIS_URL: redis
-    REDIS_PASSWORD: redis
+  mongoService: mongodb
+  mongoImage: bitnami/mongodb:3.4.5-r0
+
+global:
+  # a Docker registry .dockercfg required to pull images from private registries
+  imagePullSecretsSuffix: "registry-key"

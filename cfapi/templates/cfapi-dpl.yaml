@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  replicas: {{ default 1 .Values.cfapi.replicas }}
+  replicas:  {{ default 1 .Values.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,35 +20,39 @@ spec:
       app: {{ template "fullname" . }}
   template:
     metadata:
-      annotations:
-      {{- range $key, $value := .Values.cfapi.annotations }}
-        {{ $key }}: {{ $value | quote }}
-      {{- end }}
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
+      {{ if and ((.Values.global) (.Values.global.imagePullSecretsSuffix)) }}
       imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets }}
+        - name: "{{ .Release.Name }}-{{ .Values.global.imagePullSecretsSuffix }}"
+      {{ end }}
       terminationGracePeriodSeconds: 40
       containers:
       - name: {{ template "fullname" . }}
-        image: "{{ .Values.cfapi.image }}:{{ .Values.cfapi.imageTag }}"
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        {{- range $key, $value := .Values.cfapi.env }}
+        {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
+        - name: EXTERNAL_URL
+          value: {{ .Values.appUrl }}
+        - name: CF_HOST_NAME
+          value: {{ .Values.appUrl }}
+        - name: MONGO_URI
+          value: mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.port }}
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/ping
-            port: 80
+            port: {{ .Values.readinessPort }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1

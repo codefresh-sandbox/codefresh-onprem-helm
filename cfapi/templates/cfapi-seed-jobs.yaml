@@ -1,0 +1,57 @@
+{{- $mongoServer := printf "%s-%s.%s" .Release.Name .Values.mongodbService .Release.Namespace -}}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-mongo-with-admin-account
+spec:
+  template:
+    metadata:
+      name: seed-mongo-with-admin-account
+    spec:
+      containers:
+      - name: seed-admin-account
+        image: {{ .Values.mongoImage }}
+        imagePullPolicy: IfNotPresent
+        {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --username {{ .Values.mongodbUsername | quote }} --password {{ .Values.mongodbPassword | quote }} --collection accounts --type json --file /etc/admin/accounts.json"]
+        {{ else }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --collection accounts --type json --file /etc/admin/accounts.json"]
+        {{ end }}
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/accounts.json"
+          subPath: "accounts.json"
+      restartPolicy: OnFailure
+      volumes:
+      - name: seed
+        configMap:
+          name: seed
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed-mongo-with-admin-user
+spec:
+  template:
+    metadata:
+      name: seed-mongo-with-admin-user
+    spec:
+      containers:
+      - name: seed-admin-user
+        image: {{ .Values.mongoImage }}
+        imagePullPolicy: IfNotPresent
+        {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --username {{ .Values.mongodbUsername | quote }} --password {{ .Values.mongodbPassword | quote }} --collection users --type json --file /etc/admin/users.json"]
+        {{ else }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }}  --collection users --type json --file /etc/admin/users.json"]
+        {{ end }}
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/users.json"
+          subPath: "users.json"
+      restartPolicy: OnFailure
+      volumes:
+      - name: seed
+        configMap:
+          name: seed

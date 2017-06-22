@@ -1,45 +1,59 @@
 dependencies:
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: consul
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.3.0
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: mongodb
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.4.11
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: postgresql
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.7.1
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: redis
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.7.0
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: rabbitmq
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
   version: 0.5.3
-- condition: ""
+- alias: ""
+  condition: ""
   enabled: false
   import-values: null
   name: nats
   repository: file://../nats
   tags: null
   version: 0.1.0
-digest: sha256:d98524bcc570755df6d2a467839b94e916b49a51253afdc9ba45f5476c80453a
-generated: 2017-06-20T16:40:16.123864157+03:00
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
+  name: cfapi
+  repository: file://../cfapi
+  tags: null
+  version: 0.1.1
+digest: sha256:bafd27832a22a94a64ffbee511bd6786d6614e99cfc7b016dc955336fbc99d15
+generated: 2017-06-22T16:23:57.0507737+03:00

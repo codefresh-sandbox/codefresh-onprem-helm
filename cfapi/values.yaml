@@ -1,0 +1,93 @@
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: IfNotPresent
+
+# number of Nats replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: gcr.io/codefresh-enterprise/cf-api
+
+# imagre tag  
+imageTag: onprem-v116
+
+# application URL
+appUrl: https://codefresh.local
+
+# port 
+port: 80
+
+# target port
+targetPort: 80
+
+# readiness port
+readinessPort: 80
+
+# mongodb service name to use
+mongodbService: mongodb
+
+# defualt mongo image to use for mongoimport
+mongoImage: mongo:3.4
+
+# mongodb user; default empty
+# mongodbUsername:
+
+# mongodb password; default empty
+# mongodbPassword:
+
+# mongodb database; local by default
+mongodbDatabase: local
+
+# ENV
+env:
+  APP_ENV: staging
+  NODE_ENV: kubernetes
+  PORT: 80
+  PROTOCOL: https
+  DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
+  DOCKER_NODE_CERT_PATH: /etc/ssl/cf
+  PROVIDERS_JSON_PATH: /etc/admin/providers.json
+  TLS_SIGN_CLIENT_KEY: sdf
+  NEWRELIC_LICENSE_KEY: abc
+  CONSUL_HOST: consul
+  QUEUE_SERVERS: nats://queue:4222
+  STRIPE_SECRET_KEY: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
+  FIREBASE_SECRET: Bvh9gYA5LD1w5cbMngldCZVHh7al9UJeKUiZsf8t
+  FIREBASE_URL: https://codefresh-on-prem.firebaseio.com/on-prem=
+  GITHUB_API_HOST: REPLACE_GITHUB_HOST
+  GITHUB_API_PATH_PREFIX: /api/v3
+  GITHUB_LOGIN_HOST: REPLACE_GITHUB_HOST
+  GITHUB_CLIENT_ID: REPLACE_GITHUB_CLIENT_ID
+  GITHUB_CLIENT_SECRET: REPLACE_GITHUB_CLIENT_SECRET
+  GITHUB_PROTOCOL: REPLACE_GITHUB_PROTOCOL
+  GITLAB_LOGIN_HOST: REPLACE_GITLAB_HOST
+  GITLAB_CLIENT_ID: REPLACE_GITLAB_CLIENT_ID
+  GITLAB_CLIENT_SECRET: REPLACE_GITLAB_CLIENT_SECRET
+  GITLAB_PROTOCOL: REPLACE_GITLAB_PROTOCOL
+  OAUTH_ROUTER_CALLBACK:
+  BITBUCKET_CLIENT_ID: aaa
+  BITBUCKET_CLIENT_SECRET: aaa
+  API_SAFE_SECRET: fsd2wer5sdfsr244523SFDsdf
+  SEGMENT_KEY: asd
+  GOOGLE_COMPUTE_ENGINE_PROJECT: savvy-badge-103912
+  SLACK_INTERNAL: adsfa
+  SLACK_APP_SECRET: asdfa
+  LOGGLY_TOKEN: asdf
+  SLACK_APP_ID: 4027524866.63606411014
+  SEGMENT_ACTIVE: false
+  MAIL_ACTIVE: false
+  LOGS_PATH: /var/log/cf-api.log
+  LOGGER_LEVEL: error
+  LOGGER_MORAN_ACTIVE: false
+  PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
+  INTERNAL_USE_GITHUB_ACCESS_TOKEN: asdf
+  RABBIT_URL: amqp://rabbit
+  POSTGRES_HOST: postgres
+  POSTGRES_DATABASE: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  REDIS_URL: redis
+  REDIS_PASSWORD: redis
