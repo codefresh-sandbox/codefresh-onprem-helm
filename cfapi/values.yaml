@@ -59,7 +59,8 @@ rabbitmqUsername: user
 # rabbitmqPassword:
 
 # PostresSQL service name
-postgresService: postresql
+postgresService: postgresql
+
 # PostresSQL database
 postgresDatabase: postgres
 # PostresSQL user
