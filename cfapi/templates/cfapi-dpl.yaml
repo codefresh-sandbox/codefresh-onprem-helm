@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  replicas:  {{ default 1 .Values.replicaCount }}
+  replicas: {{ default 1 .Values.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -26,10 +26,10 @@ spec:
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
-      {{ if and ((.Values.global) (.Values.global.imagePullSecretsSuffix)) }}
+      {{- if and ((.Values.global) (.Values.global.imagePullSecretsSuffix)) }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.imagePullSecretsSuffix }}"
-      {{ end }}
+      {{- end }}
       terminationGracePeriodSeconds: 40
       containers:
       - name: {{ template "fullname" . }}
@@ -45,7 +45,49 @@ spec:
         - name: CF_HOST_NAME
           value: {{ .Values.appUrl }}
         - name: MONGO_URI
+        {{- if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
           value: mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}
+        {{- else }}
+          value: mongodb://{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}
+        {{- end }}
+        - name: CONSUL_HOST
+          value: "{{ .Release.Name }}-{{ .Values.consulService }}.{{ .Release.Namespace }}"
+        - name: QUEUE_SERVERS
+          value: "nats://{{ .Release.Name }}-{{ .Values.natsService }}.{{ .Release.Namespace }}:{{ .Values.natsServicePort }}"
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.rabbitmqService }}"
+              key: rabbitmq-password
+        - name: RABBIT_URL
+        {{- if .Values.rabbitmqUsername }}
+          {{- if .Values.rabbitmqPassword }}
+          value: "amqp://{{ .Values.rabbitmqUsername }}:{{ .Values.rabbitmqPassword }}@{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
+          {{- else }}
+          # get RabbitMQ password from RABBIT_PASSWORD ENV - loaded from secret
+          value: "amqp://{{ .Values.rabbitmqUsername }}:$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
+          {{- end }}
+        {{- else }}
+          value: "amqp://{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
+        {{- end }}
+        - name: POSTGRES_HOST
+          value: "{{ .Release.Name }}-{{ .Values.postgresService }}.{{ .Release.Namespace }}" 
+        - name: POSTGRES_DATABASE
+          value: {{ .Values.postgresDatabase | quote }}
+        - name: POSTGRES_USER
+          value: {{ .Values.postgresUser | quote }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.postgresService }}"
+              key: postgres-password
+        - name: REDIS_URL
+          value: "{{ .Release.Name }}-{{ .Values.redisService }}.{{ .Release.Namespace }}" 
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.redisService }}"
+              key: redis-password
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
@@ -75,4 +117,3 @@ spec:
         configMap:
           name: seed
       restartPolicy: Always
-

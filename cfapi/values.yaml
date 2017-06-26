@@ -41,6 +41,33 @@ mongoImage: mongo:3.4
 # mongodb database; local by default
 mongodbDatabase: local
 
+# consul service
+consulService: consul
+
+# nats service
+natsService: nats
+
+# nats service port
+natsServicePort: 4222
+
+# RMQ service
+rabbitmqService: rabbitmq
+# RabbitMQ user; default user
+rabbitmqUsername: user
+
+# RabbitMQ password; default empty
+# rabbitmqPassword:
+
+# PostresSQL service name
+postgresService: postresql
+# PostresSQL database
+postgresDatabase: postgres
+# PostresSQL user
+postgresUser: postgres
+
+# Redis service
+redisService: redis
+
 # ENV
 env:
   APP_ENV: staging
@@ -52,8 +79,6 @@ env:
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
   TLS_SIGN_CLIENT_KEY: sdf
   NEWRELIC_LICENSE_KEY: abc
-  CONSUL_HOST: consul
-  QUEUE_SERVERS: nats://queue:4222
   STRIPE_SECRET_KEY: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
   FIREBASE_SECRET: Bvh9gYA5LD1w5cbMngldCZVHh7al9UJeKUiZsf8t
   FIREBASE_URL: https://codefresh-on-prem.firebaseio.com/on-prem=
@@ -72,7 +97,6 @@ env:
   BITBUCKET_CLIENT_SECRET: aaa
   API_SAFE_SECRET: fsd2wer5sdfsr244523SFDsdf
   SEGMENT_KEY: asd
-  GOOGLE_COMPUTE_ENGINE_PROJECT: savvy-badge-103912
   SLACK_INTERNAL: adsfa
   SLACK_APP_SECRET: asdfa
   LOGGLY_TOKEN: asdf
@@ -84,10 +108,3 @@ env:
   LOGGER_MORAN_ACTIVE: false
   PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
   INTERNAL_USE_GITHUB_ACCESS_TOKEN: asdf
-  RABBIT_URL: amqp://rabbit
-  POSTGRES_HOST: postgres
-  POSTGRES_DATABASE: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  REDIS_URL: redis
-  REDIS_PASSWORD: redis
