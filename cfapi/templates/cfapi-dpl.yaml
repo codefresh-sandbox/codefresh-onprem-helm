@@ -88,6 +88,58 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.redisService }}"
               key: redis-password
+        - name: GITHUB_API_HOST
+          value: {{ .Values.github.apiHost }}
+        - name: GITHUB_API_PATH_PREFIX
+          value: {{ .Values.github.apiPathPrefix }}
+        - name: GITHUB_LOGIN_HOST
+          value: {{ .Values.github.loginHost }}
+        - name: GITHUB_PROTOCOL
+          value: {{ .Values.github.protocol }}
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: github-client-id
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: github-client-secret
+        - name: GITLAB_LOGIN_HOST
+          value: {{ .Values.gitlab.loginHost }}
+        - name: GITLAB_PROTOCOL
+          value: {{ .Values.gitlab.protocol }}
+        - name: GITLAB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: gitlab-client-id
+        - name: GITLAB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: gitlab-client-secret
+        - name: API_SAFE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: api-safe-secret
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: stripe-secret-key
+        - name: FIREBASE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: firebase-secret
+        - name: SLACK_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: slack-app-id
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP

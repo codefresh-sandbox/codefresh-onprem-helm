@@ -68,6 +68,41 @@ postgresUser: postgres
 # Redis service
 redisService: redis
 
+# GitHub configuration
+github:
+  apiHost: api.github.com
+  apiPathPrefix: /api/v3
+  loginHost: github.com
+  protocol: https
+
+# GitHub client ID
+# githubClientID:
+
+# GitHub Client Secret key
+# githubClientSecret:
+
+gitlab:
+  loginHost: gitlab.com
+  protocol: https
+
+# GitLab Client ID
+# gitlabClientID:
+
+# GitLab Cleint Secret key
+# gitlabClientSecret
+
+# API Safe Secret
+# apiSafeSecret: 
+
+# Stripe secret key
+# stripeSecretKey: 
+
+# Firebase secret
+# firebaseSecret: 
+
+# Slack APP ID
+# slackAppID: 
+
 # ENV
 env:
   APP_ENV: staging
@@ -79,28 +114,14 @@ env:
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
   TLS_SIGN_CLIENT_KEY: sdf
   NEWRELIC_LICENSE_KEY: abc
-  STRIPE_SECRET_KEY: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
-  FIREBASE_SECRET: Bvh9gYA5LD1w5cbMngldCZVHh7al9UJeKUiZsf8t
   FIREBASE_URL: https://codefresh-on-prem.firebaseio.com/on-prem=
-  GITHUB_API_HOST: REPLACE_GITHUB_HOST
-  GITHUB_API_PATH_PREFIX: /api/v3
-  GITHUB_LOGIN_HOST: REPLACE_GITHUB_HOST
-  GITHUB_CLIENT_ID: REPLACE_GITHUB_CLIENT_ID
-  GITHUB_CLIENT_SECRET: REPLACE_GITHUB_CLIENT_SECRET
-  GITHUB_PROTOCOL: REPLACE_GITHUB_PROTOCOL
-  GITLAB_LOGIN_HOST: REPLACE_GITLAB_HOST
-  GITLAB_CLIENT_ID: REPLACE_GITLAB_CLIENT_ID
-  GITLAB_CLIENT_SECRET: REPLACE_GITLAB_CLIENT_SECRET
-  GITLAB_PROTOCOL: REPLACE_GITLAB_PROTOCOL
   OAUTH_ROUTER_CALLBACK:
   BITBUCKET_CLIENT_ID: aaa
   BITBUCKET_CLIENT_SECRET: aaa
-  API_SAFE_SECRET: fsd2wer5sdfsr244523SFDsdf
   SEGMENT_KEY: asd
   SLACK_INTERNAL: adsfa
   SLACK_APP_SECRET: asdfa
   LOGGLY_TOKEN: asdf
-  SLACK_APP_ID: 4027524866.63606411014
   SEGMENT_ACTIVE: false
   MAIL_ACTIVE: false
   LOGS_PATH: /var/log/cf-api.log

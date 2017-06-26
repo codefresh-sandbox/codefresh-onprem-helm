@@ -71,6 +71,8 @@ Server: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a919
 
 # Handle Secrets
 
+> Run `./sops.sh -d` before `helm update/install` to decrypt (locally) all secrets keys
+
 All K8s secrets file should not be committed to Git un-encrypted. In order to properly encrypt files, we use [sops](https://github.com/mozilla/sops) tool (by Mozilla team) with private key stored in AWS KMS service.
 
 Use helper script `sops.sh` to encrypt and decrypt secrets files. You can also work with `sops` directly: run `sops <filename>` to decrypt, edit and encrypt any secret file.
