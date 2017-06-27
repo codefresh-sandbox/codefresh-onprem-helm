@@ -24,3 +24,10 @@ mongo:
 cfapi:
   mongoService: mongodb
   mongoImage: bitnami/mongodb:3.4.5-r0
+
+
+#------------------------------------------
+# GLOBAL variables - apply to all subcharts
+global:
+  # application URL
+  appUrl: https://codefresh.local

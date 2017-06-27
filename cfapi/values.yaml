@@ -4,7 +4,7 @@
 ##
 imagePullPolicy: IfNotPresent
 
-# number of Nats replicas
+# number of replicas
 # by default 1
 # replicaCount: 1
 
@@ -13,9 +13,6 @@ image: codefresh/cf-api
 
 # image tag  
 imageTag: v118
-
-# application URL
-appUrl: https://codefresh.local
 
 # port 
 port: 80

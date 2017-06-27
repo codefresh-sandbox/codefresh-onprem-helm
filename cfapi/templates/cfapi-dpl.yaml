@@ -41,9 +41,17 @@ spec:
         - name: PROTOCOL
           value: {{ .Values.protocol | quote }}
         - name: EXTERNAL_URL
-          value: {{ .Values.appUrl | quote }}
+        {{- if .Values.global }}
+          value: {{ default "https://codefresh.local" .Values.global.appUrl | quote }}
+        {{- else }}
+          value: "https://codefresh.local"
+        {{- end }}
         - name: CF_HOST_NAME
-          value: {{ .Values.appUrl | quote }}
+        {{- if .Values.global }}
+          value: {{ default "https://codefresh.local" .Values.global.appUrl | quote }}
+        {{- else }}
+          value: "https://codefresh.local"
+        {{- end }}
         - name: MONGO_URI
         {{- if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
           value: "mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}"

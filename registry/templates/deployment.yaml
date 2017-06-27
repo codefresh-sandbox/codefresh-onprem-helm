@@ -1,0 +1,51 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  replicas: {{ default 2 .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        env:
+        - name: REGISTRY_HTTP_ADDR
+          value: ":{{ .Values.port }}"
+        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+          value: /var/lib/registry
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /etc/ssl/cf/cert.pem
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /etc/ssl/cf/key.pem
+        volumeMounts:
+        - name: image-store
+          mountPath: /var/lib/registry
+        - name: cf-certs
+          mountPath: /etc/ssl/cf
+          readOnly: true
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: registry
+          protocol: TCP
+      volumes:
+      - name: image-store
+        persistentVolumeClaim:
+          claimName: {{ template "fullname" . }}
+      - name: cf-certs
+        secret:
+          secretName: cf-certs
+

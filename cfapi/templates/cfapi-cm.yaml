@@ -21,7 +21,7 @@ data:
         "badgeToken" : "eyJhbGciOiJIUzI1NiJ9.NTkwMDkxMTdjMTAyNzYzYmVkYTdjZTcx.B0HOUL6HlpTRNr_e95pVucSRMRzP2cobe5kIoMtrDSc",
         "createdAt" : ISODate("2017-04-26T12:22:48.001+0000"),
         "updatedAt" : ISODate("2017-04-26T12:27:13.720+0000"),
-        "name" : "AdminCF",
+        "name" : "admin-cf",
         "provider" : "stash",
         "runtimeEnvironment" : "codefresh",
         "canUsePrivateRepos" : true,
@@ -58,7 +58,7 @@ data:
     {
         "_id" : ObjectId("59009221c102763beda7cf04"),
         "register_date" : ISODate("2017-04-26T12:27:13.608+0000"),
-        "userName" : "AdminCF",
+        "userName" : "admin-cf",
         "email" : "admin@codefresh.io",
         "defaultAccount" : NumberInt(0),
         "notifications" : [
