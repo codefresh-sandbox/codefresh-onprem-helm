@@ -23,7 +23,8 @@ mongo:
 cfapi:
   mongoService: mongodb
   mongoImage: bitnami/mongodb:3.4.5-r0
-
-global:
-  # a Docker registry .dockercfg required to pull images from private registries
-  imagePullSecretsSuffix: "registry-key"
+  # secrets - should be encrypted
+  apiSafeSecret: "fsd2wer5sdfsr244523SFDsdf"
+  stripeSecretKey: "sk_test_8AnaAlccXXkcPXP7vrgKZQyy"
+  firebaseSecret: "Bvh9gYA5LD1w5cbMngldCZVHh7al9UJeKUiZsf8t"
+  slackAppID: "4027524866.63606411014"

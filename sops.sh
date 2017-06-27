@@ -7,7 +7,7 @@ do
     -d) enc="d"; flag="l"; shift;;
     -e) enc="e"; flag="L"; shift;;
     -h)
-        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt secret files]"
+        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt '*-enc.yaml' values files]"
         exit 1;;
      *) break;; # terminate while loop
   esac
@@ -15,7 +15,7 @@ do
 done
 
 # get only encrypted or non encrypted files
-for f in $(find . -name "*-secrets.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
+for f in $(find . -name "*-enc.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
   echo "Processing $f file"
   sops -$enc -i $f
 done

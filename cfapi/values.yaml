@@ -9,16 +9,19 @@ imagePullPolicy: IfNotPresent
 # replicaCount: 1
 
 # image name
-image: gcr.io/codefresh-enterprise/cf-api
+image: codefresh/cf-api
 
-# imagre tag  
-imageTag: onprem-v116
+# image tag  
+imageTag: v118
 
 # application URL
 appUrl: https://codefresh.local
 
 # port 
 port: 80
+
+# protocol
+protocol: https
 
 # target port
 targetPort: 80
@@ -90,7 +93,11 @@ gitlab:
 # gitlabClientID:
 
 # GitLab Cleint Secret key
-# gitlabClientSecret
+# gitlabClientSecret:
+
+# Bitbucket
+# bitbucketClientID:
+# bitbucketSecret:
 
 # API Safe Secret
 # apiSafeSecret: 
@@ -100,33 +107,36 @@ gitlab:
 
 # Firebase secret
 # firebaseSecret: 
+firebaseUrl:  https://codefresh-on-prem.firebaseio.com/on-prem
 
-# Slack APP ID
+# Slack secrets
 # slackAppID: 
+# slackInternal:
+# slackAppSecret:
+
+# Segment
+# segmentKey:
+segmentEnable: false
+
+# New Relic
+# newrelicLicenseKey:
+
+# Loggly 
+# logglyToken:
+
+# TLS sign client key
+# tlsClientKey:
 
 # ENV
 env:
   APP_ENV: staging
   NODE_ENV: kubernetes
-  PORT: 80
-  PROTOCOL: https
   DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
   DOCKER_NODE_CERT_PATH: /etc/ssl/cf
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
-  TLS_SIGN_CLIENT_KEY: sdf
-  NEWRELIC_LICENSE_KEY: abc
-  FIREBASE_URL: https://codefresh-on-prem.firebaseio.com/on-prem=
   OAUTH_ROUTER_CALLBACK:
-  BITBUCKET_CLIENT_ID: aaa
-  BITBUCKET_CLIENT_SECRET: aaa
-  SEGMENT_KEY: asd
-  SLACK_INTERNAL: adsfa
-  SLACK_APP_SECRET: asdfa
-  LOGGLY_TOKEN: asdf
-  SEGMENT_ACTIVE: false
   MAIL_ACTIVE: false
   LOGS_PATH: /var/log/cf-api.log
   LOGGER_LEVEL: error
   LOGGER_MORAN_ACTIVE: false
   PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
-  INTERNAL_USE_GITHUB_ACCESS_TOKEN: asdf

@@ -73,7 +73,7 @@ Server: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a919
 
 > Run `./sops.sh -d` before `helm update/install` to decrypt (locally) all secrets keys
 
-All K8s secrets file should not be committed to Git un-encrypted. In order to properly encrypt files, we use [sops](https://github.com/mozilla/sops) tool (by Mozilla team) with private key stored in AWS KMS service.
+Files that contain secret keys should not be submitted to Git un-encrypted. In order to properly encrypt files, we use [sops](https://github.com/mozilla/sops) tool (by Mozilla team) with private key stored in AWS KMS service.
 
 Use helper script `sops.sh` to encrypt and decrypt secrets files. You can also work with `sops` directly: run `sops <filename>` to decrypt, edit and encrypt any secret file.
 
@@ -89,7 +89,7 @@ do
     -d) enc="d"; flag="l"; shift;;
     -e) enc="e"; flag="L"; shift;;
     -h)
-        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt secret files]"
+        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt '*-enc.yaml' files]"
         exit 1;;
      *) break;; # terminate while loop
   esac
@@ -97,7 +97,7 @@ do
 done
 
 # get only encrypted or non encrypted files
-for f in $(find . -name "*-secrets.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
+for f in $(find . -name "*-env.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
   echo "Processing $f file"
   sops -$enc -i $f
 done
@@ -110,7 +110,7 @@ Put `.sopscommithook` file into `.git/hooks` directory (make sure it's executabl
 ```sh
 #!/bin/sh
 
-for FILE in $(git diff-index HEAD --name-only | grep <your vars dir> | grep "secrets.y"); do
+for FILE in $(git diff-index HEAD --name-only | grep <your vars dir> | grep "enc.yaml"); do
     if [ -f "$FILE" ] && ! grep -C10000 "sops:" $FILE | grep -q "version:"; then
     then
         echo "!!!!! $FILE" 'File is not encrypted !!!!!'
