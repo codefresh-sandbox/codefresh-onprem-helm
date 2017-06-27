@@ -124,7 +124,13 @@ exit
 
 # Install Codefresh
 
+## Update chart dependencies
+
+## Update or install Codefresh
+
 ```sh
+$ # decrypt secret keys
+$ ./sops.sh -d
 $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm release will be created/updated
-$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --namespace $NAMESPACE
+$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-enc.yaml
 ```

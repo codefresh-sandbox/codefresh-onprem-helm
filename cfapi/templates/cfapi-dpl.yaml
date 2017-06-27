@@ -37,18 +37,18 @@ spec:
           value: {{ $value | quote }}
         {{- end }}
         - name: PORT
-          value: {{ .Values.port }}
+          value: {{ .Values.port | quote }}
         - name: PROTOCOL
           value: {{ .Values.protocol | quote }}
         - name: EXTERNAL_URL
-          value: {{ .Values.appUrl }}
+          value: {{ .Values.appUrl | quote }}
         - name: CF_HOST_NAME
-          value: {{ .Values.appUrl }}
+          value: {{ .Values.appUrl | quote }}
         - name: MONGO_URI
         {{- if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
-          value: mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}
+          value: "mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}"
         {{- else }}
-          value: mongodb://{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}
+          value: "mongodb://{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}"
         {{- end }}
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.consulService }}.{{ .Release.Namespace }}"
@@ -89,13 +89,13 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.redisService }}"
               key: redis-password
         - name: GITHUB_API_HOST
-          value: {{ .Values.github.apiHost }}
+          value: {{ .Values.github.apiHost | quote }}
         - name: GITHUB_API_PATH_PREFIX
-          value: {{ .Values.github.apiPathPrefix }}
+          value: {{ .Values.github.apiPathPrefix | quote }}
         - name: GITHUB_LOGIN_HOST
-          value: {{ .Values.github.loginHost }}
+          value: {{ .Values.github.loginHost | quote }}
         - name: GITHUB_PROTOCOL
-          value: {{ .Values.github.protocol }}
+          value: {{ .Values.github.protocol | quote }}
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -112,9 +112,9 @@ spec:
               name: {{ template "fullname" . }}
               key: github-internal-token
         - name: GITLAB_LOGIN_HOST
-          value: {{ .Values.gitlab.loginHost }}
+          value: {{ .Values.gitlab.loginHost | quote }}
         - name: GITLAB_PROTOCOL
-          value: {{ .Values.gitlab.protocol }}
+          value: {{ .Values.gitlab.protocol | quote }}
         - name: GITLAB_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -173,7 +173,7 @@ spec:
               name: {{ template "fullname" . }}
               key: segment-key
         - name: SEGMENT_ACTIVE
-          value: {{ .Values.segmentEnable }}
+          value: {{ .Values.segmentEnable | quote }}
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
