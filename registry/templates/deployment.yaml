@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  replicas: {{ default 2 .Values.replicaCount }}
+  replicas: {{ default 1 .Values.replicaCount }}
   template:
     metadata:
       labels:
