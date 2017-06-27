@@ -10,6 +10,7 @@ imagePullPolicy: IfNotPresent
 
 # customize consul chart
 consul:
+  Replicas: 1
   Memory: 256Mi
 
 # overrride mongodb chart values

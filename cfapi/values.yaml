@@ -85,6 +85,9 @@ github:
 # GitHub Client Secret key
 # githubClientSecret:
 
+# GitHub internal token
+# githubInternalToken:
+
 gitlab:
   loginHost: gitlab.com
   protocol: https
@@ -97,7 +100,7 @@ gitlab:
 
 # Bitbucket
 # bitbucketClientID:
-# bitbucketSecret:
+# bitbucketClientSecret:
 
 # API Safe Secret
 # apiSafeSecret: 
