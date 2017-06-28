@@ -10,6 +10,7 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
   annotations:
     "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
 data:
   gen-website-tls: |
     #!/bin/sh

@@ -71,11 +71,13 @@ Server: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a919
 
 # Handle Secrets
 
-> Run `./sops.sh -d` before `helm update/install` to decrypt (locally) all secrets keys
+> Run `./sops.sh -d` before `helm update/install` to decrypt (locally) values files with secrets keys
 
 Files that contain secret keys should not be submitted to Git un-encrypted. In order to properly encrypt files, we use [sops](https://github.com/mozilla/sops) tool (by Mozilla team) with private key stored in AWS KMS service.
 
-Use helper script `sops.sh` to encrypt and decrypt secrets files. You can also work with `sops` directly: run `sops <filename>` to decrypt, edit and encrypt any secret file.
+Use helper script `sops.sh` to encrypt and decrypt values files with secret data. The `sops.sh` scripts is looking for any `*-dec.yaml` files and creates an encrypted copy (`*-enc.yaml`) of these files. You should commit only `*-enc.yaml` files into `git` repository.  
+
+**Note**: You can also work with `sops` directly: run `sops <filename>` to decrypt, edit and encrypt any secret file.
 
 `sops.sh` helper script
 
@@ -86,40 +88,49 @@ Use helper script `sops.sh` to encrypt and decrypt secrets files. You can also w
 while [ $# -gt 0 ]
 do
   case "$1" in
-    -d) enc="d"; flag="l"; shift;;
-    -e) enc="e"; flag="L"; shift;;
+    -d) dec=1; shift;;
+    -e) enc=1; shift;;
     -h)
-        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt '*-enc.yaml' files]"
+        echo >&2 "usage: $0 -(e|d) [encrypt|decrypt '*-enc.yaml' values files]"
         exit 1;;
      *) break;; # terminate while loop
   esac
   shift
 done
 
-# get only encrypted or non encrypted files
-for f in $(find . -name "*-env.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
-  echo "Processing $f file"
-  sops -$enc -i $f
-done
+# encrypt files
+if [[ $enc -eq 1 ]]; then
+  for f in $(find . -name "*-dec.yaml"); do 
+    echo "Encrypting $f ..."
+    sops -e $f > ${f/dec/enc}
+  done
+fi
+
+# descrypt files
+if [[ $dec -eq 1 ]]; then
+  for f in $(find . -name "*-enc.yaml"); do 
+    echo "Decrypting $f file"
+    sops -d $f > ${f/enc/dec}
+  done
+fi
 ```
 
-In addition, there is a need to install `git` hook to avoid unintended commit of un-encrypted secret files into Git repository.
+To avoid commiting non-encrypted secrets into `git` repository, you can install a helper `git` hook.
 
 Put `.sopscommithook` file into `.git/hooks` directory (make sure it's executable)
 
 ```sh
 #!/bin/sh
 
-for FILE in $(git diff-index HEAD --name-only | grep <your vars dir> | grep "enc.yaml"); do
+for FILE in $(git diff-index HEAD --name-only | grep <your vars dir> | grep "dec.yaml"); do
     if [ -f "$FILE" ] && ! grep -C10000 "sops:" $FILE | grep -q "version:"; then
     then
-        echo "!!!!! $FILE" 'File is not encrypted !!!!!'
-        echo "Run: helm secrets enc <file path>"
+        echo "!!!!! $FILE" 'file is not encrypted!!!'
+        echo "Run: ./sops.sh -e"
         exit 1
     fi
 done
 exit
-
 ```
 
 # Install Codefresh
@@ -129,8 +140,8 @@ exit
 ## Update or install Codefresh
 
 ```sh
-$ # decrypt secret keys
+$ # decrypt secret keys (optional step)
 $ ./sops.sh -d
 $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm release will be created/updated
-$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-enc.yaml
+$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml
 ```

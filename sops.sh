@@ -4,8 +4,8 @@
 while [ $# -gt 0 ]
 do
   case "$1" in
-    -d) enc="d"; flag="l"; shift;;
-    -e) enc="e"; flag="L"; shift;;
+    -d) dec=1; shift;;
+    -e) enc=1; shift;;
     -h)
         echo >&2 "usage: $0 -(e|d) [encrypt|decrypt '*-enc.yaml' values files]"
         exit 1;;
@@ -14,8 +14,18 @@ do
   shift
 done
 
-# get only encrypted or non encrypted files
-for f in $(find . -name "*-enc.yaml" -exec grep -$flag "arn:aws:kms:" {} +); do 
-  echo "Processing $f file"
-  sops -$enc -i $f
-done
+# encrypt files
+if [[ $enc -eq 1 ]]; then
+  for f in $(find . -name "*-dec.yaml"); do 
+    echo "Encrypting $f ..."
+    sops -e $f > ${f/dec/enc}
+  done
+fi
+
+# descrypt files
+if [[ $dec -eq 1 ]]; then
+  for f in $(find . -name "*-enc.yaml"); do 
+    echo "Decrypting $f file"
+    sops -d $f > ${f/enc/dec}
+  done
+fi

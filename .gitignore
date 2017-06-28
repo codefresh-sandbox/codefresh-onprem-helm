@@ -2,9 +2,8 @@
 **/charts
 
 # decrypted files
-**/*.dec
+**/*-dec.yaml
 
 # junk files
 QUESTIONS.md
 test.yaml
-.bin

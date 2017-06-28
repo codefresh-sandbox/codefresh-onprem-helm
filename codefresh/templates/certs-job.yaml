@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-gencerts
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-gencerts
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}-certs
+        image: {{ .Values.kubectlImage }}
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-runtime-certs ; /opt/codefresh/gen-runtime-certs"]
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-runtime-certs"
+          subPath: "gen-runtime-certs"
+      - name: {{ template "fullname" . }}-tls
+        image: {{ .Values.kubectlImage }}
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-website-tls ; /opt/codefresh/gen-website-tls"]
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-website-tls"
+          subPath: "gen-website-tls"
+      restartPolicy: OnFailure
+      volumes:
+      - name: tools
+        configMap:
+          name: {{ template "fullname" . }}

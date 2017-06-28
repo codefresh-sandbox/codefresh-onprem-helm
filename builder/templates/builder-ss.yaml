@@ -9,8 +9,8 @@ metadata:
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: {{ .Release.Name  | quote }}
-    heritage: {{ .Release.Service  | quote }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
 spec:
   serviceName: {{ template "fullname" . }}
   replicas: {{ default 2 .Values.replicaCount }}
@@ -33,13 +33,9 @@ spec:
               {
                 "name": "POD_NAME",
                 "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
-              },
-              {
-                "name": "POD_NAMESPACE",
-                "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.namespace" } }
               }
             ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} builder.${POD_NAMESPACE}.svc.cluster.local"]
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"]
           }
         ]'
       labels:
