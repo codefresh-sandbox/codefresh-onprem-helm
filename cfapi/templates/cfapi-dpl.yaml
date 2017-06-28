@@ -73,7 +73,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-databas
+              key: mongodb-database
         - name: MONGO_URI
           value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-$(MONGO_SERVICE).{{ .Release.Namespace }}:$(MONGO_PORT)/$(MONGO_DATABASE)"
         - name: CONSUL_SERVICE
