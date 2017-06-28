@@ -3,14 +3,24 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: seed-mongo-with-admin-account
+  name: {{ template "fullname" . }}-seed-mongo
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
 spec:
   template:
     metadata:
-      name: seed-mongo-with-admin-account
+      name: {{ template "fullname" . }}-seed-mongo
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
     spec:
       containers:
-      - name: seed-admin-account
+      - name: {{ template "fullname" . }}-admin-account
         image: {{ .Values.mongoImage }}
         imagePullPolicy: IfNotPresent
         {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
@@ -22,23 +32,7 @@ spec:
         - name: seed
           mountPath: "/etc/admin/accounts.json"
           subPath: "accounts.json"
-      restartPolicy: OnFailure
-      volumes:
-      - name: seed
-        configMap:
-          name: seed
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: seed-mongo-with-admin-user
-spec:
-  template:
-    metadata:
-      name: seed-mongo-with-admin-user
-    spec:
-      containers:
-      - name: seed-admin-user
+      - name: {{ template "fullname" . }}-admin-user
         image: {{ .Values.mongoImage }}
         imagePullPolicy: IfNotPresent
         {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
@@ -54,4 +48,4 @@ spec:
       volumes:
       - name: seed
         configMap:
-          name: seed
+          name: {{ template "fullname" . }}

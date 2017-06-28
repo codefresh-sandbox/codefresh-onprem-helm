@@ -1,20 +1,18 @@
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: providers
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
 data:
   providers.json: |
     {
       "aws": {
       }
     }
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: seed
-data:
   accounts.json: |
     {
         "_id" : ObjectId("59009117c102763beda7ce71"),

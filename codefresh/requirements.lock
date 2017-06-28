@@ -62,7 +62,7 @@ dependencies:
   name: cfapi
   repository: file://../cfapi
   tags: null
-  version: 0.1.1
+  version: 0.1.2
 - alias: ""
   condition: ""
   enabled: false
@@ -70,6 +70,6 @@ dependencies:
   name: builder
   repository: file://../builder
   tags: null
-  version: 0.1.1
-digest: sha256:31a6d7125cc0c26ac6274548bebe7da8c9653c18a849700a786a781efca894bb
-generated: 2017-06-27T16:37:51.470607189+03:00
+  version: 0.1.2
+digest: sha256:9d209abf3e23b2560375706eb48c5f5aab2a01aee1fd53a6141fd778428a3a33
+generated: 2017-06-28T13:07:21.658852937+03:00

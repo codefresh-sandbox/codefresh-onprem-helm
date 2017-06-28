@@ -32,4 +32,4 @@ kubectlImage: lachlanevenson/k8s-kubectl:v1.6.4
 # GLOBAL variables - apply to all subcharts
 global:
   # application URL
-  appUrl: https://codefresh.local
+  appUrl: app.codefresh.dev
