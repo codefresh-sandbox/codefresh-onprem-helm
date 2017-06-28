@@ -73,7 +73,7 @@ spec:
       volumes:
       - name: cf-certs
         secret:
-          secretName: cf-certs
+          secretName: {{ .Release.Name }}-cf-certs 
       - name: builder-config
         configMap:
           name: {{ template "fullname" . }}
