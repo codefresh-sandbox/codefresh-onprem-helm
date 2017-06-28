@@ -47,5 +47,5 @@ spec:
           claimName: {{ template "fullname" . }}
       - name: cf-certs
         secret:
-          secretName: cf-certs
+          secretName: {{ .Release.Name }}-cf-certs
 

@@ -209,20 +209,17 @@ spec:
           successThreshold: 1
           failureThreshold: 5
         volumeMounts:
-        - name: providers
+        - name: config
           mountPath: /etc/admin/providers.json
           subPath: providers.json
-        - name: seed
+        - name: config
           mountPath: /etc/admin/accounts.json
           subPath: accounts.json
-        - name: seed
+        - name: config
           mountPath: /etc/admin/users.json
           subPath: users.json
       volumes:
-      - name: providers
+      - name: config
         configMap:
-          name: providers
-      - name: seed
-        configMap:
-          name: seed
+          name: {{ template "fullname" . }}
       restartPolicy: Always
