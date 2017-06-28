@@ -1,0 +1,36 @@
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: IfNotPresent
+
+# number of replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: codefresh/cf-ui
+
+# image tag  
+imageTag: v101
+
+# port 
+port: 80
+
+# codefresh service name (chart name)
+codefreshService: codefresh
+
+# ENV
+env:
+  NODE_ENV: kubernetes
+  ASSETS_OPTIMIZED: "true"
+  LOGGER_LEVEL: error
+  LOGGER_MORAN_ACTIVE: "false"
+  LOGS_PATH: /var/log/cf-ui.log
+  ROLLBAR_ACCESS_TOKEN: ""
+  STRIPE_PUBLIC_KEY: ""
+  SLACK_REDIRECTURI: ""
+  NEW_USER_REDIRECT: ""
+  WALKME: ""
+  LAUNCH_DARKLY_KEY: ""
+

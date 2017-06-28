@@ -67,9 +67,17 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
+  name: cfui
+  repository: file://../cfui
+  tags: null
+  version: 0.1.2
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
   name: builder
   repository: file://../builder
   tags: null
   version: 0.1.2
-digest: sha256:9d209abf3e23b2560375706eb48c5f5aab2a01aee1fd53a6141fd778428a3a33
-generated: 2017-06-28T13:07:21.658852937+03:00
+digest: sha256:af39aef9bca9069960a5b5607ba86a27ba2ce5f71ea8b9de68b1036eaeb0cdfe
+generated: 2017-06-28T18:09:29.973871262+03:00

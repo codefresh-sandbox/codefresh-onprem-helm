@@ -1,28 +1,31 @@
-cfapi:
-    apiSafeSecret: ENC[AES256_GCM,data:+o8ahNKVXvCYLFg5asSLuZwSsONQsV9ckw==,iv:Tq7R4U8ImzQF75j4p7gFNjvOTuj1SFbjlgoIkFMSUMg=,tag:F1FBSmsWzbyOQQl3eq7Z+g==,type:str]
-    stripeSecretKey: ENC[AES256_GCM,data:sHHIKqRClnK9yTC3Ps576lJ1O6DlaQk1gKNIBi42H9Y=,iv:HM6w3iLSQlR7bX65r2TTWZENhDKuK4h3yKNynV89Vqk=,tag:rCT/KrI+i47aDcXrqzth+A==,type:str]
-    firebaseSecret: ENC[AES256_GCM,data:jDKt9tJGI7CrXyY9odhxZ1Y4N4hmf8fw8S0uuCtgpAcxRVmZt0d0tg==,iv:sEAB9um6GsGijKNa9N+7AgiERZ+IFYlCscg307+x8yI=,tag:Xj/Bw6hJUfdMCH19axTHdA==,type:str]
-    slackAppID: ENC[AES256_GCM,data:O4TtgrwevBJlUV+izwogkjqIkdxX0A==,iv:7819YX3fG0ow3YCZFBEzLhRu+vqqUOanrzZDuIzp2yk=,tag:K9mlSSrR+ExEPTrHIvCuSw==,type:str]
-    # github dev secrets
-    githubClientID: ENC[AES256_GCM,data:vtycNY4Ut1FsNahqQ1PdbXhpI78=,iv:iRt5BhnyzuFDmPzc9LK2hppTzJtbbu8866dXldpr06U=,tag:Ozc6jLmMveD0uiQ6xI20mA==,type:str]
-    githubClientSecret: ENC[AES256_GCM,data:AGwTy8yHXZuNVzM7p1q9dIC2KFXEzwMyrz7K3Grid21gNW0hloQg6w==,iv:pYEuvj30O2jJlQrXcK7hb63D1ZBAFj11lPlnBJtIx+g=,tag:m7ANpKFXTxZsRXMXUI6GWA==,type:str]
-    githubInternalToken: ENC[AES256_GCM,data:zErDD5BcVMZuFbGsBCSKTXbwGfeu7nUDF5tteFl9v66sd+iPWjWgCw==,iv:MaoTn6uvuHCMmH13fFPL8xwdqdCrfDzOr/QFhdLAQOk=,tag:nYVzfdxpHZGivuThvfyf8Q==,type:str]
-    # gitlab dev secrets
-    gitlabClientID: ENC[AES256_GCM,data:r/pj7ZqQNYqJFKufKbwASQafYWNMNIRHZl0KfML4ltIr7fVHOoxMSJqeVcZ4fTyt8Ht3HrFexlr5rHMrtGxKpg==,iv:WyA6QyAMgelm+cPMhL2PE3p3YTbo5Ouh6YGDd2JPGR0=,tag:mp3Dzi+B/0N63y47pHHBaw==,type:str]
-    gitlabClientSecret: ENC[AES256_GCM,data:zrTy4dZ6i82I7iE1FxzDEbI5toWWIt9yw2ZniJ8sEKs1fOS3Az/BpvOtY7HaS6iww8cYryW2R31IDZalYR57mg==,iv:Iza6CX94tGZ0QybHuJ4FbWofy1yrI2XyhafAt7UtIWs=,tag:SXtEvQlo0PgblEYwmUuhzA==,type:str]
-    # new relic license
-    newrelicLicenseKey: ENC[AES256_GCM,data:ur8YOvw1xaJMibZMFicqRVNvZKATNPDpcydrlN1zp/5GkIFkcOQsyw==,iv:gMDp2AmYWI/meEwJEp8e49o0T+c4iRnTRFncB7LRrH0=,tag:F1glOao0wNfYwBygff8fKQ==,type:str]
-    # all these invalid secrets are here because of cfapi bugs!
-    logglyToken: ENC[AES256_GCM,data:asKPm9TDnQ+uaL8Rvg==,iv:d6sE03bevgVm/ohYdbXPypl/RCEyXOpFV9GdVxGUJS0=,tag:KnBsZ6pffwIA6JzY4z/uuQ==,type:str]
-    bitbucketClientID: ENC[AES256_GCM,data:MMRstOqaf5YqQA==,iv:bFvhkKvfxwA8mdABXcXIXov99s93YQevITPybCYzMLc=,tag:6ij5wtAUQafM0BbDnfiqdg==,type:str]
-    bitbucketClientSecret: ENC[AES256_GCM,data:p60MYrYF/Fx5/zqtrN4=,iv:+XLLVmKCVIeoeHmob1GvjHvZkZdkHUjFb4sfaaTVYcI=,tag:AnUfs2z+wNzA1OlHB3Q1Gw==,type:str]
+mongo:
+    mongodbUsername: ENC[AES256_GCM,data:VKOHpRoA,iv:bqGLBN+MxH32GWwBSOsXEDXDpUOAuEJ7t8uZ188dk+0=,tag:Gqgc4Qaoe8zRqMFBkr1dnA==,type:str]
+    mongodbPassword: ENC[AES256_GCM,data:HUvEPkLaTUQ1D1+c,iv:yKjcbsetO0UfpUWI+n7kJeazk1/xnIAY6CYivAKQcPY=,tag:vW31lgz7eJqkMnh1EprHLw==,type:str]
+    # misc
+apiSafeSecret: ENC[AES256_GCM,data:49CRHRxVf81hPxiqgxpsBegv8/WYHzcvMA==,iv:AdA4OUZLijrP7jzB8Wk1PGjl4cqDXOEFIRqCRowlAJ0=,tag:Isp5o5WkV0z6NoIwzrlkjw==,type:str]
+stripeSecretKey: ENC[AES256_GCM,data:gw+IDb+y7F4TqXFz1D1+YqEf1TiTepyw/vMVsFj8J+I=,iv:aIcRgzUxsoiAzeKLl+WAUYP/Qk4mqIo/7N+xNibsPRM=,tag:ChE5tHUiRpkLCDQeme+wfw==,type:str]
+firebaseSecret: ENC[AES256_GCM,data:exG5XBiwNEeaC4JGKCzlAMayf+1pqGNlVMTQroE6Z2lq4wxme8xS5w==,iv:24iA8QQe5FEhzOsDIGagNSO5zbMtizdTSeXqvG9zXcE=,tag:CBojVTRPM4VkzIlKylesTw==,type:str]
+slackAppID: ENC[AES256_GCM,data:y7YZconmBSOZliXhX7zCyy3DVnpA4Q==,iv:LujDjSWULkhX3lgtvEhuuLO+QZe6k+MmCcWZFnL+YDI=,tag:BsPm/LrqoY8BbePirVVcfA==,type:str]
+# github dev secrets
+githubClientID: ENC[AES256_GCM,data:29Hxlt2Lze5rLTqLf48GGaXwtH8=,iv:sRHwBt7SJJ3j+YHMnGXdM1ul72jhbzAfdQnOGpmGP4Y=,tag:p/0oFPku5fN9qJ1WXoTDwQ==,type:str]
+githubClientSecret: ENC[AES256_GCM,data:rgeTpDfp4Funjc9VDV8djc2oMKsM0ewI/WpUP+4W7SqGYGlYsukp/w==,iv:acoFO2+HCUy7EB4zE4xPvAjHfwpEtVd/Wv14p4DLrlA=,tag:BCcsoVZJTDjsb+QmzCSIaw==,type:str]
+githubInternalToken: ENC[AES256_GCM,data:gUGW8U9SNnHCsseMh+nTsaDmyXwP8hCEJOP3TvRgBR1uf1k7kopi1A==,iv:HTjfPxesctXj+17iDGjDh3r5mw8nwOMLhoqT5fwSm9o=,tag:LvGCnyvtQRt7Re/XBc5tSQ==,type:str]
+# gitlab dev secrets
+gitlabClientID: ENC[AES256_GCM,data:Bdig4v52x9RVgNdvH1K7z4BcoHZ2/FtThD08iPVg7cJvxk0Wv9Wn72EK7tamxhiilO/iLuF3xuUtSwD4MteXog==,iv:Leqhj3CdA9ef9eDrdXzFUqQnn2bVQgVrSsqMxMXHFHs=,tag:95C/fOT0VRNnlpjhXFUS8Q==,type:str]
+gitlabClientSecret: ENC[AES256_GCM,data:mWJQW2A6YQEnREHL8wTTfOvn5WvUBY3nre5MRzTnua3PIHUMutPWDk54P2HJUyRvWzMAOYxfv4aoQ0k9buYyNA==,iv:MmPGGwmfkH+mhgKgd8M3XjTMuMK54I1a27Vd2dhArj8=,tag:WvGWsaqfGvZQ2Eb4sAS94A==,type:str]
+# new relic license
+newrelicLicenseKey: ENC[AES256_GCM,data:92tvDNlwHC5Nx8FWCFbrvRv7v9I9m2PJawyP0TfnWK2JdiVpry3yyw==,iv:fLGSFBDfPhmd9JS/ofSpgcmsSvuCAPgIRkKtLQ/ipS0=,tag:rZL8P6/wpXuo8oH+NjQCRw==,type:str]
+# all these invalid secrets are here because of cfapi bugs!
+logglyToken: ENC[AES256_GCM,data:zYOHsiwmvUBycYSC9g==,iv:n5UjJy5uxRcKGUyfEOxBYneRFYUdgkC3MgZXEj0Kc6Y=,tag:AoX/OeX+Y2cB4z0Kxo5rUA==,type:str]
+bitbucketClientID: ENC[AES256_GCM,data:CbMTMWzdCHcU6Q==,iv:CO+QVAPXPevTuk2uoUI2GKIpNxHAp8s05KOGtYQjPak=,tag:5H9/GHDvYenTDnjKnrIZDg==,type:str]
+bitbucketClientSecret: ENC[AES256_GCM,data:mB7KpLQkU0TMiEWSDDw=,iv:1Qt+8AEW8FmMamXr/H03uUcsockiajlJmea6FMuUq+U=,tag:inIze5OeEoGujVvGyoOAkA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
-        created_at: '2017-06-27T15:14:09Z'
-        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwEifktsg68wnpdQe2uUnphXAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMn16ByHgQ7UJZUjoiAgEQgDslUY3cN00SzbxJxb9HL59jorr78O+pnvJ1fnFHhNlrwvCeXInWw02sSLmkMYFRH6jSi79IDV0U91q3zg==
-    lastmodified: '2017-06-27T15:14:10Z'
-    mac: ENC[AES256_GCM,data:p6k+kEsLmAOg8E2GH7J4rWdg3UuTMuDxFwQZkkdujwJ/L+h7mXTy4RuhXaEhe0u8A1xUoypC+IIJXl7LinlR6zlelUMBz8tf+0DiJsk+YafB99/Eb+lOxpWuJYZ7OJF66ryLoweSANS8zDwZJHNf+JkemWPkmquk+FzkBnTsUfU=,iv:SVQruEibr5a+zRhWnKqTpMa/wspOD+haQNFKI173Ozo=,tag:seFNYJI0zocDkkMiU8SKIg==,type:str]
+        created_at: '2017-06-28T12:24:55Z'
+        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF5fayeWt9j/8B6OLrnY5cwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMn538CvnsMLk1KIJhAgEQgDsWcj8yD1zcw6iEDFDQAggXCkzo/yrvkMiqixqTqVkbgMhXtL+l1K+lf1Cn70VyW6qPeSlPByRlMJlKhQ==
+    lastmodified: '2017-06-28T12:24:56Z'
+    mac: ENC[AES256_GCM,data:XQ/+X+AdOO9bEpsAWUovsx1aPjZYdM+Lc6BTcuZsyRDfphR1slbjefk3uu6eMyt4TWHC/XE6+OWFYGroLa6+tzkdJZ+ZLzDGr7MsaD1wao8LKWJEf/5Kz0wLRDNw3iRlWKe3xKyb3fT5KeV4MI2UrVKy7geRea76CFpoRndDcEY=,iv:eyJe2s6xlkKoHo7b8GtkvCe70ymvk/QA6D1vGZ3bZwk=,tag:p/pIo2fyBvNudT54hFnF2Q==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

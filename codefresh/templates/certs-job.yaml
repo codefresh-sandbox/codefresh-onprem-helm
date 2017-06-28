@@ -9,7 +9,7 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 spec:
   template:
     metadata:
@@ -41,4 +41,4 @@ spec:
       volumes:
       - name: tools
         configMap:
-          name: {{ template "fullname" . }}
+          name: {{ template "fullname" . }}-certs-scripts

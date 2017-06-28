@@ -24,6 +24,9 @@ dependencies:
 - name: cfapi
   version: 0.1.2
   repository: file://../cfapi
+- name: cfui
+  version: 0.1.2
+  repository: file://../cfui
 - name: builder
   version: 0.1.2
   repository: file://../builder

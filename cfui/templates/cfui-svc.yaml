@@ -1,3 +1,4 @@
+# kind: scheduler-kubernetes
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,6 +15,6 @@ spec:
   - name: "http"
     port: {{ .Values.port }}
     protocol: TCP
-    targetPort: {{ .Values.targetPort }}
+    targetPort: {{ .Values.port }}
   selector:
     app: {{ template "fullname" . }}

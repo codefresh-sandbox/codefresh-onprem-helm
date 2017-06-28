@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+data:
+  # app url
+  app-url: {{ .Values.appUrl }}
+
+  # mongodb service name to use
+  mongodb-service: mongodb
+  # mongodb database; local by default
+  mongodb-database: local
+  # mongodb port
+  mongodb-port: "27017"
+
+  # consul service
+  consul-service: consul
+
+  # nats service
+  nats-service: nats
+  # nats service port
+  nats-port: "4222"
+
+  # RMQ service
+  rabbitmq-service: rabbitmq
+  # RabbitMQ user; default user
+  rabbitmq-username: user
+
+  # PostresSQL service name
+  postgres-service: postgresql
+  # PostresSQL database
+  postgres-database: postgres
+  # PostresSQL user
+  postgres-user: postgres
+
+  # Redis service
+  redis-service: redis
+
+  # Firebase url
+  firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem

@@ -12,7 +12,7 @@ imagePullPolicy: IfNotPresent
 image: codefresh/cf-api
 
 # image tag  
-imageTag: v118
+imageTag: v120
 
 # port 
 port: 80
@@ -26,48 +26,11 @@ targetPort: 80
 # readiness port
 readinessPort: 80
 
-# mongodb service name to use
-mongodbService: mongodb
+# codefresh service name (chart name)
+codefreshService: codefresh
 
 # defualt mongo image to use for mongoimport
-mongoImage: mongo:3.4
-
-# mongodb user; default empty
-# mongodbUsername:
-
-# mongodb password; default empty
-# mongodbPassword:
-
-# mongodb database; local by default
-mongodbDatabase: local
-
-# consul service
-consulService: consul
-
-# nats service
-natsService: nats
-
-# nats service port
-natsServicePort: 4222
-
-# RMQ service
-rabbitmqService: rabbitmq
-# RabbitMQ user; default user
-rabbitmqUsername: user
-
-# RabbitMQ password; default empty
-# rabbitmqPassword:
-
-# PostresSQL service name
-postgresService: postgresql
-
-# PostresSQL database
-postgresDatabase: postgres
-# PostresSQL user
-postgresUser: postgres
-
-# Redis service
-redisService: redis
+mongodbImage: bitnami/mongodb:3.4.5-r0
 
 # GitHub configuration
 github:
@@ -76,56 +39,12 @@ github:
   loginHost: github.com
   protocol: https
 
-# GitHub client ID
-# githubClientID:
-
-# GitHub Client Secret key
-# githubClientSecret:
-
-# GitHub internal token
-# githubInternalToken:
-
 gitlab:
   loginHost: gitlab.com
   protocol: https
 
-# GitLab Client ID
-# gitlabClientID:
-
-# GitLab Cleint Secret key
-# gitlabClientSecret:
-
-# Bitbucket
-# bitbucketClientID:
-# bitbucketClientSecret:
-
-# API Safe Secret
-# apiSafeSecret: 
-
-# Stripe secret key
-# stripeSecretKey: 
-
-# Firebase secret
-# firebaseSecret: 
-firebaseUrl:  https://codefresh-on-prem.firebaseio.com/on-prem
-
-# Slack secrets
-# slackAppID: 
-# slackInternal:
-# slackAppSecret:
-
 # Segment
-# segmentKey:
 segmentEnable: false
-
-# New Relic
-# newrelicLicenseKey:
-
-# Loggly 
-# logglyToken:
-
-# TLS sign client key
-# tlsClientKey:
 
 # ENV
 env:

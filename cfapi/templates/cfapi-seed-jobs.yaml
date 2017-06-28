@@ -21,25 +21,69 @@ spec:
     spec:
       containers:
       - name: {{ template "fullname" . }}-admin-account
-        image: {{ .Values.mongoImage }}
+        image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
-        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --username {{ .Values.mongodbUsername | quote }} --password {{ .Values.mongodbPassword | quote }} --collection accounts --type json --file /etc/admin/accounts.json"]
-        {{ else }}
-        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --collection accounts --type json --file /etc/admin/accounts.json"]
-        {{ end }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-password
         volumeMounts:
         - name: seed
           mountPath: "/etc/admin/accounts.json"
           subPath: "accounts.json"
       - name: {{ template "fullname" . }}-admin-user
-        image: {{ .Values.mongoImage }}
+        image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        {{ if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
-        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }} --username {{ .Values.mongodbUsername | quote }} --password {{ .Values.mongodbPassword | quote }} --collection users --type json --file /etc/admin/users.json"]
-        {{ else }}
-        command: ["/bin/sh", "-c", "mongoimport --host {{ $mongoServer }} --db {{ .Values.mongodbDatabase }}  --collection users --type json --file /etc/admin/users.json"]
-        {{ end }}
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-password
         volumeMounts:
         - name: seed
           mountPath: "/etc/admin/users.json"

@@ -8,6 +8,7 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
+    version: {{ .Values.imageTag | quote }}
 spec:
   replicas: {{ default 1 .Values.replicaCount }}
   strategy:
@@ -25,6 +26,7 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
+        version: {{ .Values.imageTag | quote }}
     spec:
       terminationGracePeriodSeconds: 40
       containers:
@@ -40,61 +42,109 @@ spec:
           value: {{ .Values.port | quote }}
         - name: PROTOCOL
           value: {{ .Values.protocol | quote }}
-        - name: EXTERNAL_URL
-        {{- if .Values.global }}
-          value: {{ default "app.codefresh.dev" .Values.global.appUrl | printf "https://%s" | quote }}
-        {{- else }}
-          value: "https://app.codefresh.dev"
-        {{- end }}
         - name: CF_HOST_NAME
-        {{- if .Values.global }}
-          value: {{ default "app.codefresh.dev" .Values.global.appUrl | quote }}
-        {{- else }}
-          value: "app.codefresh.dev"
-        {{- end }}
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}" 
+              key: app-url
+        - name: EXTERNAL_URL
+          value: "https://$(CF_HOST_NAME)"
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-port
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-password
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-databas
         - name: MONGO_URI
-        {{- if and ((.Values.mongodbUsername) (.Values.mongodbPassword)) }}
-          value: "mongodb://{{ .Values.mongodbUser }}:{{ .Values.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}"
-        {{- else }}
-          value: "mongodb://{{ .Release.Name }}-{{ .Values.mongodbService }}.{{ .Release.Namespace }}:27017/{{ .Values.mongodbDatabase }}"
-        {{- end }}
+          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-$(MONGO_SERVICE).{{ .Release.Namespace }}:$(MONGO_PORT)/$(MONGO_DATABASE)"
+        - name: CONSUL_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: consul-service
         - name: CONSUL_HOST
-          value: "{{ .Release.Name }}-{{ .Values.consulService }}.{{ .Release.Namespace }}"
+          value: "{{ .Release.Name }}-$(CONSUL_SERVICE).{{ .Release.Namespace }}"
+        - name: NATS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: nats-service
+        - name: NATS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: nats-port
         - name: QUEUE_SERVERS
-          value: "nats://{{ .Release.Name }}-{{ .Values.natsService }}.{{ .Release.Namespace }}:{{ .Values.natsServicePort }}"
+          value: "nats://{{ .Release.Name }}-$(NATS_SERVICE).{{ .Release.Namespace }}:$(NATS_PORT)"
+        - name: RABBIT_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: rabbitmq-service
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.rabbitmqService }}"
+              name: "{{ .Release.Name }}-$(RABBIT_SERVICE)"
               key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: rabbitmq-username
         - name: RABBIT_URL
-        {{- if .Values.rabbitmqUsername }}
-          {{- if .Values.rabbitmqPassword }}
-          value: "amqp://{{ .Values.rabbitmqUsername }}:{{ .Values.rabbitmqPassword }}@{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
-          {{- else }}
-          # get RabbitMQ password from RABBIT_PASSWORD ENV - loaded from secret
-          value: "amqp://{{ .Values.rabbitmqUsername }}:$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
-          {{- end }}
-        {{- else }}
-          value: "amqp://{{ .Release.Name }}-{{ .Values.rabbitmqService }}.{{ .Release.Namespace }}"
-        {{- end }}
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-$(RABBIT_SERVICE).{{ .Release.Namespace }}"
+        - name: POSTGRES_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-service
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.postgresService }}.{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
         - name: POSTGRES_DATABASE
-          value: {{ .Values.postgresDatabase | quote }}
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-database
         - name: POSTGRES_USER
-          value: {{ .Values.postgresUser | quote }}
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.postgresService }}"
+              name: "{{ .Release.Name }}-$(POSTGRES_SERVICE)"
               key: postgres-password
+        - name: REDIS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: redis-service
         - name: REDIS_URL
-          value: "{{ .Release.Name }}-{{ .Values.redisService }}.{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-$(REDIS_SERVICE).{{ .Release.Namespace }}" 
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.redisService }}"
+              name: "{{ .Release.Name }}-$(REDIS_SERVICE)"
               key: redis-password
         - name: GITHUB_API_HOST
           value: {{ .Values.github.apiHost | quote }}
@@ -107,17 +157,17 @@ spec:
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: github-client-id
         - name: GITHUB_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: github-client-secret
         - name: INTERNAL_USE_GITHUB_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: github-internal-token
         - name: GITLAB_LOGIN_HOST
           value: {{ .Values.gitlab.loginHost | quote }}
@@ -126,76 +176,79 @@ spec:
         - name: GITLAB_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: gitlab-client-id
         - name: GITLAB_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: gitlab-client-secret
         - name: BITBUCKET_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: bitbucket-client-id
         - name: BITBUCKET_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: bitbucket-client-secret
         - name: API_SAFE_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: api-safe-secret
         - name: STRIPE_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: stripe-secret-key
         - name: FIREBASE_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: firebase-secret
         - name: FIREBASE_URL
-          value: {{ .Values.firebaseUrl | quote }}
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: firebase-url
         - name: SLACK_APP_ID
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: slack-app-id
         - name: SLACK_INTERNAL
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: slack-internal
         - name: SLACK_APP_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: slack-app-secret
         - name: SEGMENT_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: segment-key
         - name: SEGMENT_ACTIVE
           value: {{ .Values.segmentEnable | quote }}
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: newrelic-license-key
         - name: LOGGLY_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: loggly-token
         - name: TLS_SIGN_CLIENT_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: tls-client-key 
         ports:
         - containerPort: {{ .Values.port }}
