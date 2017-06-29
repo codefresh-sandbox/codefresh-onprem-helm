@@ -28,6 +28,8 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }} 
     spec:
+      imagePullSecrets:
+        - name: "{{ .Values.codefreshService }}-registry"
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -73,7 +75,7 @@ spec:
           - name: RABBIT_USER
             valueFrom:
               configMapKeyRef:
-                name: "{{ .Release.Name }}-$(RABBIT_SERVICE)"
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: rabbitmq-username
           - name: RABBIT_URL
             value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-$(RABBIT_SERVICE).{{ .Release.Namespace }}"

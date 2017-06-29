@@ -28,6 +28,8 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      imagePullSecrets:
+        - name: "{{ .Values.codefreshService }}-registry"
       terminationGracePeriodSeconds: 40
       containers:
       - name: {{ template "fullname" . }}

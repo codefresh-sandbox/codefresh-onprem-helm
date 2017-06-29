@@ -28,3 +28,7 @@ mongo:
 cfapi:
   mongodbImage: bitnami/mongodb:3.4.5-r0
 
+# use smaller registry storage
+registry:
+  storageSize: 8Gi
+
