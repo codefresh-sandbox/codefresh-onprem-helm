@@ -17,7 +17,7 @@ data:
   # mongodb service name to use
   mongodb-service: mongodb
   # mongodb database; local by default
-  mongodb-database: local
+  mongodb-database: {{ .Values.mongodb.mongodbDatabase }}
   # mongodb port
   mongodb-port: "27017"
 
@@ -31,15 +31,11 @@ data:
 
   # RMQ service
   rabbitmq-service: rabbitmq
-  # RabbitMQ user; default user
-  rabbitmq-username: user
 
   # PostresSQL service name
   postgres-service: postgresql
   # PostresSQL database
   postgres-database: postgres
-  # PostresSQL user
-  postgres-user: postgres
 
   # Redis service
   redis-service: redis

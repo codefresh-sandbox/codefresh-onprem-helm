@@ -70,11 +70,11 @@ spec:
           - name: RABBIT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-$(RABBIT_SERVICE)"
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: rabbitmq-password
           - name: RABBIT_USER
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: rabbitmq-username
           - name: RABBIT_URL
@@ -94,13 +94,13 @@ spec:
                 key: postgres-database
           - name: POSTGRES_USER
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: postgres-user
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-$(POSTGRES_SERVICE)"
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: postgres-password
           # Redis environment variables
           - name: REDIS_SERVICE
@@ -113,7 +113,7 @@ spec:
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-$(REDIS_SERVICE)"
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: redis-password
           # other licenses and keys
           - name: NEWRELIC_LICENSE_KEY

@@ -147,5 +147,5 @@ $ # update all dependencies
 $ helm dependency update codefresh
 $ 
 $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm release will be created/updated
-$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml
+$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml --values codefresh/regsecret-dec.yam
 ```

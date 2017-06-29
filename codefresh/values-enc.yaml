@@ -1,31 +1,43 @@
-mongo:
-    mongodbUsername: ENC[AES256_GCM,data:MGiWEZOf,iv:jJMCGx67eBvou+8VWAkL/lMn8iQ5mvgJrI+Tiei9GnY=,tag:tWBY7CrzkS+CuneQNJ707w==,type:str]
-    mongodbPassword: ENC[AES256_GCM,data:/EOSRYH//rESae26,iv:I/JoxzztNIJJ4IZ0WUj8SUK07N3QmlUkQDuailGFGzc=,tag:lQDiR0y2k1VYDw7wSW8XWA==,type:str]
+mongodb:
+    mongodbUsername: ENC[AES256_GCM,data:nzT4n4Bc,iv:fhRuivfWwPYuTS1gVLx2D/DK2KZ27udL73ir+LPjWKg=,tag:6LUUA6bjwKm6F7HPcfjBEw==,type:str]
+    mongodbPassword: ENC[AES256_GCM,data:IxWLDrx6m/Pdpyqz,iv:xY5Szt4qj5PD246vfXGH8zlO7LHcVUcnuLcirkym6b8=,tag:D8kL1UeWgqMaLR4WeObRLA==,type:str]
+    mongodbDatabase: ENC[AES256_GCM,data:EdWnhPzPRwPu,iv:jvvolULUJ9eAn7W4FIOr5BBS/K7NavsrLFrHOGG+7w8=,tag:QAUfN4iW9xfGm/VhpWmCog==,type:str]
+    # rabbitmq credentials
+rabbitmq:
+    rabbitmqUsername: ENC[AES256_GCM,data:K/cUKg==,iv:kfkRhnvvTF1SR8P+D+ofE7P9tV1BHri/PDEI5NFDTTI=,tag:qYu+pxiXFYOo4k/rdAXVEg==,type:str]
+    rabbitmsPassword: ENC[AES256_GCM,data:TGONmuy8tQWT8efk,iv:FrH8hdGykCaxM7B3IwzNKrSp5876C2i/Re2NZgrh608=,tag:ARe1+Dq6bZPqCCoQ76n+QA==,type:str]
+    # postgres credentials
+postgresql:
+    postgresUser: ENC[AES256_GCM,data:Ie3U79iyIww=,iv:Z/3m9vY6RmH+75g6Zx0/61zgFvaIXo706PH4nA5vUAM=,tag:miLi4DH6bt+904ooH1REVA==,type:str]
+    postgresPassword: ENC[AES256_GCM,data:Ehvr1jkkmkar7Ton,iv:HDHp7UbEvmanIRingXUdEuDobhnQGWmwiFNh9ZWWdxc=,tag:T5Ta+Jv1JfEIASmYdpKULQ==,type:str]
+    # redis credentials
+redis:
+    redisPassword: ENC[AES256_GCM,data:FqkDLSS7iLAhKOOj,iv:HsIHDuC9kE0d89+fR2qITljbIshbh7PwRTzDB5nMGa4=,tag:25AZc7e+nexbLSmQqbQShw==,type:str]
     # misc
-apiSafeSecret: ENC[AES256_GCM,data:2N95NNWja/keXtrLdz33Ig9S6H7njrouIw==,iv:N1e/bJed7aJ6kbtrTqfDZWHoRWdvOHMe+jD0wlddNEs=,tag:LAScXCJvI+03s2RjeMMj1A==,type:str]
-stripeSecretKey: ENC[AES256_GCM,data:HxAuIVqDZLeE7JXrVQAhheTxJAoDqO0RSWocuqNoyGw=,iv:SoDL2YTGPqhJs98fkbuJ6NaWwEAbTyZzokG4wGGbBSM=,tag:QkUedWxWCBXwwaLkdJBNeA==,type:str]
-firebaseSecret: ENC[AES256_GCM,data:OEsYMV13BVdQBYgpNOC99S7TXalcvr7TjoNW+jh2vaBs9IYxQPJSog==,iv:5U3162nM3bljt7yjPkvFnFptc/1OKs+Gf0MCt30qTxM=,tag:NF/7o0PY1oYbVQ3p1UyLgA==,type:str]
-slackAppID: ENC[AES256_GCM,data:qMqM6cskQ/ppOyVM+cZig9A8hhq0jg==,iv:V/cUtaX7OlJc09WwZC7qOBVeb1HqZTZuP2eqNKmDWH8=,tag:jECGwEr7k+xNqGzyl6OXmA==,type:str]
+apiSafeSecret: ENC[AES256_GCM,data:GUTH5/B3TJYV9A8ddnOoPz8mkYn3r74IPg==,iv:JBRtUnXOGJxlAMEHB97rt0IbWE8fQCIE24eNNgIen04=,tag:h3rkTFNcOTYQ7u4w+Yb1gw==,type:str]
+stripeSecretKey: ENC[AES256_GCM,data:o2Yxhuz1N9Abs1LwSXXo71RrG7W9tRfsjYgw2EWl9xw=,iv:QHpcuN3ifnoY/CRtTiyGEVyL1Y0lOOhE28D+rZy56ns=,tag:/XchZbw9u1bxUXkb7oNcYQ==,type:str]
+firebaseSecret: ENC[AES256_GCM,data:zo6pKOmnDrU18jmbLQgZ/GL3DmMPwu6QDLuH/LJlX8AlUcJjajE+PA==,iv:CFBwgUb7n9kj7Spjx4w5JUZIG+iPQrOFyx/eRMtNksI=,tag:RBLcX2QnfnQT57PTeXwj7A==,type:str]
+slackAppID: ENC[AES256_GCM,data:F3WrqKmQZ2Z6dbiYiDgQlLbdHaMlMg==,iv:LM2V0Rf9lE9XB/0hJNSS4X3NALiLzuvsFoQhHEvQixw=,tag:ElfkeAYktcRP0wU65+rhZQ==,type:str]
 # github dev secrets
-githubClientID: ENC[AES256_GCM,data:q+xkVUWU3iYCHhAD8nrMgzj1BtY=,iv:cVu3jaXOoe0r3DXwAXWOShtq0/VuezAk221CaYo2qwM=,tag:cS6NVX0wt0gr+9GT0FPppg==,type:str]
-githubClientSecret: ENC[AES256_GCM,data:c79YqjAvWlvRbb1zwdWEAcwB6LVoqvFHZyldRPmxSQV0GyuQnNHHVA==,iv:CKjIJLGnGTsHQ+901LkRwJaz/iGsyjPPXj2MDYU+xBc=,tag:VbnAY5YZXe0EachicG22Tw==,type:str]
-githubInternalToken: ENC[AES256_GCM,data:fyk6bv0s5RXa1KGtGcHdHeQhZsvdKuAudape9vgDIgkwSsneofvlxQ==,iv:T89e9te19Pn0pBN45nipAt8UcyhimflXoVIoH5UVqx0=,tag:QVVYFL8kunvQ4MWeD8cgvA==,type:str]
+githubClientID: ENC[AES256_GCM,data:6bMVmPG+scOLpOiYgaSQlcKX16k=,iv:1SpjQMikaTewJH22NivqgOQ2pm0r3IlpZaL4FhIKQTI=,tag:/QYSFmNZilcBd9eKgwxcdw==,type:str]
+githubClientSecret: ENC[AES256_GCM,data:VlTd3IzrZGarlnCzcFGe9zd3lxXaNU/3v3//31lqctwqIoTEzFQihw==,iv:ya1++43yHA+elMegGEgVVPc8YjxCgn+5Vh7bjdm5IZA=,tag:5cIVMbZTjhwec/3WID7W+Q==,type:str]
+githubInternalToken: ENC[AES256_GCM,data:0D1KaOrA7FVcbtfmPLRkca/1PbsP4QzyZD5q4uLahwYj+3t5RrG4jA==,iv:BjorlWehXaI8WXXpazRIcdG94fc6R5NQBeaOy/Av/5A=,tag:x0wlVXNapOSDgiK+3vMw7w==,type:str]
 # gitlab dev secrets
-gitlabClientID: ENC[AES256_GCM,data:7MlQPpJNWbCz0NmyjmvpKrAd5IESCZcGLkQT1T3VzWwS4zNYDhZClDfn0Gta5/AADsqHDkmqUv8gri7VrMnYww==,iv:yXdS/IsWfPj3dfJfH74+GzvS88O3aD2v9LZQMb4dGYw=,tag:/lizmhozwiYSfOh0Gno+OA==,type:str]
-gitlabClientSecret: ENC[AES256_GCM,data:/e21HcviK4ZEhFN0x6fQux6XwA2nU2P4VfolpEPrrAR/CnfGdJoNbx60wmyiAQSYSw6eK9Flukc0VqL2eqKLKw==,iv:m7wdgHltBuSqCQCiPk/jlMVp9x0SF62+NR0P3Bt7ekg=,tag:zLNnYgx/f2LyZSVtzg1DcQ==,type:str]
+gitlabClientID: ENC[AES256_GCM,data:OqQExIKCoArLZ3UkiHdmqFiLH/ssnflGTYDEu1Ndk1fPlHIULgH2G0iBWl6fF0aJeWrq2OhqiIG3Pc9j/ID7rg==,iv:xH301uzat/yzQPNok4qyA+Xm1LtIzGXsBipvqHNHmSU=,tag:0m4S5PnCjMaVoXPaaonKqQ==,type:str]
+gitlabClientSecret: ENC[AES256_GCM,data:BmcEwFpO9WgnI0WxVbKeCdCCHgxPNVYYDGnKiFLrylYOwvHysfa6o0W69wdyw4dC2lXV2qpGMdvpMFyCXdUBNg==,iv:gfGrlWKaFHKxDV4cc/4QN7pNaVTLDOILKjpQ0aOc0pY=,tag:oRl+ab4DKyPJF8xULfKj4w==,type:str]
 # new relic license
-newrelicLicenseKey: ENC[AES256_GCM,data:pYQD2/5W1axa3eDgOtdAl90NrqlNB2KancFoLTE2ovjbgygINMG93A==,iv:+v7hzvsF+ptRdnlWh029pOxiCmNiB50bwagBXV03omM=,tag:UEopKe7SQAkV44ROQ9WgSA==,type:str]
+newrelicLicenseKey: ENC[AES256_GCM,data:Kadyx+Kh64Bi3nram8hukM2qZ26euNPJBaf9VYQW1Ndxvk/wpHmdLw==,iv:OuvE3YeHpku22XEmNowPlHVd3rcBJiMvqqOQGkq4PR4=,tag:vUfYIX77AkifS4O/hi4b1Q==,type:str]
 # all these invalid secrets are here because of cfapi bugs!
-logglyToken: ENC[AES256_GCM,data:qO3p0aleiIgLSnmYYA==,iv:ycZ0D+jep+JZjnBEC4MBrv3ijOOLQENF5qfsX5oFS08=,tag:GGaSEK/BHI1wtkKzd7Vubw==,type:str]
-bitbucketClientID: ENC[AES256_GCM,data:MYbTfAkxw/oXCA==,iv:JfD8vq8w6nC9LTkSQLsQJLAVv4isY7zYEF3BMsVODZc=,tag:HRQTn9ilimdYhU2lDh5KQA==,type:str]
-bitbucketClientSecret: ENC[AES256_GCM,data:W4j/EdOHdx6orAPwXcc=,iv:sz/iv+UUOxmUKmmmxoKL+IKGXVhcUJ2PGuse/v2ebdA=,tag:x27KNT4bHpNkc0RmodmxsA==,type:str]
+logglyToken: ENC[AES256_GCM,data:36++THQ8WTevRShmDQ==,iv:PVRViQZllmzKkHmIHhOmXeMYakCTSMhJ7cNwzMnwNUY=,tag:wKtxHo7CrqhjQNBqGgqkKA==,type:str]
+bitbucketClientID: ENC[AES256_GCM,data:klrO2JUHdLNaRg==,iv:8NKY5siVrREeigGViaWRjP23Y9jJNEp6N/DBC1TWRcg=,tag:6Xea7FmpubaT5keRNOdRlg==,type:str]
+bitbucketClientSecret: ENC[AES256_GCM,data:qLUK1tdvBrxj39Zr4Dc=,iv:+X0PuZN7j8kacPyrxw7US2gu6ynkWghmeDNrwuamtqc=,tag:DcYt+NlGxse/CxYmrONRLA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
-        created_at: '2017-06-29T06:24:32Z'
-        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwGPVBxcg/O6LSqKQx2whdfYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMc1CXJDaihpoUQU00AgEQgDsofImpfj7mu3bteASnFGjfm/K2IcIterjH3WVToHYlF0yXJ+sD/1E15fASxzaWMe1m5cVh4yA6hzHnpg==
-    lastmodified: '2017-06-29T06:24:33Z'
-    mac: ENC[AES256_GCM,data:L52ZySRdAqvjtsFYNVoUoC8AwH4P23H1AMUaxSTBa++qbBs4GVYqxgmnkevb04mk43lcr/L02Ia5X1Gr0kf58V+9fIagE1Yrc/QfUezfIFkvZVMD4GHlH79BZa2WNKofZ9cP/9ITtLetvU2FO+AhCstiaIcCKxYzqOgOJOI2X3c=,iv:c0LSmGxiY8kkS7Q3J+Cefx9SUlkA2GjmzbbdZ0ZuGrw=,tag:/YE5jBdCMJMWJr1wQn3RVg==,type:str]
+        created_at: '2017-06-29T10:35:40Z'
+        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwE+IWjQjGVPcneZkrtdGEESAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMSE0cNlM3cX15XuQ6AgEQgDsRnvkDUgsdxyob+jDRv/zedUwYJ9C4PATt7knDS4U6QPob0h/fElUTV1X4zSPqHYxwtAL9DykJGBdRjg==
+    lastmodified: '2017-06-29T10:35:43Z'
+    mac: ENC[AES256_GCM,data:Uipb+WfF0VPGjvYQpfSC81zGDkOwfNnRuYfJA7Z5jIeOlLumztegOQfSZiL4kZROjDObfSaWnDdXI5D+khF2ub+uGcggK6l8syYDhfALJEIeNoOGSXseqkEamGMufQwM4dxVDY3gc9wiiL+kw52asfDFl/t4DxtZiYyymye/Hk8=,iv:cHl195ErYe7fMmiDKDlEqm/RMoiHePrraKTlkuzottk=,tag:fe6ikgLkvoe49Ys53G3X5A==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
