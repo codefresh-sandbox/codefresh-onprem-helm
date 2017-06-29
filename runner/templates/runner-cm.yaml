@@ -1,0 +1,69 @@
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+data:
+  # daemon configuration
+  daemon.json: |
+    {
+      "hosts": [ "unix:///var/run/docker.sock",
+                 "unix:///var/run/codefresh/docker.sock",
+                 "tcp://0.0.0.0:{{ .Values.containerPort }}"],
+      "storage-driver": "overlay",
+      "storage-opts": ["overlay.override_kernel_check=1"],
+      "tlsverify": true,
+      "tls": true,
+      "tlscacert": "/etc/ssl/cf/ca.pem",
+      "tlscert": "/etc/ssl/cf/cert.pem",
+      "tlskey": "/etc/ssl/cf/key.pem"
+    }
+  # register runner
+  register: |
+    #!/bin/sh
+    NODE_ADDRESS=$1
+    NODE_NAME=${NODE_ADDRESS}
+    PUBLIC_IP=$2
+    CONSUL="http://{{ .Release.Name }}-{{ .Values.consulService }}:{{ .Values.consulHttpPort }}"
+    ACCOUNT=codefresh
+    ROLE=runner
+    PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"
+    SYSTEM_DATA="{\"os_name\": \"dind\"}"
+    NODE_SERVICE='
+    {
+      "Node": "",
+      "Address": "",
+      "Service": {
+        "Service": "docker-node",
+        "Tags": [
+          "dind",
+          "noagent",
+          "account_codefresh",
+          "type_runner"
+        ],
+        "Address": "",
+        "Port": {{ .Values.containerPort }}
+      },
+      "Check": {
+        "Node": "",
+        "CheckID": "service:docker-node",
+        "Name": "Remote Node Check",
+        "Notes": "",
+        "Status": "passing",
+        "ServiceID": "docker-node"
+      }
+    }'
+    NODE_SERVICE=${NODE_SERVICE//\"Address\": \"\"/\"Address\": \"${NODE_ADDRESS}\"}
+    NODE_SERVICE=${NODE_SERVICE//\"Node\": \"\"/\"Node\": \"${NODE_NAME}\"}
+    echo $NODE_SERVICE
+    curl -X PUT -d "${NODE_SERVICE}" ${CONSUL}/v1/catalog/register && \
+    curl -X PUT -d ${PUBLIC_IP} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/publicAddress && \
+    curl -X PUT -d ${ACCOUNT} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/account && \
+    curl -X PUT -d ${ROLE} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/role && \
+    curl -X PUT -d "${PROVIDER}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/systemData  && \
+    curl -X PUT -d "${SYSTEM_DATA}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/provider

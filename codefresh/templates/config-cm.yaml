@@ -40,5 +40,8 @@ data:
   # Redis service
   redis-service: redis
 
+  # Docker registry service
+  registry-service: registry
+
   # Firebase url
   firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem

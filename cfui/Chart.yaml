@@ -6,7 +6,7 @@ keywords:
 - codefresh
 - kubernetes
 - cfui
-home: hhttps://codefresh.io/
+home: https://codefresh.io/
 icon: https://avatars1.githubusercontent.com/u/11412079?v=3
 sources:
 - https://github.com/codefresh-io/cf-ui

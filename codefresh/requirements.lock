@@ -79,5 +79,13 @@ dependencies:
   repository: file://../builder
   tags: null
   version: 0.1.2
-digest: sha256:af39aef9bca9069960a5b5607ba86a27ba2ce5f71ea8b9de68b1036eaeb0cdfe
-generated: 2017-06-28T18:09:29.973871262+03:00
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
+  name: runner
+  repository: file://../runner
+  tags: null
+  version: 0.1.2
+digest: sha256:eb0aea8f866541d3ea57fcc91b3906dd3889f305e02f61eb570ff2071f292530
+generated: 2017-06-29T15:08:22.485212072+03:00
