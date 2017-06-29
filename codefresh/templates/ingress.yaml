@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.org/redirect-to-https: "false"
+  name: {{ template "fullname" . }}-ingress
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  tls:
+    - secretName: {{ .Release.Name }}-star-selfsigned
+  rules:
+  - http:
+      paths:
+      - path: /api/
+        backend:
+          serviceName: cfapi
+          servicePort: {{ .Values.servicePort }}
+      - path: /
+        backend:
+          serviceName: cfui
+          servicePort: {{ .Values.servicePort }}

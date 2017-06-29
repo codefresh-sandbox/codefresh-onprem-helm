@@ -11,7 +11,7 @@ metadata:
     heritage: {{ .Release.Service | quote }}
 spec:
   serviceName: {{ template "fullname" . }}
-  replicas: {{ default 2 .Values.replicaCount }}
+  replicas: {{ default 1 .Values.replicaCount }}
   template:
     metadata:
       annotations:
@@ -19,7 +19,7 @@ spec:
           {
             "name": "register-runner-container",
             "image": "alexeiled/curl:3.6",
-            "imagePullPolicy": "Always",
+            "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
             "volumeMounts": [
               {
                 "name": "runner-config",

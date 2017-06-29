@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-controller
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+    k8s-app: nginx-ingress-controller
+spec:
+  replicas:  {{ default 1 .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+        k8s-app: nginx-ingress-controller
+    spec:
+      # hostNetwork makes it possible to use ipv6 and to preserve the source IP correctly regardless of docker configuration
+      # however, it is not a hard dependency of the nginx-ingress-controller itself and it may cause issues if port 10254 already is taken on the host
+      # that said, since hostPort is broken on CNI (https://github.com/kubernetes/kubernetes/issues/31307) we have to use hostNetwork where CNI is used
+      # like with kubeadm
+      # hostNetwork: true
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: "{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
+        name: {{ template "fullname" . }}-controller
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.controllerProbePort }}
+            scheme: HTTP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.controllerProbePort }}
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        ports:
+        - containerPort: {{ .Values.controllerContainerPort }}
+          hostPort: {{ .Values.controllerHostPost }}
+        - containerPort: {{ .Values.controllerSecureContainerPort }}
+          hostPort: {{ .Values.controllerSecureHostPort }}
+        args:
+        - /nginx-ingress-controller
+        - --default-backend-service={{ .Release.Namespace }}/default-http-backend
+

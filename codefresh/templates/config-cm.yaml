@@ -35,7 +35,7 @@ data:
   # PostresSQL service name
   postgres-service: postgresql
   # PostresSQL database
-  postgres-database: postgres
+  postgres-database: {{ .Values.postgresql.postgresDatabase }}
 
   # Redis service
   redis-service: redis

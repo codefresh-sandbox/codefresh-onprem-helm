@@ -1,0 +1,29 @@
+# number of replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: gcr.io/google_containers/defaultbackend
+
+# image tag  
+imageTag: 1.0
+
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: IfNotPresent
+
+# ports
+livenessPort: 8080
+containerPort: 8080
+servicePort: 80
+
+controllerImage: gcr.io/google_containers/nginx-ingress-controller
+controllerImageTag: 0.9.0-beta.1
+
+controllerContainerPort: 80
+controllerHostPost: 80
+controllerSecureContainerPort: 443
+controllerSecureHostPort: 443
+controllerProbePort: 10254

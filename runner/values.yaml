@@ -1,6 +1,7 @@
 # number of replicas
-# by default 2
-# replicaCount: 2
+# NOTE: cannot run more that 1 replica on single node cluster, like minikube
+# by default 1
+# replicaCount: 1
 
 # image name
 image: docker
