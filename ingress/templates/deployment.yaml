@@ -48,5 +48,5 @@ spec:
           hostPort: {{ .Values.controllerSecureHostPort }}
         args:
         - /nginx-ingress-controller
-        - --default-backend-service={{ .Release.Namespace }}/default-http-backend
+        - --default-backend-service={{ template "fullname" . }}-http-backend
 

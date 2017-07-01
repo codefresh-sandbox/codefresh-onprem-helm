@@ -7,11 +7,11 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
-    k8s-app: default-http-backend
+    k8s-app: {{ template "fullname" . }}-http-backend
 spec:
   ports:
   - port: {{ .Values.servicePort }}
     targetPort: {{ .Values.containerPort }}
   selector:
-    k8s-app: default-http-backend
+    k8s-app: {{ template "fullname" . }}-http-backend
 
