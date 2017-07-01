@@ -18,9 +18,9 @@ spec:
       paths:
       - path: /api/
         backend:
-          serviceName: cfapi
+          serviceName: {{ .Release.Name }}-cfapi
           servicePort: {{ .Values.servicePort }}
       - path: /
         backend:
-          serviceName: cfui
+          serviceName: {{ .Release.Name }}-cfui
           servicePort: {{ .Values.servicePort }}
