@@ -22,7 +22,6 @@ data:
     readonly NODE_SERVICE="
     {
       \"Node\": \"${NODE_NAME}\",
-      \"ID\": \"${NODE_NAME}\",
       \"Address\": \"${NODE_ADDRESS}\",
       \"Service\": {
         \"Service\": \"docker-node\",
