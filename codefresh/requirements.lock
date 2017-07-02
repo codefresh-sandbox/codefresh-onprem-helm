@@ -59,14 +59,6 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
-  name: ingress
-  repository: file://../ingress
-  tags: null
-  version: 0.1.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
   name: cfapi
   repository: file://../cfapi
   tags: null
@@ -95,5 +87,5 @@ dependencies:
   repository: file://../runner
   tags: null
   version: 0.1.2
-digest: sha256:eb91af7eff0058ae325e1df4957266df2c1b14ef6c457de6fb297230b8ffc1b0
-generated: 2017-06-29T17:45:59.892471313+03:00
+digest: sha256:eb0aea8f866541d3ea57fcc91b3906dd3889f305e02f61eb570ff2071f292530
+generated: 2017-07-02T12:34:57.374642428+03:00

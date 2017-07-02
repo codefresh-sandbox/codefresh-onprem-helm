@@ -16,11 +16,11 @@ spec:
   rules:
   - http:
       paths:
-      - path: /api/
+      - path: /{{ .Release.Name }}/api/
         backend:
           serviceName: {{ .Release.Name }}-cfapi
           servicePort: {{ .Values.servicePort }}
-      - path: /
+      - path: /{{ .Release.Name }}/
         backend:
           serviceName: {{ .Release.Name }}-cfui
           servicePort: {{ .Values.servicePort }}

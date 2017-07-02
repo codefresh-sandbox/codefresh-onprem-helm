@@ -38,3 +38,6 @@ registry:
 runner:
   appUrl: app.codefresh.dev  
 
+# internal ingress controller; disable by default
+ingress:
+  enabled: false

@@ -1,18 +1,18 @@
 dependencies:
 - name: consul
-  version: 0.3.0
+  version: ^0.3.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: mongodb
-  version: 0.4.11
+  version: ^0.4.11
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: postgresql
-  version: 0.7.1
+  version: ^0.7.1
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: redis
-  version: 0.7.0
+  version: ^0.7.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: rabbitmq
-  version: 0.5.3
+  version: ^0.5.3
   repository: https://kubernetes-charts.storage.googleapis.com/
 # Helm 2.5.1 should include fix that will allow mixin requirements.yaml and subcharts
 - name: nats
@@ -24,6 +24,7 @@ dependencies:
 - name: ingress
   version: 0.1.0
   repository: file://../ingress
+  condition: ingress.enabled
 - name: cfapi
   version: 0.1.2
   repository: file://../cfapi

@@ -29,7 +29,7 @@ spec:
         version: {{ .Values.imageTag | quote }} 
     spec:
       imagePullSecrets:
-        - name: "{{ .Values.codefreshService }}-registry"
+        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
