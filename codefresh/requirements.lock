@@ -30,7 +30,7 @@ dependencies:
   name: redis
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags: null
-  version: 0.7.0
+  version: 0.8.0
 - alias: ""
   condition: ""
   enabled: false
@@ -53,6 +53,14 @@ dependencies:
   import-values: null
   name: registry
   repository: file://../registry
+  tags: null
+  version: 0.1.0
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
+  name: ingress
+  repository: file://../ingress
   tags: null
   version: 0.1.0
 - alias: ""
@@ -87,5 +95,5 @@ dependencies:
   repository: file://../runner
   tags: null
   version: 0.1.2
-digest: sha256:eb0aea8f866541d3ea57fcc91b3906dd3889f305e02f61eb570ff2071f292530
-generated: 2017-07-02T12:34:57.374642428+03:00
+digest: sha256:aa088bb368af5497d91c8356e209714e67ce7d6b4f1cf78d2bc976bbf2033231
+generated: 2017-07-02T12:50:53.898963632+03:00
