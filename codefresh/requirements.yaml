@@ -3,16 +3,16 @@ dependencies:
   version: ^0.3.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: mongodb
-  version: ^0.4.11
+  version: ^0.4.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: postgresql
-  version: ^0.7.1
+  version: ^0.7.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: redis
   version: ^0.7.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 - name: rabbitmq
-  version: ^0.5.3
+  version: ^0.5.0
   repository: https://kubernetes-charts.storage.googleapis.com/
 # Helm 2.5.1 should include fix that will allow mixin requirements.yaml and subcharts
 - name: nats
@@ -31,6 +31,9 @@ dependencies:
 - name: cfui
   version: 0.1.2
   repository: file://../cfui
+- name: cfruntime
+  version: 0.1.2
+  repository: file://../cfruntime
 - name: builder
   version: 0.1.2
   repository: file://../builder

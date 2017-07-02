@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+data:
+  internal-registry.json: |
+    {
+      "kind": "standard",
+      "domain": "{{ .Chart.Name }}.{{ .Release.Namespace }}.svc:{{ .Values.port }}",
+      "connection": {
+        "protocol": "https",
+        "caPath": "/etc/ssl/cf/ca.pem"
+      }
+    }

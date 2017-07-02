@@ -83,6 +83,14 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
+  name: cfruntime
+  repository: file://../cfruntime
+  tags: null
+  version: 0.1.2
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
   name: builder
   repository: file://../builder
   tags: null
@@ -95,5 +103,5 @@ dependencies:
   repository: file://../runner
   tags: null
   version: 0.1.2
-digest: sha256:aa088bb368af5497d91c8356e209714e67ce7d6b4f1cf78d2bc976bbf2033231
-generated: 2017-07-02T12:50:53.898963632+03:00
+digest: sha256:d51a2b92fdb2ebc8d053264b82594b4001a05c077f9608c3735adcfa191b1227
+generated: 2017-07-02T14:08:14.363619434+03:00
