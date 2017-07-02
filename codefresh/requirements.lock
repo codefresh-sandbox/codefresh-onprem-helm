@@ -103,5 +103,5 @@ dependencies:
   repository: file://../runner
   tags: null
   version: 0.1.2
-digest: sha256:d51a2b92fdb2ebc8d053264b82594b4001a05c077f9608c3735adcfa191b1227
-generated: 2017-07-02T14:08:14.363619434+03:00
+digest: sha256:37ba74afc7b0e190aa52f5510b832c8ebc733a65a0c8a96b93fd84d79a563242
+generated: 2017-07-02T14:31:34.813329245+03:00
