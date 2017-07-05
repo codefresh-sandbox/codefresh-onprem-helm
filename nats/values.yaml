@@ -21,11 +21,11 @@ clientTargetPort: 4222
 
 # HTTP monitoring port
 httpPort: 8222
-httpTergetPort: 8222
+httpTargetPort: 8222
 
 # Route connections to be received on any interface on port 6222
 clusterPort: 6222
-clusterTergetPort: 6222
+clusterTargetPort: 6222
 
 # K8s cluster default DNS domain
 clusterDomain: "cluster.local"
@@ -46,22 +46,3 @@ addr: 0.0.0.0
 service:
   annotations:
     pod.alpha.kubernetes.io/initialized: "true"
-    scheduler.alpha.kubernetes.io/affinity: >
-       {
-         "podAntiAffinity": {
-           "requiredDuringSchedulingIgnoredDuringExecution": [
-             {
-               "labelSelector": {
-                 "matchExpressions": [
-                   {
-                     "key": "app",
-                     "operator": "In",
-                     "values": ["queue"]
-                   }
-                 ]
-               },
-               "topologyKey": "kubernetes.io/hostname"
-           }
-           ]
-         }
-       }

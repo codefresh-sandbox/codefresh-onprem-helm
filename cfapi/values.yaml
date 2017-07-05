@@ -53,7 +53,7 @@ env:
   DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
   DOCKER_NODE_CERT_PATH: /etc/ssl/cf
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
-  OAUTH_ROUTER_CALLBACK:
+  OAUTH_ROUTER_CALLBACK: ""
   MAIL_ACTIVE: false
   LOGS_PATH: /var/log/cf-api.log
   LOGGER_LEVEL: error
