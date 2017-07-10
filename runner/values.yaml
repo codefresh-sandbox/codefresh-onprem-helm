@@ -27,4 +27,4 @@ consulHttpPort: 8500
 codefreshService: codefresh
 
 # Codefresh APP URL
-appUrl: app.codefresh.dev 
+appUrl: codefresh.dev 
