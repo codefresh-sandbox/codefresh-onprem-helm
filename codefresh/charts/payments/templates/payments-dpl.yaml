@@ -67,6 +67,8 @@ spec:
               key: mongodb-password
         - name: MONGO_DATABASE
           value: {{ .Values.mongoDatabase | quote }}
+        - name: MONGO_URI
+          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-$(MONGO_SERVICE).{{ .Release.Namespace }}:$(MONGO_PORT)/$(MONGO_DATABASE)"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
