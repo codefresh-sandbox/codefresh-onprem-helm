@@ -50,3 +50,6 @@ data:
 
   # Firebase url
   firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem
+
+  # CFCR
+  cfcr-domain: {{ default "cfcr.staging.io" .Values.cfcrDomain }}

@@ -46,8 +46,13 @@ spec:
               configMapKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: app-url
+          - name: CF_APP_PROTOCOL
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: app-protocol
           - name: CODEFRESH_API_URL
-            value: "https://$(CF_HOST_NAME)"
+            value: "$(CF_APP_PROTOCOL)://$(CF_HOST_NAME)"
           # Nats environment variables
           - name: NATS_SERVICE
             valueFrom:
@@ -102,6 +107,11 @@ spec:
               secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: postgres-password
+          - name: ROLLBAR_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: rollbar-access-token
           # Redis environment variables
           - name: REDIS_SERVICE
             valueFrom:
@@ -115,6 +125,11 @@ spec:
               secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: redis-password
+          - name: STRIPE_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: stripe-public-key
           # other licenses and keys
           - name: NEWRELIC_LICENSE_KEY
             valueFrom:
@@ -136,6 +151,23 @@ spec:
               secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: slack-app-id
+          - name: SLACK_REDIRECTURI
+            value: $(CODEFRESH_API_URL)/slack-return
+          - name: WALKME
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: walkme-url
+          - name: LAUNCH_DARKLY_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: launchdarkly-key
+          - name: CF_REGISTRY_DOMAIN
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                key: cfcr-domain
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
