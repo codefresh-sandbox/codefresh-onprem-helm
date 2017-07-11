@@ -27,9 +27,6 @@ httpTargetPort: 8222
 clusterPort: 6222
 clusterTargetPort: 6222
 
-# K8s cluster default DNS domain
-clusterDomain: "cluster.local"
-
 # service type
 svcType: ClusterIP
 

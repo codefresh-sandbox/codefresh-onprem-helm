@@ -14,6 +14,9 @@ metadata:
 spec:
   tls:
     - secretName: {{ .Release.Name }}-star-selfsigned
+  backend:
+    serviceName: {{ .Release.Name }}-cfui
+    servicePort: {{ .Values.servicePort }}
   rules:
   - http:
       paths:

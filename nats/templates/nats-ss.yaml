@@ -38,7 +38,7 @@ spec:
           - --cluster
           - nats://$(POD_IP):{{ .Values.clusterPort }}
           - --routes
-          - nats://{{ template "fullname" . }}-0.{{ .Chart.Name }}.svc.{{ .Values.clusterDomain }}:{{ .Values.clusterPort }}
+          - nats://{{ template "fullname" . }}-0.{{ .Chart.Name }}:{{ .Values.clusterPort }}
         env:
           - name: POD_IP
             valueFrom:
