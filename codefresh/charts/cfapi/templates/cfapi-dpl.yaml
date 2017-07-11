@@ -318,8 +318,14 @@ spec:
         - name: config
           mountPath: /etc/admin/users.json
           subPath: users.json
+        - mountPath: /etc/admin/hosts.added
+          name: etc-hosts
+          subPath: hosts-app
       volumes:
       - name: config
         configMap:
           name: {{ template "fullname" . }}
+      - name: etc-hosts
+        configMap:
+          name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-etc-hosts"
       restartPolicy: Always
