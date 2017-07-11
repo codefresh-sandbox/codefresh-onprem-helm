@@ -155,7 +155,7 @@ spec:
             value: $(CODEFRESH_API_URL)/slack-return
           - name: WALKME
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: walkme-url
           - name: LAUNCH_DARKLY_KEY
