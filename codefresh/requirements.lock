@@ -99,9 +99,17 @@ dependencies:
   condition: ""
   enabled: false
   import-values: null
+  name: payments
+  repository: file://../payments
+  tags: null
+  version: 0.1.2
+- alias: ""
+  condition: ""
+  enabled: false
+  import-values: null
   name: runner
   repository: file://../runner
   tags: null
   version: 0.1.2
-digest: sha256:acc86c1b743f22d5fa6a204f35808794bf80eb7863064f723b820ff75a67db40
-generated: 2017-07-02T14:36:22.384001765+03:00
+digest: sha256:880de7824beaf92919a56d73eca8d80f92a009eb6409c7aabc6b8ab72a28abca
+generated: 2017-07-11T11:12:48.593031916+03:00
