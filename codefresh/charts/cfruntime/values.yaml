@@ -1,0 +1,51 @@
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: Always
+
+# number of replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: codefresh/cf-runtime
+
+# image tag  
+imageTag: develop
+
+#---- Helper Images
+pusherImage: codefresh/cf-docker-pusher
+pusherImageTag: v2
+
+pullerImage: codefresh/cf-docker-puller
+pullerImageTag: v2
+
+builderImage: codefresh/cf-docker-builder
+builderImageTag: v5
+
+loggerImage: codefresh/cf-container-logger
+loggerImageTag: 0.0.15
+
+gitCloneImage: codefresh/cf-git-cloner
+gitCloneImageTag: v1
+
+# codefresh service name (chart name)
+codefreshService: codefresh
+
+# internal registry servicve name
+registryService: registry
+registryServicePort: 5000
+
+# ENV
+env:
+  NODE_ENV: kubernetes
+  LOGGER_LEVEL: error
+  LOGS_PATH: /var/log/cf-runtime.log
+  CF_DOCKER_IMAGES_TAG: "develop"
+  RUNTIME_GOOGLE_REGISTRY_PROJECT_NAME: ""
+  DOCKER_CERT_PATH: /etc/ssl/cf
+  REGISTRY_CA_PATH: /etc/ssl/cf/ca.pem
+  RUNTIME_ACTIVE_REGISTRY: localRegistry
+  RUNTIME_LOCAL_REGISTRY_CA: /etc/ssl/cf/ca.pem
+  RUNTIME_INTERNAL_REGISTRY_JSON: /etc/admin/internal-registry.json

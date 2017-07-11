@@ -1,0 +1,162 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+    version: {{ .Values.imageTag | quote }}
+spec:
+  replicas: {{ default 1 .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+        version: {{ .Values.imageTag | quote }}
+    spec:
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        - name: FIREBASE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: firebase-secret
+        - name: FIREBASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: firebase-url
+        - name: NEWRELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: newrelic-license-key
+        - name: LOGGLY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: loggly-token
+        - name: CONSUL_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: consul-service
+        - name: CONSUL_HOST
+          value: "{{ .Release.Name }}-$(CONSUL_SERVICE).{{ .Release.Namespace }}"
+        - name: NATS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: nats-service
+        - name: NATS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: nats-port
+        - name: QUEUE_SERVERS
+          value: "nats://{{ .Release.Name }}-$(NATS_SERVICE).{{ .Release.Namespace }}:$(NATS_PORT)"
+        - name: RABBIT_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: rabbitmq-service
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: rabbitmq-username
+        - name: RABBIT_URL
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-$(RABBIT_SERVICE).{{ .Release.Namespace }}"
+        - name: POSTGRES_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-service
+        - name: POSTGRES_HOST
+          value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-database
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: postgres-password
+        - name: REDIS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: redis-service
+        - name: REDIS_URL
+          value: "{{ .Release.Name }}-$(REDIS_SERVICE).{{ .Release.Namespace }}" 
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: redis-password 
+        - name: DOCKER_PUSHER_IMAGE
+          value: "{{ .Values.pusherImage }}:{{ .Values.pusherImageTag }}"
+        - name: DOCKER_PULLER_IMAGE
+          value: "{{ .Values.pullerImage }}:{{ .Values.pullerImageTag }}"
+        - name: DOCKER_BUILDER_IMAGE
+          value: "{{ .Values.builderImage }}:{{ .Values.builderImageTag }}"
+        - name: CONTAINER_LOGGER_IMAGE
+          value: "{{ .Values.loggerImage }}:{{ .Values.loggerImageTag }}"
+        - name: GIT_CLONE_IMAGE
+          value: "{{ .Values.gitCloneImage }}:{{ .Values.gitCloneImageTag }}"
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "{{ .Release.Name }}-{{ .Values.registryService }}.{{ .Release.Namespace }}.svc:{{ .Values.registryServicePort }}"
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+        - name: cf-certs
+          mountPath: /etc/ssl/cf/
+          readOnly: true
+        - name: internal-registry
+          mountPath: /etc/admin/internal-registry.json
+          subPath: internal-registry.json
+        securityContext:
+          privileged: true
+      volumes:
+      - name: cf-certs
+        secret:
+          secretName: {{ .Release.Name }}-cf-certs 
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: internal-registry
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.registryService }}

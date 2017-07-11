@@ -1,0 +1,86 @@
+apiVersion: apps/v1beta1
+# TODO: We can't use statefulsets because they are immutable (except the replicas field).
+#       We should integrate the launching of dind pods into the api service (already in progress).
+kind: StatefulSet
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  serviceName: {{ template "fullname" . }}
+  replicas: {{ default 1 .Values.replicaCount }}
+  template:
+    metadata:
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "register-runner-container",
+            "image": "alexeiled/curl:3.6",
+            "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
+            "volumeMounts": [
+              {
+                "name": "{{ template "fullname" . }}",
+                "mountPath": "/opt/dind/register",
+                "subPath": "register"
+              }
+            ],
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register {{ template "fullname" . }}.{{ .Release.Namespace }} {{ .Values.appUrl }}"]
+          }
+        ]'
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name | quote }}
+        heritage: {{ .Release.Service | quote }}
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        name: {{ template "fullname" . }}
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+          protocol: TCP
+        env:
+        - name: REGISTRY_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: registry-service
+        - name: REGISTRY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: registry-service-port
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "$(REGISTRY_SERVICE).{{ .Release.Namespace }}.svc:5000"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            rm -fv /var/run/docker.pid
+            mkdir /var/run/codefresh
+            mkdir -p /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/
+            cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/ca.crt
+            dockerd
+        volumeMounts:
+        - mountPath: /etc/ssl/cf
+          readOnly: true
+          name: cf-certs
+        - mountPath: /etc/docker/daemon.json
+          name: runner-config
+          readOnly: true
+          subPath: daemon.json
+      volumes:
+      - name: cf-certs
+        secret:
+          secretName: {{ .Release.Name }}-cf-certs 
+      - name: runner-config
+        configMap:
+          name: {{ template "fullname" . }}

@@ -1,0 +1,67 @@
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: Always
+
+# number of replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: codefresh/cf-api
+
+# image tag  
+imageTag: develop
+
+# port 
+port: 80
+
+# internal port
+internalPort: 3000
+
+# mapping for internal port
+targetInternalPort: 40000
+# protocol
+protocol: https
+
+# target port
+targetPort: 80
+
+# readiness port
+readinessPort: 80
+
+# codefresh service name (chart name)
+codefreshService: codefresh
+
+# defualt mongo image to use for mongoimport
+mongodbImage: bitnami/mongodb:3.4.5-r0
+
+# GitHub configuration
+github:
+  apiHost: api.github.com
+  apiPathPrefix: /api/v3
+  loginHost: github.com
+  protocol: https
+
+gitlab:
+  loginHost: gitlab.com
+  protocol: https
+
+# Segment
+segmentEnable: false
+
+# ENV
+env:
+  APP_ENV: staging
+  NODE_ENV: kubernetes
+  DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
+  DOCKER_NODE_CERT_PATH: /etc/ssl/cf
+  PROVIDERS_JSON_PATH: /etc/admin/providers.json
+  RUNTIME_ENVS_JSON_PATH: /etc/admin/runtimeEnvironments.json
+  OAUTH_ROUTER_CALLBACK: ""
+  MAIL_ACTIVE: false
+  LOGS_PATH: /var/log/cf-api.log
+  LOGGER_LEVEL: error
+  LOGGER_MORAN_ACTIVE: false
+  PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging

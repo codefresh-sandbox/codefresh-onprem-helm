@@ -1,0 +1,33 @@
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: Always
+
+# number of replicas
+# by default 1
+# replicaCount: 1
+
+# image name
+image: codefresh/payments
+
+# image tag  
+imageTag: master
+
+# exposed port
+port: 80
+
+# application target port
+targetPort: 9000
+
+# codefresh service name (chart name)
+codefreshService: codefresh
+
+# mongo database name for payments
+mongoDatabase: payments
+
+# cfapi service name
+cfapiService: cfapi
+
+# cfapi internal service port
+cfapiInternalPort: 3000

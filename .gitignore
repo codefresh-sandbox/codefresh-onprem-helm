@@ -1,9 +1,10 @@
 # dependency charts
-**/charts
+**/charts/*.tgz
 
 # decrypted files
 **/*-dec.yaml
 
 # junk files
 QUESTIONS.md
-outdarwin-amd64
+out
+darwin-amd64

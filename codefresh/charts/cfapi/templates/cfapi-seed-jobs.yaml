@@ -1,0 +1,95 @@
+{{- $mongoServer := printf "%s-%s.%s" .Release.Name .Values.mongodbService .Release.Namespace -}}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-seed-mongo
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-seed-mongo
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}-admin-account
+        image: {{ .Values.mongodbImage }}
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-password
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/accounts.json"
+          subPath: "accounts.json"
+      - name: {{ template "fullname" . }}-admin-user
+        image: {{ .Values.mongodbImage }}
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: mongodb-password
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/users.json"
+          subPath: "users.json"
+      restartPolicy: OnFailure
+      volumes:
+      - name: seed
+        configMap:
+          name: {{ template "fullname" . }}
