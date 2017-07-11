@@ -24,7 +24,7 @@ spec:
             "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
             "volumeMounts": [
               {
-                "name": "builder-config",
+                "name": "{{ template "fullname" . }}",
                 "mountPath": "/opt/dind/register",
                 "subPath": "register"
               }
@@ -53,14 +53,27 @@ spec:
         ports:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
+        env:
+        - name: REGISTRY_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: registry-service
+        - name: REGISTRY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: registry-service-port
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "$(REGISTRY_SERVICE).{{ .Release.Namespace }}.svc:$(REGISTRY_SERVICE_PORT)"
         command:
           - "/bin/sh"
           - "-c"
           - |
             rm -fv /var/run/docker.pid
             mkdir /var/run/codefresh
-            mkdir -p /etc/docker/certs.d/registry.codefresh.svc:5000/
-            cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/registry.codefresh.svc:5000/ca.crt
+            mkdir -p /etc/docker/certs.d/$(RUNTIME_LOCAL_REGISTRY_NAME)/
+            cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/$(RUNTIME_LOCAL_REGISTRY_NAME)/ca.crt
             dockerd
         volumeMounts:
         - mountPath: /etc/ssl/cf

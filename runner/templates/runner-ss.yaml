@@ -22,7 +22,7 @@ spec:
             "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
             "volumeMounts": [
               {
-                "name": "runner-config",
+                "name": "{{ template "fullname" . }}",
                 "mountPath": "/opt/dind/register",
                 "subPath": "register"
               }
@@ -53,6 +53,11 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: registry-service
+        - name: REGISTRY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              key: registry-service-port
         - name: RUNTIME_LOCAL_REGISTRY_NAME
           value: "$(REGISTRY_SERVICE).{{ .Release.Namespace }}.svc:5000"
         command:

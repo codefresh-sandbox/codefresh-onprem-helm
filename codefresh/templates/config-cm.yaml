@@ -45,6 +45,8 @@ data:
 
   # Docker registry service
   registry-service: registry
+  # Docker registry service port
+  registry-service-port: 5000
 
   # Firebase url
   firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem
