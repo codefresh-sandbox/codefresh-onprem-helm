@@ -19,8 +19,8 @@ Create a new `minikube` cluster with sufficient resources.
 $ # --cpus - 4 cores
 $ # --memory - 8GB RAM
 $ # --disk-size - 40GB disj
-$ # --vm-driver - xhive macOS VM  
-$ minikube start --cpus=4 --memory=8192 --vm-driver=xhyve --disk-size=40g
+$ # (optional) --vm-driver - xhive macOS VM  
+$ minikube start --cpus=4 --memory=8192 --disk-size=40g
 ```
 
 **Note**: wait several minutes till `minikube` download and install all components. You can check `minikube` status on K8s dashboard.
@@ -41,7 +41,7 @@ $ minikube addons list
 - registry-creds: disabled
 ```
 
-Enable `heapster`, `dashboard`, `ingressּּּּ` and other usefule addons:
+Enable `heapster`, `dashboard`, `ingressּּּּ` and other useful addons:
 
 ```sh
 $ minikube addons enable ingress
@@ -51,8 +51,14 @@ $ minikube addons enable heapster
 
 # Install Helm
 
+**Attention** Install `canary` release of Helm. Helm 2.5.0 has an open issue, where it ignores sub charts if there is a `requirements.yaml` file. In order to support sub-charts use latest commit. 
+
+This should be fixed in upcoming release 2.5.1.
+
+
 ```sh
-$ helm init
+$ helm init --canary-image --upgrade
+
 
 $HELM_HOME has been configured at /Users/alexei/.helm.
 
@@ -60,13 +66,20 @@ Tiller (the helm server side component) has been installed into your Kubernetes 
 Happy Helming!
 ```
 
+install helm `canary` client (make sure it's in `$PATH`):
+
+```sh
+$ curl -L https://storage.googleapis.com/kubernetes-helm/helm-canary-darwin-amd64.tar.gz | tar xvz
+```
+
 show helm version:
 
 ```sh
 $ helm version
 
-Client: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a9194a76161d29b4c", GitTreeState:"clean"}
-Server: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a9194a76161d29b4c", GitTreeState:"clean"}
+Client: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"canary+unreleased", GitCommit:"0a20ed73be29da59a1e70c769f553ac6d649aae0", GitTreeState:"clean"}
+
 ```
 
 # Handle Secrets

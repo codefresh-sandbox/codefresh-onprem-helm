@@ -1,115 +1,27 @@
 dependencies:
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: consul
+- name: consul
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.3.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: mongodb
+- name: mongodb
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.4.11
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: postgresql
+- name: postgresql
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.7.1
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: redis
+- name: redis
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.8.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: rabbitmq
+- name: rabbitmq
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags: null
   version: 0.5.3
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: nats
+- name: nats
   repository: file://../nats
-  tags: null
   version: 0.1.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: registry
+- name: registry
   repository: file://../registry
-  tags: null
   version: 0.1.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: ingress
+- name: ingress
   repository: file://../ingress
-  tags: null
   version: 0.1.0
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: cfapi
-  repository: file://../cfapi
-  tags: null
-  version: 0.1.2
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: cfui
-  repository: file://../cfui
-  tags: null
-  version: 0.1.2
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: cfruntime
-  repository: file://../cfruntime
-  tags: null
-  version: 0.1.2
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: builder
-  repository: file://../builder
-  tags: null
-  version: 0.1.2
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: payments
-  repository: file://../payments
-  tags: null
-  version: 0.1.2
-- alias: ""
-  condition: ""
-  enabled: false
-  import-values: null
-  name: runner
-  repository: file://../runner
-  tags: null
-  version: 0.1.2
-digest: sha256:880de7824beaf92919a56d73eca8d80f92a009eb6409c7aabc6b8ab72a28abca
-generated: 2017-07-11T11:12:48.593031916+03:00
+digest: sha256:d547f5a2f04c5dac2d234d381da53d3ae177fa32eb71c961780fe4098ecf7b90
+generated: 2017-07-11T16:00:52.393892344+03:00

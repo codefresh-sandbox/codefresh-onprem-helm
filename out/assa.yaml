@@ -1,0 +1,2920 @@
+---
+# Source: codefresh/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: assa-codefresh
+    labels:
+        app: assa-codefresh
+        chart: "codefresh-0.1.1"
+        release: "assa"
+        heritage: "Tiller"
+type: Opaque
+data:
+    # Mongodb credentials
+    mongodb-user: "Y2Z1c2Vy"
+    
+    mongodb-password:  "bVRpWGNVMndhZnI5"
+    
+
+    # RabbitMQ credentials
+    rabbitmq-username: "dXNlcg=="
+    
+    rabbitmq-password:  "Y1Z6OVpkSktZbTd1"
+    
+
+    # PostgreSQL credentials
+    postgres-user: "cG9zdGdyZXM="
+    
+    postgres-password:  "ZUM5YXJZa2E0WmJI"
+    
+
+    # Redis credentials
+    
+    redis-password:  "aG9DOXN6ZjdOdHJV"
+    
+
+    # GitHub secrets
+    github-client-id: "YWQwNWY2MGM3NjcyNDExY2UyODk="
+    github-client-secret: "ZTUzMmYyZGQ4ZGY2MzU3ODJlNDBiZGNkNzhkNTMyNTQwMWNkNGQwYg=="
+    github-internal-token: "N2NhYzU4Yjc0ZDM3NWE5NWQyMjJhMmM5Y2FkMjRhYTJjMmRiNjk1ZQ=="
+    
+    # GitLab secrets
+    gitlab-client-id: "ZDRiNTZmZGQ3YWZjOWVjMGNlY2MwNmU5ZTI2NmZkY2RjYTExNzI5NTkwNjlkNzcwZDY5ZDhiYjhkOTc3ZmYzNg=="
+    gitlab-client-secret: "YTcxYjFiYzMxNmE1OTVmNmUzZmE3ODBlMDdiNGYyMTJkNzY0YjdhMDIyOWZiN2ExNTZlMWFkMGUwOWY3NmE3YQ=="
+
+    # Bitbucket secrets
+    bitbucket-client-id: "aW52YWxpZC1pZA=="
+    bitbucket-client-secret: "aW52YWxpZC1zZWNyZXQ="
+
+    # 
+    api-safe-secret: "ZnNkMndlcjVzZGZzcjI0NDUyM1NGRHNkZg=="
+
+    # Stripe secret
+    stripe-secret-key: "c2tfdGVzdF84QW5hQWxjY1hYa2NQWFA3dnJnS1pReXk="
+    # Stripe public key
+    stripe-public-key: "cGtfdGVzdF9VT29qak9tT0F6Zk9obVQyeGhZajlxR3U=" 
+    # Stripe webhook sign secret
+    stripe-webhook-sign-secret: "d2hzZWNfWGs2aVdlQ0xqT0tTalM4aEZlOGk0RFBFSndCcXZFb2E="
+
+    # Firebase secret
+    firebase-secret: "QnZoOWdZQTVMRDF3NWNiTW5nbGRDWlZIaDdhbDlVSmVLVWlac2Y4dA=="
+
+    # Slack secret
+    slack-app-id: "NDAyNzUyNDg2Ni42MzYwNjQxMTAxNA=="
+    slack-internal: ""
+    slack-app-secret: ""
+
+    # Segment secret
+    segment-key: ""
+
+    # NewRelic license
+    newrelic-license-key: "NzVjNzVmNGFjZjU4NTAxMTZlZTk2ZjdiMTViY2Y1Mjk5ZDFiMmRhYQ==" 
+
+    # Rollbar access token
+    rollbar-access-token: "NDIyYjBlZTZmNjgxNDZhZWExNThmNGRlZmZjNmI2MjQ="  
+
+    # Loggly
+    loggly-token: "aW52YWxpZC10b2tlbg==" 
+
+    # TLS sign client key
+    tls-client-key: ""
+
+    # walkme url
+    walkme-url: "" 
+
+    # LaunchDarkly key
+    launchdarkly-key: "" 
+
+    # CFCR Registry auth key
+    reg-auth-api-key: "ZWM5ZmZhMDUtYzBlYy00NDM2LWFlNTMtY2M1NDM5MDQ2MTY0"
+
+    # CFCR Registry auth key
+    reg-admin-token: "VzlIcnFTdjlHZmVlY3pEZDdRbUtmVFhvTTViR2sxME4="
+
+---
+# Source: codefresh/templates/rbac/rbac-ingress.yaml
+
+---
+# Source: codefresh/charts/postgresql/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: assa-postgresql
+  labels:
+    app: assa-postgresql
+    chart: "postgresql-0.7.1"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: default
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+# Source: codefresh/templates/certs-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: assa-codefresh-gencerts
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "20"
+spec:
+  template:
+    metadata:
+      name: assa-codefresh-gencerts
+      labels:
+        app: assa-codefresh
+        chart: "codefresh-0.1.1"
+        release: "assa"
+        heritage: "Tiller"
+    spec:
+      containers:
+      - name: assa-codefresh-certs
+        image: lachlanevenson/k8s-kubectl:v1.6.4
+        imagePullPolicy: "IfNotPresent"
+        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-runtime-certs ; /opt/codefresh/gen-runtime-certs"]
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-runtime-certs"
+          subPath: "gen-runtime-certs"
+      - name: assa-codefresh-tls
+        image: lachlanevenson/k8s-kubectl:v1.6.4
+        imagePullPolicy: "IfNotPresent"
+        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-website-tls ; /opt/codefresh/gen-website-tls"]
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-website-tls"
+          subPath: "gen-website-tls"
+      restartPolicy: OnFailure
+      volumes:
+      - name: tools
+        configMap:
+          name: assa-codefresh-certs-scripts
+
+---
+# Source: codefresh/charts/runner/templates/runner-ss.yaml
+apiVersion: apps/v1beta1
+# TODO: We can't use statefulsets because they are immutable (except the replicas field).
+#       We should integrate the launching of dind pods into the api service (already in progress).
+kind: StatefulSet
+metadata:
+  name: assa-runner
+  labels:
+    app: assa-runner
+    chart: "runner-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  serviceName: assa-runner
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "register-runner-container",
+            "image": "alexeiled/curl:3.6",
+            "imagePullPolicy": "IfNotPresent",
+            "volumeMounts": [
+              {
+                "name": "assa-runner",
+                "mountPath": "/opt/dind/register",
+                "subPath": "register"
+              }
+            ],
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register assa-runner.dev codefresh.dev"]
+          }
+        ]'
+      labels:
+        app: assa-runner
+        chart: "runner-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - image: "docker:17.05-dind"
+        name: assa-runner
+        imagePullPolicy: "IfNotPresent"
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 1300
+          protocol: TCP
+        env:
+        - name: REGISTRY_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: registry-service
+        - name: REGISTRY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: registry-service-port
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "$(REGISTRY_SERVICE).dev.svc:5000"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            rm -fv /var/run/docker.pid
+            mkdir /var/run/codefresh
+            mkdir -p /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/
+            cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/ca.crt
+            dockerd
+        volumeMounts:
+        - mountPath: /etc/ssl/cf
+          readOnly: true
+          name: cf-certs
+        - mountPath: /etc/docker/daemon.json
+          name: runner-config
+          readOnly: true
+          subPath: daemon.json
+      volumes:
+      - name: cf-certs
+        secret:
+          secretName: assa-cf-certs 
+      - name: runner-config
+        configMap:
+          name: assa-runner
+---
+# Source: codefresh/charts/postgresql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-postgresql
+  labels:
+    app: assa-postgresql
+    chart: "postgresql-0.7.1"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  type: ClusterIP
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: postgresql
+  selector:
+    app: assa-postgresql
+---
+# Source: codefresh/charts/ingress/templates/service.yaml
+# Expose the ingress using a regular AWS ELB
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-ingress-controller
+  labels:
+    app: assa-ingress
+    chart: "ingress-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "http"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: "https"
+    port: 443 
+    protocol: TCP
+    targetPort: 443
+  selector:
+    k8s-app: nginx-ingress-controller
+
+
+---
+# Source: codefresh/charts/consul/templates/test-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-consul-tests
+data:
+  run.sh: |-
+    @test "Testing Consul cluster has quorum" {
+      for i in {0..2}; do
+        if [ `kubectl exec assa-consul-$i consul members --namespace=dev | grep server | wc -l` -ge "3" ]; then
+          echo "assa-consul-$i OK. consul members returning at least 3 records."
+        else
+          echo "assa-consul-$i ERROR. consul members returning less than 3 records."
+          exit 1
+        fi
+      done
+    }
+
+---
+# Source: codefresh/charts/rabbitmq/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-rabbitmq
+  labels:
+    app: assa-rabbitmq
+    chart: "rabbitmq-0.5.3"
+    release: "assa"
+    heritage: "Tiller"
+type: Opaque
+data:
+  
+  rabbitmq-password: "Y1Z6OVpkSktZbTd1"
+  
+  
+  rabbitmq-erlang-cookie: "VGQydnhUbWdxcVV6bnJSbWN1Y3RCYldzRmRLeFY3ajY="
+  
+
+---
+# Source: codefresh/templates/certs-cm.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-codefresh-certs-scripts
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "10"
+data:
+  gen-website-tls: |
+    #!/bin/sh
+
+    which openssl || apk --update add openssl
+
+    openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+    openssl rsa -passin pass:x -in server.pass.key -out tls.key
+    rm server.pass.key
+    openssl req -new -key tls.key -out server.csr -subj "/CN=codefresh.dev"
+    openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
+
+    kubectl create secret tls assa-star-selfsigned --cert=tls.crt --key=tls.key
+  gen-runtime-certs: |
+    #!/bin/sh
+    err() { echo "ERROR: $1"; exit 1; }
+
+    which openssl || apk --update add openssl
+
+    TMPDIR=$(dirname $0)/cfcerts
+    mkdir -p $TMPDIR || err "Cannot create the temp directory $TMPDIR"
+
+    CA_KEY=$TMPDIR/ca-key.pem
+    CA_PEM=$TMPDIR/ca.pem
+    SERVER_KEY=$TMPDIR/server-key.pem
+    SERVER_PEM=$TMPDIR/server.pem
+    SERVER_CSR=$TMPDIR/server.csr
+    CLIENT_CERT=$TMPDIR/cert.pem
+    CLIENT_KEY=$TMPDIR/key.pem
+    EXTFILE=$TMPDIR/extfile.cnf
+
+    echo "--- Generate ca-key.pem"
+    openssl genrsa -out $CA_KEY 4096
+
+    echo "--- Generate ca.pem"
+    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.codefresh.dev"
+
+    echo "--- Generate server-key.pem"
+    openssl genrsa -out $SERVER_KEY 4096
+
+    echo "--- generate csr "
+    openssl req -subj "/CN=*.codefresh.dev" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
+
+    echo "--- create ca extfile"
+    echo -e \
+    "extendedKeyUsage=serverAuth,clientAuth
+    subjectAltName = DNS:*.dev,DNS:*.dev.svc,DNS:*.dev.svc.cluster.local" > $EXTFILE
+
+    echo "--- sign certificate $SERVER_PEM "
+    openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
+      -CAcreateserial -out $SERVER_PEM -extfile $EXTFILE || err "Failed to sign certificate"
+
+    cp -v $SERVER_PEM $CLIENT_CERT
+    cp -v $SERVER_KEY $CLIENT_KEY
+
+    kubectl create secret generic assa-cf-certs \
+      --from-file=$CA_PEM \
+      --from-file=$CLIENT_KEY \
+      --from-file=$CLIENT_CERT || err "Failed storing the generated certificates in Kubernetes!"
+---
+# Source: codefresh/charts/payments/templates/payments-svc.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-payments
+  labels:
+    app: assa-payments
+    chart: "payments-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v3"
+spec:
+  type: NodePort
+  ports:
+  - name: "http"
+    port: 80
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: assa-payments
+---
+# Source: codefresh/charts/cfapi/templates/cfapi-dpl.yaml
+# kind: scheduler-kubernetes
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-cfapi
+  labels:
+    app: assa-cfapi
+    chart: "cfapi-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v137"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app: assa-cfapi
+  template:
+    metadata:
+      labels:
+        app: assa-cfapi
+        chart: "cfapi-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+        version: "v137"
+    spec:
+      imagePullSecrets:
+        - name: "assa-codefresh-registry"
+      terminationGracePeriodSeconds: 40
+      containers:
+      - name: assa-cfapi
+        image: "codefresh/cf-api:v137"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: APP_ENV
+          value: "staging"
+        - name: DOCKER_NODE_CERT_PATH
+          value: "/etc/ssl/cf"
+        - name: DOCKER_NODE_PUBLIC_DOMAIN
+          value: "cf-cd.com"
+        - name: LOGGER_LEVEL
+          value: "error"
+        - name: LOGGER_MORAN_ACTIVE
+          value: "false"
+        - name: LOGS_PATH
+          value: "/var/log/cf-api.log"
+        - name: MAIL_ACTIVE
+          value: "false"
+        - name: NODE_ENV
+          value: "kubernetes"
+        - name: OAUTH_ROUTER_CALLBACK
+          value: ""
+        - name: PROGRESS_BUILDLOGS_BUCKETNAME
+          value: "progress-logs-staging"
+        - name: PROVIDERS_JSON_PATH
+          value: "/etc/admin/providers.json"
+        - name: RUNTIME_ENVS_JSON_PATH
+          value: "/etc/admin/runtimeEnvironments.json"
+        - name: GOOGLE_KUBE_SERVICE_URI
+          value: "http://cf-google-auth"
+        - name: BL_USERS
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh" 
+              key: segment-blacklist-users
+        - name: ACTIVITY_LOG_URI
+          value: http://activity-log
+        - name: PAYMENTS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: payments-service
+        - name: PAYMENTS_URI
+          value: http://$(PAYMENTS_SERVICE)
+        - name: PORT
+          value: "80"
+        - name: INTERNAL_SERVER_PORT
+          value: "40000"
+        - name: PROTOCOL
+          value: "https"
+        - name: CF_HOST_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh" 
+              key: app-url
+        - name: EXTERNAL_URL
+          value: "https://$(CF_HOST_NAME)"
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-port
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-password
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-database
+        - name: MONGO_URI
+          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@assa-$(MONGO_SERVICE).dev:$(MONGO_PORT)/$(MONGO_DATABASE)"
+        - name: CONSUL_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: consul-service
+        - name: CONSUL_HOST
+          value: "assa-$(CONSUL_SERVICE).dev"
+        - name: NATS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: nats-service
+        - name: NATS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: nats-port
+        - name: QUEUE_SERVERS
+          value: "nats://assa-$(NATS_SERVICE).dev:$(NATS_PORT)"
+        - name: RABBIT_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-service
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-username
+        - name: RABBIT_URL
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@assa-$(RABBIT_SERVICE).dev"
+        - name: POSTGRES_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-service
+        - name: POSTGRES_HOST
+          value: "assa-$(POSTGRES_SERVICE).dev" 
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-database
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-password
+        - name: REDIS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: redis-service
+        - name: REDIS_URL
+          value: "assa-$(REDIS_SERVICE).dev" 
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: redis-password
+        - name: GITHUB_API_HOST
+          value: "api.github.com"
+        - name: GITHUB_API_PATH_PREFIX
+          value: "/api/v3"
+        - name: GITHUB_LOGIN_HOST
+          value: "github.com"
+        - name: GITHUB_PROTOCOL
+          value: "https"
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: github-client-id
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: github-client-secret
+        - name: INTERNAL_USE_GITHUB_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: github-internal-token
+        - name: GITLAB_LOGIN_HOST
+          value: "gitlab.com"
+        - name: GITLAB_PROTOCOL
+          value: "https"
+        - name: GITLAB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: gitlab-client-id
+        - name: GITLAB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: gitlab-client-secret
+        - name: BITBUCKET_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: bitbucket-client-id
+        - name: BITBUCKET_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: bitbucket-client-secret
+        - name: API_SAFE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: api-safe-secret
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: stripe-secret-key
+        - name: FIREBASE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: firebase-secret
+        - name: FIREBASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: firebase-url
+        - name: SLACK_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: slack-app-id
+        - name: SLACK_INTERNAL
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: slack-internal
+        - name: SLACK_APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: slack-app-secret
+        - name: SEGMENT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: segment-key
+        - name: SEGMENT_ACTIVE
+          value: "false"
+        - name: NEWRELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: newrelic-license-key
+        - name: LOGGLY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: loggly-token
+        - name: TLS_SIGN_CLIENT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: tls-client-key 
+        - name: OAUTH_ROUTER_CALLBACK
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: oauth-router-callback
+        - name: GOOGLE_COMPUTE_ENGINE_PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: google-compute-engine-project
+        - name: CF_REGISTRY_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: cfcr-domain
+        - name: CF_REGISTRY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: reg-auth-api-key
+        - name: CF_REGISTRY_ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: registry-admin-token
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        - containerPort: 40000
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/ping
+            port: 80
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+        volumeMounts:
+        - name: config
+          mountPath: /etc/admin/providers.json
+          subPath: providers.json
+        - name: config
+          mountPath: /etc/admin/accounts.json
+          subPath: accounts.json
+        - name: config
+          mountPath: /etc/admin/users.json
+          subPath: users.json
+      volumes:
+      - name: config
+        configMap:
+          name: assa-cfapi
+      restartPolicy: Always
+---
+# Source: codefresh/charts/rabbitmq/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-rabbitmq
+  labels:
+    app: assa-rabbitmq
+    chart: "rabbitmq-0.5.3"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  template:
+    metadata:
+      labels:
+        app: assa-rabbitmq
+    spec:
+      containers:
+      - name: assa-rabbitmq
+        image: "bitnami/rabbitmq:3.6.10-r0"
+        imagePullPolicy: ""
+        env:
+        - name: RABBITMQ_USERNAME
+          value: "user"
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: assa-rabbitmq
+              key: rabbitmq-password
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            secretKeyRef:
+              name: assa-rabbitmq
+              key: rabbitmq-erlang-cookie
+        - name: RABBITMQ_NODE_PORT
+          value: "5672"
+        - name: RABBITMQ_NODE_TYPE
+          value: "stats"
+        - name: RABBITMQ_NODE_NAME
+          value: "rabbit@localhost"
+        - name: RABBITMQ_CLUSTER_NODE_NAME
+          value: ""
+        - name: RABBITMQ_VHOST
+          value: "/"
+        - name: RABBITMQ_MANAGER_PORT
+          value: "15672"
+        ports:
+        - name: epmd
+          containerPort: 4369
+        - name: ampq
+          containerPort: 5672
+        - name: dist
+          containerPort: 25672
+        - name: stats
+          containerPort: 15672
+        livenessProbe:
+          exec:
+            command:
+            - rabbitmqctl
+            - status
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - rabbitmqctl
+            - status
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/rabbitmq
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: assa-rabbitmq
+---
+# Source: codefresh/charts/redis/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-redis
+  labels:
+    app: assa-redis
+    chart: "redis-0.8.0"
+    release: "assa"
+    heritage: "Tiller"
+type: Opaque
+data:
+  redis-password: "aG9DOXN6ZjdOdHJV"
+---
+# Source: codefresh/charts/redis/templates/pvc.yaml
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: assa-redis
+  labels:
+    app: assa-redis
+    chart: "redis-0.8.0"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: default
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+
+---
+# Source: codefresh/charts/cfapi/templates/cfapi-seed-jobs.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: assa-cfapi-seed-mongo
+  labels:
+    app: assa-cfapi
+    chart: "cfapi-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  template:
+    metadata:
+      name: assa-cfapi-seed-mongo
+      labels:
+        app: assa-cfapi
+        chart: "cfapi-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+    spec:
+      containers:
+      - name: assa-cfapi-admin-account
+        image: bitnami/mongodb:3.4.5-r0
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "mongoimport --host assa-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-password
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/accounts.json"
+          subPath: "accounts.json"
+      - name: assa-cfapi-admin-user
+        image: bitnami/mongodb:3.4.5-r0
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "mongoimport --host assa-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
+        env:
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-port
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-database
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-password
+        volumeMounts:
+        - name: seed
+          mountPath: "/etc/admin/users.json"
+          subPath: "users.json"
+      restartPolicy: OnFailure
+      volumes:
+      - name: seed
+        configMap:
+          name: assa-cfapi
+
+---
+# Source: codefresh/charts/postgresql/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-postgresql
+  labels:
+    app: assa-postgresql
+    chart: "postgresql-0.7.1"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  template:
+    metadata:
+      labels:
+        app: assa-postgresql
+    spec:
+      containers:
+      - name: assa-postgresql
+        image: "postgres:9.6.2"
+        imagePullPolicy: ""
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+          # Required for pg_isready in the health probes.
+        - name: PGUSER
+          value: "postgres"
+        - name: POSTGRES_DB
+          value: "codefresh"
+        - name: POSTGRES_INITDB_ARGS
+          value: ""
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: assa-postgresql
+              key: postgres-password
+        - name: POD_IP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data/pgdata
+          subPath: postgresql-db
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: assa-postgresql
+
+---
+# Source: codefresh/charts/cfapi/templates/cfapi-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-cfapi
+  labels:
+    app: assa-cfapi
+    chart: "cfapi-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v137"
+spec:
+  type: NodePort
+  ports:
+  - name: "http"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: "internal-api"
+    port: 3000
+    protocol: TCP
+    targetPort: 40000
+  selector:
+    app: assa-cfapi
+---
+# Source: codefresh/charts/consul/templates/consul-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "assa-ui-test-c9xma"
+  annotations:
+    "helm.sh/hook": test-success
+    "pod.beta.kubernetes.io/init-containers": '[
+      {
+        "name": "test-framework",
+        "image": "dduportal/bats:0.4.0",
+        "command": ["bash", "-c", "
+          set -ex\n
+          # copy bats to tools dir\n
+          cp -R /usr/local/libexec/ /tools/bats/\n
+        "],
+        "volumeMounts": [
+          {"name": "tools", "mountPath": "/tools"}
+        ]
+      }
+    ]'
+spec:
+  containers:
+    - name: assa-ui-test
+      image: lachlanevenson/k8s-kubectl:v1.4.8-bash
+      command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+      volumeMounts:
+      - mountPath: /tests
+        name: tests
+        readOnly: true
+      - mountPath: /tools
+        name: tools
+  volumes:
+  - name: tests
+    configMap:
+      name: assa-consul-tests
+  - name: tools
+    emptyDir: {}
+  restartPolicy: Never
+
+---
+# Source: codefresh/charts/ingress/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-ingress-controller
+  labels:
+    app: assa-ingress
+    chart: "ingress-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+    k8s-app: nginx-ingress-controller
+spec:
+  replicas:  1
+  template:
+    metadata:
+      labels:
+        app: assa-ingress
+        chart: "ingress-0.1.0"
+        release: "assa"
+        heritage: "Tiller"
+        k8s-app: nginx-ingress-controller
+    spec:
+      # hostNetwork makes it possible to use ipv6 and to preserve the source IP correctly regardless of docker configuration
+      # however, it is not a hard dependency of the nginx-ingress-controller itself and it may cause issues if port 10254 already is taken on the host
+      # that said, since hostPort is broken on CNI (https://github.com/kubernetes/kubernetes/issues/31307) we have to use hostNetwork where CNI is used
+      # like with kubeadm
+      # hostNetwork: true
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: "gcr.io/google_containers/nginx-ingress-controller:0.9.0-beta.10"
+        name: assa-ingress-controller
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 80
+          hostPort: 80
+        - containerPort: 443
+          hostPort: 443
+        args:
+        - /nginx-ingress-controller
+        - --default-backend-service=assa-ingress-http-backend
+
+
+---
+# Source: codefresh/charts/rabbitmq/templates/pvc.yaml
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: assa-rabbitmq
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: default
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+
+---
+# Source: codefresh/templates/configmaps/config-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-codefresh
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+data:
+  # app url
+  app-url: codefresh.dev
+
+  # default application protocol: http or https
+  app-protocol: http
+
+  # segment black list users
+  segment-blacklist-users: 
+
+  # mongodb service name to use
+  mongodb-service: mongodb
+  # mongodb database; local by default
+  mongodb-database: codefresh
+  # mongodb port
+  mongodb-port: "27017"
+
+  # consul service
+  consul-service: consul
+
+  # nats service
+  nats-service: nats
+  # nats service port
+  nats-port: "4222"
+
+  # RMQ service
+  rabbitmq-service: rabbitmq
+
+  # PostresSQL service name
+  postgres-service: postgresql
+  # PostresSQL database
+  postgres-database: codefresh
+
+  # Redis service
+  redis-service: redis
+
+  # Docker registry service
+  registry-service: registry
+  # Docker registry service port
+  registry-service-port: 5000
+
+  # Payments service name
+  payments-service: payments
+
+  # Firebase url
+  firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem
+
+  # CFCR
+  cfcr-domain: cfcr.staging.io
+
+  # OAuth router callback
+  oauth-router-callback: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/
+
+  # GCE Project
+  google-compute-engine-project: savvy-badge-103912
+---
+# Source: codefresh/templates/rbac/rbac-tools.yaml
+
+---
+# Source: codefresh/charts/cfruntime/templates/cfruntime-dpl.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-cfruntime
+  labels:
+    app: assa-cfruntime
+    chart: "cfruntime-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v71"
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  selector:
+    matchLabels:
+      app: assa-cfruntime
+  template:
+    metadata:
+      labels:
+        app: assa-cfruntime
+        chart: "cfruntime-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+        version: "v71"
+    spec:
+      imagePullSecrets:
+        - name: "assa-codefresh-registry"
+      containers:
+      - name: assa-cfruntime
+        image: "codefresh/cf-runtime:v71"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: CF_DOCKER_IMAGES_TAG
+          value: "develop"
+        - name: DOCKER_CERT_PATH
+          value: "/etc/ssl/cf"
+        - name: LOGGER_LEVEL
+          value: "error"
+        - name: LOGS_PATH
+          value: "/var/log/cf-runtime.log"
+        - name: NODE_ENV
+          value: "kubernetes"
+        - name: REGISTRY_CA_PATH
+          value: "/etc/ssl/cf/ca.pem"
+        - name: RUNTIME_ACTIVE_REGISTRY
+          value: "localRegistry"
+        - name: RUNTIME_GOOGLE_REGISTRY_PROJECT_NAME
+          value: ""
+        - name: RUNTIME_INTERNAL_REGISTRY_JSON
+          value: "/etc/admin/internal-registry.json"
+        - name: RUNTIME_LOCAL_REGISTRY_CA
+          value: "/etc/ssl/cf/ca.pem"
+        - name: FIREBASE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: firebase-secret
+        - name: FIREBASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: firebase-url
+        - name: NEWRELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: newrelic-license-key
+        - name: LOGGLY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: loggly-token
+        - name: CONSUL_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: consul-service
+        - name: CONSUL_HOST
+          value: "assa-$(CONSUL_SERVICE).dev"
+        - name: NATS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: nats-service
+        - name: NATS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: nats-port
+        - name: QUEUE_SERVERS
+          value: "nats://assa-$(NATS_SERVICE).dev:$(NATS_PORT)"
+        - name: RABBIT_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-service
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-username
+        - name: RABBIT_URL
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@assa-$(RABBIT_SERVICE).dev"
+        - name: POSTGRES_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-service
+        - name: POSTGRES_HOST
+          value: "assa-$(POSTGRES_SERVICE).dev" 
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-database
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-password
+        - name: REDIS_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: redis-service
+        - name: REDIS_URL
+          value: "assa-$(REDIS_SERVICE).dev" 
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: redis-password 
+        - name: DOCKER_PUSHER_IMAGE
+          value: "codefresh/cf-docker-pusher:v2"
+        - name: DOCKER_PULLER_IMAGE
+          value: "codefresh/cf-docker-puller:v2"
+        - name: DOCKER_BUILDER_IMAGE
+          value: "codefresh/cf-docker-builder:v5"
+        - name: CONTAINER_LOGGER_IMAGE
+          value: "codefresh/cf-container-logger:0.0.15"
+        - name: GIT_CLONE_IMAGE
+          value: "codefresh/cf-git-cloner:v1"
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "assa-registry.dev.svc:5000"
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+        - name: cf-certs
+          mountPath: /etc/ssl/cf/
+          readOnly: true
+        - name: internal-registry
+          mountPath: /etc/admin/internal-registry.json
+          subPath: internal-registry.json
+        securityContext:
+          privileged: true
+      volumes:
+      - name: cf-certs
+        secret:
+          secretName: assa-cf-certs 
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: internal-registry
+        configMap:
+          name: assa-registry
+---
+# Source: codefresh/charts/ingress/templates/backend-dpl.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-ingress-http-backend
+  labels:
+    app: assa-ingress
+    chart: "ingress-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+    k8s-app: assa-ingress-http-backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: assa-ingress
+        chart: "ingress-0.1.0"
+        release: "assa"
+        heritage: "Tiller"
+        k8s-app: assa-ingress-http-backend
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: assa-ingress-http-backend
+        # Any image is permissable as long as:
+        # 1. It serves a 404 page at /
+        # 2. It serves 200 on a /healthz endpoint
+        image: "gcr.io/google_containers/defaultbackend:1.3"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 10m
+            memory: 20Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+
+
+---
+# Source: codefresh/charts/mongodb/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-mongodb
+  labels:
+    app: assa-mongodb
+    chart: "mongodb-0.4.11"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  template:
+    metadata:
+      labels:
+        app: assa-mongodb
+    spec:
+      containers:
+      - name: assa-mongodb
+        image: "bitnami/mongodb:3.4.5-r0"
+        imagePullPolicy: ""
+        env:
+        - name: MONGODB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: assa-mongodb
+              key: mongodb-root-password
+        - name: MONGODB_USERNAME
+          value: "cfuser"
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: assa-mongodb
+              key: mongodb-password
+        - name: MONGODB_DATABASE
+          value: "codefresh"
+        ports:
+        - name: mongodb
+          containerPort: 27017
+        livenessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/mongodb
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: assa-mongodb
+---
+# Source: codefresh/charts/redis/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-redis
+  labels:
+    app: assa-redis
+    chart: "redis-0.8.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  template:
+    metadata:
+      labels:
+        app: assa-redis
+    spec:
+      containers:
+      - name: assa-redis
+        image: "bitnami/redis:3.2.9-r2"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: assa-redis
+              key: redis-password
+        ports:
+        - name: redis
+          containerPort: 6379
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          
+        volumeMounts:
+        - name: redis-data
+          mountPath: /bitnami/redis
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: assa-redis
+---
+# Source: codefresh/charts/consul/templates/consul.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-consul-gossip-key
+type: Opaque
+data:
+  gossip-key: djZ4cUl4alBkUXNoc1lucGxZUWxTSXdq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "assa-consul-ui"
+  labels:
+    heritage: "Tiller"
+    release: "assa"
+    chart: "consul-0.3.0"
+    component: "assa-consul"
+spec:
+  ports:
+  - name: http
+    port: 8500
+  selector:
+    component: "assa-consul"
+  type: "NodePort"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "assa-consul"
+  labels:
+    heritage: "Tiller"
+    release: "assa"
+    chart: "consul-0.3.0"
+    component: "assa-consul"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: http
+    port: 8500
+  - name: rpc
+    port: 8400
+  - name: serflan-tcp
+    protocol: "TCP"
+    port: 8301
+  - name: serflan-udp
+    protocol: "UDP"
+    port: 8301
+  - name: serfwan-tcp
+    protocol: "TCP"
+    port: 8302
+  - name: serfwan-udp
+    protocol: "UDP"
+    port: 8302
+  - name: server
+    port: 8300
+  - name: consuldns
+    port: 8600
+  clusterIP: None
+  selector:
+    component: "assa-consul"
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: "assa-consul"
+  labels:
+    heritage: "Tiller"
+    release: "assa"
+    chart: "consul-0.3.0"
+    component: "assa-consul"
+spec:
+  serviceName: "assa-consul"
+  replicas: 1
+  template:
+    metadata:
+      name: "assa-consul"
+      labels:
+        heritage: "Tiller"
+        release: "assa"
+        chart: "consul-0.3.0"
+        component: "assa-consul"
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: "assa-consul"
+        image: "consul:0.8.3"
+        imagePullPolicy: "Always"
+        ports:
+        - name: http
+          containerPort: 8500
+        - name: rpc
+          containerPort: 8400
+        - name: serflan-tcp
+          protocol: "TCP"
+          containerPort: 8301
+        - name: serflan-udp
+          protocol: "UDP"
+          containerPort: 8301
+        - name: serfwan-tcp
+          protocol: "TCP"
+          containerPort: 8302
+        - name: serfwan-udp
+          protocol: "UDP"
+          containerPort: 8302
+        - name: server
+          containerPort: 8300
+        - name: consuldns
+          containerPort: 8600
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+        env:
+        - name: INITIAL_CLUSTER_SIZE
+          value: "1"
+        - name: STATEFULSET_NAME
+          value: "assa-consul"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: STATEFULSET_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/consul
+        - name: gossip-key
+          mountPath: /etc/consul/secrets
+          readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - consul
+            - members
+          initialDelaySeconds: 300
+          timeoutSeconds: 5
+        command:
+          - "/bin/sh"
+          - "-ec"
+          - |
+            IP=$(hostname -i)
+
+            if [ -e /etc/consul/secrets/gossip-key ]; then
+              echo "{\"encrypt\": \"$(base64 /etc/consul/secrets/gossip-key)\"}" > /etc/consul/encrypt.json
+              GOSSIP_KEY="-config-file /etc/consul/encrypt.json"
+            fi
+
+            for i in $(seq 0 $((${INITIAL_CLUSTER_SIZE} - 1))); do
+                while true; do
+                    echo "Waiting for ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME} to come up"
+                    ping -W 1 -c 1 ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME}.${STATEFULSET_NAMESPACE}.svc > /dev/null && break
+                    sleep 1s
+                done
+            done
+
+            PEERS=""
+            for i in $(seq 0 $((${INITIAL_CLUSTER_SIZE} - 1))); do
+                PEERS="${PEERS}${PEERS:+ } -retry-join $(ping -c 1 ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME}.${STATEFULSET_NAMESPACE}.svc | awk -F'[()]' '/PING/{print $2}')"
+            done
+
+            exec /bin/consul agent \
+              -ui \
+              -data-dir=/var/lib/consul \
+              -server \
+              -bootstrap-expect=${INITIAL_CLUSTER_SIZE} \
+              -bind=0.0.0.0 \
+              -advertise=${IP} \
+              ${PEERS} \
+              ${GOSSIP_KEY} \
+              -client=0.0.0.0
+      volumes:
+      - name: gossip-key
+        secret:
+          secretName: assa-consul-gossip-key
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: default
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          # upstream recommended max is 700M
+          storage: "1Gi"
+
+---
+# Source: codefresh/charts/rabbitmq/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-rabbitmq
+  labels:
+    app: assa-rabbitmq
+    chart: "rabbitmq-0.5.3"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  ports:
+  - name: epmd
+    port: 4369
+    targetPort: epmd
+  - name: ampq
+    port: 5672
+    targetPort: ampq
+  - name: dist
+    port: 25672
+    targetPort: dist
+  - name: stats
+    port: 15672
+    targetPort: stats
+  selector:
+    app: assa-rabbitmq
+
+---
+# Source: codefresh/charts/ingress/templates/backend-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-ingress-http-backend
+  labels:
+    app: assa-ingress
+    chart: "ingress-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+    k8s-app: assa-ingress-http-backend
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    k8s-app: assa-ingress-http-backend
+
+
+---
+# Source: codefresh/charts/nats/templates/nats-svc.yaml
+---
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-nats
+  labels:
+    app: assa-nats
+    chart: "nats-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  type: ClusterIP
+  ports:
+  - name: "client"
+    port: 4222
+    protocol: TCP
+    targetPort: 4222
+  - name: "http"
+    port: 8222
+    protocol: TCP
+    targetPort: 8222
+  - name: "clusterig"
+    port: 6222
+    protocol: TCP
+    targetPort: 6222
+  # This is a headless service, Kubernetes won't assign a VIP for it.
+  # *.nats.codefresh.svc.cluster.local
+  clusterIP: None
+  selector:
+    app: assa-nats
+
+
+---
+# Source: codefresh/charts/mongodb/templates/pvc.yaml
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: assa-mongodb
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: default
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+
+---
+# Source: codefresh/charts/registry/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: assa-registry
+  labels:
+    app: assa-registry
+    chart: "registry-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+---
+# Source: codefresh/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.org/redirect-to-https: "false"
+  name: assa-codefresh-ingress
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  tls:
+    - secretName: assa-star-selfsigned
+  backend:
+    serviceName: assa-cfui
+    servicePort: 80
+  rules:
+  - http:
+      paths:
+      - path: /api/
+        backend:
+          serviceName: assa-cfapi
+          servicePort: 80
+      - path: /
+        backend:
+          serviceName: assa-cfui
+          servicePort: 80
+
+---
+# Source: codefresh/charts/cfui/templates/cfui-dpl.yaml
+# kind: scheduler-kubernetes
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-cfui
+  labels:
+    app: assa-cfui
+    chart: "cfui-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v113"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app: assa-cfui
+  template:
+    metadata:
+      labels:
+        app: assa-cfui
+        chart: "cfui-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+        version: "v113" 
+    spec:
+      imagePullSecrets:
+        - name: "assa-codefresh-registry"
+      containers:
+      - name: assa-cfui
+        image: "codefresh/cf-ui:v113"
+        imagePullPolicy: "IfNotPresent"
+        env:
+          - name: ASSETS_OPTIMIZED
+            value: "true"
+          - name: LOGGER_LEVEL
+            value: "error"
+          - name: LOGGER_MORAN_ACTIVE
+            value: "false"
+          - name: LOGS_PATH
+            value: "/var/log/cf-ui.log"
+          - name: NEW_USER_REDIRECT
+            value: ""
+          - name: NODE_ENV
+            value: "kubernetes"
+          - name: PORT
+            value: "80"
+          - name: CF_HOST_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: app-url
+          - name: CF_APP_PROTOCOL
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: app-protocol
+          - name: CODEFRESH_API_URL
+            value: "$(CF_APP_PROTOCOL)://$(CF_HOST_NAME)"
+          # Nats environment variables
+          - name: NATS_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: nats-service
+          - name: NATS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: nats-port
+          - name: QUEUE_SERVERS
+            value: "nats://assa-$(NATS_SERVICE).dev:$(NATS_PORT)"
+          # Rabbitmq environment variables
+          - name: RABBIT_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: rabbitmq-service
+          - name: RABBIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: rabbitmq-password
+          - name: RABBIT_USER
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: rabbitmq-username
+          - name: RABBIT_URL
+            value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@assa-$(RABBIT_SERVICE).dev"
+          # PostresSQL environment variables
+          - name: POSTGRES_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: postgres-service
+          - name: POSTGRES_HOST
+            value: "assa-$(POSTGRES_SERVICE).dev" 
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: postgres-database
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: postgres-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: postgres-password
+          - name: ROLLBAR_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: rollbar-access-token
+          # Redis environment variables
+          - name: REDIS_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: redis-service
+          - name: REDIS_URL
+            value: "assa-$(REDIS_SERVICE).dev" 
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: redis-password
+          - name: STRIPE_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: stripe-public-key
+          # other licenses and keys
+          - name: NEWRELIC_LICENSE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: newrelic-license-key
+          - name: SEGMENT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: segment-key
+          - name: LOGGLY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: loggly-token
+          - name: SLACK_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: slack-app-id
+          - name: SLACK_REDIRECTURI
+            value: $(CODEFRESH_API_URL)/slack-return
+          - name: WALKME
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: walkme-url
+          - name: LAUNCH_DARKLY_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "assa-codefresh"
+                key: launchdarkly-key
+          - name: CF_REGISTRY_DOMAIN
+            valueFrom:
+              configMapKeyRef:
+                name: "assa-codefresh"
+                key: cfcr-domain
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+# Source: codefresh/charts/runner/templates/runner-cm.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-runner
+  labels:
+    app: assa-runner
+    chart: "runner-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+data:
+  # daemon configuration
+  daemon.json: |
+    {
+      "hosts": [ "unix:///var/run/docker.sock",
+                 "unix:///var/run/codefresh/docker.sock",
+                 "tcp://0.0.0.0:1300"],
+      "storage-driver": "overlay",
+      "storage-opts": ["overlay.override_kernel_check=1"],
+      "tlsverify": true,
+      "tls": true,
+      "tlscacert": "/etc/ssl/cf/ca.pem",
+      "tlscert": "/etc/ssl/cf/cert.pem",
+      "tlskey": "/etc/ssl/cf/key.pem"
+    }
+  # register runner
+  register: |
+    #!/bin/sh
+    NODE_ADDRESS=$1
+    NODE_NAME=${NODE_ADDRESS}
+    PUBLIC_IP=$2
+    CONSUL="http://assa-consul:8500"
+    ACCOUNT=codefresh
+    ROLE=runner
+    PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"
+    SYSTEM_DATA="{\"os_name\": \"dind\"}"
+    NODE_SERVICE='
+    {
+      "Node": "",
+      "Address": "",
+      "Service": {
+        "Service": "docker-node",
+        "Tags": [
+          "dind",
+          "noagent",
+          "account_codefresh",
+          "type_runner"
+        ],
+        "Address": "",
+        "Port": 1300
+      },
+      "Check": {
+        "Node": "",
+        "CheckID": "service:docker-node",
+        "Name": "Remote Node Check",
+        "Notes": "",
+        "Status": "passing",
+        "ServiceID": "docker-node"
+      }
+    }'
+    NODE_SERVICE=${NODE_SERVICE//\"Address\": \"\"/\"Address\": \"${NODE_ADDRESS}\"}
+    NODE_SERVICE=${NODE_SERVICE//\"Node\": \"\"/\"Node\": \"${NODE_NAME}\"}
+    echo $NODE_SERVICE
+    curl -X PUT -d "${NODE_SERVICE}" ${CONSUL}/v1/catalog/register && \
+    curl -X PUT -d ${PUBLIC_IP} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/publicAddress && \
+    curl -X PUT -d ${ACCOUNT} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/account && \
+    curl -X PUT -d ${ROLE} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/role && \
+    curl -X PUT -d "${PROVIDER}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/systemData  && \
+    curl -X PUT -d "${SYSTEM_DATA}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/provider
+
+---
+# Source: codefresh/charts/builder/templates/builder-svc.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-builder
+  labels:
+    app: assa-builder
+    chart: "builder-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  ports:
+  - name: "dind-port"
+    port: 1300
+    protocol: TCP
+  # *.dind.[namespace].svc.cluster.local
+  clusterIP: None
+  selector:
+    app: assa-builder
+
+---
+# Source: codefresh/charts/payments/templates/payments-dpl.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-payments
+  labels:
+    app: assa-payments
+    chart: "payments-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v3"
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  selector:
+    matchLabels:
+      app: assa-payments
+  template:
+    metadata:
+      labels:
+        app: assa-payments
+        chart: "payments-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+        version: "v3"
+    spec:
+      imagePullSecrets:
+        - name: "assa-codefresh-registry"
+      containers:
+      - name: assa-payments
+        image: "codefresh/payments:v3"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh" 
+              key: app-url
+        - name: API_PROTOCOL
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh" 
+              key: app-protocol
+        - name: INTERNAL_API_URI
+          value: "http://assa-cfapi:3000:"
+        - name: MONGO_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-service
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-port
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: mongodb-password
+        - name: MONGO_DATABASE
+          value: "payments"
+        - name: NEWRELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: newrelic-license-key
+        - name: RABBIT_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-service
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: rabbitmq-username
+        - name: EVENTBUS_URI
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@assa-$(RABBIT_SERVICE).dev"
+        - name: POSTGRES_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-service
+        - name: POSTGRES_HOST
+          value: "assa-$(POSTGRES_SERVICE).dev" 
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-codefresh"
+              key: postgres-database
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: postgres-password
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: stripe-secret-key
+        - name: STRIPE_WEBHOOK_SIGN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "assa-codefresh"
+              key: stripe-webhook-sign-secret
+---
+# Source: codefresh/charts/registry/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-registry
+data:
+  internal-registry.json: |
+    {
+      "kind": "standard",
+      "domain": "registry.dev.svc:5000",
+      "connection": {
+        "protocol": "https",
+        "caPath": "/etc/ssl/cf/ca.pem"
+      }
+    }
+
+---
+# Source: codefresh/charts/registry/templates/deployment.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: assa-registry
+  labels:
+    app: assa-registry
+    chart: "registry-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: assa-registry
+        chart: "registry-0.1.0"
+        release: "assa"
+        heritage: "Tiller"
+    spec:
+      containers:
+      - name: assa-registry
+        image: "registry:2.6"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: REGISTRY_HTTP_ADDR
+          value: ":5000"
+        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+          value: /var/lib/registry
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /etc/ssl/cf/cert.pem
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /etc/ssl/cf/key.pem
+        volumeMounts:
+        - name: image-store
+          mountPath: /var/lib/registry
+        - name: cf-certs
+          mountPath: /etc/ssl/cf
+          readOnly: true
+        ports:
+        - containerPort: 5000
+          name: registry
+          protocol: TCP
+      volumes:
+      - name: image-store
+        persistentVolumeClaim:
+          claimName: assa-registry
+      - name: cf-certs
+        secret:
+          secretName: assa-cf-certs
+
+
+---
+# Source: codefresh/charts/builder/templates/builder-cm.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-builder
+  labels:
+    app: assa-builder
+    chart: "builder-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+data:
+  register: |
+    #!/bin/sh
+    readonly NODE_NAME=$1
+    readonly SUBDOMAIN=$2
+    readonly NODE_ADDRESS="$1.$2"
+    readonly CONSUL="http://assa-consul:8500"
+    readonly ACCOUNT=codefresh
+    readonly ROLE=builder
+    readonly PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"
+    readonly SYSTEM_DATA="{\"os_name\": \"dind\"}"
+    readonly NODE_SERVICE="
+    {
+      \"Node\": \"${NODE_NAME}\",
+      \"Address\": \"${NODE_ADDRESS}\",
+      \"Service\": {
+        \"Service\": \"docker-node\",
+        \"Tags\": [
+          \"dind\",
+          \"noagent\",
+          \"account_codefresh\",
+          \"type_builder\"
+        ],
+        \"Address\": \"${NODE_ADDRESS}\",
+        \"Port\": 1300
+      }
+    }"
+    echo "Registering dind node ($NODE_NAME) in consul. Configuration: $NODE_SERVICE"
+    curl -X PUT -d "${NODE_SERVICE}" ${CONSUL}/v1/catalog/register && \
+    curl -X PUT -d ${NODE_ADDRESS} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/publicAddress && \
+    curl -X PUT -d ${ACCOUNT} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/account && \
+    curl -X PUT -d ${ROLE} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/role && \
+    curl -X PUT -d "${PROVIDER}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/systemData  && \
+    curl -X PUT -d "${SYSTEM_DATA}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/provider
+  # daemon configuration
+  daemon.json: |
+    {
+      "hosts": [ "unix:///var/run/docker.sock",
+                 "unix:///var/run/codefresh/docker.sock",
+                 "tcp://0.0.0.0:1300"],
+      "storage-driver": "overlay",
+      "storage-opts": ["overlay.override_kernel_check=1"],
+      "tlsverify": true,
+      "tls": true,
+      "tlscacert": "/etc/ssl/cf/ca.pem",
+      "tlscert": "/etc/ssl/cf/cert.pem",
+      "tlskey": "/etc/ssl/cf/key.pem"
+    }
+
+---
+# Source: codefresh/charts/mongodb/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-mongodb
+  labels:
+    app: assa-mongodb
+    chart: "mongodb-0.4.11"
+    release: "assa"
+    heritage: "Tiller"
+type: Opaque
+data:
+  mongodb-root-password: ""
+  mongodb-password: "bVRpWGNVMndhZnI5"
+
+---
+# Source: codefresh/charts/builder/templates/builder-ss.yaml
+---
+# kind: scheduler-kubernetes
+apiVersion: apps/v1beta1
+# TODO: We can't use statefulsets because they are immutable (except the replicas field).
+#       We should integrate the launching of dind pods into the api service (already in progress).
+kind: StatefulSet
+metadata:
+  name: assa-builder
+  labels:
+    app: assa-builder
+    chart: "builder-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  serviceName: assa-builder
+  replicas: 2
+  template:
+    metadata:
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "register-dind-container",
+            "image": "alexeiled/curl:3.6",
+            "imagePullPolicy": "IfNotPresent",
+            "volumeMounts": [
+              {
+                "name": "assa-builder",
+                "mountPath": "/opt/dind/register",
+                "subPath": "register"
+              }
+            ],
+            "env": [
+              {
+                "name": "POD_NAME",
+                "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
+              }
+            ],
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} assa-builder.dev"]
+          }
+        ]'
+      labels:
+        app: assa-builder
+        chart: "builder-0.1.2"
+        release: "assa"
+        heritage: "Tiller"
+    spec:
+      containers:
+      - image: "docker:17.05-dind"
+        name:  assa-builder
+        imagePullPolicy: "IfNotPresent"
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 1300
+          protocol: TCP
+        env:
+        - name: REGISTRY_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-"
+              key: registry-service
+        - name: REGISTRY_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: "assa-"
+              key: registry-service-port
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: "$(REGISTRY_SERVICE).dev.svc:$(REGISTRY_SERVICE_PORT)"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            rm -fv /var/run/docker.pid
+            mkdir /var/run/codefresh
+            mkdir -p /etc/docker/certs.d/$(RUNTIME_LOCAL_REGISTRY_NAME)/
+            cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/$(RUNTIME_LOCAL_REGISTRY_NAME)/ca.crt
+            dockerd
+        volumeMounts:
+        - mountPath: /etc/ssl/cf
+          readOnly: true
+          name: cf-certs
+        - mountPath: /etc/docker/daemon.json
+          name: builder-config
+          readOnly: true
+          subPath: daemon.json
+      volumes:
+      - name: cf-certs
+        secret:
+          secretName: assa-cf-certs 
+      - name: builder-config
+        configMap:
+          name: assa-builder
+
+
+---
+# Source: codefresh/charts/cfui/templates/cfui-svc.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-cfui
+  labels:
+    app: assa-cfui
+    chart: "cfui-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+    version: "v113"
+spec:
+  type: NodePort
+  ports:
+  - name: "http"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: assa-cfui
+---
+# Source: codefresh/charts/redis/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-redis
+  labels:
+    app: assa-redis
+    chart: "redis-0.8.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: redis
+  selector:
+    app: assa-redis
+
+---
+# Source: codefresh/charts/mongodb/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-mongodb
+  labels:
+    app: assa-mongodb
+    chart: "mongodb-0.4.11"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  ports:
+  - name: mongodb
+    port: 27017
+    targetPort: mongodb
+  selector:
+    app: assa-mongodb
+
+---
+# Source: codefresh/charts/cfapi/templates/cfapi-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assa-cfapi
+  labels:
+    app: assa-cfapi
+    chart: "cfapi-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+data:
+  providers.json: |
+    {
+      "aws": {
+      }
+    }
+  accounts.json: |
+    {
+        "_id" : ObjectId("59009117c102763beda7ce71"),
+        "badgeToken" : "eyJhbGciOiJIUzI1NiJ9.NTkwMDkxMTdjMTAyNzYzYmVkYTdjZTcx.B0HOUL6HlpTRNr_e95pVucSRMRzP2cobe5kIoMtrDSc",
+        "createdAt" : ISODate("2017-04-26T12:22:48.001+0000"),
+        "updatedAt" : ISODate("2017-04-26T12:27:13.720+0000"),
+        "name" : "admin-cf",
+        "provider" : "stash",
+        "runtimeEnvironment" : "codefresh",
+        "canUsePrivateRepos" : true,
+        "dedicatedInfrastructure" : false,
+        "build" : {
+            "nodes" : NumberInt(0),
+            "parallel" : NumberInt(1),
+            "strategy" : "account"
+        },
+        "integrations" : {
+            "stash" : {
+                "active" : false
+            },
+            "registries" : [
+
+            ]
+        },
+        "notifications" : [
+            {
+                "type" : "pr",
+                "events" : [
+                    "build-success"
+                ]
+            }
+        ],
+        "repoPermission" : "public",
+        "environment" : NumberInt(1),
+        "admins" : [
+            ObjectId("59009221c102763beda7cf04")
+        ],
+        "__v" : NumberInt(0)
+    }
+  users.json: |
+    {
+        "_id" : ObjectId("59009221c102763beda7cf04"),
+        "register_date" : ISODate("2017-04-26T12:27:13.608+0000"),
+        "userName" : "AdminCF",
+        "email" : "admin@codefresh.io",
+        "defaultAccount" : NumberInt(0),
+        "notifications" : [
+            {
+                "type" : "mail",
+                "events" : [
+                    "build-success",
+                    "build-failure"
+                ]
+            }
+        ],
+        "provider" : {
+            "name" : "stash",
+            "repoPermission" : "private"
+        },
+        "status" : "new",
+        "account" : [
+            ObjectId("59009117c102763beda7ce71")
+        ],
+        "roles" : [
+            "User",
+            "Admin"
+        ],
+        "key" : {
+            "key" : "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAz6JQxcFORE6KwmBO1UnfpCph/PyARfm65eYXRuCOzdv5EIcz\n+4rRBwooH/SR8Wq49QRjq+Qm6ce2EBj2HD57t4rMj3W6X+5CwoFRXfF0tB4GqPSe\nDagbrNJbx93/dbEM+qEZNFk1MxtoJcBmj3jfrlGdTrarR3VOeBgKVLm/+Wz36pjM\nI4utzupHFAPquSIz0jis02/vccIZ8rAtyVdCd1q6Wz5DVu6iuGyMCYrpa9MFcupR\nc2eggyZ6PyNhmKuP7twr7y22elDQDkSo0G2yv4qbZnHEmShHhO/PKePMETUYMRvM\nzSS9qndT+Nax8vQvxeOCN3cEwm/Jy1oboYiwAwIDAQABAoIBAHyAJpC9nXGl6tws\npXiNKFWmuETbHwtWeDQcKL7uLZLQoOLBP3FIRphDBdZLbytkQ+1fKWjLkG3Du66h\nWQmMieB/kLNA83VMR6mboy+Cdej+zB2JODCWKaoSJMiOm/x1IoQyDwvtpdG0UFm6\nqYTEBNPgykOFkuRxOZEXUTKGgs9K7CFt1TbN8/bGCLgdq9plH2OvlOZkr4Cz0LpS\ns+Y/QJ/H4DDNZ6538NYLpq40Qi2NNq7iFJQ3iddEDi0i5O7pJK3Lziin/h3m99a+\nDbQET1bHm5Jh+Nrfxh1iwHaXdQLLoz5cex/ie5H6jtEMCSdcd53sPivSyHwMprEm\ng+0sNnECgYEA7q1eYNGJoA/UNXotVjPCaArf9/s1xiOTr5Fv1nWkH0jkmrj0WdjB\nsLQByC/wjSmZpfcKp38Z3JDFUimUEuCtZzgBCN6JB6VXe1t3L0wI1VTnxJwvsk8V\nQCB/gTugIDE1oE97kTvDuGl74XyY7uHyA1aYiXVnJ0bw8mcNCW2EzZkCgYEA3rQp\n3JjBGxBXaz7yCfhoQn5YZXw5yMBngyP8emu8u+7excZvCqIG+8NVh5KGFApOw9oe\n0aHUXGgfhSsl+xFA/m+E56mxm/J1PqRrWbnaEkLzPRSoFJBckjBm3ADHb6PuGbOL\nT72qxKPdZ1kdt0QfqIbZpR45COVk6KtmHMCO0/sCgYB6YaL2+fobfIJPOWptvPR9\n7LWSrdiQ1EUxzN0Plhqlf/bX7uY7+4y1Uldnkk1B1IbYNqfb4qwcEI9c5bzrQREo\nz+qX5aNVrE4DDo86TT5qRLLieUNrpmk7DG7UkQI1/4WDwb2WZpKgyFWg9QZl1q0F\nUS29rdlKpnF9maFxqBpkYQKBgBPU31VxlOCgF+jI9izFHiOttJl08oBaAd2/up/8\nMBZcMyJRhVnhC9Ynkto7xgzKzjDKn6vzSUHhU808BmnRI4SE0cT/a32DncUyRwz6\na9zscVSjHkSWhmfOP5qfxyK96loHjwRO04InRXQKj4beXiNXvtHhWxrbspy1hqZQ\nz2c5AoGBAO0tRNKfgoZH+sTiaphR550YFnIn8U9ROa1iQUvSiM0nHW6FraIR1sYB\nUTCtgOSJdffGMFrvH+PhShJPw7u3juZh9NBzrARjZPwBJyBaYDw3elVc3epZWoGC\n8EBEgdFVqFwPctkGvqyJ/5Zl3KnTioXxslHjP45H+Ne/nEWPejuP\n-----END RSA PRIVATE KEY-----\n",
+            "pubKey" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPolDFwU5ETorCYE7VSd+kKmH8/IBF+brl5hdG4I7N2/kQhzP7itEHCigf9JHxarj1BGOr5Cbpx7YQGPYcPnu3isyPdbpf7kLCgVFd8XS0Hgao9J4NqBus0lvH3f91sQz6oRk0WTUzG2glwGaPeN+uUZ1OtqtHdU54GApUub/5bPfqmMwji63O6kcUA+q5IjPSOKzTb+9xwhnysC3JV0J3WrpbPkNW7qK4bIwJiulr0wVy6lFzZ6CDJno/I2GYq4/u3CvvLbZ6UNAORKjQbbK/iptmccSZKEeE788p48wRNRgxG8zNJL2qd1P41rHy9C/F44I3dwTCb8nLWhuhiLAD blabla\n"
+        },
+        "__v" : NumberInt(1),
+        "last_login_date" : ISODate("2017-04-26T12:27:21.788+0000"),
+        "hashedPassword" : "jRFgMK8CYVXa4FRBVsZQyWHdw/ErWSJzO/WKqdGcLpmeOZw8e6X5TvkYIkc617LU76RCB9B1jPNsbNVaTQGt4g==",
+        "salt" : "GswhajDWen9vNW+fZ+xVbA=="
+    }
+
+
+---
+# Source: codefresh/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-postgresql
+  labels:
+    app: assa-postgresql
+    chart: "postgresql-0.7.1"
+    release: "assa"
+    heritage: "Tiller"
+type: Opaque
+data:
+  
+  postgres-password:  "ZUM5YXJZa2E0WmJI"
+  
+
+---
+# Source: codefresh/charts/registry/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-registry
+  labels:
+    app: assa-registry
+    chart: "registry-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+    component: main
+spec:
+  ports:
+  - name: assa-registry
+    port: 5000
+    protocol: TCP
+  selector:
+    app:  assa-registry
+    component: main
+
+
+---
+# Source: codefresh/templates/regsecret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assa-codefresh-registry
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+type: kubernetes.io/dockercfg
+data:
+  .dockercfg: eyJpbmRleC5kb2NrZXIuaW8iOnsidXNlcm5hbWUiOiJjb2RlZnJlc2giLCJwYXNzd29yZCI6ImVgfStCVX55TXd7VUxjK090YHpAKzN4enciLCJlbWFpbCI6ImFkbWluQGNvZGVmcmVzaC5pbyIsImF1dGgiOiJZMjlrWldaeVpYTm9PbVZnZlN0Q1ZYNTVUWGQ3VlV4akswOTBZSHBBS3pONGVuYz0ifX0=
+---
+# Source: codefresh/templates/configmaps/etc-hosts.yaml
+## additional records to /etc/hosts of the containers
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: assa-codefresh-etc-hosts
+  labels:
+    app: assa-codefresh
+    chart: "codefresh-0.1.1"
+    release: "assa"
+    heritage: "Tiller"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "1"
+data:
+  hosts-app: 
+---
+# Source: codefresh/charts/runner/templates/runner-svc.yaml
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: Service
+metadata:
+  name: assa-runner
+  labels:
+    app: assa-runner
+    chart: "runner-0.1.2"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  ports:
+  - name: "dind-port"
+    port: 1300
+    protocol: TCP
+  # *.dind.[namespace].svc.cluster.local
+  clusterIP: None
+  selector:
+    app: assa-runner
+
+---
+# Source: codefresh/charts/nats/templates/nats-ss.yaml
+---
+# kind: scheduler-kubernetes
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: assa-nats
+  labels:
+    app: assa-nats
+    chart: "nats-0.1.0"
+    release: "assa"
+    heritage: "Tiller"
+spec:
+  serviceName: assa-nats
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: assa-nats
+        chart: "nats-0.1.0"
+        release: "assa"
+        heritage: "Tiller"
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+      - image: "nats:0.9.4"
+        name: assa-nats
+        imagePullPolicy: "IfNotPresent"
+        args:
+          - --addr
+          - 0.0.0.0
+          - --port
+          - "4222"
+          - --http_port
+          - "8222"
+          - --cluster
+          - nats://$(POD_IP):6222
+          - --routes
+          - nats://assa-nats-0.nats:6222
+        env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        ports:
+        - containerPort: 8222
+          protocol: TCP
+        - containerPort: 6222
+          protocol: TCP
+        - containerPort: 4222
+          protocol: TCP
+      restartPolicy: Always

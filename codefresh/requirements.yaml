@@ -25,21 +25,3 @@ dependencies:
   version: 0.1.0
   repository: file://../ingress
   condition: ingress.enabled
-- name: cfapi
-  version: 0.1.2
-  repository: file://../cfapi
-- name: cfui
-  version: 0.1.2
-  repository: file://../cfui
-- name: cfruntime
-  version: 0.1.2
-  repository: file://../cfruntime
-- name: builder
-  version: 0.1.2
-  repository: file://../builder
-- name: payments
-  version: 0.1.2
-  repository: file://../payments
-- name: runner
-  version: 0.1.2
-  repository: file://../runner

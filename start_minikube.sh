@@ -16,4 +16,9 @@ KUBE_VER=v1.7.0
 # VM=xhyve
 VM=virtualbox
 
-minikube start --cpus=4 --memory=8192 --vm-driver=$VM --disk-size=40g --kubernetes-version=$KUBE_VER $RBAC $DEV
+# docker run -d --restart=always -p 15000:5000 --name registry-mirror -v /mirror/data:/var/lib/registry -v /mirror/config:/etc/docker/registry registry:2
+
+# Docker registry mirror: IP for VirtualBox
+RM="--registry-mirror=http://localhost:15000 --mount --mount-string=$HOME/.minikube/mirror:/mirror"
+
+minikube start --cpus=4 --memory=8192 --vm-driver=$VM --disk-size=40g --kubernetes-version=$KUBE_VER $RM $RBAC $DEV

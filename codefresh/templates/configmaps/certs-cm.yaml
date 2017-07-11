@@ -1,0 +1,72 @@
+# kind: scheduler-kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-certs-scripts
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "10"
+data:
+  gen-website-tls: |
+    #!/bin/sh
+
+    which openssl || apk --update add openssl
+
+    openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+    openssl rsa -passin pass:x -in server.pass.key -out tls.key
+    rm server.pass.key
+    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.appUrl }}"
+    openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
+
+    kubectl create secret tls {{ .Release.Name }}-star-selfsigned --cert=tls.crt --key=tls.key
+  gen-runtime-certs: |
+    #!/bin/sh
+    err() { echo "ERROR: $1"; exit 1; }
+
+    which openssl || apk --update add openssl
+
+    TMPDIR=$(dirname $0)/cfcerts
+    mkdir -p $TMPDIR || err "Cannot create the temp directory $TMPDIR"
+
+    CA_KEY=$TMPDIR/ca-key.pem
+    CA_PEM=$TMPDIR/ca.pem
+    SERVER_KEY=$TMPDIR/server-key.pem
+    SERVER_PEM=$TMPDIR/server.pem
+    SERVER_CSR=$TMPDIR/server.csr
+    CLIENT_CERT=$TMPDIR/cert.pem
+    CLIENT_KEY=$TMPDIR/key.pem
+    EXTFILE=$TMPDIR/extfile.cnf
+
+    echo "--- Generate ca-key.pem"
+    openssl genrsa -out $CA_KEY 4096
+
+    echo "--- Generate ca.pem"
+    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.{{ .Values.appUrl }}"
+
+    echo "--- Generate server-key.pem"
+    openssl genrsa -out $SERVER_KEY 4096
+
+    echo "--- generate csr "
+    openssl req -subj "/CN=*.{{ .Values.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
+
+    echo "--- create ca extfile"
+    echo -e \
+    "extendedKeyUsage=serverAuth,clientAuth
+    subjectAltName = DNS:*.{{ .Release.Namespace }},DNS:*.{{ .Release.Namespace }}.svc,DNS:*.{{ .Release.Namespace }}.svc.cluster.local" > $EXTFILE
+
+    echo "--- sign certificate $SERVER_PEM "
+    openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
+      -CAcreateserial -out $SERVER_PEM -extfile $EXTFILE || err "Failed to sign certificate"
+
+    cp -v $SERVER_PEM $CLIENT_CERT
+    cp -v $SERVER_KEY $CLIENT_KEY
+
+    kubectl create secret generic {{ .Release.Name }}-cf-certs \
+      --from-file=$CA_PEM \
+      --from-file=$CLIENT_KEY \
+      --from-file=$CLIENT_CERT || err "Failed storing the generated certificates in Kubernetes!"
