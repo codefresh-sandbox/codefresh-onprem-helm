@@ -1,49 +1,53 @@
 mongodb:
-    mongodbUsername: ENC[AES256_GCM,data:nzao+n+K,iv:2M+stav/f3tXjfXWMaZ5KNMJ793Hc9s8hk7rYVwDl9o=,tag:pB6Ad2KCJVS+EooMxpBa8A==,type:str]
-    mongodbPassword: ENC[AES256_GCM,data:dAd1VA9JAjwE6cMN,iv:drevH1MtgcN9/T4/T7AARQgx7ZdhsWd1I2eC3qS3lzI=,tag:KJnSflyi3gNrWsHAmbAM/Q==,type:str]
-    mongodbDatabase: ENC[AES256_GCM,data:2mKXy2obwg8i,iv:0ZEDL1yNOt1aRz/YwNy3TBwMKpZZtPtaIIIfVMNObZY=,tag:O5I7TIqkJjV5A+BfLVuwkQ==,type:str]
+    mongodbUsername: ENC[AES256_GCM,data:PEd1Mtvc,iv:J+m4L7srD7EfbtmvAwgaIi2bQ9rhU2z71N9LY97Qle4=,tag:4bnxgBgzFUpYsjyF/o87lQ==,type:str]
+    mongodbPassword: ENC[AES256_GCM,data:yFOmEYZlngumDnf/,iv:i1pJnoBpXMZDS3oxnoKG484k/e+4WvtSbz1zhUj+gQY=,tag:dxViiWd1BNmj9ZeHl6NKJQ==,type:str]
+    mongodbDatabase: ENC[AES256_GCM,data:TeXn5zRHVYv2,iv:6JhmY2LbV6KuxcuL+9+GHHSIXPlf7FHG9Ah7CtbGaqo=,tag:5e0vqqpIieMBPyTvOZ0DTA==,type:str]
     # rabbitmq credentials
 rabbitmq:
-    rabbitmqUsername: ENC[AES256_GCM,data:9/pdAw==,iv:7kdeOV0SzK0x60n2JQVvJO2CIqHeaf5okONn1ae27+8=,tag:7RTGikWQ2913I3I+EWhvKw==,type:str]
-    rabbitmqPassword: ENC[AES256_GCM,data:FuSVL01j6MxE6bi5,iv:H5fA9hIZZjiyqU1AeLZU/oImz6TxmKBMJkstjR049w4=,tag:lMHWMSX/tH08tzPg+jE+KA==,type:str]
+    rabbitmqUsername: ENC[AES256_GCM,data:WCSp6w==,iv:vf3lVgjZMKIPtxtZ6jCM06975SCXYfkTU8wH9j3clV0=,tag:TqXaGUm3555DA8/FzAcrFA==,type:str]
+    rabbitmqPassword: ENC[AES256_GCM,data:Zjh80pf/mxLLSIao,iv:SekQm5DoTrVLvpLRRPDeKp6+sJVDvv1oeLYwvvvuLzU=,tag:qY/MBPW7hOfMqicq4JdUKg==,type:str]
     # postgres credentials
 postgresql:
-    postgresUser: ENC[AES256_GCM,data:LZbQBwHTkqs=,iv:ELgmqdj0No1w+pLtKNGx3JBpdanTCht+ByCouhZcRog=,tag:74Sdg0gaCX9cot4lI3BwBg==,type:str]
-    postgresPassword: ENC[AES256_GCM,data:/X9mgYOaSYNmYyJ/,iv:PmSsbxWZ5g+Ih4wp3I0I0kNgjDLqF3/o4ZaJUdOWbdE=,tag:zpxEEvZRmolCp79TLIfSZw==,type:str]
-    postgresDatabase: ENC[AES256_GCM,data:xIhF8EnN0pl7,iv:7D+H3+8W1q+l8fK9J9pGhJ5NidOrnvQZ3u8g62QpCKc=,tag:9E8ey1c5HUEVPeOo0Oo4pw==,type:str]
+    postgresUser: ENC[AES256_GCM,data:VlOoeTfImHE=,iv:23M90Ma2jxjYHoy+CBiAXaq/roefoI2Gf8hqcFEohK4=,tag:kyJblUQXOWBlQkMThLgvfQ==,type:str]
+    postgresPassword: ENC[AES256_GCM,data:F9PnNCFqggsD/Ees,iv:zshV5KlOvGLJzkd05kk+Rv27Rg4fNMIMh9NwO3Y46l8=,tag:981UvI6oOwFrF+8MkMQ6Sw==,type:str]
+    postgresDatabase: ENC[AES256_GCM,data:xLdQLAgXqX1X,iv:cE0ZuH2rDk0+r6GDbzO9HmgrOT2/v5CGHrBeZHON2zM=,tag:vEa6X14hxaW0IZ4tYSKJbQ==,type:str]
     # redis credentials
 redis:
-    redisPassword: ENC[AES256_GCM,data:V/HPvDiWDD5RXW4/,iv:KcHPs+2MId+DGwGrE2uHJarA2Q8QKN36YZ9TJ5fE3t8=,tag:6OuVdek90qmDHsX7/uvcMQ==,type:str]
+    redisPassword: ENC[AES256_GCM,data:NCjmDJV3OZbc5aB6,iv:aTnR9sZf0FGePhkMWNElsF/oRriH59qz38x+XpW0ZEs=,tag:4zVm3/suUgJQvuYftnC3yA==,type:str]
     # misc
-apiSafeSecret: ENC[AES256_GCM,data:WGoHxePRXYPdwjf19RcdQz0982wgq9cPDQ==,iv:omVjQrd+9SWDG0KoT1Az4ZhqX+sYpZ7NBTX3IorIew0=,tag:IDz8YVOWwugLMbOIUql5jw==,type:str]
-firebaseSecret: ENC[AES256_GCM,data:QIfxZ/uuTeuwAfzaHhloYuDAOgmhiCQdjfgqMxS0nVnHXCL+8kM3sA==,iv:XUUsdkBvfHJoC9I//RkdDXsSjkagsasckHhtn70U/sE=,tag:g5Uwltlf+APDpCviY8HOaQ==,type:str]
-slackAppID: ENC[AES256_GCM,data:cDrAumlMIc+HVObztppNwmtaCugohw==,iv:wR6tJplOFhfO4fjYhcm4loYwTfQdHyRwf79xO/fhmB0=,tag:vwIKfqRFjmNzFJFCylmEhg==,type:str]
+apiSafeSecret: ENC[AES256_GCM,data:Wj67B3sPO+w/EEmNqFyzUbtjL5ib9cVoYg==,iv:qiMSsQUdm27n2oPncNMCPOLfLTXnPhi09Pfp5eg1VAA=,tag:yyZq0FpitoPqT65q/hIcsA==,type:str]
+firebaseSecret: ENC[AES256_GCM,data:eERJMOnleMuYTfqJfIv5OqeCrXun8PvKY3OnlpxHCeeYbEYTGsJOzQ==,iv:H6jnpHJqd9+2Cit65diK3KJ6QxsGWSha9MVkfKzMp3A=,tag:mikMOzApnZjTN0vOZ4ZLiQ==,type:str]
+slackAppID: ENC[AES256_GCM,data:gt/G+xPipUvmOn2Su/QPy+zhfmHoAA==,iv:ldIUblHgvOdf6P2mVUBFMlKZEplE3YrCjNephtkZinw=,tag:CI6MwHfh2131yf339BV9zg==,type:str]
 # stripe keys
-stripeSecretKey: ENC[AES256_GCM,data:WncaBitfHXqnxRaZt2US7fVEKcIb3BFoj2AN+NUVTWo=,iv:3lTmGdYiHHz6DQd72wtDiuqh40HcioS96LPkrAi4oe0=,tag:n8iSh54VAU9WHYrxjWLJiA==,type:str]
-stripePublicKey: ENC[AES256_GCM,data:6k0LwLOy8D1zbZuLw3JuqRKUQVbWA64RmQoQllg6vQE=,iv:2CzA6N9fyuT0nIJySqj6Mi2io2T5MJrVQfHyl06bjpw=,tag:HHWwUQzZ865TMczNR3DsCg==,type:str]
-stripeWebhookSecret: ENC[AES256_GCM,data:bcQX1pCtw0N8d+0nsPm3yTqaZPn0QmlBFIZejEe/4p6lnqGUIrA=,iv:mEGbzSjb+w3Abr7IeA4I8vZ8UfqV3/z7S/URBwpWcX8=,tag:SZt/46MW2XgOUI6smMHsYw==,type:str]
+stripeSecretKey: ENC[AES256_GCM,data:dAKCo6MsgU0jX4BB6yYZBFEsBHCO1gmaKlAxYxc1YvE=,iv:LswtQTZ/UsPD+Ppqwm0X5hy/ckYpAOQm4BGx5yUyz0o=,tag:dtYHqE0S5zAj6f7K8Sg8dA==,type:str]
+stripePublicKey: ENC[AES256_GCM,data:TJmcxSdSJLRAWMfVGg5K/KobdOfDB5Q/CCfS/P9vyIY=,iv:W/0NcOWKnHIuKdvMLZDnZm+n9PLh56KJWAwZTfBIxto=,tag:DaFwanISCoVJTK5bQcM8Vg==,type:str]
+stripeWebhookSecret: ENC[AES256_GCM,data:OGI1SBTEtJAn7pdNK/d60EC+L7N/fpcUidWg2jpRLBAWV83xkqI=,iv:R1VUrTY5q/5j9q8lVAJaLHXkRz5tlE3CCmlSa872ntM=,tag:G6Yf2Hag4nNzq41TR7kdhw==,type:str]
 # github dev secrets
-githubClientID: ENC[AES256_GCM,data:AIpA/LBrxaxTxK4PiO0T5RgtF4E=,iv:7Pat4r4F2HH+LayNkxVxXiXVF3C4J5mZ+qegr2xh3lM=,tag:jMspP/sM3G8KxLx84OC0fQ==,type:str]
-githubClientSecret: ENC[AES256_GCM,data:LCrurQhEdNS0Zw4Eci7er2GUuXFDoRPdAtR8S9YL81MlNGN6E/IX1g==,iv:2ec13HelsvkKp12vV2w/fdgqvEtg0IDABVMfoJCQqpI=,tag:hTPGbcv8TUej3V5a516B/Q==,type:str]
-githubInternalToken: ENC[AES256_GCM,data:321MxLmDR+u5eoRnnNy9Y6OechiGCPXI1qDsbsUcl0f7ThpmpfjiGA==,iv:B6zNiuh2CxU5yxsqoOzUNAQz50PcVEHtFC+BzymrvnE=,tag:meqSUjD/k+FnsCeBDisurw==,type:str]
+githubClientID: ENC[AES256_GCM,data:tyAZrX9Ie91++duhm52s++cTgH8=,iv:wub3z4fjc6CnJQD/94rXjmmRcqO3h1zvA07j7vAQxV0=,tag:w0vTxs1a4IXSOW9EdjJ2hw==,type:str]
+githubClientSecret: ENC[AES256_GCM,data:fzumRVYFveyaC8Mn2s8Q40dhts4ctSGYukJ/9heQua2oZBnZvdlDeQ==,iv:V0bIfuIM8nsN2DCpe56FsxSv2eb7ETFaWQRIXqYVzW4=,tag:sDum5YXq+cOjMFMiq9JKOw==,type:str]
+githubInternalToken: ENC[AES256_GCM,data:SBB4wv4IcL3QLAwblBLbY17BHk6xXRTspvu6uz4Adv3k2xAL0A9qiA==,iv:3ovjoJfQDq2NLrLB5PRc5L/0jKjGpY9pfqUc/YqVPIU=,tag:kzSgPqn8SolW7fx5nLm7ig==,type:str]
 # gitlab dev secrets
-gitlabClientID: ENC[AES256_GCM,data:q1zWLRyPmkGm9hFw9Of/WYcAg2humjnovM4v+PqgznP6fYfRcx4ZV+8BKS+A8imAsOykyGI1x5OHhmfNKUt1Xw==,iv:Xy/nQ685fJmuC2sOa84Kn4/d4llpZdgLXEMd2NILn7s=,tag:vQN94gNdgOETpWyzMBgWTQ==,type:str]
-gitlabClientSecret: ENC[AES256_GCM,data:IxLsXmM6mjopiFXuUtvb4pa2F59W9gv2SFPrM6UtPbSSeutEPps+ouN9VMhdkv0EsbH8npAvzIH25N8Ycuy8Ig==,iv:a1XvfTF9yjIQYb89A786Ck2zU0TOPJZpJpe90SRIbgY=,tag:vPbTdIzhyiZpQGvcHMDMBA==,type:str]
+gitlabClientID: ENC[AES256_GCM,data:T22zxjn0fJqTR+4DzoeZmKhPysMh4RrZ8q+pzinK3AgsXrr776AquSmKuRU+s1Qr8pKvJZ43GkhvKgGd1xxvWQ==,iv:A8qOqRo1Oa/NbwBFeDdtaOB2efFvcX9G/52f57X8qoQ=,tag:HnSa13nRkmwtXnuZ53hLUg==,type:str]
+gitlabClientSecret: ENC[AES256_GCM,data:nlBZqj0hvcCdPnlBrj09CtIew2yn4WKsmrMp05ByhUfn0eAT4NWLbxHqldzNgXy9NxrxP/zEsa5CHJ8+hNNIng==,iv:GNnPxuHR2wVkqqyF4fHs7pvygJ2WMrzfngqTlEwUZJk=,tag:4NG5MQKS+finxfaX+AUM8w==,type:str]
 # new relic license
-newrelicLicenseKey: ENC[AES256_GCM,data:g9WDdoQyZw8WpI7gcL4WoMC33hRetu3WAJnLjFoPlFhSe8notXJqLg==,iv:YCVBvAMeRVeJnvhFIrYsEP5+rMMZ2v+5RA+OnwhuocM=,tag:sLtSUTwFQF2avzvBxUcnHA==,type:str]
+newrelicLicenseKey: ENC[AES256_GCM,data:LOguPYtUNqQSgvJF21DTMp1/AmHj8QqJth4abnWATLVx1f8H1HtDog==,iv:BepUAwQMVKJUoOWSTyj554FzSktvhRovi7PD+2dWZXc=,tag:HGA/IXRaFq6Siw934idOqw==,type:str]
 # rollbar access token
-rollbarAccessToken: ENC[AES256_GCM,data:bz7PeH/xvQl3u5+peXHgINpMJ4PhOqVu+waFUJkqfsA=,iv:jbcuLsBQGz0Wi16BcH1ows8epn442gtZi2geza1EbQ4=,tag:Tp3cAB5k0rNTRYBz2+c5uA==,type:str]
+rollbarAccessToken: ENC[AES256_GCM,data:wQjQ0O2wG0YdOOVtGbFJ4BGKGHvYX9bw82yIv/jR9F0=,iv:DTHR8GJhVkMarsQe7X8TUKI6GMmIYky/jYRFFxebF08=,tag:LSzKZlpieaK10IOmQBomlg==,type:str]
 # all these invalid secrets are here because of cfapi bugs!
-logglyToken: ENC[AES256_GCM,data:AWgogBWElwj6YkvE2w==,iv:Rtk04n/NVB4r/RrgM1RHob1MI4E7YTrYDvzgcW2q6Z0=,tag:hEU/0VSK/yBodRPC8y2OvA==,type:str]
-bitbucketClientID: ENC[AES256_GCM,data:e4VFsBYHfaG7NQ==,iv:TIZBKPzBnlddC216qqkwylKJUl9muwB/uraWvsrlAuM=,tag:G2LjRoIm3QWStB3rShYzPA==,type:str]
-bitbucketClientSecret: ENC[AES256_GCM,data:HfHRLoa1UC2/VrYLopc=,iv:1z+hiYzavp+RW76Qm0jnpXbDOTBgvQGMUAb0Jpezfpo=,tag:Z9Ed9s5iLLY4F7bku7UMUQ==,type:str]
+logglyToken: ENC[AES256_GCM,data:3vgoxDR+giLX6hvNzw==,iv:LIHCLc45IpjeA3rl+5CQRDDNCisdFAZgctZdFXfos1I=,tag:Hm5BjweVSP4AUw0LRHksOg==,type:str]
+bitbucketClientID: ENC[AES256_GCM,data:vkbpdMJfZ3mOkA==,iv:hcUFasdZNsaJpYEW7GM6XONqR4VWIFzd8PX2wDal6aY=,tag:hKuFzksTYkAEuGPwJQMO/Q==,type:str]
+bitbucketClientSecret: ENC[AES256_GCM,data:m4xJ1LMi+LUr55gE0o4=,iv:IgoLeT9OQF/bPWaIXDUgaXb3EdLT2t+Mtrpq08GIgkg=,tag:HnU160GguIwiq89vCPH0AA==,type:str]
+# CFCR registry auth API key
+registryAuthKey: ENC[AES256_GCM,data:TDXSWd3kMFZeM1w1ejD2Ec3wrfJgdgt96zidx6xUj2M7qhpk,iv:/uVxJIideA1z55TVHu5dcQL2G5DQyAXMlkreAsG2nXA=,tag:i+ifPvzuQHmiTkJp8mh40g==,type:str]
+# Internal Registry admin token
+registryAdminToken: ENC[AES256_GCM,data:6oA+oYwopmqcdxXp/vQgnHpog2ycHoyAdzbftJShQEA=,iv:JVZ7B1C2YcR0NJcjdWSM12PZwt37Qo6tgZkxXK+BLAU=,tag:4eoWT5DnU1bsnHUmv+UvOA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
-        created_at: '2017-07-11T08:47:48Z'
-        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwFn6tCcsHkPHfxlx4P3IW7eAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMYQMH7IHeMMRQx+FHAgEQgDved6gYlHIRlFh5A1qOU5wvu5JfzMkquTj+lVUq/mW1oJjszaEBT/IgQDO0RFH8Q311svyzfp1/4rXGNw==
-    lastmodified: '2017-07-11T08:47:49Z'
-    mac: ENC[AES256_GCM,data:dQaKLYJlQ+adDMzaaO3FDttH8tayAE06v5jAD+ieYvz7aH9/b0gIbiksZbr5pOUGDfyyqbn6jmqA9/Ym9CH/xtgkk+mJtz4HcZVU/9ZNUI3EQla7NGo3XhoQ0vzvAQ4QHcTB+bEgXbkYmONHJE+G4XsefTfy3YCrrNGEkuUqPuM=,iv:KcjMxf4T3sdjVe+/FhlsvRDw1/BOWhYqR+MCQh8+8Kg=,tag:sT0vhl8IicQhk4HTaAm++Q==,type:str]
+        created_at: '2017-07-11T11:10:15Z'
+        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwGeIbWVxKa6h3E713LqthRvAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM0U/aGaTv2XkekZBNAgEQgDuHYUmDX2R/EE/oKLdPNOxbxmtjgQbJt4l/xL+g3W1B/CLXjZh7G3dwZrMBhi8zU6J0hIbGd+fo2XSdtA==
+    lastmodified: '2017-07-11T11:10:16Z'
+    mac: ENC[AES256_GCM,data:A6ENyH8K3i8GX4CDrtrFCdHrQ28M7iKgjFWUhnREnJcgGS3mDZbv3SDtVBTdbjMXxcht87tQRLFQNnq/0E+FdLZ6JEOI44EF+VewMCZ4L30UxkS4N4r+NyCGihrTA1rpNrbP2ZCU8pQRKCKNOdhzcBrgCziRARAetLlM4vo3PSU=,iv:xHAHPaGyRlXDidEkIUyAm/eh03BS88zShbTzXRFYcSg=,tag:mWyaWH9HtIYqMjUcONT9/A==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
