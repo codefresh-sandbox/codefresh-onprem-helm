@@ -12,7 +12,7 @@ imagePullPolicy: IfNotPresent
 image: codefresh/cf-api
 
 # image tag  
-imageTag: v120
+imageTag: v137
 
 # port 
 port: 80
@@ -58,6 +58,7 @@ env:
   DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
   DOCKER_NODE_CERT_PATH: /etc/ssl/cf
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
+  RUNTIME_ENVS_JSON_PATH: /etc/admin/runtimeEnvironments.json
   OAUTH_ROUTER_CALLBACK: ""
   MAIL_ACTIVE: false
   LOGS_PATH: /var/log/cf-api.log

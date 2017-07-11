@@ -12,7 +12,7 @@ imagePullPolicy: IfNotPresent
 image: codefresh/cf-ui
 
 # image tag  
-imageTag: v101
+imageTag: v113
 
 # port 
 port: 80
