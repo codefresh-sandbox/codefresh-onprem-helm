@@ -14,6 +14,9 @@ data:
   # app url
   app-url: {{ .Values.appUrl }}
 
+  # default application protocol: http or https
+  app-protocol: {{ .Values.appProtocol }}
+
   # mongodb service name to use
   mongodb-service: mongodb
   # mongodb database; local by default

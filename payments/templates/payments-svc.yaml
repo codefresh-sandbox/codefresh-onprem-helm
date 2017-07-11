@@ -1,3 +1,4 @@
+# kind: scheduler-kubernetes
 apiVersion: v1
 kind: Service
 metadata:
@@ -15,9 +16,5 @@ spec:
     port: {{ .Values.port }}
     protocol: TCP
     targetPort: {{ .Values.targetPort }}
-  - name: "internal-api"
-    port: {{ .Values.internalPort }}
-    protocol: TCP
-    targetPort: {{ .Values.targetInternalPort }}
   selector:
     app: {{ template "fullname" . }}

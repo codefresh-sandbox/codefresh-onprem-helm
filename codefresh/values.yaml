@@ -11,6 +11,10 @@ imagePullPolicy: IfNotPresent
 # Codefresh APP URL
 appUrl: codefresh.dev 
 
+# default application protocol
+appProtocol: http
+
+# default service port
 servicePort: 80
 
 # image with kubectl that can work with our K8s version

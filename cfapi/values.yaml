@@ -17,6 +17,11 @@ imageTag: v120
 # port 
 port: 80
 
+# internal port
+internalPort: 3000
+
+# mapping for internal port
+targetInternalPort: 40000
 # protocol
 protocol: https
 

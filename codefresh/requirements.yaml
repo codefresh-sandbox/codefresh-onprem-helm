@@ -37,6 +37,9 @@ dependencies:
 - name: builder
   version: 0.1.2
   repository: file://../builder
+- name: payments
+  version: 0.1.2
+  repository: file://../payments
 - name: runner
   version: 0.1.2
   repository: file://../runner

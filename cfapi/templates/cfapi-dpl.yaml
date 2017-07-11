@@ -42,6 +42,8 @@ spec:
         {{- end }}
         - name: PORT
           value: {{ .Values.port | quote }}
+        - name: INTERNAL_SERVER_PORT
+          value: {{ .Values.targetInternalPort | quote }}
         - name: PROTOCOL
           value: {{ .Values.protocol | quote }}
         - name: CF_HOST_NAME
