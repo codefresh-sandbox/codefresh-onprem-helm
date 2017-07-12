@@ -297,6 +297,9 @@ spec:
         - name: node-clusters
           mountPath: /root/.kube/config
           subPath: kube-config
+        - mountPath: /etc/ssl/cf/
+          readOnly: true
+          name: cf-certs-client
       volumes:
       - name: config
         configMap:
@@ -310,4 +313,7 @@ spec:
       - name: node-clusters
         secret:
           secretName: "{{ .Release.Name }}-{{ .Values.codefreshService }}-node-clusters"
+      - name: cf-certs-client
+        secret:
+          secretName: "{{ .Release.Name }}-{{ .Values.codefreshService }}-certs-client"
       restartPolicy: Always
