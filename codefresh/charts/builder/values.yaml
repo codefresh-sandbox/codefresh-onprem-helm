@@ -2,12 +2,6 @@
 # by default 2
 # replicaCount: 2
 
-# image name
-image: docker
-
-# image tag  
-imageTag: 17.05-dind
-
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images

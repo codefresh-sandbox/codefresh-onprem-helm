@@ -8,9 +8,6 @@
 ##
 imagePullPolicy: IfNotPresent
 
-# Codefresh APP URL
-appUrl: codefresh.dev 
-
 # default application protocol
 appProtocol: http
 
@@ -50,10 +47,28 @@ cfapi:
 registry:
   storageSize: 8Gi
 
-# runner configuration
-runner:
-  appUrl: codefresh.dev  
-
 # internal ingress controller; disable by default
 ingress:
   enabled: false
+
+dindImage: docker:17.05-dind
+
+# GLOBAL setting
+global:
+  # application url root
+  appUrl: codefresh.dev
+
+  # dind image with tag
+  dindImage: docker:17.05-dind
+  # dind cpu requests
+  dindCPU: 500M
+  # dind memory requests
+  dindMemory: 256Mi
+  # dind cpu limits
+  dindCPULimits: 1500M
+  # dind memory limits
+  dindMemoryLimits: 4096Mi
+
+  # names and ports for commomn services
+  natsService: nats
+  natsPort: 4222

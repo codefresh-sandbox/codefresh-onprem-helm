@@ -27,7 +27,7 @@ spec:
                 "subPath": "register"
               }
             ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register {{ template "fullname" . }}.{{ .Release.Namespace }} {{ .Values.appUrl }}"]
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register {{ template "fullname" . }}.{{ .Release.Namespace }} {{ .Values.global.appUrl }}"]
           }
         ]'
       labels:
@@ -39,9 +39,16 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+      - image: {{ .Values.global.dindImage | quote }}
         name: {{ template "fullname" . }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        resources:
+          limits:
+            cpu: {{ .Values.global.dindCPULimits }}
+            memory: {{ .Values.global.dindMemoryLimits }}
+          requests:
+            cpu: {{ .Values.global.dindCPU }}
+            memory: {{ .Values.global.dindMemory }}
         securityContext:
           privileged: true
         ports:

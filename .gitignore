@@ -6,5 +6,5 @@
 
 # junk files
 QUESTIONS.md
-out
-darwin-amd64
+out/
+darwin-amd64/

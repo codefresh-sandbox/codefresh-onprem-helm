@@ -45,9 +45,16 @@ spec:
         heritage: {{ .Release.Service  | quote }}
     spec:
       containers:
-      - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+      - image: {{ .Values.global.dindImage | quote }}
         name:  {{ template "fullname" . }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        resources:
+          limits:
+            cpu: {{ .Values.global.dindCPULimits }}
+            memory: {{ .Values.global.dindMemoryLimits }}
+          requests:
+            cpu: {{ .Values.global.dindCPU }}
+            memory: {{ .Values.global.dindMemory }}
         securityContext:
           privileged: true
         ports:

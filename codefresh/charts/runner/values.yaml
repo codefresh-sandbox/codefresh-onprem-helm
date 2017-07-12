@@ -3,12 +3,6 @@
 # by default 1
 # replicaCount: 1
 
-# image name
-image: docker
-
-# image tag  
-imageTag: 17.05-dind
-
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -25,6 +19,3 @@ consulHttpPort: 8500
 
 # codefresh service name (chart name)
 codefreshService: codefresh
-
-# Codefresh APP URL
-appUrl: codefresh.dev 
