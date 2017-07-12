@@ -69,6 +69,12 @@ global:
   # dind memory limits
   dindMemoryLimits: 4096Mi
 
-  # names and ports for commomn services
+  #----
+  # Names and ports for commomn services
+
+  # nats service
   natsService: nats
   natsPort: 4222
+
+  # rabbitmq service name
+  rabbitService: rabbitmq

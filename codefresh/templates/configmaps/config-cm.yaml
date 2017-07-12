@@ -30,9 +30,6 @@ data:
   # consul service
   consul-service: consul
 
-  # RMQ service
-  rabbitmq-service: rabbitmq
-
   # PostresSQL service name
   postgres-service: postgresql
   # PostresSQL database

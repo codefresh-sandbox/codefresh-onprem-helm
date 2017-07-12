@@ -66,11 +66,6 @@ spec:
           value: "{{ .Release.Name }}-$(CONSUL_SERVICE).{{ .Release.Namespace }}"
         - name: QUEUE_SERVERS
           value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
-        - name: RABBIT_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: rabbitmq-service
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -82,7 +77,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: rabbitmq-username
         - name: RABBIT_URL
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-$(RABBIT_SERVICE).{{ .Release.Namespace }}"
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
         - name: POSTGRES_SERVICE
           valueFrom:
             configMapKeyRef:

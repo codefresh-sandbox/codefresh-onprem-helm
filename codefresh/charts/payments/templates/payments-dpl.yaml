@@ -74,11 +74,6 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: newrelic-license-key
-        - name: RABBIT_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: rabbitmq-service
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -90,7 +85,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-$(RABBIT_SERVICE).{{ .Release.Namespace }}"
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
         - name: POSTGRES_SERVICE
           valueFrom:
             configMapKeyRef:
