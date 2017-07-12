@@ -103,18 +103,8 @@ spec:
               key: consul-service
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-$(CONSUL_SERVICE).{{ .Release.Namespace }}"
-        - name: NATS_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: nats-service
-        - name: NATS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: nats-port
         - name: QUEUE_SERVERS
-          value: "nats://{{ .Release.Name }}-$(NATS_SERVICE).{{ .Release.Namespace }}:$(NATS_PORT)"
+          value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
         - name: RABBIT_SERVICE
           valueFrom:
             configMapKeyRef:

@@ -30,11 +30,6 @@ data:
   # consul service
   consul-service: consul
 
-  # nats service
-  nats-service: nats
-  # nats service port
-  nats-port: "4222"
-
   # RMQ service
   rabbitmq-service: rabbitmq
 

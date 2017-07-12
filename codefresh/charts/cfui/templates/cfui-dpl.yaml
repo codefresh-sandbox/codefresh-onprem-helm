@@ -53,19 +53,8 @@ spec:
                 key: app-protocol
           - name: CODEFRESH_API_URL
             value: "$(CF_APP_PROTOCOL)://$(CF_HOST_NAME)"
-          # Nats environment variables
-          - name: NATS_SERVICE
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: nats-service
-          - name: NATS_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: nats-port
           - name: QUEUE_SERVERS
-            value: "nats://{{ .Release.Name }}-$(NATS_SERVICE).{{ .Release.Namespace }}:$(NATS_PORT)"
+            value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
           # Rabbitmq environment variables
           - name: RABBIT_SERVICE
             valueFrom:
