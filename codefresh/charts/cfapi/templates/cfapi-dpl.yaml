@@ -291,6 +291,9 @@ spec:
         - mountPath: /etc/admin/hosts.added
           name: etc-hosts
           subPath: hosts-app
+        - name: runtime-environments
+          mountPath: /etc/admin/runtimeEnvironments.json
+          subPath: runtimeEnvironments.json
       volumes:
       - name: config
         configMap:
@@ -298,4 +301,7 @@ spec:
       - name: etc-hosts
         configMap:
           name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-etc-hosts"
+      - name: runtime-environments
+        configMap:
+          name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-runtime-envs"
       restartPolicy: Always

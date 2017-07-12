@@ -9,6 +9,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: runtime-environments
+  name: {{ template "fullname" . }}-runtime-envs
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "2"
 data:
   runtimeEnvironments.json: |
     {
@@ -23,6 +32,7 @@ data:
                     "codefresh/runtime-environment": "{{ $env.selectorRuntimeEnv }}"}
             },
             "dindImage": "{{ default $dindImage $env.dindImage }}",
+            "command": "{{ default "dockerd" $env.command }}"
             "defaultDindResources": {
                 "limits": {
                     "cpu": "{{ default $dindCPULimits $env.dindCPULimits}}",
