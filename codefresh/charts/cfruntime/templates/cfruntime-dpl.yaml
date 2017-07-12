@@ -57,13 +57,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: loggly-token
-        - name: CONSUL_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: consul-service
         - name: CONSUL_HOST
-          value: "{{ .Release.Name }}-$(CONSUL_SERVICE).{{ .Release.Namespace }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.consulService }}.{{ .Release.Namespace }}"
         - name: QUEUE_SERVERS
           value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
         - name: RABBIT_PASSWORD

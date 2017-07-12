@@ -11,7 +11,3 @@ imagePullPolicy: IfNotPresent
 # dind container port (1300 - default)
 containerPort: 1300
 
-# consul configuration (default: consul)
-consulService: consul
-# consul http port
-consulHttpPort: 8500

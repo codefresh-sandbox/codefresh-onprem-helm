@@ -78,3 +78,8 @@ global:
   mongoService: mongodb
   mongoPort: 27017
   mongoDatabase: codefresh
+
+  # consul service
+  consulService: consul
+  # consul http port
+  consulHttpPort: 8500

@@ -14,9 +14,6 @@ data:
   # segment black list users
   segment-blacklist-users: {{ default "" .Values.segmentBlackList }}
 
-  # consul service
-  consul-service: consul
-
   # PostresSQL service name
   postgres-service: postgresql
   # PostresSQL database

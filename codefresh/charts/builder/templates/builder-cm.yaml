@@ -14,7 +14,7 @@ data:
     readonly NODE_NAME=$1
     readonly SUBDOMAIN=$2
     readonly NODE_ADDRESS="$1.$2"
-    readonly CONSUL="http://{{ .Release.Name }}-{{ .Values.consulService }}:{{ .Values.consulHttpPort }}"
+    readonly CONSUL="http://{{ .Release.Name }}-{{ .Values.global.consulService }}:{{ .Values.global.consulHttpPort }}"
     readonly ACCOUNT=codefresh
     readonly ROLE=builder
     readonly PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"

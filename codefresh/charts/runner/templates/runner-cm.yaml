@@ -29,7 +29,7 @@ data:
     NODE_ADDRESS=$1
     NODE_NAME=${NODE_ADDRESS}
     PUBLIC_IP=$2
-    CONSUL="http://{{ .Release.Name }}-{{ .Values.consulService }}:{{ .Values.consulHttpPort }}"
+    CONSUL="http://{{ .Release.Name }}-{{ .Values.global.consulService }}:{{ .Values.global.consulHttpPort }}"
     ACCOUNT=codefresh
     ROLE=runner
     PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"
