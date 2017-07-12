@@ -14,19 +14,6 @@ data:
   # segment black list users
   segment-blacklist-users: {{ default "" .Values.segmentBlackList }}
 
-  # PostresSQL service name
-  postgres-service: postgresql
-  # PostresSQL database
-  postgres-database: {{ .Values.postgresql.postgresDatabase }}
-
-  # Docker registry service
-  registry-service: registry
-  # Docker registry service port
-  registry-service-port: "5000"
-
-  # Payments service name
-  payments-service: payments
-
   # Firebase url
   firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem
 

@@ -61,18 +61,8 @@ spec:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
         env:
-        - name: REGISTRY_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: registry-service
-        - name: REGISTRY_SERVICE_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: registry-service-port
         - name: RUNTIME_LOCAL_REGISTRY_NAME
-          value: "$(REGISTRY_SERVICE).{{ .Release.Namespace }}.svc:$(REGISTRY_SERVICE_PORT)"
+          value: "{{ .Values.global.registryService }}.{{ .Release.Namespace }}.svc:{{ .Values.global.registryPort }}"
         command:
           - "/bin/sh"
           - "-c"

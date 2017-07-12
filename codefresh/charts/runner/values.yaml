@@ -11,6 +11,3 @@ imagePullPolicy: IfNotPresent
 
 # dind container port (1300 - default)
 containerPort: 1300
-
-# codefresh service name (chart name)
-codefreshService: codefresh

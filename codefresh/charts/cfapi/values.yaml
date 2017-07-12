@@ -29,9 +29,6 @@ targetPort: 80
 # readiness port
 readinessPort: 80
 
-# codefresh service name (chart name)
-codefreshService: codefresh
-
 # defualt mongo image to use for mongoimport
 mongodbImage: bitnami/mongodb:3.4.5-r0
 

@@ -17,9 +17,6 @@ imageTag: develop
 # port 
 port: 80
 
-# codefresh service name (chart name)
-codefreshService: codefresh
-
 # ENV
 env:
   NODE_ENV: kubernetes

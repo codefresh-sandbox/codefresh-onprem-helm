@@ -28,12 +28,12 @@ spec:
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-user
         - name: MONGO_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-password
         volumeMounts:
         - name: seed
@@ -47,12 +47,12 @@ spec:
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-user
         - name: MONGO_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-password
         volumeMounts:
         - name: seed

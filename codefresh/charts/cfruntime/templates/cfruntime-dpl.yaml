@@ -27,7 +27,7 @@ spec:
         version: {{ .Values.imageTag | quote }}
     spec:
       imagePullSecrets:
-        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -40,22 +40,22 @@ spec:
         - name: FIREBASE_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: firebase-secret
         - name: FIREBASE_URL
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: firebase-url
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
         - name: LOGGLY_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.consulService }}.{{ .Release.Namespace }}"
@@ -64,43 +64,35 @@ spec:
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-password
         - name: RABBIT_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: RABBIT_URL
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
-        - name: POSTGRES_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-service
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
         - name: POSTGRES_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-database
+          value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
         - name: REDIS_URL
           value: "{{ .Release.Name }}-{{ .Values.global.redisService }}.{{ .Release.Namespace }}" 
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: redis-password 
         - name: DOCKER_PUSHER_IMAGE
           value: "{{ .Values.pusherImage }}:{{ .Values.pusherImageTag }}"

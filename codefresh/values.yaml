@@ -47,11 +47,17 @@ dindImage: docker:17.05-dind
 # GLOBAL settings
 #=======================
 global:
+  # Global codefresh chart name; all subcharts use this name to access secrets and configmaps 
+  codefresh: codefresh
+ 
   # application url root
   appUrl: codefresh.dev
 
   # default application protocol
   appProtocol: http
+
+  # Codefresh Payments service
+  paymentsService: payments
 
   # dind image with tag
   dindImage: docker:17.05-dind
@@ -86,3 +92,13 @@ global:
 
   # Redis service
   redisService: redis
+
+  # Docker Registry service
+  registryService: registry
+  # registry port
+  registryPort: 5000
+
+  # PostresSQL service
+  postresService: postresql
+  # database
+  postgresDatabase: codefresh

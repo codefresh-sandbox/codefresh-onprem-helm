@@ -30,9 +30,6 @@ loggerImageTag: 0.0.15
 gitCloneImage: codefresh/cf-git-cloner
 gitCloneImageTag: v1
 
-# codefresh service name (chart name)
-codefreshService: codefresh
-
 # internal registry servicve name
 registryService: registry
 registryServicePort: 5000

@@ -20,9 +20,6 @@ port: 80
 # application target port
 targetPort: 9000
 
-# codefresh service name (chart name)
-codefreshService: codefresh
-
 # mongo database name for payments
 mongoDatabase: payments
 

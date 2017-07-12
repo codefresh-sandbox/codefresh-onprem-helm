@@ -27,7 +27,7 @@ spec:
         version: {{ .Values.imageTag | quote }}
     spec:
       imagePullSecrets:
-        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -42,61 +42,53 @@ spec:
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-user
         - name: MONGO_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-password
         - name: MONGO_URI
           value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.mongoDatabase }}"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-password
         - name: RABBIT_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
-        - name: POSTGRES_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-service
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
         - name: POSTGRES_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-database
+          value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
         - name: STRIPE_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: stripe-secret-key
         - name: STRIPE_WEBHOOK_SIGN_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: stripe-webhook-sign-secret

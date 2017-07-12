@@ -29,7 +29,7 @@ spec:
         version: {{ .Values.imageTag | quote }}
     spec:
       imagePullSecrets:
-        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
       containers:
       - name: {{ template "fullname" . }}
@@ -45,15 +45,12 @@ spec:
         - name: BL_USERS
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}" 
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}" 
               key: segment-blacklist-users
         - name: ACTIVITY_LOG_URI
           value: http://activity-log
         - name: PAYMENTS_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: payments-service
+          value: {{ .Values.global.paymentsService }}
         - name: PAYMENTS_URI
           value: http://$(PAYMENTS_SERVICE)
         - name: PORT
@@ -67,12 +64,12 @@ spec:
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-user
         - name: MONGO_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-password
         - name: MONGO_URI
           value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongoDatabase }}"
@@ -83,43 +80,35 @@ spec:
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-password
         - name: RABBIT_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: RABBIT_URL
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
-        - name: POSTGRES_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-service
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
         - name: POSTGRES_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: postgres-database
+          value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
         - name: REDIS_URL
           value: "{{ .Release.Name }}-{{ .Values.global.redisService }}.{{ .Release.Namespace }}" 
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: redis-password
         - name: GITHUB_API_HOST
           value: {{ .Values.github.apiHost | quote }}
@@ -132,17 +121,17 @@ spec:
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: github-client-id
         - name: GITHUB_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: github-client-secret
         - name: INTERNAL_USE_GITHUB_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: github-internal-token
         - name: GITLAB_LOGIN_HOST
           value: {{ .Values.gitlab.loginHost | quote }}
@@ -151,104 +140,104 @@ spec:
         - name: GITLAB_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: gitlab-client-id
         - name: GITLAB_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: gitlab-client-secret
         - name: BITBUCKET_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: bitbucket-client-id
         - name: BITBUCKET_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: bitbucket-client-secret
         - name: API_SAFE_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: api-safe-secret
         - name: STRIPE_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: stripe-secret-key
         - name: FIREBASE_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: firebase-secret
         - name: FIREBASE_URL
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: firebase-url
         - name: SLACK_APP_ID
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: slack-app-id
         - name: SLACK_INTERNAL
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: slack-internal
         - name: SLACK_APP_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: slack-app-secret
         - name: SEGMENT_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: segment-key
         - name: SEGMENT_ACTIVE
           value: {{ .Values.segmentEnable | quote }}
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
         - name: LOGGLY_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: TLS_SIGN_CLIENT_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key 
         - name: OAUTH_ROUTER_CALLBACK
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: oauth-router-callback
         - name: GOOGLE_COMPUTE_ENGINE_PROJECT
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: google-compute-engine-project
         - name: CF_REGISTRY_DOMAIN
           valueFrom:
             configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
         - name: CF_REGISTRY_API_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: reg-auth-api-key
         - name: CF_REGISTRY_ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: registry-admin-token
         ports:
         - containerPort: {{ .Values.port }}
@@ -291,14 +280,14 @@ spec:
           name: {{ template "fullname" . }}
       - name: etc-hosts
         configMap:
-          name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-etc-hosts"
+          name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-etc-hosts"
       - name: runtime-environments
         configMap:
-          name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-runtime-envs"
+          name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-runtime-envs"
       - name: node-clusters
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.codefreshService }}-node-clusters"
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-node-clusters"
       - name: cf-certs-client
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.codefreshService }}-certs-client"
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
       restartPolicy: Always

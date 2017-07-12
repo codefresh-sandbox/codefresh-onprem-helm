@@ -29,7 +29,7 @@ spec:
         version: {{ .Values.imageTag | quote }} 
     spec:
       imagePullSecrets:
-        - name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-registry"
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -49,42 +49,34 @@ spec:
           - name: RABBIT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: rabbitmq-password
           - name: RABBIT_USER
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: rabbitmq-username
           - name: RABBIT_URL
             value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
           # PostresSQL environment variables
-          - name: POSTGRES_SERVICE
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: postgres-service
           - name: POSTGRES_HOST
-            value: "{{ .Release.Name }}-$(POSTGRES_SERVICE).{{ .Release.Namespace }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
           - name: POSTGRES_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: postgres-database
+            value: {{ .Values.global.postgresDatabase }}
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: postgres-user
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: postgres-password
           - name: ROLLBAR_ACCESS_TOKEN
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: rollbar-access-token
           # Redis environment variables
           - name: REDIS_URL
@@ -92,50 +84,50 @@ spec:
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: redis-password
           - name: STRIPE_PUBLIC_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: stripe-public-key
           # other licenses and keys
           - name: NEWRELIC_LICENSE_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: newrelic-license-key
           - name: SEGMENT_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: segment-key
           - name: LOGGLY_TOKEN
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: loggly-token
           - name: SLACK_APP_ID
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: slack-app-id
           - name: SLACK_REDIRECTURI
             value: $(CODEFRESH_API_URL)/slack-return
           - name: WALKME
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: walkme-url
           - name: LAUNCH_DARKLY_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: launchdarkly-key
           - name: CF_REGISTRY_DOMAIN
             valueFrom:
               configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
+                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: cfcr-domain
         ports:
         - containerPort: {{ .Values.port }}
