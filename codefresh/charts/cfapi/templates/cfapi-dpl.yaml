@@ -69,16 +69,6 @@ spec:
               key: app-url
         - name: EXTERNAL_URL
           value: "https://$(CF_HOST_NAME)"
-        - name: MONGO_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-service
-        - name: MONGO_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-port
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
@@ -89,13 +79,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
               key: mongodb-password
-        - name: MONGO_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-database
         - name: MONGO_URI
-          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-$(MONGO_SERVICE).{{ .Release.Namespace }}:$(MONGO_PORT)/$(MONGO_DATABASE)"
+          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongoDatabase }}"
         - name: CONSUL_SERVICE
           valueFrom:
             configMapKeyRef:

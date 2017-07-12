@@ -29,10 +29,6 @@ kubectlImage: lachlanevenson/k8s-kubectl:v1.6.4
 # GCE project
 # gceProject: savvy-badge-103912 (default == staging)
 
-# customize consul chart
-consul:
-  Replicas: 1
-  Memory: 256Mi
 
 # override mongodb chart values
 mongodb:
@@ -43,9 +39,6 @@ mongodb:
 cfapi:
   mongodbImage: bitnami/mongodb:3.4.5-r0
 
-# use smaller registry storage
-registry:
-  storageSize: 8Gi
 
 # internal ingress controller; disable by default
 ingress:
@@ -53,7 +46,9 @@ ingress:
 
 dindImage: docker:17.05-dind
 
-# GLOBAL setting
+#======================= 
+# GLOBAL settings
+#=======================
 global:
   # application url root
   appUrl: codefresh.dev
@@ -78,3 +73,8 @@ global:
 
   # rabbitmq service name
   rabbitService: rabbitmq
+
+  # mongodb service
+  mongoService: mongodb
+  mongoPort: 27017
+  mongoDatabase: codefresh

@@ -20,13 +20,6 @@ data:
   # segment black list users
   segment-blacklist-users: {{ default "" .Values.segmentBlackList }}
 
-  # mongodb service name to use
-  mongodb-service: mongodb
-  # mongodb database; local by default
-  mongodb-database: {{ .Values.mongodb.mongodbDatabase }}
-  # mongodb port
-  mongodb-port: "27017"
-
   # consul service
   consul-service: consul
 

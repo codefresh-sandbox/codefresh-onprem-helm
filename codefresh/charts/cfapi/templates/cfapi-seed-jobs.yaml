@@ -23,23 +23,8 @@ spec:
       - name: {{ template "fullname" . }}-admin-account
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongoDatabase }} --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
         env:
-        - name: MONGO_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-service
-        - name: MONGO_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-port
-        - name: MONGO_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-database
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
@@ -57,23 +42,8 @@ spec:
       - name: {{ template "fullname" . }}-admin-user
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-$(MONGO_SERVICE):$(MONGO_PORT) --db $(MONGO_DATABASE) --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongoDatabase }} --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
         env:
-        - name: MONGO_SERVICE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-service
-        - name: MONGO_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-port
-        - name: MONGO_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-              key: mongodb-database
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
