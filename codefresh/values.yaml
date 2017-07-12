@@ -83,3 +83,6 @@ global:
   consulService: consul
   # consul http port
   consulHttpPort: 8500
+
+  # Redis service
+  redisService: redis

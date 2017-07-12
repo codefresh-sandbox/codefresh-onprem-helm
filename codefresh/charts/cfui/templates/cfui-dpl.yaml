@@ -87,13 +87,8 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
                 key: rollbar-access-token
           # Redis environment variables
-          - name: REDIS_SERVICE
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: redis-service
           - name: REDIS_URL
-            value: "{{ .Release.Name }}-$(REDIS_SERVICE).{{ .Release.Namespace }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}.{{ .Release.Namespace }}" 
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:

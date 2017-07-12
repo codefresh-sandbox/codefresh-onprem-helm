@@ -19,9 +19,6 @@ data:
   # PostresSQL database
   postgres-database: {{ .Values.postgresql.postgresDatabase }}
 
-  # Redis service
-  redis-service: redis
-
   # Docker registry service
   registry-service: registry
   # Docker registry service port
