@@ -30,10 +30,6 @@ loggerImageTag: 0.0.15
 gitCloneImage: codefresh/cf-git-cloner
 gitCloneImageTag: v1
 
-# internal registry servicve name
-registryService: registry
-registryServicePort: 5000
-
 # ENV
 env:
   NODE_ENV: kubernetes
