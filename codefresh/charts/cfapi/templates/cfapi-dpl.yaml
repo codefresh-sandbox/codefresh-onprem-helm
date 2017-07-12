@@ -294,6 +294,9 @@ spec:
         - name: runtime-environments
           mountPath: /etc/admin/runtimeEnvironments.json
           subPath: runtimeEnvironments.json
+        - name: node-clusters
+          mountPath: /root/.kube/config
+          subPath: kube-config
       volumes:
       - name: config
         configMap:
@@ -304,4 +307,7 @@ spec:
       - name: runtime-environments
         configMap:
           name: "{{ .Release.Name }}-{{ .Values.codefreshService }}-runtime-envs"
+      - name: node-clusters
+        secret:
+          secretName: "{{ .Release.Name }}-{{ .Values.codefreshService }}-node-clusters"
       restartPolicy: Always
