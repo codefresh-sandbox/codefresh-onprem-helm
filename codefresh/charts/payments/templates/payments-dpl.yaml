@@ -34,15 +34,9 @@ spec:
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
         - name: API_URL
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}" 
-              key: app-url
+          value: {{ .Values.global.appUrl | quote }}
         - name: API_PROTOCOL
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}" 
-              key: app-protocol
+          value: {{ .Values.global.appProtocol | quote }}
         - name: INTERNAL_API_URI
           value: "http://{{ .Release.Name }}-{{ .Values.cfapiService }}:{{ .Values.cfapiInternalPort }}:"
         - name: MONGO_USER

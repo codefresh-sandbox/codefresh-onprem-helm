@@ -11,12 +11,6 @@ metadata:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "0"
 data:
-  # app url
-  app-url: {{ .Values.appUrl }}
-
-  # default application protocol: http or https
-  app-protocol: {{ .Values.appProtocol }}
-
   # segment black list users
   segment-blacklist-users: {{ default "" .Values.segmentBlackList }}
 

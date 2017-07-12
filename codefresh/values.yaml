@@ -8,9 +8,6 @@
 ##
 imagePullPolicy: IfNotPresent
 
-# default application protocol
-appProtocol: http
-
 # default service port
 servicePort: 80
 
@@ -52,6 +49,9 @@ dindImage: docker:17.05-dind
 global:
   # application url root
   appUrl: codefresh.dev
+
+  # default application protocol
+  appProtocol: http
 
   # dind image with tag
   dindImage: docker:17.05-dind

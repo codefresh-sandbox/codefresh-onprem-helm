@@ -61,14 +61,9 @@ spec:
         - name: INTERNAL_SERVER_PORT
           value: {{ .Values.targetInternalPort | quote }}
         - name: PROTOCOL
-          value: {{ .Values.protocol | quote }}
-        - name: CF_HOST_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.codefreshService }}" 
-              key: app-url
+          value: {{ .Values.global.appProtocol | quote }}
         - name: EXTERNAL_URL
-          value: "https://$(CF_HOST_NAME)"
+          value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:

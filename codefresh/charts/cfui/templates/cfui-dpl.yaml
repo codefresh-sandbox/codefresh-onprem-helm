@@ -41,18 +41,8 @@ spec:
           {{- end }}
           - name: PORT
             value: {{ .Values.port | quote }}
-          - name: CF_HOST_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: app-url
-          - name: CF_APP_PROTOCOL
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.codefreshService }}"
-                key: app-protocol
           - name: CODEFRESH_API_URL
-            value: "$(CF_APP_PROTOCOL)://$(CF_HOST_NAME)"
+            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
           - name: QUEUE_SERVERS
             value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
           # Rabbitmq environment variables
