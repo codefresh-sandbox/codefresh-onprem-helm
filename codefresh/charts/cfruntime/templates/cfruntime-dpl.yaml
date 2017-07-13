@@ -132,4 +132,4 @@ spec:
           name: {{ .Release.Name }}-{{ .Values.global.registryService }}
       - name: additional-internal-registries
         configMap:
-          secretName: {{ .Release.Name }}-{{ .Values.global.registryService }}
+          name: {{ .Release.Name }}-{{ .Values.global.registryService }}
