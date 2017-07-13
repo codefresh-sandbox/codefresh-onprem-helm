@@ -162,3 +162,24 @@ $
 $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm release will be created/updated
 $ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml --values codefresh/regsecret-dec.yam
 ```
+
+## TODO
+
+[] Add tls-sign
+[] Add cf-runtime
+[] Fix Github log-in issues when working locally
+[] Fix build issues
+[] Add all environment's secrets
+    [] Write a helper script for launching helm with proper env values
+[] Research a better way to allow access to our Docker images
+[] Add Codefresh helm repository
+[] Add Codefresh pipeline with helm
+    [] Dynamic env
+    [] Staging
+    [] Production
+[] Integrate with on-prem installation procedures
+[] Update to helm 2.5.1
+[] Check if we can replicate Drone's cool helm plugin
+[] Submit nats and registry to Kubernetes apps repo
+
+

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # read input parameters
 while [ $# -gt 0 ]
