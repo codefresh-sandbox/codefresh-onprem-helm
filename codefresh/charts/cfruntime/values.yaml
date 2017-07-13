@@ -42,3 +42,4 @@ env:
   RUNTIME_ACTIVE_REGISTRY: localRegistry
   RUNTIME_LOCAL_REGISTRY_CA: /etc/ssl/cf/ca.pem
   RUNTIME_INTERNAL_REGISTRY_JSON: /etc/admin/internal-registry.json
+  RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON: /etc/admin/additional-internal-registries.json

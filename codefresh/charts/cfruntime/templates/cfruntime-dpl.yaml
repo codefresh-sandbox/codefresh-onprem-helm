@@ -115,6 +115,9 @@ spec:
         - name: internal-registry
           mountPath: /etc/admin/internal-registry.json
           subPath: internal-registry.json
+        - name: additional-internal-registries
+          mountPath: /etc/admin/additional-internal-registries.json
+          subPath: additional-internal-registries.json
         securityContext:
           privileged: true
       volumes:
@@ -127,3 +130,6 @@ spec:
       - name: internal-registry
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.registryService }}
+      - name: additional-internal-registries
+        configMap:
+          secretName: {{ .Release.Name }}-{{ .Values.global.registryService }}

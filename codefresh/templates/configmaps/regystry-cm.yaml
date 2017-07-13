@@ -12,3 +12,5 @@ data:
         "caPath": "/etc/ssl/cf/ca.pem"
       }
     }
+  additional-internal-registries.json: |
+    []
