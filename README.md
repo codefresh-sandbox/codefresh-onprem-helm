@@ -163,6 +163,56 @@ $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm rel
 $ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml --values codefresh/regsecret-dec.yam
 ```
 
+## Linter and friends
+
+Use following techniques to debug and validate Helm charts.
+
+### 1. Helm lint
+
+```sh
+$ helm lint $CHARTNAME
+```
+
+Do not expect too much, helm linter is a very basic one.
+
+### 2. Dry Run
+
+You can generate expected output with `--dry-run` flag.
+
+```sh
+$ helm --dry-run --debug install $CHARTNAME --values ...
+```
+
+### 3. Helm Template plugin
+
+[Helm template plugin](https://github.com/technosophos/helm-template) generates Kubernetes YAML file (one file with multiple documents). It is doing this on client side, without uploading to Tiller server.
+
+```sh
+# install
+$ helm plugin install https://github.com/technosophos/helm-template
+# use
+$ helm template --namespace $NAMESPACE $CHARNAME --values ...
+``` 
+
+### 4. Kubeval tool
+
+[Kubeval](https://github.com/garethr/kubeval) is an open source tool that can validate Kubernetes YAML against specification (JSON schema).
+
+```sh 
+$ kubeval FILE.yaml
+```
+
+One drawback is that Kubeval cannot parse multi document YAML. Use `csplit` utility (or `gcsplit` on MacOS)
+
+```sh
+# generate YAML file from Helm chart
+$ helm template ... > output.yaml
+# split it into multiple files
+$ csplit assa.yaml '/^---/' {*}
+# run kubeval on all docs: xx## is a doc name pattern for csplit
+$ for f in $(ls xx*); do kubeval $f; done
+```
+
 ## TODO
 
 - [ ] Add tls-sign
@@ -170,7 +220,7 @@ $ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recrea
 - [ ] Fix Github log-in issues when working locally
 - [ ] Fix build issues
 - [ ] Add all environment's secrets
-  -  [] Write a helper script for launching helm with proper env values
+  -  [ ] Write a helper script for launching helm with proper env values
 - [ ] Research a better way to allow access to our Docker images
 - [ ] Add Codefresh helm repository
 - [ ] Add Codefresh pipeline with helm
