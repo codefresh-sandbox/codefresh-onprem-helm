@@ -13,7 +13,7 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 spec:
   tls:
-    - secretName: {{ .Release.Name }}-star-selfsigned
+    - secretName: {{ template "fullname" . }}-star-selfsigned
   backend:
     serviceName: {{ .Release.Name }}-cfui
     servicePort: {{ .Values.servicePort }}

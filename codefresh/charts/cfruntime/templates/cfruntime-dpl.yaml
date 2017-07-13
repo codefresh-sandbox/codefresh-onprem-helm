@@ -123,13 +123,13 @@ spec:
       volumes:
       - name: cf-certs
         secret:
-          secretName: {{ .Release.Name }}-cf-certs 
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-cf-certs"
       - name: docker-socket
         hostPath:
           path: /var/run/docker.sock
       - name: internal-registry
         configMap:
-          name: {{ .Release.Name }}-registry
+          name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       - name: additional-internal-registries
         configMap:
-          name: {{ .Release.Name }}-registry
+          name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
