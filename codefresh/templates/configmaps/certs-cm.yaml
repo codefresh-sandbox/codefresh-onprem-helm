@@ -20,7 +20,7 @@ data:
     openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
     openssl rsa -passin pass:x -in server.pass.key -out tls.key
     rm server.pass.key
-    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.appUrl }}"
+    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.global.appUrl }}"
     openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
 
     kubectl create secret tls {{ .Release.Name }}-star-selfsigned --cert=tls.crt --key=tls.key
@@ -46,13 +46,13 @@ data:
     openssl genrsa -out $CA_KEY 4096
 
     echo "--- Generate ca.pem"
-    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.{{ .Values.appUrl }}"
+    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.{{ .Values.global.appUrl }}"
 
     echo "--- Generate server-key.pem"
     openssl genrsa -out $SERVER_KEY 4096
 
     echo "--- generate csr "
-    openssl req -subj "/CN=*.{{ .Values.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
+    openssl req -subj "/CN=*.{{ .Values.global.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
 
     echo "--- create ca extfile"
     echo -e \
