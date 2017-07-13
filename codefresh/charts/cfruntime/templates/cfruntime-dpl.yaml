@@ -126,4 +126,4 @@ spec:
           path: /var/run/docker.sock
       - name: internal-registry
         configMap:
-          name: {{ .Release.Name }}-{{ .Values.registryService }}
+          name: {{ .Release.Name }}-{{ .Values.global.registryService }}
