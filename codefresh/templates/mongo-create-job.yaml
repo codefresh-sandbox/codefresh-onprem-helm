@@ -25,8 +25,6 @@ spec:
         command: 
         - "mongo"
         - "{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}"
-        - "-u"
-        - "root"
         - "-p"
         - "{{ .Values.mongodb.mongodbRootPassword }}"
         - "--eval"
@@ -37,8 +35,6 @@ spec:
         command: 
         - "mongo"
         - "{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}"
-        - "-u"
-        - "root"
         - "-p"
         - "{{ .Values.mongodb.mongodbRootPassword }}"
         - "--eval"
