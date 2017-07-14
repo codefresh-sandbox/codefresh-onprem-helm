@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-create-mongo-dbs
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-create-mongo
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      containers:
+      - name: {{ template "fullname" . }}-create-codefresh-db
+        image: {{ .Values.mongodbImage }}
+        imagePullPolicy: IfNotPresent
+        command: 
+        - /bin/sh
+        - -c
+        - mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval "db.getSiblingDB('{{ .Values.global.mongoDatabase }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})"
+      - name: {{ template "fullname" . }}-create-payments-db
+        image: {{ .Values.mongodbImage }}
+        imagePullPolicy: IfNotPresent
+        command: 
+        - /bin/sh
+        - -c
+        - mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval "db.getSiblingDB('{{ .Values.global.paymentsService }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})"

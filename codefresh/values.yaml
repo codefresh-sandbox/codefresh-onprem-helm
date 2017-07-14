@@ -59,6 +59,12 @@ global:
   # Codefresh Payments service
   paymentsService: payments
 
+  # cfapi service name
+  cfapiService: cfapi
+
+  # cfapi internal service port
+  cfapiInternalPort: 3000
+
   # dind image with tag
   dindImage: docker:17.05-dind
   # dind cpu requests

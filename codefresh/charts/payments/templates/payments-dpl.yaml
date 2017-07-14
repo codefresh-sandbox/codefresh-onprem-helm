@@ -38,7 +38,7 @@ spec:
         - name: API_PROTOCOL
           value: {{ .Values.global.appProtocol | quote }}
         - name: INTERNAL_API_URI
-          value: "http://{{ .Release.Name }}-{{ .Values.cfapiService }}:{{ .Values.cfapiInternalPort }}:"
+          value: "http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}:"
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
@@ -50,7 +50,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongodb-password
         - name: MONGO_URI
-          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.mongoDatabase }}"
+          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Chart.Name }}"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:

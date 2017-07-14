@@ -1,5 +1,3 @@
-{{- $mongoServer := printf "%s-%s.%s" .Release.Name .Values.mongodbService .Release.Namespace -}}
-
 apiVersion: batch/v1
 kind: Job
 metadata:

@@ -4,6 +4,8 @@
 # decrypted files
 **/*-dec.yaml
 
+.vscode/
+
 # junk files
 QUESTIONS.md
 out/
