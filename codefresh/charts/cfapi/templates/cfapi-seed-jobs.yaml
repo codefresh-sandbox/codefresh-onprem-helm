@@ -21,18 +21,7 @@ spec:
       - name: {{ template "fullname" . }}-admin-account
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongoDatabase }} --username $(MONGO_USER) --password $(MONGO_PASSWORD) --collection accounts --type json --file /etc/admin/accounts.json"]
-        env:
-        - name: MONGO_USER
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-user
-        - name: MONGO_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-password
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongodbDatabase }} --username {{ .Values.global.mongodbUsername }} --password {{ .Values.global.mongodbPassword }} --collection accounts --type json --file /etc/admin/accounts.json"]
         volumeMounts:
         - name: seed
           mountPath: "/etc/admin/accounts.json"
@@ -40,18 +29,7 @@ spec:
       - name: {{ template "fullname" . }}-admin-user
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongoDatabase }} --username  $(MONGO_USER) --password  $(MONGO_PASSWORD) --collection users --type json --file /etc/admin/users.json"]
-        env:
-        - name: MONGO_USER
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-user
-        - name: MONGO_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-password
+        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongodbDatabase }} --username  {{ .Values.global.mongodbUsername }} --password {{ .Values.global.mongodbPassword }} --collection users --type json --file /etc/admin/users.json"]
         volumeMounts:
         - name: seed
           mountPath: "/etc/admin/users.json"

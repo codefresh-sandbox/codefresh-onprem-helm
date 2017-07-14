@@ -4,7 +4,7 @@ dependencies:
   version: 0.3.0
 - name: mongodb
   repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 0.4.11
+  version: 0.4.12
 - name: postgresql
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.7.1
@@ -23,5 +23,5 @@ dependencies:
 - name: ingress
   repository: file://../ingress
   version: 0.1.0
-digest: sha256:d547f5a2f04c5dac2d234d381da53d3ae177fa32eb71c961780fe4098ecf7b90
-generated: 2017-07-11T16:00:52.393892344+03:00
+digest: sha256:06fa0dd6ec1aebbfb478c6352957713576acdbe14ce4182ab0e546606872a379
+generated: 2017-07-14T17:10:38.399915559+03:00

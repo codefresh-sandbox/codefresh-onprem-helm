@@ -61,18 +61,8 @@ spec:
           value: {{ .Values.global.appProtocol | quote }}
         - name: EXTERNAL_URL
           value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
-        - name: MONGO_USER
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-user
-        - name: MONGO_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: mongodb-password
         - name: MONGO_URI
-          value: "mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongoDatabase }}"
+          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongodbDatabase }}"
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.consulService }}.{{ .Release.Namespace }}"
         - name: QUEUE_SERVERS
