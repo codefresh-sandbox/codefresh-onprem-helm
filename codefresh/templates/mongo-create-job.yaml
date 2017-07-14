@@ -19,16 +19,6 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - name: {{ template "fullname" . }}-create-codefresh-db
-        image: {{ .Values.mongodb.image }}
-        imagePullPolicy: IfNotPresent
-        command: 
-        - "mongo"
-        - "{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}"
-        - "-p"
-        - "{{ .Values.mongodb.mongodbRootPassword }}"
-        - "--eval"
-        - "\"db.getSiblingDB('{{ .Values.global.mongoDatabase }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})\""
       - name: {{ template "fullname" . }}-create-payments-db
         image: {{ .Values.mongodb.image }}
         imagePullPolicy: IfNotPresent

@@ -31,6 +31,11 @@ kubectlImage: lachlanevenson/k8s-kubectl:v1.6.4
 mongodb:
   # image to use
   image: bitnami/mongodb:3.4.5-r0
+  mongoDatabase: codefresh
+
+# overrride registry 
+registry:
+  mainChart: codefresh
 
 # use mongodb service name; should be same as mongo.nameOverride
 cfapi:
@@ -89,7 +94,6 @@ global:
   # mongodb service
   mongoService: mongodb
   mongoPort: 27017
-  mongoDatabase: codefresh
 
   # consul service
   consulService: consul

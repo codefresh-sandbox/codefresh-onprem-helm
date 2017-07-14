@@ -24,6 +24,7 @@ data:
     openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
 
     kubectl create secret tls {{ template "fullname" . }}-star-selfsigned --cert=tls.crt --key=tls.key
+    kubectl label secret {{ template "fullname" . }}-star-selfsigned app={{ template "fullname" . }}
   gen-runtime-certs: |
     #!/bin/sh
     err() { echo "ERROR: $1"; exit 1; }
@@ -70,3 +71,5 @@ data:
       --from-file=$CA_PEM \
       --from-file=$CLIENT_KEY \
       --from-file=$CLIENT_CERT || err "Failed storing the generated certificates in Kubernetes!"
+
+    kubectl label secret {{ template "fullname" . }}-cf-certs app={{ template "fullname" . }}
