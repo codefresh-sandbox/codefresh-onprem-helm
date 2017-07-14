@@ -23,23 +23,13 @@ spec:
         image: {{ .Values.mongodb.image }}
         imagePullPolicy: IfNotPresent
         command: 
-        - "mongo"
-        - "{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/admin"
-        - "-u"
-        - "root"
-        - "-p"
-        - "{{ .Values.mongodb.mongodbRootPassword }}"
-        - "--eval"
-        - "\"db.getSiblingDB('{{ .Values.global.mongodbDatabase }}').createUser({user: '{{ .Values.global.mongodbUsername }}', pwd: '{{ .Values.global.mongodbPassword }}', roles: ['readWrite']})\""
+        - "bash"
+        - "-c"
+        - "\"mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/admin -u root -p {{ .Values.mongodb.mongodbRootPassword }} -eval \"db.getSiblingDB('{{ .Values.global.mongodbDatabase }}').createUser({user: '{{ .Values.global.mongodbUsername }}', pwd: '{{ .Values.global.mongodbPassword }}', roles: ['readWrite']})\"\""
       - name: {{ template "fullname" . }}-create-payments-db
         image: {{ .Values.mongodb.image }}
         imagePullPolicy: IfNotPresent
         command: 
-        - "mongo"
-        - "{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/admin"
-        - "-u"
-        - "root"
-        - "-p"
-        - "{{ .Values.mongodb.mongodbRootPassword }}"
-        - "--eval"
-        - "\"db.getSiblingDB('{{ .Values.global.paymentsService }}').createUser({user: '{{ .Values.global.mongodbUsername }}', pwd: '{{ .Values.global.mongodbPassword }}', roles: ['readWrite']})\""
+        - "bash"
+        - "-c"
+        - "\"mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/admin -u root -p {{ .Values.mongodb.mongodbRootPassword }} -eval \"db.getSiblingDB('{{ .Values.global.paymentsService }}').createUser({user: '{{ .Values.global.mongodbUsername }}', pwd: '{{ .Values.global.mongodbPassword }}', roles: ['readWrite']})\"\""

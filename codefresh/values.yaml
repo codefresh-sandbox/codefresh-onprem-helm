@@ -30,7 +30,7 @@ kubectlImage: lachlanevenson/k8s-kubectl:v1.6.4
 # override mongodb chart values
 mongodb:
   # image to use
-  image: bitnami/mongodb:3.4.5-r0
+  image: bitnami/mongodb:3.4.6-r0
 
 # overrride registry 
 registry:
@@ -38,7 +38,7 @@ registry:
 
 # use mongodb service name; should be same as mongo.nameOverride
 cfapi:
-  mongodbImage: bitnami/mongodb:3.4.5-r0
+  mongodbImage: bitnami/mongodb:3.4.6-r0
 
 
 # internal ingress controller; disable by default
