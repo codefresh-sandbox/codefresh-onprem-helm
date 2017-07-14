@@ -17,18 +17,15 @@ spec:
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
+      restartPolicy: OnFailure
       containers:
       - name: {{ template "fullname" . }}-create-codefresh-db
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
         command: 
-        - /bin/sh
-        - -c
-        - mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval "db.getSiblingDB('{{ .Values.global.mongoDatabase }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})"
+        - "mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval \"db.getSiblingDB('{{ .Values.global.mongoDatabase }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})\""
       - name: {{ template "fullname" . }}-create-payments-db
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
         command: 
-        - /bin/sh
-        - -c
-        - mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval "db.getSiblingDB('{{ .Values.global.paymentsService }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})"
+        - "mongo {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} -u root -p {{ .Values.mongodb.mongodbRootPassword }} --eval \"db.getSiblingDB('{{ .Values.global.paymentsService }}').createUser({user: '{{ .Values.mongodb.mongodbUsername }}', pwd: '{{ .Values.mongodb.mongodbPassword }}', roles: ['readWrite']})\""
