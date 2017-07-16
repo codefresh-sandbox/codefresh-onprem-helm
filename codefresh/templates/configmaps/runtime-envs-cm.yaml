@@ -32,7 +32,7 @@ data:
                     "codefresh/runtime-environment": "{{ $env.selectorRuntimeEnv }}"}
             },
             "dindImage": "{{ default $dindImage $env.dindImage }}",
-            "command": "{{ default "dockerd" $env.command }}"
+            "command": "{{ default "dockerd" $env.command }}",
             "defaultDindResources": {
                 "limits": {
                     "cpu": "{{ default $dindCPULimits $env.dindCPULimits}}",
@@ -45,7 +45,7 @@ data:
             },
             "queue": {
                 "workers": {{ default 50 $env.queueWorkers }},
-                "servers": ["{{ default $queueServer $env.queueServer }}"]
+                "servers": ["{{ default $queueServer $env.queueServer }}"],
                 "tls": {
                     {{- range $key, $value := $env.tls }}
                     "{{ $key }}": "{{ $value }}"{{if (ne $key "key")}},{{end}}
