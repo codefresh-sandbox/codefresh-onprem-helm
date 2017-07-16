@@ -4,6 +4,7 @@
 
 # customize consul chart
 consul:
+  DatacenterName: minikube
   Replicas: 1
   Memory: 256Mi
 
