@@ -160,7 +160,7 @@ $ # update all dependencies
 $ helm dependency update codefresh
 $ 
 $ # set RELEASE_NAME and NAMESPACE to whatever you want - namespace and Helm release will be created/updated
-$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml --values codefresh/regsecret-dec.yam
+$ helm --debug upgrade $RELEASE_NAME codefresh --install --reset-values --recreate-pods --namespace $NAMESPACE --values values.yaml --values values-dec.yaml --values codefresh/regsecret-dec.yam --values codefresh/env/$ENVIRONMENT/values.yaml --values codefresh/env/$ENVIRONMENT/values-dec.yaml
 ```
 
 ## Linter and friends
@@ -216,7 +216,7 @@ $ for f in $(ls xx*); do kubeval $f; done
 ## TODO
 
 - [ ] Add tls-sign
-- [ ] Add cf-runtime
+- [x] Add cf-runtime
 - [ ] Fix Github log-in issues when working locally
 - [ ] Fix build issues
 - [ ] Add all environment's secrets
