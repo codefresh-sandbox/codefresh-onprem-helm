@@ -24,7 +24,7 @@ spec:
             "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
             "volumeMounts": [
               {
-                "name": "{{ template "fullname" . }}",
+                "name": "builder-config",
                 "mountPath": "/opt/dind/register",
                 "subPath": "register"
               }

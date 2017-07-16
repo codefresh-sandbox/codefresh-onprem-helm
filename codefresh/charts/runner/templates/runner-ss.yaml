@@ -22,7 +22,7 @@ spec:
             "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
             "volumeMounts": [
               {
-                "name": "{{ template "fullname" . }}",
+                "name": "runner-config",
                 "mountPath": "/opt/dind/register",
                 "subPath": "register"
               }
