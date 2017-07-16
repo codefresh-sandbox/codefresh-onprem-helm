@@ -24,4 +24,4 @@ dependencies:
   repository: file://../ingress
   version: 0.1.0
 digest: sha256:06fa0dd6ec1aebbfb478c6352957713576acdbe14ce4182ab0e546606872a379
-generated: 2017-07-14T17:10:38.399915559+03:00
+generated: 2017-07-16T14:10:23.430594479+03:00
