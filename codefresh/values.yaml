@@ -108,7 +108,7 @@ global:
   # registry port
   registryPort: 5000
 
-  # PostresSQL service
-  postresService: postresql
+  # PostgresSQL service
+  postgresService: postgresql
   # database
   postgresDatabase: codefresh

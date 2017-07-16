@@ -58,7 +58,7 @@ spec:
                 key: rabbitmq-username
           - name: RABBIT_URL
             value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
-          # PostresSQL environment variables
+          # PostgresSQL environment variables
           - name: POSTGRES_HOST
             value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
           - name: POSTGRES_DATABASE
