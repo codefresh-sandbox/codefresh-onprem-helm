@@ -15,7 +15,7 @@ data:
   gen-website-tls: |
     #!/bin/sh
 
-    which openssl || apk --update add openssl
+    which openssl || apk add --no-cache openssl
 
     openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
     openssl rsa -passin pass:x -in server.pass.key -out tls.key
@@ -29,7 +29,7 @@ data:
     #!/bin/sh
     err() { echo "ERROR: $1"; exit 1; }
 
-    which openssl || apk --update add openssl
+    which openssl || apk add --no-cache openssl
 
     TMPDIR=$(dirname $0)/cfcerts
     mkdir -p $TMPDIR || err "Cannot create the temp directory $TMPDIR"
