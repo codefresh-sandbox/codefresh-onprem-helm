@@ -25,7 +25,7 @@ data:
         "{{ $env.name }}": {
             "cluster": {
                 "type": "{{ default "Kubernetes" $env.type }}",
-                "name": "{{ default "" $env.clusterName }}"
+                "name": "{{ default "" $env.clusterName }}",
                 "inCluster": {{ default false $env.inCluster }},
                 "namespace": "{{ default "default" $env.namespace }}",
                 "nodeSelector": {"codefresh/node-type": "dind",
