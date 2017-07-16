@@ -234,14 +234,14 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.targetInternalPort }}
           protocol: TCP
-        readinessProbe:
-          httpGet:
-            path: /api/ping
-            port: {{ .Values.internalPort }}
-          periodSeconds: 5
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
+        #readinessProbe:
+        #  httpGet:
+        #    path: /api/ping
+        #    port: {{ .Values.internalPort }}
+        #  periodSeconds: 5
+        #  timeoutSeconds: 5
+        #  successThreshold: 1
+        #  failureThreshold: 5
         volumeMounts:
         - name: config
           mountPath: /etc/admin/providers.json
