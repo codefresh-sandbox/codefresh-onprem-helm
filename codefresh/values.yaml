@@ -72,11 +72,11 @@ global:
   # dind image with tag
   dindImage: docker:17.05-dind
   # dind cpu requests
-  dindCPU: 500M
+  dindCPU: 100m
   # dind memory requests
   dindMemory: 256Mi
   # dind cpu limits
-  dindCPULimits: 1500M
+  dindCPULimits: 1000m
   # dind memory limits
   dindMemoryLimits: 4096Mi
 

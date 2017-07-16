@@ -237,7 +237,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /api/ping
-            port: {{ .Values.readinessPort }}
+            port: {{ .Values.internalPort }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1

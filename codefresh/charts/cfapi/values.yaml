@@ -26,9 +26,6 @@ targetInternalPort: 40000
 # target port
 targetPort: 80
 
-# readiness port
-readinessPort: 80
-
 # defualt mongo image to use for mongoimport
 mongodbImage: bitnami/mongodb:3.4.5-r0
 
