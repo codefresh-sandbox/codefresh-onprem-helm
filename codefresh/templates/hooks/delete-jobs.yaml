@@ -26,7 +26,7 @@ spec:
           path: /usr/bin/kubectl
 
       containers:
-      - name: post-install-job
+      - name: post-install-delete-job
         image: {{ .Values.kubectlImage | quote }}
         volumeMounts:
         - name: kubectl
@@ -35,7 +35,7 @@ spec:
         - sh
         - -c
         - "kubectl delete job --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
-      - name: post-install-secret
+      - name: post-install-delete-secret
         image: {{ .Values.kubectlImage | quote }}
         volumeMounts:
         - name: kubectl
@@ -44,7 +44,7 @@ spec:
         - sh
         - -c
         - "kubectl delete secret --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
-      - name: post-install-cm
+      - name: post-install-delete-cm
         image: {{ .Values.kubectlImage | quote }}
         volumeMounts:
         - name: kubectl
@@ -53,4 +53,13 @@ spec:
         - sh
         - -c
         - "kubectl delete cm --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
+      - name: post-install-delete-pvc
+        image: {{ .Values.kubectlImage | quote }}
+        volumeMounts:
+        - name: kubectl
+          mountPath: /kubectl
+        command:
+        - sh
+        - -c
+        - "kubectl delete pvc --namespace {{ .Release.Namespace }}"
 

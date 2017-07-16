@@ -4,8 +4,9 @@
 
 # customize consul chart
 consul:
+  DatacenterName: minikube
   Replicas: 1
-  Memory: 126Mi
+  Memory: 256Mi
 
 # use smaller registry storage
 registry:
@@ -18,13 +19,3 @@ runtime_envs:
     inCluster: true
     selectorRuntimeEnv: codefresh-inc
     namespace: dinds
-  - name: cluster-dev-1
-    clusterName: cluster-dev-1.cf-cd.com
-    inCluster: true
-    selectorRuntimeEnv: codefresh
-    queueServer: tls://rt-queue-dev-1-load.cf-cd.com:4222
-    tls:
-      ca: /etc/ssl/cf/ca.pem
-      cert: /etc/ssl/cf/cert.pem
-      # !!! key must be last element (go template limitations)
-      key: /etc/ssl/cf/key.pem
