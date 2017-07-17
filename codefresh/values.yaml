@@ -21,7 +21,7 @@ kubectlImage: lachlanevenson/k8s-kubectl:v1.6.7
 # segmentBlackList: "" by default
 
 # OAuth router callback
-# oauthRouterCallback: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/ (default)
+# oauthRouterCallback: empty (default)
 
 # GCE project
 # gceProject: savvy-badge-103912 (default == staging)
