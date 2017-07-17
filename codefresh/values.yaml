@@ -73,6 +73,12 @@ global:
   # cfapi internal service port
   cfapiInternalPort: 3000
 
+  # Builder service
+  builderService: builder
+
+  # Runner service
+  runnerService: runner
+
   # dind image with tag
   dindImage: docker:17.05-dind
   # dind cpu requests

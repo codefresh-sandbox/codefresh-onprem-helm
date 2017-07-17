@@ -1,3 +1,7 @@
+{{- $nameBuilder := printf "%s-%s.%s" .Release.Name .Values.global.builderService .Release.Namespace }}
+{{- $nameRunner := printf "%s-%s.%s" .Release.Name .Values.global.runnerService .Release.Namespace }}
+{{- $namesList := list .Release.Namespace $nameBuilder $nameRunner }}
+
 # kind: scheduler-kubernetes
 apiVersion: v1
 kind: ConfigMap
@@ -58,7 +62,7 @@ data:
     echo "--- create ca extfile"
     echo -e \
     "extendedKeyUsage=serverAuth,clientAuth
-    subjectAltName = DNS:*.{{ .Release.Namespace }},DNS:*.{{ .Release.Namespace }}.svc,DNS:*.{{ .Release.Namespace }}.svc.cluster.local" > $EXTFILE
+    subjectAltName = {{- range $i, $name := $namesList }}{{if $i}},{{end}}DNS:*.{{ $name }},DNS:*.{{ $name }}.svc,DNS:*.{{ $name }}.svc.cluster.local{{- end }}" > $EXTFILE
 
     echo "--- sign certificate $SERVER_PEM "
     openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
