@@ -1,6 +1,7 @@
 apiVersion: v1
 name: nats
 version: 0.1.0
+appVersion: 0.9.4
 description: Open source, simple, high performance open source messaging system
 keywords:
 - nats
