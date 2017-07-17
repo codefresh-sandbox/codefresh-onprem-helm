@@ -220,11 +220,11 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key 
-        - name: OAUTH_ROUTER_CALLBACK
-          valueFrom:
-            configMapKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: oauth-router-callback
+        #- name: OAUTH_ROUTER_CALLBACK
+        #  valueFrom:
+        #    configMapKeyRef:
+        #      name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+        #      key: oauth-router-callback
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
