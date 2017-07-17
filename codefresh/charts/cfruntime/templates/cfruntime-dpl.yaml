@@ -118,6 +118,9 @@ spec:
         - name: additional-internal-registries
           mountPath: /etc/admin/additional-internal-registries.json
           subPath: additional-internal-registries.json
+        - name: resource-limitations
+          mountPath: /etc/admin/resource-limitations.json
+          subPath: resource-limitations.json
         securityContext:
           privileged: true
       volumes:
@@ -133,3 +136,6 @@ spec:
       - name: additional-internal-registries
         configMap:
           name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      - name: resource-limitations
+        configMap:
+          name: {{ template "fullname" . }}-resource-limitations

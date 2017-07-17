@@ -39,6 +39,7 @@ env:
   RUNTIME_GOOGLE_REGISTRY_PROJECT_NAME: ""
   DOCKER_CERT_PATH: /etc/ssl/cf
   REGISTRY_CA_PATH: /etc/ssl/cf/ca.pem
+  RESOURCE_LIMITATIONS_JSON: /etc/admin/resource-limitations.json
   RUNTIME_ACTIVE_REGISTRY: localRegistry
   RUNTIME_LOCAL_REGISTRY_CA: /etc/ssl/cf/ca.pem
   RUNTIME_INTERNAL_REGISTRY_JSON: /etc/admin/internal-registry.json
