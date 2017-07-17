@@ -6,7 +6,7 @@ data:
   internal-registry.json: |
     {
       "kind": "standard",
-      "domain": "{{ .Release.Name }}-{{ .Values.global.registryService }}.svc:{{ .Values.global.registryPort }}",
+      "domain": "{{ .Release.Name }}-{{ .Values.global.registryService }}.{{ .Release.Namespace }}:{{ .Values.global.registryPort }}",
       "connection": {
         "protocol": "https",
         "caPath": "/etc/ssl/cf/ca.pem"
