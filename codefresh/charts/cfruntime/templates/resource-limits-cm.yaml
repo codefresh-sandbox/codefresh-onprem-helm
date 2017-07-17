@@ -21,16 +21,6 @@ data:
           "container": "CpuShares",
           "build": "cpushares"
       },
-      "cpuQuota": {
-          "value": 15000,
-          "compose": {
-              "v1": "cpu_quota",
-              "v2": "cpu_quota",
-              "v2.1": "cpu_quota"
-          },
-          "container": "CpuQuota",
-          "build": "cpuquota"
-      },
       "cpuPeriod": {
           "value": 10000,
           "compose": {
