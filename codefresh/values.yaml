@@ -46,7 +46,8 @@ cfapi:
   env:
     # set on-premise flag
     ON_PREMISE: true
-
+    # set LOG Level to DEBUG
+    LOGGER_LEVEL: debug
 
 # internal ingress controller; disable by default
 ingress:
