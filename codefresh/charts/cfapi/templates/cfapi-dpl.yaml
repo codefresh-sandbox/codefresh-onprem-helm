@@ -60,6 +60,8 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}" 
               key: segment-blacklist-users
+        - name: CF_HOST_NAME
+          value: {{ .Values.global.appUrl | quote }}
         - name: CF_REGISTRY_ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
