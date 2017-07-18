@@ -33,11 +33,12 @@ CPUS=${CPUS:-2}
 MEMORY=${MEMORY:-4096}
 
 # Docker registry mirror: IP for VirtualBox
-MIRROR=${MIRROR:-"--registry-mirror=http://localhost:15000 --mount --mount-string=$HOME/.minikube/mirror:/mirror"}
+MIRROR=${MIRROR:-"--registry-mirror=http://localhost:15000"}
 
 minikube start --cpus=${CPUS} --memory=${MEMORY} --vm-driver=${VM_DRV} --disk-size=${DISK_SIZE} --kubernetes-version=${KUBE_VER} ${MIRROR} ${RBAC} ${DEV} ${ISO_URL} ${DOCKER_OPTS}
 
 # run Registry mirror mounted to local folder inside minikube
 if [[ ! -z "${MIRROR}" ]]; then
+  minikube mount $HOME/.mirror:/mirror
   minikube ssh "docker run -d --restart=always -p 15000:5000 --name registry-mirror -v /mirror/data:/var/lib/registry -v /mirror/config:/etc/docker/registry registry:2"
 fi
