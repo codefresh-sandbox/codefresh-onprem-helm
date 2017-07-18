@@ -2,6 +2,8 @@
 
 # uncomment to enable RBAC
 # RBAC="--extra-config=apiserver.Authorization.Mode=RBAC"
+${PROFILE:-codefresh}
+minikube profile ${PROFILE}
 
 # uncomment to enable development on localhost
 ${DEV:-"--network-plugin=kubenet --extra-config=kubelet.PodCIDR=10.10.0.0/24 --extra-config=kubelet.NonMasqueradeCIDR=10.10.0.0/24"}
