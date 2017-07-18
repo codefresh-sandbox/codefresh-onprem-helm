@@ -7,13 +7,12 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
-    component: main
 spec:
+  type: NodePort
   ports:
   - name: {{ template "fullname" . }}
     port: {{ .Values.port }}
     protocol: TCP
   selector:
     app:  {{ template "fullname" . }}
-    component: main
 
