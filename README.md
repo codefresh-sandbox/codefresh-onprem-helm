@@ -16,12 +16,13 @@ $ brew install docker-machine-driver-xhyve
 Create a new `minikube` cluster with sufficient resources.
 
 ```sh
-$ # --cpus - 4 cores
-$ # --memory - 8GB RAM
-$ # --disk-size - 40GB disj
-$ # (optional) --vm-driver - xhive macOS VM  
-$ minikube start --cpus=4 --memory=8192 --disk-size=40g
+$ # --cpus - 2 cores
+$ # --memory - 4GB RAM
+$ # --disk-size - 20GB disj
+$ minikube start --cpus=2 --memory=4096 --disk-size=20g
 ```
+
+Or use helper script `start_minikube.sh` and override some environment variables, if you like to customize it.
 
 **Note**: wait several minutes till `minikube` download and install all components. You can check `minikube` status on K8s dashboard.
 
@@ -47,6 +48,7 @@ Enable `heapster`, `dashboard`, `ingressּּּּ` and other useful addons:
 $ minikube addons enable ingress
 $ minikube addons enable dashboard
 $ minikube addons enable heapster
+# use minikube addons open heapster to open Heapster Dashboard
 ```
 
 # Install Helm

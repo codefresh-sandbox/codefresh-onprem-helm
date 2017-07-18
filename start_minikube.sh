@@ -1,24 +1,36 @@
 #!/bin/sh
 
-# install xhive docker machine vm driver
-# brew install docker-machine-driver-xhyve
-
 # uncomment to enable RBAC
 # RBAC="--extra-config=apiserver.Authorization.Mode=RBAC"
 
 # uncomment to enable development on localhost
-DEV="--network-plugin=kubenet --extra-config=kubelet.PodCIDR=10.10.0.0/24 --extra-config=kubelet.NonMasqueradeCIDR=10.10.0.0/24"
+${DEV:="--network-plugin=kubenet --extra-config=kubelet.PodCIDR=10.10.0.0/24 --extra-config=kubelet.NonMasqueradeCIDR=10.10.0.0/24"}
 
-# uncoment to use v1.7.0
-KUBE_VER=v1.7.0
-# KUBE_VER=v1.6.4
+# others: v1.6.4
+${KUBE_VER:=v1.7.0}
 
-# VM=xhyve
-VM=virtualbox
+# others: xhyve
+${VM_DRV:=virtualbox}
+# install xhive docker machine vm driver, if needed
+if [[ "$VM_DRV" == "xhyve" ]]; then
+  brew install docker-machine-driver-xhyve
+fi
 
-# docker run -d --restart=always -p 15000:5000 --name registry-mirror -v /mirror/data:/var/lib/registry -v /mirror/config:/etc/docker/registry registry:2
+# Storage size
+${DISK_SIZE:=20g}
+
+# CPUS to use
+${CPUS:=2}
+
+# RAM to use
+${MEMORY:=4096}
 
 # Docker registry mirror: IP for VirtualBox
-RM="--registry-mirror=http://localhost:15000 --mount --mount-string=$HOME/.minikube/mirror:/mirror"
+${MIRROR:="--registry-mirror=http://localhost:15000 --mount --mount-string=$HOME/.minikube/mirror:/mirror"}
 
-minikube start --cpus=4 --memory=8192 --vm-driver=$VM --disk-size=40g --kubernetes-version=$KUBE_VER $RM $RBAC $DEV
+minikube start --cpus=${CPUS} --memory=${MEMORY} --vm-driver=${VM_DRV} --disk-size=${DISK_SIZE} --kubernetes-version=${KUBE_VER} ${MIRROR} ${RBAC} ${DEV}
+
+# run Registry mirror mounted to local folder inside minikube
+if [[ ! -z "${MIRROR}" ]]; then
+  minikube ssh "docker run -d --restart=always -p 15000:5000 --name registry-mirror -v /mirror/data:/var/lib/registry -v /mirror/config:/etc/docker/registry registry:2"
+fi
