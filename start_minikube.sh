@@ -11,7 +11,8 @@ DEV=${DEV:-"--network-plugin=kubenet --extra-config=kubelet.PodCIDR=10.10.0.0/24
 # ISO_URL=${ISO_URL:-"--iso-url https://storage.googleapis.com/minikube-builds/1658/minikube-testing.iso"}
 ISO_URL=${ISO_URL:-""}
 
-DOCKER_OPTS=${DOCKER_OPTS:-"--docker-opt storage-driver=overlay2"}
+# DOCKER_OPTS=${DOCKER_OPTS:-"--docker-opt storage-driver=overlay2"}
+DOCKER_OPTS=${DOCKER_OPTS:-""}
 
 # others: v1.6.4
 KUBE_VER=${KUBE_VER:-v1.7.0}
