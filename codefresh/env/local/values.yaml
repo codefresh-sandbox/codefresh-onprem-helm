@@ -6,7 +6,22 @@
 consul:
   DatacenterName: minikube
   Replicas: 1
-  Memory: 256Mi
+  Memory: 64Mi
+
+postgresql:
+  resources:
+    requests:
+      memory: 128Mi
+
+mongodb:
+  resources:
+    requests:
+      memory: 64Mi
+
+redis:
+  resources:
+    requests:
+      memory: 64Mi
 
 # use smaller registry storage
 registry:

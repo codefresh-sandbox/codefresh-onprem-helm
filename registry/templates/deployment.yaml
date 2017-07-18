@@ -22,6 +22,8 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
         env:
         - name: REGISTRY_HTTP_ADDR
           value: ":{{ .Values.port }}"

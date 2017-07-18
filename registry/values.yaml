@@ -21,3 +21,11 @@ port: 5000
 storageSize: 20Gi
 
 mainChart: codefresh
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m

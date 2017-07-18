@@ -28,6 +28,8 @@ spec:
       - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         name: {{ template "fullname" . }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
         args:
           - --addr
           - {{ .Values.addr }}
