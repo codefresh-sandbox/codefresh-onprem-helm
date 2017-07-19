@@ -32,7 +32,7 @@ mongodbImage: bitnami/mongodb:3.4.5-r0
 # GitHub configuration
 github:
   apiHost: api.github.com
-  apiPathPrefix: /api/v3
+  # apiPathPrefix: /api/v3 (only for Enterprise GitHub)
   loginHost: github.com
   protocol: https
 

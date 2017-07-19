@@ -46,9 +46,15 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: api-safe-secret
         - name: BITBUCKET_CLIENT_ID
-          value: {{ .Values.global.bitbucketClientID | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: bitbucket-client-id
         - name: BITBUCKET_CLIENT_SECRET
-          value: {{ .Values.global.bitbucketClientSecret | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: bitbucket-client-secret
         - name: BL_USERS
           valueFrom:
             configMapKeyRef:
@@ -88,26 +94,38 @@ spec:
         - name: INTERNAL_USE_GITHUB_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              name:  {{ template "fullname" . }}
               key: github-internal-token
         - name: INTERNAL_SERVER_PORT
           value: {{ .Values.targetInternalPort | quote }}
         - name: GITHUB_API_HOST
           value: {{ .Values.github.apiHost | quote }}
         - name: GITHUB_API_PATH_PREFIX
-          value: {{ .Values.github.apiPathPrefix | quote }}
+          value: "{{ .Values.github.apiPathPrefix }}"
         - name: GITHUB_CLIENT_ID
-          value: {{ .Values.global.githubClientID | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: github-client-id
         - name: GITHUB_CLIENT_SECRET
-          value: {{ .Values.global.githubClientSecret | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: github-client-secret
         - name: GITHUB_LOGIN_HOST
           value: {{ .Values.github.loginHost | quote }}
         - name: GITHUB_PROTOCOL
           value: {{ .Values.github.protocol | quote }}
         - name: GITLAB_CLIENT_ID
-          value: {{ .Values.global.gitlabClientID | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: gitlab-client-id
         - name: GITLAB_CLIENT_SECRET
-          value: {{ .Values.global.gitlabSecret | quote }}
+          valueFrom:
+            secretKeyRef:
+              name:  {{ template "fullname" . }}
+              key: gitlab-client-secret
         - name: GITLAB_LOGIN_HOST
           value: {{ .Values.gitlab.loginHost | quote }}
         - name: GITLAB_PROTOCOL
