@@ -56,7 +56,7 @@ spec:
           protocol: TCP
         env:
         - name: RUNTIME_LOCAL_REGISTRY_NAME
-          value: "{{ .Release.Name }}-{{ .Values.global.registryService }}.{{ .Release.Namespace }}.svc:{{ .Values.global.registryPort }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.registryService }}.{{ .Release.Namespace }}:{{ .Values.global.registryPort }}"
         command:
           - "/bin/sh"
           - "-c"

@@ -27,6 +27,8 @@ redis:
 registry:
   storageSize: 4Gi
 
+builder:
+  replicaCount: 1
 
 # cstomize runtime environments
 runtime_envs:
