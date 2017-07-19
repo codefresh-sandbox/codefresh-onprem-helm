@@ -46,15 +46,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: api-safe-secret
         - name: BITBUCKET_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: bitbucket-client-id
+          value: {{ .Values.global.bitbucketClientID | quote }}
         - name: BITBUCKET_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: bitbucket-client-secret
+          value: {{ .Values.global.bitbucketClientSecret | quote }}
         - name: BL_USERS
           valueFrom:
             configMapKeyRef:
@@ -103,29 +97,17 @@ spec:
         - name: GITHUB_API_PATH_PREFIX
           value: {{ .Values.github.apiPathPrefix | quote }}
         - name: GITHUB_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: github-client-id
+          value: {{ .Values.global.githubClientID | quote }}
         - name: GITHUB_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: github-client-secret
+          value: {{ .Values.global.githubClientSecret | quote }}
         - name: GITHUB_LOGIN_HOST
           value: {{ .Values.github.loginHost | quote }}
         - name: GITHUB_PROTOCOL
           value: {{ .Values.github.protocol | quote }}
         - name: GITLAB_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: gitlab-client-id
+          value: {{ .Values.global.gitlabClientID | quote }}
         - name: GITLAB_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: gitlab-client-secret
+          value: {{ .Values.global.gitlabSecret | quote }}
         - name: GITLAB_LOGIN_HOST
           value: {{ .Values.gitlab.loginHost | quote }}
         - name: GITLAB_PROTOCOL
