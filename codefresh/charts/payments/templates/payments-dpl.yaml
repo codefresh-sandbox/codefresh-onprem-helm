@@ -40,7 +40,7 @@ spec:
         - name: INTERNAL_API_URI
           value: "http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}:"
         - name: MONGO_URI
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}.{{ .Release.Namespace }}:{{ .Values.global.mongoPort }}/{{ .Chart.Name }}"
+          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Chart.Name }}"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
@@ -57,9 +57,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER

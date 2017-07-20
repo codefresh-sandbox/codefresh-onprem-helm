@@ -1,3 +1,6 @@
+{{- $registryService := printf "%s-%s.%s.svc:%v" .Release.Name .Values.global.registryService .Release.Namespace .Values.global.registryPort }}
+{{- $natsService := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -58,9 +61,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: CONSUL_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.consulService }}.{{ .Release.Namespace }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
         - name: QUEUE_SERVERS
-          value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
+          value: {{ $natsService | quote }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -72,9 +75,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: RABBIT_URL
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
+          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER
@@ -88,7 +91,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
         - name: REDIS_URL
-          value: "{{ .Release.Name }}-{{ .Values.global.redisService }}.{{ .Release.Namespace }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.redisService }}" 
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -105,7 +108,7 @@ spec:
         - name: GIT_CLONE_IMAGE
           value: "{{ .Values.gitCloneImage }}:{{ .Values.gitCloneImageTag }}"
         - name: RUNTIME_LOCAL_REGISTRY_NAME
-          value: "{{ .Release.Name }}-{{ .Values.global.registryService }}.{{ .Release.Namespace }}:{{ .Values.global.registryPort }}"
+          value: {{ $registryService | quote }}
         volumeMounts:
         - name: docker-socket
           mountPath: /var/run/docker.sock

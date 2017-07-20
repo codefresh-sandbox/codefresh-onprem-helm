@@ -1,4 +1,5 @@
-# kind: scheduler-kubernetes
+{{- $consulService := printf "http://%s-%s.%s.svc:%v" .Release.Name .Values.global.consulService .Release.Namespace .Values.global.consulHttpPort }}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -26,18 +27,23 @@ data:
   # register runner
   register: |
     #!/bin/sh
-    NODE_ADDRESS=$1
-    NODE_NAME=${NODE_ADDRESS}
-    PUBLIC_IP=$2
-    CONSUL="http://{{ .Release.Name }}-{{ .Values.global.consulService }}:{{ .Values.global.consulHttpPort }}"
+    set -e
+    NODE_NAME="$1"
+    NODE_ADDRESS="$1.$2"
+    PUBLIC_IP="$3"
+    CONSUL="{{ $consulService }}"
     ACCOUNT=codefresh
     ROLE=runner
-    PROVIDER="{\"name\": \"kube-nodes\", \"type\": \"internal\"}"
-    SYSTEM_DATA="{\"os_name\": \"dind\"}"
+    PROVIDER='
+    {
+      "name": "kube-nodes", 
+      "type": "internal"
+    }'
+    SYSTEM_DATA='{"os_name": "dind"}'
     NODE_SERVICE='
     {
-      "Node": "",
-      "Address": "",
+      "Node": "'${NODE_NAME}'",
+      "Address": "'${NODE_ADDRESS}'",
       "Service": {
         "Service": "docker-node",
         "Tags": [
@@ -53,17 +59,16 @@ data:
         "Node": "",
         "CheckID": "service:docker-node",
         "Name": "Remote Node Check",
-        "Notes": "",
+        "Notes": "Check runner is up and running",
+        "Output": "Runner alive and reachable",
         "Status": "passing",
         "ServiceID": "docker-node"
       }
     }'
-    NODE_SERVICE=${NODE_SERVICE//\"Address\": \"\"/\"Address\": \"${NODE_ADDRESS}\"}
-    NODE_SERVICE=${NODE_SERVICE//\"Node\": \"\"/\"Node\": \"${NODE_NAME}\"}
-    echo $NODE_SERVICE
-    curl -X PUT -d "${NODE_SERVICE}" ${CONSUL}/v1/catalog/register && \
-    curl -X PUT -d ${PUBLIC_IP} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/publicAddress && \
-    curl -X PUT -d ${ACCOUNT} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/account && \
-    curl -X PUT -d ${ROLE} ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/role && \
-    curl -X PUT -d "${PROVIDER}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/systemData  && \
+    echo "Registering dind node ($NODE_NAME) in consul. Configuration: ${NODE_SERVICE}"
+    curl -X PUT -d "${NODE_SERVICE}" ${CONSUL}/v1/catalog/register
+    curl -X PUT -d "${PUBLIC_IP}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/publicAddress
+    curl -X PUT -d "${ACCOUNT}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/account
+    curl -X PUT -d "${ROLE}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/role
+    curl -X PUT -d "${PROVIDER}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/systemData
     curl -X PUT -d "${SYSTEM_DATA}" ${CONSUL}/v1/kv/services/docker-node/${NODE_NAME}/provider

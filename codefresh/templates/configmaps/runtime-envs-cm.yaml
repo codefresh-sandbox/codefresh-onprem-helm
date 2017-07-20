@@ -1,4 +1,4 @@
-{{- $queueServer := printf "nats://%s-%s.%s:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort -}}
+{{- $queueServer := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
 {{- $dindImage := printf "%s" .Values.global.dindImage }}
 {{- $dindCPULimits := printf "%s" .Values.global.dindCPULimits }}
 {{- $dindMemoryLimits := printf "%s" .Values.global.dindMemoryLimits }}

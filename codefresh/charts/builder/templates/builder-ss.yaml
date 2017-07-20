@@ -1,8 +1,6 @@
----
-# kind: scheduler-kubernetes
+{{- $registryService := printf "%s-%s.%s.svc:%v" .Release.Name .Values.global.registryService .Release.Namespace .Values.global.registryPort }}
+
 apiVersion: apps/v1beta1
-# TODO: We can't use statefulsets because they are immutable (except the replicas field).
-#       We should integrate the launching of dind pods into the api service (already in progress).
 kind: StatefulSet
 metadata:
   name: {{ template "fullname" . }}
@@ -17,6 +15,7 @@ spec:
   template:
     metadata:
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/builder-cm.yaml") . | sha256sum }}
         pod.beta.kubernetes.io/init-containers: '[
           {
             "name": "register-dind-container",
@@ -35,7 +34,7 @@ spec:
                 "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
               }
             ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}"]
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace}}.svc"]
           }
         ]'
       labels:
@@ -62,7 +61,7 @@ spec:
           protocol: TCP
         env:
         - name: RUNTIME_LOCAL_REGISTRY_NAME
-          value: "{{ .Release.Name }}-{{ .Values.global.registryService }}.{{ .Release.Namespace }}:{{ .Values.global.registryPort }}"
+          value: {{ $registryService | quote }}
         command:
           - "/bin/sh"
           - "-c"

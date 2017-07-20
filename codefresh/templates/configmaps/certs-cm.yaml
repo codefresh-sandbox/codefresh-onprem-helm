@@ -1,6 +1,9 @@
-{{- $nameBuilder := printf "%s-%s.%s" .Release.Name .Values.global.builderService .Release.Namespace }}
-{{- $nameRunner := printf "%s-%s.%s" .Release.Name .Values.global.runnerService .Release.Namespace }}
-{{- $namesList := list .Release.Namespace $nameBuilder $nameRunner }}
+{{- $nameBuilder := printf "%s-%s" .Release.Name .Values.global.builderService }}
+{{- $nameRunner := printf "%s-%s" .Release.Name .Values.global.runnerService }}
+{{- $nameRegistry := printf "%s-%s" .Release.Name .Values.global.registryService }}
+{{- $ns := .Release.Namespace }}
+{{- $namesList := list $nameBuilder $nameRunner }}
+{{- $domainsList := list $nameRegistry }}
 
 # kind: scheduler-kubernetes
 apiVersion: v1
@@ -62,7 +65,7 @@ data:
     echo "--- create ca extfile"
     echo -e \
     "extendedKeyUsage=serverAuth,clientAuth
-    subjectAltName = {{- range $i, $name := $namesList }}{{if $i}},{{end}}DNS:*.{{ $name }},DNS:*.{{ $name }}.svc,DNS:*.{{ $name }}.svc.cluster.local{{- end }}" > $EXTFILE
+    subjectAltName = {{- range $namesList }}DNS:*.{{ . }},DNS:*.{{ . }}.{{ $ns }},DNS:*.{{ . }}.{{ $ns }}.svc,DNS:*.{{ . }}.{{ $ns}}.svc.cluster.local,{{- end }}{{- range $i, $name := $domainsList }}{{if $i}},{{end}}DNS:{{ $name }},DNS:{{ $name }}.{{ $ns }},DNS:{{ $name }}.{{ $ns }}.svc,DNS:{{ $name }}.{{ $ns }}.svc.cluster.local{{- end }}" > $EXTFILE
 
     echo "--- sign certificate $SERVER_PEM "
     openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \

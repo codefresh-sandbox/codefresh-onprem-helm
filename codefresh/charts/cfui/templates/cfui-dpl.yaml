@@ -1,4 +1,6 @@
 # kind: scheduler-kubernetes
+{{- $natsService := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -44,7 +46,7 @@ spec:
           - name: CODEFRESH_API_URL
             value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
           - name: QUEUE_SERVERS
-            value: "nats://{{ .Release.Name }}-{{ .Values.global.natsService }}.{{ .Release.Namespace }}:{{ .Values.global.natsPort }}"
+            value: {{ $natsService | quote }}
           # Rabbitmq environment variables
           - name: RABBIT_PASSWORD
             valueFrom:
@@ -57,10 +59,10 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: rabbitmq-username
           - name: RABBIT_URL
-            value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}.{{ .Release.Namespace }}"
+            value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}."
           # PostgresSQL environment variables
           - name: POSTGRES_HOST
-            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}.{{ .Release.Namespace }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
           - name: POSTGRES_DATABASE
             value: {{ .Values.global.postgresDatabase }}
           - name: POSTGRES_USER
@@ -80,7 +82,7 @@ spec:
                 key: rollbar-access-token
           # Redis environment variables
           - name: REDIS_URL
-            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}.{{ .Release.Namespace }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}" 
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
