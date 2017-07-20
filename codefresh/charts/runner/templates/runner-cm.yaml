@@ -52,7 +52,7 @@ data:
           "account_codefresh",
           "type_runner"
         ],
-        "Address": "",
+        "Address": "'${NODE_ADDRESS}'",
         "Port": {{ .Values.containerPort }}
       },
       "Check": {
