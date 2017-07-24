@@ -19,3 +19,7 @@
 .project
 .idea/
 *.tmproj
+# Don't package decrypted and encrypted value files.
+*-dec.*
+*-enc.*
+

@@ -215,6 +215,32 @@ $ csplit assa.yaml '/^---/' {*}
 $ for f in $(ls xx*); do kubeval $f; done
 ```
 
+## Packaging And Distribution
+
+To package the codefresh chart, run:
+
+```
+helm package codefresh
+```
+
+This will create a local `*.tgz` file. Now we need to generate the index file
+and merge it with the existing index file in our charts repository.
+
+To generate a new index file, run:
+
+```
+wget http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com/index.yaml
+helm repo index . --merge index.yaml
+```
+
+Now upload both the updated `index.yaml` file and the `*.tgz` package file to
+Codefresh' charts repository:
+
+```
+s3cmd cp index.yaml s3://codefresh-helm-charts/
+s3cmd cp <package-full-name>.tgz s3://codefresh-helm-charts/
+```
+
 ## TODO
 
 - [ ] Add tls-sign
