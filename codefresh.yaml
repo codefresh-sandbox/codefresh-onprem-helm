@@ -1,0 +1,16 @@
+version: '1.0'
+steps:
+
+  deploy-chart:
+    title: deploy codefresh chart to the ${{ENVIRONMENT}} environment
+    image: quay.io/ipedrazas/drone-helm
+    commands:
+      - ./deploy.sh ${{ENVIRONMENT}}
+    environment:
+      - ENVIRONMENT=${{ENVIRONMENT}}
+      - RELEASE=${{CF_CHART_RELEASE}}
+      - VERSION=${{CF_CHART_VERSION}}
+      - NAMESPACE=${{CF_CHART_NAMESPACE}}
+      - KUBERNETES_USER=${{KUBERNETES_USER}}
+      - KUBERNETES_PASSWORD=${{KUBERNETES_PASSWORD}}
+      - KUBERNETES_SERVER=${{KUBERNETES_SERVER}}
