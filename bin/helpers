@@ -1,0 +1,45 @@
+#!/bin/bash
+
+readonly DEV_HOSTEDZONE_ID=Z18GWS8XMDYRQ6
+
+msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
+err() { echo -e "\e[31mERR ---> $1\e[0m" ; exit 1; }
+
+check() { command -v $1 >/dev/null 2>&1 || err "$1 utility is requiered!"; }
+
+approveContext() {
+	msg "Your kubectl is configured with the following context: "
+	kubectl config current-context
+	read -r -p "Are you sure you want to continue? [y/N] " response
+
+	if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+	then
+			msg "No problem, continuing with the script..."
+	else
+			msg "Exiting..."
+			exit 0
+	fi
+}
+
+getIngressIp() {
+	kubectl --namespace=default get ingress gateway \
+		--output=go-template='{{index (index .status.loadBalancer.ingress 0) "ip"}}'
+}
+
+# =--
+# ROUTE53 Operations
+# =--
+
+changeRoute53() {
+	local name="$1"
+	local value="$2"
+	local action="${3:-UPSERT}"
+	eval aws route53 change-resource-record-sets \
+		--hosted-zone-id ${DEV_HOSTEDZONE_ID} \
+		--change-batch "'{\"Changes\": [{\"Action\": \"$action\", \"ResourceRecordSet\": {\"Name\": \"$name\", \"Type\": \"A\", \"TTL\": 300, \"ResourceRecords\": [{\"Value\": \"$value\"} ] } } ] }'"
+}
+
+addToRoute53() { changeRoute53 "$1" "$2" "UPSERT"; }
+
+deleteFromRoute53() { changeRoute53 "$1" "$2" "DELETE"; }
+

@@ -1,0 +1,43 @@
+---
+version: '1.0'
+
+steps:
+  build:
+    type: build
+    working-directory: ${{initial-clone}}
+    dockerfile: Dockerfile.dynamicenv
+    image-name: codefresh/cf-env-creator
+    tag: latest
+  cleanup-secrets-repo-start:
+    image: ${{build}}
+    tag: latest
+    working-directory: ${{main_clone}}/..
+    commands:
+      - bash -c 'rm -rf cf-secrets'
+  git-clone-private-repo:
+    image: codefreshio/git-image:latest
+    working_directory: ${{main_clone}}/..
+    commands:
+      - bash -c 'rm -rf /codefresh/volume/cf-secrets/'
+      - git clone https://${{CF_SECRETS_GIT_USER}}:${{CF_SECRETS_GIT_PASSWORD}}@github.com/codefresh-io/cf-secrets.git /codefresh/volume/cf-secrets
+      - bash -c 'cd /codefresh/volume/cf-secrets/ && git checkout master && git branch && git status'
+      - ls -l /codefresh/volume/cf-secrets
+  decrypt-secrets:
+    image: ${{build}}
+    tag: latest
+    working_directory: ${{main_clone}}/../cf-secrets/
+    commands:
+      - ../cf-kubernetes/bin/decrypt-secrets
+  create-disposable-env:
+    image: ${{build}}
+    tag: latest
+    commands:
+      - bash -c "mkdir ~/.kube/ && cp /codefresh/volume/cf-secrets/conf/staging ~/.kube/config"
+      - bash -c "bin/create-dynamic-env $ENV_NAME /codefresh/volume/cf-secrets staging/deployer"
+  cleanup-secrets-repo-end:
+    image: ${{build}}
+    tag: latest
+    working-directory: ${{main_clone}}/..
+    commands:
+      - bash -c 'rm -rf cf-secrets'
+
