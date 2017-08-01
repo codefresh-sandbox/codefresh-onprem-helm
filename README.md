@@ -143,6 +143,39 @@ done
 exit
 ```
 
+# (Optional) Docker Registry Mirror
+
+To speedup Docker image downloads, after restarting or reinstalling minikube, point Docker Registry, running in minikube to local directory (use `start_minikube.sh` helper script).
+
+Make sure to create `~/.mirror/config` and `~/.mirror/data` folders.
+
+Put `config.yml` file (see bellow) into `~/.mirror/config`.
+
+```yaml
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+proxy:
+  remoteurl: https://registry-1.docker.io
+```
+
 # Install Codefresh
 
 ## Update chart dependencies
