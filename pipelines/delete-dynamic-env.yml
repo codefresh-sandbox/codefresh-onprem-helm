@@ -1,0 +1,16 @@
+---
+version: '1.0'
+
+steps:
+  build:
+    type: build
+    working-directory: ${{initial-clone}}
+    dockerfile: Dockerfile.dynamicenv
+    image-name: codefresh/cf-env-creator
+    tag: latest
+  create-disposable-env:
+    image: ${{build}}
+    tag: latest
+    commands:
+      - bash -c "bin/delete-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE"
+

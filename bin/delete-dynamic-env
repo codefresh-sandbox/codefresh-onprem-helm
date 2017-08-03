@@ -1,0 +1,48 @@
+#!/bin/bash
+
+readonly basepath="$(dirname "$0")"
+readonly keyfile="service-account.json"
+source "$basepath/helpers"
+
+usage() {
+	echo "$0 [-h] namespace-name project-name cluster-name [zone]"
+	exit 0
+}
+
+check kubectl
+check aws
+
+[ "$1" == "-h" ] && usage
+
+readonly namespaceName="$1"
+readonly projectName="${2:-savvy-badge-103912}"
+readonly clusterName="${3:-cf-staging}"
+readonly zone="${4:-us-central1-a}"
+
+[ -z "$namespaceName" ] && err "Please specify the namespace name!"
+
+[[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]] && err "Please set your AWS credentials"
+[[ -z "$GOOGLE_SERVICE_ACCOUNT" ]] && err "Please set the service-account env var!"
+
+# To encrypt the service account file use: `cat service-account.json | base64 -w 0`
+msg "Decrypting the GOOGLE_SERVICE_ACCOUNT env variable"
+echo "$GOOGLE_SERVICE_ACCOUNT" | base64 -d > $keyfile
+
+msg "Logging in with the service account to google cloud and generating Kubernetes config"
+gcloud config set container/cluster $clusterName
+gcloud config set compute/zone $zone
+gcloud config set project $projectName
+gcloud auth activate-service-account --key-file $keyfile
+gcloud container clusters get-credentials $clusterName
+
+msg "Delete the release using helm delete --purge"
+helm init --client-only
+helm delete $namespaceName --purge
+
+msg "Delete the namespace $namespaceName"
+kubectl delete namespace $namespaceName
+
+msg "Removing the environment from DNS..."
+publicIp=$(getIngressIp "$namespaceName")
+deleteFromRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
+
