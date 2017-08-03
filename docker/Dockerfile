@@ -11,6 +11,8 @@ FROM dtzar/helm-kubectl:2.5.1 as helm
 #
 FROM google/cloud-sdk:alpine
 
+RUN apk add --no-cache py-pip && pip install --upgrade awscli
+
 COPY --from=sops /go/bin/sops /usr/bin/
 COPY --from=helm /bin/helm /usr/bin/
 COPY --from=helm /usr/local/bin/kubectl /usr/bin/
