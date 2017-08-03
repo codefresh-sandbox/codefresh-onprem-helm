@@ -48,13 +48,59 @@ msg "Decrypting all secrets"
 msg "Creating the namespace $namespaceName"
 kubectl create namespace $namespaceName
 
+msg "Install Helm Tiller or upgrade, if needed"
+helm init --upgrade
+
+msg "Waiting Helm to be ready ..."
+while true; do
+  status=$(kubectl get po -l app=helm -l name=tiller --show-all=false -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system)
+  msg "Helm status = $status"
+  [ "$status" = "Running" ] && break
+  msg "sleeping 3 seconds ..."
+  sleep 3
+done
+
+sleep 3
+msg "# Helm version"
+helm version
+
 msg "Fetching latest helm dependencies"
-helm init --client-only
 helm dependency update codefresh/
+
+# set debug flag
+if [ "$DEBUG" == "true" ]; then
+  debug_flag="--debug"
+fi
+# set dry run flag
+if [ "$DRY_RUN" == "true" ]; then
+  dry_run_flag="--dry-run"
+fi
+# set wait flag
+WAIT=${WAIT:-true}
+if [ "$WAIT" == "true" ]; then
+  wait_flag="--wait"
+fi
+# set timeout flag
+if [ ! -z "$TIMEOUT" ]; then
+  timeout_flag="--timeout $TIMEOUT"
+fi
+
+# use specific Codefresh version
+VERSION=${VERSION}
+if [ -z "$VERSION" ]; then
+  echo "# Version: latest"
+else
+  echo "# Version: ${VERSION}"
+  # add codefresh repository to helm
+  repo_flag="--repo http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com"
+  # prepare version flag
+  version_flag="--version ${VERSION}"
+fi
 
 msg "Deploy the Codefresh' helm package"
 helm upgrade $namespaceName codefresh \
-	--install \
+	--install $debug_flag $dry_run_flag $wait_flag $timeout_flag \
+	$version_flag $repo_flag \
 	--force \
 	--reset-values \
 	--recreate-pods \

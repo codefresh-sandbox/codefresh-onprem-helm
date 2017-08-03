@@ -1,21 +1,10 @@
-#!/bin/sh
-
-keyfile="/root/keyfile"
+#!/bin/bash -e
 
 if [ -f $HOME/.minikube/ca.crt ]; then
     echo "Helming to Minikube"
 else
-    echo "Helming to GKE"
-    GCLOUD_PROJECT=${GCLOUD_PROJECT:-savvy-badge-103912}
-    GCLOUD_ZONE=${GCLOUD_ZONE:-us-central1-a}
-    GCLOUD_CLUSTER=${GCLOUD_CLUSTER:-gke_savvy-badge-103912_us-central1-a_cf-staging}
-
-    # Gcloud key file is passed as base64 encoded file
-    base64 -d $KEY_FILE > $keyfile
-
-    # generate K8s config to work with cluster
-    gcloud auth activate-service-account --key-file $keyfile
-    gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT
+    echo "Install minikube or mount HOME/.minikube folder when running this script in Docker container"
+    exit 1
 fi
 
 # set release name (default to dev)	# set release name (default to dev)

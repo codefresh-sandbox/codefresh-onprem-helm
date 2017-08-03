@@ -16,7 +16,9 @@ RUN apk add --no-cache py-pip && pip install --upgrade awscli
 COPY --from=sops /go/bin/sops /usr/bin/
 COPY --from=helm /bin/helm /usr/bin/
 COPY --from=helm /usr/local/bin/kubectl /usr/bin/
-COPY entrypoint.sh /usr/bin
-RUN chmod +x /usr/bin/entrypoint.sh
 
-CMD [ "entrypoins.sh" ]
+COPY bin/* /opt/codefresh/bin/
+RUN chmod +x /opt/codefresh/bin/*
+
+CMD ["/opt/codefresh/bin/create-dynamic-env"]
+
