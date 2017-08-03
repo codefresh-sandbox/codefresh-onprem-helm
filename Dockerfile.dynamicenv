@@ -1,0 +1,55 @@
+FROM alpine:3.5
+
+RUN \
+  echo "http://dl-3.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+  apk update && apk upgrade && \
+  apk --update add bash git util-linux pciutils usbutils coreutils binutils findutils grep openssl go musl-dev
+
+ENV GOROOT /usr/lib/go
+ENV GOPATH /gopath
+ENV GOBIN /gopath/bin
+ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+ENV GCLOUD_SDK_VERSION "165.0.0"
+ENV GCLOUD_SDK_URL "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz"
+ENV GCLOUD_SDK_FILENAME "google-cloud-sdk-${GCLOUD_SDK_VERSION}.tar.gz"
+ENV HELM_VERSION="2.5.1"
+
+WORKDIR /
+
+# Install the aws utility
+RUN \
+  apk -Uuv add groff less python py-pip && \
+  pip install awscli && \
+  apk --purge -v del py-pip && \
+  rm /var/cache/apk/*
+
+# Install kubectl and gcloud command line utilities
+ADD ${GCLOUD_SDK_URL} ${GCLOUD_SDK_FILENAME}
+
+RUN \
+  tar xf "${GCLOUD_SDK_FILENAME}" && \
+  sed -i -e 's/true/false/' /google-cloud-sdk/lib/googlecloudsdk/core/config.json; \
+  /google-cloud-sdk/bin/gcloud components install -q kubectl;
+ENV PATH /google-cloud-sdk/bin:$PATH
+
+# Set the default path to include all the commands
+RUN \
+  ln -s /google-cloud-sdk/bin/kubectl /usr/local/bin/kubectl && \
+  chmod +x /bin/*
+
+# Install sops to decrypt the values.yaml files
+RUN go get -u go.mozilla.org/sops/cmd/sops
+
+# Install helm
+RUN wget https://kubernetes-helm.storage.googleapis.com/helm-v${HELM_VERSION}-linux-amd64.tar.gz -P /tmp/ && \
+    tar xvf /tmp/helm*.tar.gz -C /tmp/ && \
+    mv /tmp/linux-amd64/helm /usr/local/bin/ && \
+    chmod +x /usr/local/bin/helm && \
+    rm -rf /tmp/helm*
+
+ADD . /opt/codefresh/
+RUN chmod +x /opt/codefresh/bin/*
+
+WORKDIR /opt/codefresh/
+ENTRYPOINT ["/opt/codefresh/bin/create-dynamic-env"]
+

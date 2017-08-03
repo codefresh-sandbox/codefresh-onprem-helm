@@ -52,6 +52,7 @@ cfapi:
 # internal ingress controller; disable by default
 ingress:
   enabled: false
+  domain: '*'
 
 dindImage: docker:17.05-dind
 
@@ -126,3 +127,4 @@ global:
   postgresService: postgresql
   # database
   postgresDatabase: codefresh
+

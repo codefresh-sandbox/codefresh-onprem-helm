@@ -5,7 +5,7 @@
 # image name
 image: registry
 
-# image tag  
+# image tag
 imageTag: 2.6
 
 ## Specify a imagePullPolicy

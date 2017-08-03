@@ -46,7 +46,16 @@ spec:
           hostPort: {{ .Values.controllerHostPost }}
         - containerPort: {{ .Values.controllerSecureContainerPort }}
           hostPort: {{ .Values.controllerSecureHostPort }}
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
         args:
         - /nginx-ingress-controller
-        - --default-backend-service={{ template "fullname" . }}-http-backend
+        - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
 
