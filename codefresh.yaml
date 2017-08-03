@@ -8,7 +8,11 @@ steps:
       # upgrade Tiller to the latest version
       - UPGRADE=true
       # specify chart
-      - CHART=cf/codefresh
+      - CHART=codefresh
+      # dry run
+      - DRY_RUN=${{DRY_RUN}}
+      # enable debug
+      - DEBUG=${{DEBUG}}
       # values files
       - VALUES_FILES=codefresh/values.yaml,codefresh/values-dec.yaml,codefresh/regsecret-dec.yaml,codefresh/env/${{ENVIRONMENT}}/values-dec.yaml,codefresh/env/${{ENVIRONMENT}}/values.yaml
       # release name
@@ -17,6 +21,8 @@ steps:
       # - VERSION=${{CF_CHART_VERSION}}
       # target namespace
       - NAMESPACE=${{CF_CHART_NAMESPACE}}
+      # skip tls verification
+      - SKIP_TLS_VERIFY=true 
       # recreate pods
       - RECREATE_PODS=${{RECREATE_PODS}}
       # reuse previous release values
