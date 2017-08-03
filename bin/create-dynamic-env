@@ -48,6 +48,10 @@ msg "Decrypting all secrets"
 msg "Creating the namespace $namespaceName"
 kubectl create namespace $namespaceName
 
+msg "Fetching latest helm dependencies"
+helm init --client-only
+helm dependency update codefresh/
+
 msg "Deploy the Codefresh' helm package"
 helm upgrade $namespaceName codefresh \
 	--install \
