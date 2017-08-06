@@ -1,13 +1,12 @@
-# github secrets
 global:
-    githubClientID: ENC[AES256_GCM,data:AFnfkueWJ3kgN2BUNPJPRo73JVM=,iv:MshmKr7bG7HLUdUicLjjbzBr7piQ03/HbOYObysg43E=,tag:0tabMk21TD2BYPTmeib1pQ==,type:str]
-    githubClientSecret: ENC[AES256_GCM,data:vZso/30Az27stiOK67RnL2mLyDcbuPRO7HZykQe5lkLoSdJdlAusPw==,iv:sDeZSEjgoY5z0j5KXhgXGZ+Abrh7nmGbdNM6wtRU63s=,tag:48LMLXUr8Y2JQvR/Zud50w==,type:str]
+    githubClientID: ENC[AES256_GCM,data:Yoi/hAnxAdMtCYHZgDCzzcjPlYc=,iv:ytvR7DHKtvsvtNHTqH0PSi+qwsp2AnsoUxfO2mTb1F8=,tag:epspy3GAy3ij7VNN8XS8fg==,type:str]
+    githubClientSecret: ENC[AES256_GCM,data:DQdmRkRqmKnQq/aBLIm6bfSUXOUaHQwNu2uc3u5ga68uYhFuWsXKNg==,iv:tuC5CfIJjq/PexbEvRSJPDD1nN1LgZ7K7f4OPCV3vtI=,tag:kzaYXk2hQLcx45twh8lJ1g==,type:str]
     # bitbucket secrets
     bitbucketClientID: ENC[AES256_GCM,data:MDAERHyaSH7VNkpTFmqYh47Y,iv:rJGqWEgieN1hW/Df24uU/RpHHHr0FBI4B57icdA1nSM=,tag:2ItbbpiY9sKrJL9F/h/p+A==,type:str]
     bitbucketClientSecret: ENC[AES256_GCM,data:MTaMdy3lC2VsNBcjQ/BI6FDAHtAzlpAmSoMm68Rmz+0=,iv:k49MZUlURDyl1Y+uEj1qqYeLXyLJkEGRbDeWxeRKYd8=,tag:cuMqz2WZjxLUCmLp4Fznmg==,type:str]
     # gitlab dev secrets
     gitlabClientID: ENC[AES256_GCM,data:K7ixSXbmMURUcfRPVcA9W4psR9uJhx8NDaKTSqI2gLwR87EgpNA6HJXU1Qzvs5tlWZN1+kzf7z9at4TRL8+X2w==,iv:vvSgOvJJuxneI/bTUxKCOPOvs43XURycMMdSSVXaTGo=,tag:DEgbb5ksINast4h8/jEtwA==,type:str]
-    gitlabClientSecret: ENC[AES256_GCM,data:PgibTaMxhSopSQxRZc5gF46meBDRnCqOH/KTDPsF2barVBgBj8xBHw==,iv:QEVujuFqcLrt0+Ux7mPjmA5sLksSp735OsZogFlziyo=,tag:r9slegJgYkjwV8CO9fS0Mg==,type:str]
+    gitlabClientSecret: ENC[AES256_GCM,data:MMgH8jDdRmKAI1lXqtcEYdo/xIdmlTIQJgyteWO83MrsQ7GRmPta8XixTFPF4myyDwUp2RyJ1VY5iN/yoDekfw==,iv:z+YjWZGxOcQhoU3xGJxtBx+3bjwi844aj+jLvIW/EVE=,tag:OBNxEJzCCYkDUnxgZgp8NA==,type:str]
     # node cluster
 nodeCurrentContext: ENC[AES256_GCM,data:JEwEodXYz/iVeYG6o3hWIK+s4xBnZI8=,iv:bnhxoCyMBOwGhrz0Vai6O7K7xJVahjgJxQZyYnH2uJM=,tag:iaf2HY9I/taoiMjTNMwT2Q==,type:str]
 nodeClusters:
@@ -43,8 +42,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-07-20T14:06:04Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwFCCu+Yol2G8v18YMo379sPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM4vFrkaMo21QRJsOBAgEQgDsVcVFg5TchRQkGph+Dq2o13iIgbpSjajJPGvJ4QlhkHEUMJvLWBiqpuhhBRzcXIDeilFLdBgNrJ5BSiw==
-    lastmodified: '2017-07-20T14:06:05Z'
-    mac: ENC[AES256_GCM,data:uJRwiPaZqKuVkO/yGFUDBk0SaP8uAerXhl+tLhZfAh0zN741r4yHonyQToLMBsOyR+MvdDtG0Zemazt+n1yZo6WxUG2qKj2o999tj38AKiqA0znU33NC+up/w67g3/W8CnEBapYROROwROxu/nQPcVLzpn3TVoCJaVRun/7oWDk=,iv:KzphWixk4YFJgCUOoFyQpMdWdOve+/V/IVedAvq7/SM=,tag:0frwMPmdFhqd6H4mxK0hBQ==,type:str]
+    lastmodified: '2017-08-06T13:52:15Z'
+    mac: ENC[AES256_GCM,data:D+IcfGhg2UZwoA1zlRGles6G/mQuTgOwVfPX7UWc3xVMTv93m4MjGDEf7G1FMFTOGFedSXtyqSMoWhRoq4dhhRTAbzTL209kAJOJV1zKIPccXRTG+gmW4149+HIcR9syvGeyWwR3EqxCMKxsAGZZFR2fWrgc+q9q1YJOvlVeGbg=,iv:+1zVgI6AeuVTyu10EyxCepXHenRbDeRToyWpemvD2iY=,tag:5li30zXt/kGHggGR3Cgy+w==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
