@@ -35,14 +35,37 @@ gcloud config set project $projectName
 gcloud auth activate-service-account --key-file $keyfile
 gcloud container clusters get-credentials $clusterName
 
+# set debug flag
+if [ "$DEBUG" == "true" ]; then
+  debug_flag="--debug"
+fi
+
+# set wait flag
+WAIT=${WAIT:-true}
+if [ "$WAIT" == "true" ]; then
+  wait_flag="--wait"
+fi
+
+# set timeout flag
+if [ ! -z "$TIMEOUT" ]; then
+  timeout_flag="--timeout $TIMEOUT"
+fi
+
+# set dry run flag
+if [ "$DRY_RUN" == "true" ]; then
+  dry_run_flag="--dry-run"
+fi
+
 msg "Delete the release using helm delete --purge"
-helm init --client-only
-helm delete $namespaceName --purge
+helm delete --purge $dry_run_flag $wait_flag $debug_flag $timeout_flag $namespaceName
 
-msg "Delete the namespace $namespaceName"
-kubectl delete namespace $namespaceName
+if [ "$DRY_RUN" == "true" ]; then
+  msg "DRY_RUN delete: skip deleting routes and namespace"
+else
+  msg "Delete the namespace $namespaceName"
+  kubectl delete namespace $namespaceName
 
-msg "Removing the environment from DNS..."
-publicIp=$(getIngressIp "$namespaceName")
-deleteFromRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
-
+  msg "Removing the environment from DNS..."
+  publicIp=$(getIngressIp "$namespaceName")
+  deleteFromRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
+fi
