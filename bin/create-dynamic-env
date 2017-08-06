@@ -101,6 +101,10 @@ else
   kubectl create namespace $namespaceName
 fi
 
+if [ "$DEBUG" == "true" ]; then
+  msg "Google service account file:"
+  msg "$GOOGLE_SERVICE_ACCOUNT"
+fi
 
 msg "Deploy the Codefresh' helm package"
 helm upgrade $namespaceName codefresh \
