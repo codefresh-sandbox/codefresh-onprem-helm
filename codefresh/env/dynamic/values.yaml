@@ -37,3 +37,11 @@ runtime_envs:
     selectorRuntimeEnv: codefresh-inc
     namespace: dinds
 
+# customize cfapi
+cfapi:
+  env:
+    OAUTH_ROUTER_CALLBACK: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/
+
+# customize global
+global:
+  
