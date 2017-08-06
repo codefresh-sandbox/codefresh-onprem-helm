@@ -4,8 +4,11 @@
 # decrypted files
 **/*-dec.yaml
 
-.vscode/
 .env
+.vscode/
+
+# secret files
+service-account.json
 
 # junk files
 QUESTIONS.md

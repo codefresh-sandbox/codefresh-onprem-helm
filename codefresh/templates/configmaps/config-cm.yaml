@@ -7,9 +7,6 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service  | quote }}
-  annotations:
-    "helm.sh/hook": "pre-install"
-    "helm.sh/hook-weight": "0"
 data:
   # segment black list users
   segment-blacklist-users: {{ default "" .Values.segmentBlackList | quote }}
@@ -19,9 +16,6 @@ data:
 
   # CFCR
   cfcr-domain: {{ default "cfcr.staging.io" .Values.cfcrDomain | quote }}
-
-  # OAuth router callback
-  # oauth-router-callback: {{ default "" .Values.oauthRouterCallback }}
 
   # GCE Project
   google-compute-engine-project: {{ default "savvy-badge-103912" .Values.gceProject }}
