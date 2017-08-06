@@ -52,7 +52,7 @@ echo "---> Decrypting secrets ..."
 ./sops.sh -d
 
 # set debug flag
-if [ "$DEBUG" == "true" ]; then
+if [ "$DEBUG_CHART" == "true" ]; then
   debug_flag="--debug"
 fi
 
@@ -96,7 +96,7 @@ fi
 # deploy Codefresh chart
 echo "---> Help upgrade: release=${RELEASE} of Codefresh chart ver=${VERSION:-latest} to the namespace=${NAMESPACE}"
 
-helm $debug_flag upgrade "${RELEASE}" codefresh --install \
+helm upgrade "${RELEASE}" codefresh $deubg_flag --install \
     $dry_run_flag \
     $repo_flag \
     $version_flag \

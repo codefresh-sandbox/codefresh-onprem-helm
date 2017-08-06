@@ -65,7 +65,7 @@ msg "Fetching latest helm dependencies"
 helm dependency update codefresh/
 
 # set debug flag
-if [ "$DEBUG" == "true" ]; then
+if [ "$DEBUG_CHART" == "true" ]; then
   debug_flag="--debug"
 fi
 # set dry run flag
@@ -105,7 +105,6 @@ msg "Deploy the Codefresh' helm package"
 helm upgrade $namespaceName codefresh \
 	--install $debug_flag $dry_run_flag $wait_flag $timeout_flag \
 	$version_flag $repo_flag \
-	--force \
 	--reset-values \
 	--recreate-pods \
 	--namespace $namespaceName \

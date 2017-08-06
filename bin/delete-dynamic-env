@@ -36,7 +36,7 @@ gcloud auth activate-service-account --key-file $keyfile
 gcloud container clusters get-credentials $clusterName
 
 # set debug flag
-if [ "$DEBUG" == "true" ]; then
+if [ "$DEBUG_CHART" == "true" ]; then
   debug_flag="--debug"
 fi
 
