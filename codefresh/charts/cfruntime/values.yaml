@@ -12,7 +12,7 @@ imagePullPolicy: Always
 image: codefresh/cf-runtime
 
 # image tag  
-imageTag: develop
+imageTag: master
 
 #---- Helper Images
 pusherImage: codefresh/cf-docker-pusher
@@ -22,7 +22,7 @@ pullerImage: codefresh/cf-docker-puller
 pullerImageTag: v2
 
 builderImage: codefresh/cf-docker-builder
-builderImageTag: v5
+builderImageTag: v9
 
 loggerImage: codefresh/cf-container-logger
 loggerImageTag: 0.0.15
