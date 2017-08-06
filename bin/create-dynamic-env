@@ -113,14 +113,16 @@ helm upgrade $namespaceName codefresh \
 	--values codefresh/env/dynamic/values-dec.yaml \
 	--values codefresh/env/dynamic/values.yaml
 
-msg "Waiting for the ingress controller to receive a public ip"
-waitForIngressExternalIp "$namespaceName"
-
-publicIp=$(getIngressIp "$namespaceName")
-msg "The ingress public's ip is: '$publicIp', adding it to dns (route53)"
-
-addToRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
-msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
+if [ "$DRY_RUN" == "true" ]; then
+  msg "Skip adding route to route53 when DRY_RUN"
+else
+  msg "Waiting for the ingress controller to receive a public ip"
+  waitForIngressExternalIp "$namespaceName"
+  publicIp=$(getIngressIp "$namespaceName")
+  msg "The ingress public's ip is: '$publicIp', adding it to dns (route53)"
+  addToRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
+  msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
+fi
 
 msg "Status of all the services: "
 kubectl --namespace=$namespaceName get pods

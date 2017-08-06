@@ -4,8 +4,8 @@ version: '1.0'
 steps:
   build:
     type: build
-    image-name: codefresh/cf-env-creator
-  create-disposable-env:
+    image_name: codefresh/cf-env-creator
+  delete_disposable_env:
     image: ${{build}}
     commands:
       - bash -c "bin/delete-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE"
