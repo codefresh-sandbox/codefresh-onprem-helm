@@ -5,6 +5,7 @@
 **/*-dec.yaml
 
 .vscode/
+.env
 
 # junk files
 QUESTIONS.md
