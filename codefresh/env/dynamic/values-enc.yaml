@@ -47,13 +47,14 @@ cfapi:
     awsCredentials:
         awsAccessKeyId: ENC[AES256_GCM,data:d0h0Ft52rTA8gr1vyorzQI9tCr0=,iv:nB42OTPXjzDFc+GBPDDs0aGA/HNg8ARYGtL3ngW9T2Y=,tag:UpGDDmn8ZZ0lm0RnjXIGhw==,type:str]
         awsSecretAccessKey: ENC[AES256_GCM,data:aVSc/1By0PV8YBbMBiL0w5zlNvOolJS7rHqiLgF5NZlbSq9/UL8ZsA==,iv:0j7pbTW5jNkqkQE9CnLguOW7904LXE3J09rc7pBYRV8=,tag:GPCzX4qekjWPPIwlYnXEnw==,type:str]
+sisma: ENC[AES256_GCM,data:cbY6fphenjAFUvx0EyY=,iv:WZavFDDpq4ASAP8BmFxA7Y3aMbnAzWLtTPQXeTmzgKI=,tag:3kZQuG6/Uf2LXQKpVyV+lA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-08-07T13:53:35Z'
-    mac: ENC[AES256_GCM,data:ZIj+GUwtQy684k3RNTcmgs097uABgoUW8xI0EK+6b7vAH9VqCwKje89hdPUaAKeVJDb6EM4bzxAp2mtFGPN1KjQnX/fFNdwaXpqo2aRxzEQix1i6AiA418uGgJIfm2nATck+9s+tQ+6Zpiab6V7unI8Qa12FfaXhcygcOHykhq0=,iv:DTOMBhLwJ02Rz8uJXdr/3dqCKVggvoOoY/6mWaa2HL0=,tag:aaXpB3ggLLF+FhFCOwrz6A==,type:str]
+    lastmodified: '2017-08-07T14:45:15Z'
+    mac: ENC[AES256_GCM,data:zMl8ZOwZwE0b//omH27Otqk8rlzbXUZ1gIHkpgYk/Ba5V8t8BVLXHjIuwPoyRS1DsXBu4gHec2C8ArhPXVHD4+6gLYfSedR0JW3qERWR/nfKohedkk8CIZ918IzDmtlvwL5sSZtuP9slAbxXj/m9IXG11nybc5km20EE+UJNdbg=,iv:UGf/IsH1o/X9LzbUDzawwU0BMKxBgPARVzJh+6iaVqw=,tag:zbHB5/zHovOxu6ITQ874lA==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

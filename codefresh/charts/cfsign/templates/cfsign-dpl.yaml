@@ -43,7 +43,7 @@ spec:
           subPath: ca.pem
         - mountPath: /cacerts/cf-ca-key.pem
           name: ca-key
-          subPath: cf-ca-key.pem
+          subPath: key.pem
         - mountPath: /.secrets/sisma
           name: sisma
           subPath: sisma
