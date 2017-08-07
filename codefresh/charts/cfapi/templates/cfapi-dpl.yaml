@@ -266,6 +266,11 @@ spec:
         - mountPath: /etc/ssl/cf/
           readOnly: true
           name: cf-certs-client
+        {{- if .Values.awsCredentials }}
+        - name: api-secrets
+          mountPath: /root/.aws/credentials
+          subPath: aws-credentials
+        {{- end }}
       volumes:
       - name: config
         configMap:
@@ -282,4 +287,9 @@ spec:
       - name: cf-certs-client
         secret:
           secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+      {{- if .Values.awsCredentials }}
+      - name: api-secrets
+        secret:
+          secretName: {{ template "fullname" . }}
+      {{- end }}
       restartPolicy: Always

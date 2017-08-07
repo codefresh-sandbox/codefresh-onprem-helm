@@ -48,6 +48,11 @@ providersData: |
     "aws": {}
   }
 
+# Example of how to specify AWS credentials for API service
+#awsCredentials:
+#  awsAccessKeyId: aaa
+#  awsSecretAccessKey: aaa
+
 # ENV
 env:
   ACTIVITY_LOG_URI: http://activity-log
