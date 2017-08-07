@@ -271,7 +271,7 @@ s3cmd cp <package-full-name>.tgz s3://codefresh-helm-charts/
 
 ## TODO
 
-- [ ] Add tls-sign
+- [x] Add tls-sign
 - [x] Add cf-runtime
 - [x] Fix Github log-in issues when working locally
 - [x] Fix build issues
@@ -280,7 +280,8 @@ s3cmd cp <package-full-name>.tgz s3://codefresh-helm-charts/
 - [ ] Research a better way to allow access to our Docker images
 - [x] Add Codefresh helm repository
 - [ ] Add Codefresh pipeline with helm
-  - [ ] Dynamic env
+  - [x] Dynamic env
+  - [x] Minikube local development environment
   - [ ] Staging
   - [ ] Production
 - [ ] Integrate with on-prem installation procedures
