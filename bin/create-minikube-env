@@ -93,6 +93,11 @@ if [ "$FORCE" == "true" ]; then
   force_flag="--force"
 fi
 
+# pass ; separated custom values
+if [ ! -z "$CUSTOM_VALUES" ]; then
+  custom_values_flag="--set ${CUSTOM_VALUES//;/ --set }"
+fi
+
 # deploy Codefresh chart
 echo "---> Help upgrade: release=${RELEASE} of Codefresh chart ver=${VERSION:-latest} to the namespace=${NAMESPACE}"
 
@@ -107,6 +112,7 @@ helm upgrade "${RELEASE}" codefresh $deubg_flag --install \
     $force_flag \
     $wait_flag \
     $timeout_flag \
+    $custom_values_flag \
     --values "codefresh/values.yaml" \
     --values "codefresh/values-dec.yaml" \
     --values "codefresh/regsecret-dec.yaml" \
