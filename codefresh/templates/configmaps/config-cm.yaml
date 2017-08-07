@@ -12,7 +12,7 @@ data:
   segment-blacklist-users: {{ default "" .Values.segmentBlackList | quote }}
 
   # Firebase url
-  firebase-url: https://codefresh-on-prem.firebaseio.com/on-prem
+  firebase-url: {{ .Values.firebaseUrl | quote }}
 
   # CFCR
   cfcr-domain: {{ default "cfcr.staging.io" .Values.cfcrDomain | quote }}
