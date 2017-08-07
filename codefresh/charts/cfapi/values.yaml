@@ -43,6 +43,11 @@ gitlab:
 # Segment
 segmentEnable: false
 
+providersData: |
+  {
+    "aws": {}
+  }
+
 # ENV
 env:
   ACTIVITY_LOG_URI: http://activity-log

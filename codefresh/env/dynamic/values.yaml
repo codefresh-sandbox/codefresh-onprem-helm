@@ -41,5 +41,75 @@ runtime_envs:
 
 # customize cfapi
 cfapi:
+  providersData: |
+    {
+      "aws": {
+        "name": "aws",
+        "settings": {
+          "KeyName": "cf-test-1",
+          "route53Zone": "ZVG87U9HV33SS"
+        },
+        "services": {
+          "docker-node-us-east-1": {
+            "region": "us-east-1",
+            "name": "docker-node",
+            "dnsPrefix": "cf-staging-aue1-docker-node",
+            "dnsDomain": "cf-cd.com.",
+            "iface": "public",
+            "imageName": "ami-e33d40f5",
+            "machineTypes": {
+              "all": [
+                "c4.large",
+                "c4.xlarge",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m3.medium"
+              ],
+              "default": "c4.large"
+            },
+           "volumeTypes": {
+                  "all": [
+                    "standard",
+                    "gp2"
+                  ],
+                  "default": "gp2"
+            },
+            "securityGroupIds": [
+              "sg-ef5ed293", "sg-95fa54e9"
+            ],
+            "BlockDeviceMappings": [
+              {
+                "DeviceName": "/dev/sda1",
+                "Ebs": {
+                  "DeleteOnTermination": true,
+                  "VolumeSize": 200,
+                  "VolumeType": "standard"
+                }
+              }
+            ],
+            "subnetId": [
+              "subnet-66def54e",
+              "subnet-12bddd28"
+            ],
+            "metadata": {
+              "autoscale": "docker-node",
+              "environment": "aws-staging"
+            }
+          }
+        }
+      },
+      "gce": {
+          "name": "gce",
+          "settings": {
+            "keyFilename": "/etc/admin/gce_creds.json",
+            "projectId": "savvy-badge-103912"
+          },
+          "services": {}
+      }
+    }
   env:
     OAUTH_ROUTER_CALLBACK: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/
