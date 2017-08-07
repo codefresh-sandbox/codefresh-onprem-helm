@@ -22,8 +22,9 @@ approveContext() {
 }
 
 getIngressIp() {
-	kubectl --namespace=default get ingress gateway \
-		--output=go-template='{{index (index .status.loadBalancer.ingress 0) "ip"}}'
+	local namespace="$1"
+	kubectl --namespace $namespace get svc ${namespace}-ingress-controller \
+		-o go-template='{{index (index .status.loadBalancer.ingress 0) "ip"}}'
 }
 
 # =--

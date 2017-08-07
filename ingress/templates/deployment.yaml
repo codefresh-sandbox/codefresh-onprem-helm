@@ -58,4 +58,5 @@ spec:
         args:
         - /nginx-ingress-controller
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
+        - --watch-namespace={{ .Release.Namespace }}
 
