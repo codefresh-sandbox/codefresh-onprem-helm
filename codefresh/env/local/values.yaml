@@ -2,6 +2,8 @@
 # records to /etc/hosts of the containers
 # hostsApp: default empty
 
+firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
+
 # customize consul chart
 consul:
   DatacenterName: minikube
