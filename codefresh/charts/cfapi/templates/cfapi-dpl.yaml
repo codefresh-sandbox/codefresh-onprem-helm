@@ -1,4 +1,5 @@
 {{- $natsService := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
+{{- $tlsSignService := printf "http://%s-%s.%s.svc:%v/sign" .Release.Name .Values.global.tlsSignService .Release.Namespace .Values.global.tlsSignPort }}
 
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -223,6 +224,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key 
+        - name: TLS_SIGN_URL
+          value: {{ $tlsSignService | quote }}
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:

@@ -1,0 +1,61 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+    version: {{ .Values.imageTag | quote }}
+spec:
+  replicas: {{ default 1 .Values.replicaCount }}
+  revisionHistoryLimit: 50
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+        version: {{ .Values.imageTag | quote }}
+    spec:
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        ports:
+        - containerPort: {{ .Values.port }}
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /cacerts/cf-ca.pem
+          name: ca
+          subPath: ca.pem
+        - mountPath: /cacerts/cf-ca-key.pem
+          name: ca-key
+          subPath: cf-ca-key.pem
+        - mountPath: /.secrets/sisma
+          name: sisma
+          subPath: sisma
+      restartPolicy: Always
+      volumes:
+      - name: ca
+        secret:
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+      - name: ca-key
+        secret:
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+      - name: sisma
+        secret:
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+

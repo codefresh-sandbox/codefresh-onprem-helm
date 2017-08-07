@@ -1,0 +1,6 @@
+imagePullPolicy: Always
+replicaCount: 1
+image: codefresh/cf-tls-sign
+imageTag: develop
+port: 4999
+
