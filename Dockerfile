@@ -17,7 +17,7 @@ COPY --from=sops /go/bin/sops /usr/bin/
 COPY --from=helm /bin/helm /usr/bin/
 COPY --from=helm /usr/local/bin/kubectl /usr/bin/
 
-COPY bin/* /opt/codefresh/bin/
+ADD . /opt/codefresh/
 RUN chmod +x /opt/codefresh/bin/*
 
 CMD ["/opt/codefresh/bin/create-dynamic-env"]

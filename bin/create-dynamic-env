@@ -127,20 +127,21 @@ helmCmd=$(cat <<END
 helm upgrade $namespaceName codefresh \
 	--install \
 	$customFlags \
-  --force \
+	--force \
 	--reset-values \
 	--recreate-pods \
 	--namespace $namespaceName \
 	--set ingress.domain="${namespaceName}.dev.codefresh.io" \
 	--set ingress.enabled=true \
-  --set global.appUrl="${namespaceName}.dev.codefresh.io" \
+	--set global.appUrl="${namespaceName}.dev.codefresh.io" \
 	--values codefresh/values.yaml \
 	--values codefresh/values-dec.yaml \
 	--values codefresh/regsecret-dec.yaml \
 	--values codefresh/env/dynamic/values-dec.yaml \
 	--values codefresh/env/dynamic/values.yaml \
 	$customVals
-END);
+END
+)
 
 msg "Running helm upgrade command"
 echo $helmCmd
