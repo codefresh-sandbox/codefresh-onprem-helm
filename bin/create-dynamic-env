@@ -75,7 +75,6 @@ processCustomFlags() {
 	fi
 
 	if [ "$DRY_RUN" != "true" ]; then
-		msg "Creating the namespace $namespaceName, if not exists"
 		kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
 	fi
 
