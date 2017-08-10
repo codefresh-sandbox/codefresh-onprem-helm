@@ -140,7 +140,7 @@ helm upgrade $namespaceName codefresh \
 	--values codefresh/env/dynamic/values-dec.yaml \
 	--values codefresh/env/dynamic/values.yaml \
 	$customVals
-END)
+END);
 
 msg "Running helm upgrade command"
 echo $helmCmd
