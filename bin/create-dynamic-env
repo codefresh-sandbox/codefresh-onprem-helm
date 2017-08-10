@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-readonly basepath="$(dirname "$0")"
-readonly keyfile="service-account.json"
-source "$basepath/helpers"
+readonly BASEPATH="$(dirname "$0")"
+readonly KEY_FILE="service-account.json"
+source "$BASEPATH/helpers"
 
 usage() {
 	echo "$0 [-h] namespace-name project-name cluster-name [zone]"
@@ -16,31 +16,91 @@ waitForIngressExternalIp() {
 	done
 }
 
+processCustomVals() {
+	local resultedArgs=""
+	local vars=$(env | awk -F '=' '{print $1}' | grep "^custom")
+
+	for var in $vars
+	do
+		local varName=$(echo $var | sed 's/custom_//' | sed 's/_/./g')
+		local varValue=$(eval "echo \$$var")
+		resultedArgs="$resultedArgs --set $varName=$varValue"
+	done
+
+	echo "$resultedArgs"
+}
+
+activateServiceAccount() {
+	local clusterName="$1"
+	local zone="$2"
+	local projectName="$3"
+
+	[[ -z "$GOOGLE_SERVICE_ACCOUNT" ]] && err "Please set the service-account env var!"
+
+	# To encrypt the service account file use: `cat service-account.json | base64 -w 0`
+	msg "Decrypting the GOOGLE_SERVICE_ACCOUNT env variable"
+	echo "$GOOGLE_SERVICE_ACCOUNT" | base64 -d > $KEY_FILE
+
+	msg "Logging in with the service account to google cloud and generating Kubernetes config"
+	gcloud config set container/cluster $clusterName
+	gcloud config set compute/zone $zone
+	gcloud config set project $projectName
+	gcloud auth activate-service-account --key-file $KEY_FILE
+	gcloud container clusters get-credentials $clusterName
+}
+
+waitForHelm() {
+	while true; do
+		status=$(kubectl get po -l app=helm -l name=tiller --show-all=false -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system)
+
+		msg "Helm status = $status"
+		[ "$status" = "Running" ] && break
+
+		msg "Sleeping 3 seconds ..."
+		sleep 3
+
+	done
+}
+
+processCustomFlags() {
+	local flags=""
+
+	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
+	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
+	[ ! -z "$TIMEOUT" ] && flags="$flags --timeout $TIMEOUT"
+	[ ! -z "$VERSION" ] && flags="$flags --repo http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com --version ${VERSION}"
+
+	if [ "$WAIT" == "true" ] || [ -z "$WAIT" ]; then
+		flags="$flags --wait"
+	fi
+
+	if [ "$DRY_RUN" != "true" ]; then
+		msg "Creating the namespace $namespaceName, if not exists"
+		kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
+	fi
+
+	echo "$flags"
+}
+
+# =---
+# MAIN
+# =---
+
 check kubectl
 check aws
 
 [ "$1" == "-h" ] && usage
 
-readonly namespaceName="$1"
-readonly projectName="${2:-savvy-badge-103912}"
-readonly clusterName="${3:-cf-staging}"
-readonly zone="${4:-us-central1-a}"
+namespaceName="$1"
+projectName="${2:-savvy-badge-103912}"
+clusterName="${3:-cf-staging}"
+zone="${4:-us-central1-a}"
 
 [ -z "$namespaceName" ] && err "Please specify the namespace name!"
 
 [[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]] && err "Please set your AWS credentials"
-[[ -z "$GOOGLE_SERVICE_ACCOUNT" ]] && err "Please set the service-account env var!"
 
-# To encrypt the service account file use: `cat service-account.json | base64 -w 0`
-msg "Decrypting the GOOGLE_SERVICE_ACCOUNT env variable"
-echo "$GOOGLE_SERVICE_ACCOUNT" | base64 -d > $keyfile
-
-msg "Logging in with the service account to google cloud and generating Kubernetes config"
-gcloud config set container/cluster $clusterName
-gcloud config set compute/zone $zone
-gcloud config set project $projectName
-gcloud auth activate-service-account --key-file $keyfile
-gcloud container clusters get-credentials $clusterName
+activateServiceAccount "$clusterName" "$zone" "$projectName"
 
 msg "Decrypting all secrets"
 ./sops.sh -d
@@ -48,67 +108,25 @@ msg "Decrypting all secrets"
 msg "Install Helm Tiller or upgrade, if needed"
 helm init --upgrade
 
-msg "Waiting Helm to be ready ..."
-while true; do
-  status=$(kubectl get po -l app=helm -l name=tiller --show-all=false -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system)
-  msg "Helm status = $status"
-  [ "$status" = "Running" ] && break
-  msg "sleeping 3 seconds ..."
-  sleep 3
-done
+msg "Waiting for Helm to be ready ..."
+waitForHelm
 
 sleep 3
-msg "# Helm version"
+msg "Helm version"
 helm version
 
 msg "Fetching latest helm dependencies"
 helm dependency update codefresh/
 
-# set debug flag
-if [ "$DEBUG_CHART" == "true" ]; then
-  debug_flag="--debug"
-fi
-# set dry run flag
-if [ "$DRY_RUN" == "true" ]; then
-  dry_run_flag="--dry-run"
-fi
-# set wait flag
-WAIT=${WAIT:-true}
-if [ "$WAIT" == "true" ]; then
-  wait_flag="--wait"
-fi
-# set timeout flag
-if [ ! -z "$TIMEOUT" ]; then
-  timeout_flag="--timeout $TIMEOUT"
-fi
+customFlags=$(processCustomFlags)
 
-# use specific Codefresh version
-VERSION=${VERSION}
-if [ -z "$VERSION" ]; then
-  echo "# Version: latest"
-else
-  echo "# Version: ${VERSION}"
-  # add codefresh repository to helm
-  repo_flag="--repo http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com"
-  # prepare version flag
-  version_flag="--version ${VERSION}"
-fi
-
-if [ "$DRY_RUN" == "true" ]; then
-  msg "Skip creating namespace in DRY_RUN mode"
-else
-  msg "Creating the namespace $namespaceName, if not exists"
-  kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
-fi
-
-if [ ! -z "$CUSTOM_VALUES" ]; then
-  custom_values_flag="--set ${CUSTOM_VALUES//;/ --set }"
-fi
+customVals=$(processCustomVals)
 
 msg "Deploy the Codefresh' helm package"
+helmCmd=$(cat <<END
 helm upgrade $namespaceName codefresh \
-	--install $debug_flag $dry_run_flag $wait_flag $timeout_flag \
-	$version_flag $repo_flag \
+	--install \
+	$customFlags \
   --force \
 	--reset-values \
 	--recreate-pods \
@@ -116,12 +134,17 @@ helm upgrade $namespaceName codefresh \
 	--set ingress.domain="${namespaceName}.dev.codefresh.io" \
 	--set ingress.enabled=true \
   --set global.appUrl="${namespaceName}.dev.codefresh.io" \
-  $custom_values_flag \
 	--values codefresh/values.yaml \
 	--values codefresh/values-dec.yaml \
 	--values codefresh/regsecret-dec.yaml \
 	--values codefresh/env/dynamic/values-dec.yaml \
-	--values codefresh/env/dynamic/values.yaml
+	--values codefresh/env/dynamic/values.yaml \
+	$customVals
+END)
+
+msg "Running helm upgrade command"
+echo $helmCmd
+eval "$helmCmd"
 
 if [ "$DRY_RUN" == "true" ]; then
   msg "Skip adding route to route53 when DRY_RUN"
@@ -129,6 +152,7 @@ else
   msg "Waiting for the ingress controller to receive a public ip"
   waitForIngressExternalIp "$namespaceName"
   publicIp=$(getIngressIp "$namespaceName")
+
   msg "The ingress public's ip is: '$publicIp', adding it to dns (route53)"
   addToRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
   msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
