@@ -74,10 +74,6 @@ processCustomFlags() {
 		flags="$flags --wait"
 	fi
 
-	if [ "$DRY_RUN" != "true" ]; then
-		kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
-	fi
-
 	echo "$flags"
 }
 
@@ -118,8 +114,12 @@ msg "Fetching latest helm dependencies"
 helm dependency update codefresh/
 
 customFlags=$(processCustomFlags)
-
 customVals=$(processCustomVals)
+
+if [ "$DRY_RUN" != "true" ]; then
+	msg "Creating namespace $namespace"
+	kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
+fi
 
 msg "Deploy the Codefresh' helm package"
 helmCmd=$(cat <<END
@@ -147,15 +147,15 @@ echo $helmCmd
 eval "$helmCmd"
 
 if [ "$DRY_RUN" == "true" ]; then
-  msg "Skip adding route to route53 when DRY_RUN"
+	msg "Skip adding route to route53 when DRY_RUN"
 else
-  msg "Waiting for the ingress controller to receive a public ip"
-  waitForIngressExternalIp "$namespaceName"
-  publicIp=$(getIngressIp "$namespaceName")
+	msg "Waiting for the ingress controller to receive a public ip"
+	waitForIngressExternalIp "$namespaceName"
+	publicIp=$(getIngressIp "$namespaceName")
 
-  msg "The ingress public's ip is: '$publicIp', adding it to dns (route53)"
-  addToRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
-  msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
+	msg "The ingress public's ip is: '$publicIp', adding it to dns (route53)"
+	addToRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
+	msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
 fi
 
 msg "Status of all the services: "
