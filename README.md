@@ -258,7 +258,7 @@ To generate a new index file, run:
 
 ```
 wget http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com/index.yaml
-helm repo index . --merge index.yaml
+helm repo index . --merge index.yaml --url http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com
 ```
 
 Now upload both the updated `index.yaml` file and the `*.tgz` package file to
