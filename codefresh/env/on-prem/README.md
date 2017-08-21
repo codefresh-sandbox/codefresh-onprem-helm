@@ -1,34 +1,14 @@
 # Installation
 
-How to install Codefresh' helm package on an existing Kubernetes cluster (or single-node installation).
+On-prem Codefresh installations are done in two phases. First, a single-node
+Kubernetes cluster is installed, then, a helm package is deployed to a working
+cluster.
 
-## 1. Initialize helm
+Both these phases are covered by the scripts in the [k8s-single-node-installer](https://github.com/codefresh-io/k8s-single-node-installer)
 
-```
-wget https://storage.googleapis.com/kubernetes-helm/helm-v2.5.1-linux-amd64.tar.gz -P /tmp/
-tar xvf /tmp/helm-v2.5.1-linux-amd64.tar.gz -C /tmp/
-chmod +x /tmp/linux-amd64/helm
-sudo mv /tmp/linux-amd64/helm /usr/local/bin/
+To install a single-node cluster, run the `installer` script.
 
-sudo helm init
-sudo helm repo add codefresh http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com/
-```
-
-## 2. Install Codefresh' chart
-
-Substitute `name.codefresh.io` with the DNS name you will use to access Codefresh' UI.
-Also, add the dockercfg (base64) and firebase secret's credentials.
-
-```
-# kubectl create namespace codefresh
-helm install codefresh/codefresh \
-  --name cf \
-  --namespace codefresh \
-  --set dockercfg=<base64-dockercfg> \
-  --set firebaseSecret=<firebase-secret> \
-  --set ingress.domain="name.codefresh.io" \
-  --set global.appUrl="name.codefresh.io"
-```
+To install the helm package into a cluster you created, run the `cf-helm` script.
 
 # Packaging (for administrators)
 
