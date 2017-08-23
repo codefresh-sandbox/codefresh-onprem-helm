@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # uncomment to enable RBAC
 # RBAC="--extra-config=apiserver.Authorization.Mode=RBAC"
