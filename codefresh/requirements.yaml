@@ -35,3 +35,8 @@ dependencies:
   repository: file://charts/payments
   tags:
     - saas
+- name: cluster-providers
+  version: 0.0.1
+  repository: file://charts/cluster-providers
+  tags:
+    - saas

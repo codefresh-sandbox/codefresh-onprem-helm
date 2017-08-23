@@ -38,3 +38,7 @@ runtime_envs:
     inCluster: true
     selectorRuntimeEnv: codefresh-inc
     namespace: dinds
+
+tags:
+  saas: true
+

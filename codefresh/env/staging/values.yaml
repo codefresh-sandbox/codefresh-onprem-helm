@@ -41,6 +41,7 @@ runtime_envs:
 
 # customize cfapi
 cfapi:
+  replicaCount: 2
   providersData: |
     {
       "aws": {
@@ -111,9 +112,16 @@ cfapi:
           "services": {}
       }
     }
-  env:
-    OAUTH_ROUTER_CALLBACK: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/
+
+cluster-providers:
+  replicaCount: 2
+  # We won't use Chart's installed mongo instance for staging, instead, we'll use
+  # an already deployed mongodb pod.
+  mongoURI: "mongodb://mongo:27017/cluster-providers"
+
+global:
+  appProtocol: https
 
 tags:
-  saas: false
+  saas: true
 
