@@ -25,3 +25,9 @@ dependencies:
   version: 0.1.0
   repository: file://../ingress
   condition: ingress.enabled
+- name: cluster-providers
+  version: 0.0.1
+  repository: file://%
+  tags:
+    - saas
+
