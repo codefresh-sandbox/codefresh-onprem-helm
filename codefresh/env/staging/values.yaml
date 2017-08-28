@@ -119,6 +119,13 @@ cluster-providers:
   # an already deployed mongodb pod.
   mongoURI: "mongodb://mongo:27017/cluster-providers"
 
+multiple-clusters:
+  replicaCount: 2
+
+kube-integration:
+  replicaCount: 2
+  mongoURI: "mongodb://mongo:27017/cluster-providers"
+
 global:
   appProtocol: https
 

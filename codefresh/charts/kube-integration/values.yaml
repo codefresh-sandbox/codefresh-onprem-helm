@@ -3,7 +3,7 @@ imagePullPolicy: Always
 # Number of replicas
 replicaCount: 1
 
-image: r.cfcr.io/codefresh-inc/codefresh/cluster-providers
+image: r.cfcr.io/codefresh-inc/codefresh/kube-integration
 imageTag: master
 
 # Service port
@@ -13,9 +13,6 @@ port: 9000
 targetPort: 9000
 
 # Secrets, should be replaced with env specific values
-client-id: ""
-client-secret: ""
-safe-secret: ""
 
 # Custom mongodb uri, set this if you don't want to use Chart's mongoDB instance
 mongoURI: ""
