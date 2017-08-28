@@ -25,9 +25,14 @@ dependencies:
   version: 0.1.0
   repository: file://../ingress
   condition: ingress.enabled
-- name: cfsign
-  version: 0.1.0
-  repository: file://charts/cfsign
+- name: cluster-providers
+  version: 0.0.1
+  repository: file://charts/cluster-providers
+  tags:
+    - saas
+- name: multiple-clusters
+  version: 0.0.1
+  repository: file://charts/multiple-clusters
   tags:
     - saas
 - name: payments
@@ -35,8 +40,8 @@ dependencies:
   repository: file://charts/payments
   tags:
     - saas
-- name: cluster-providers
-  version: 0.0.1
-  repository: file://charts/cluster-providers
+- name: cfsign
+  version: 0.1.0
+  repository: file://charts/cfsign
   tags:
     - saas

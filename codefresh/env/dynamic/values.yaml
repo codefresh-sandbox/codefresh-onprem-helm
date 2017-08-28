@@ -115,5 +115,5 @@ cfapi:
     OAUTH_ROUTER_CALLBACK: http://codefresh-inc-3.cf-cd.com:2222/api/auth/github/callback/
 
 tags:
-  saas: false
+  saas: true
 
