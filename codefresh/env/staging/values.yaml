@@ -130,6 +130,9 @@ accounts-referrals:
   replicaCount: 2
   mongoURI: "mongodb://mongo:27017/accounts-referrals"
 
+mailer:
+  replicaCount: 2
+
 global:
   appProtocol: https
 

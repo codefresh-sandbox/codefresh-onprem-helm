@@ -45,6 +45,11 @@ dependencies:
   repository: file://charts/accounts-referrals
   tags:
     - saas
+- name: mailer
+  version: 0.0.1
+  repository: file://charts/mailer
+  tags:
+    - saas
 - name: payments
   version: 0.1.2
   repository: file://charts/payments

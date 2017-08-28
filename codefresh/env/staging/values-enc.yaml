@@ -53,13 +53,15 @@ cluster-providers:
     client-id: ENC[AES256_GCM,data:nTJ57ZJdLVGriJI7JTxLnvUxuBRGsJrP9Vd8iUCyCWDL8TMrUylP78UlPUVMQZoXbBpsuoaaD4px4PSibMlRFJv/i6TGw6gF,iv:R+537J9tH6P1u8RIcTe2IHY5TZ25duQaD09DEKfwLj8=,tag:LIpOMkcZLh6EoBMi2fq3mg==,type:str]
     client-secret: ENC[AES256_GCM,data:cBTCh7wZdFRUHKlk3AUnxe4Om2dD+H9c,iv:eD6quE5mTGTYijzRRr4MtxlC+NJK7bNhHEYpCKzhMRs=,tag:uv0u6rx9ZmheV3yYpzYsFQ==,type:str]
     safe-secret: ENC[AES256_GCM,data:rAUWVBs0dQLcU00rYvoLghjQgik=,iv:+Ds3Ex0K34BvAO9LXSaNMI6roi9F5K5hInG3VC6HNp0=,tag:13P65ZvcuaH7HOutPhUkSQ==,type:str]
+mailer:
+    sendgridKey: ENC[AES256_GCM,data:HYUD7A+v6W+tMZRvQapPZZ1hiLR0aA7LXDiLxf6lIkncZqI4EfBDTt7s1o7JTStd+Yrh2dDctn9I5hh+ZLahT0pc0asJ,iv:KOc4NY6+75Xx+CcpxYgAXDCrfbkvipEJxOW2ESf6mmA=,tag:9IaApmgt6iP9Zdphru4qBw==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-08-28T12:48:41Z'
-    mac: ENC[AES256_GCM,data:KBEhitmUZ9Ms6m9j3/Mc+d+zwZeo38Curp8MN2QW/5ZLoBGRqTDePaea1oFBZp+uGxDdiLB2tekabqkr8ZONWyFqpHCnb8a+g+GfLQnzVm5TfNYH+WXjOU+W/0i4iQIBqrnXl+G+VGGz2b1QKwLIPzZZyd3FkrVAGFMG0de82Qs=,iv:mjJpBVj6Y/5C7dtLRTOSKHkgK5PbrEWyRRp9KDI1KNc=,tag:G/RRywoWL4PKn0hV3jQkbQ==,type:str]
+    lastmodified: '2017-08-28T14:42:20Z'
+    mac: ENC[AES256_GCM,data:iahdssJk1SeW1rAk9qCggQG9djr4axG5fQFq/sSu312/CEf2tYdIFQ3Z0nM24iHqyofZEKosC++0CF4Zp+l7aFKVtt5LDY8I31TzIKJ7VGsMzXO9NP16QwcWN3jC+0Y31Kc23JPSc64pK1bzDxy6G5nH0LJXFFY4ecNIbImdTBE=,iv:2veuj21Z9Bnbkf7vU9E7hNgXZISTWO5AtFh1uY9/oGw=,tag:P074+B4KAFV0aq4D0Mojow==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
