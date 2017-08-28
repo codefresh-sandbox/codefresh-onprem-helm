@@ -126,6 +126,10 @@ kube-integration:
   replicaCount: 2
   mongoURI: "mongodb://mongo:27017/cluster-providers"
 
+accounts-referrals:
+  replicaCount: 2
+  mongoURI: "mongodb://mongo:27017/accounts-referrals"
+
 global:
   appProtocol: https
 

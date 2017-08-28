@@ -40,6 +40,11 @@ dependencies:
   repository: file://charts/kube-integration
   tags:
     - saas
+- name: accounts-referrals
+  version: 0.0.1
+  repository: file://charts/accounts-referrals
+  tags:
+    - saas
 - name: payments
   version: 0.1.2
   repository: file://charts/payments

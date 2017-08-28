@@ -1,0 +1,17 @@
+imagePullPolicy: Always
+
+# Number of replicas
+replicaCount: 1
+
+image: r.cfcr.io/codefresh-inc/codefresh/accounts-referrals
+imageTag: master
+
+# Service port
+port: 9000
+
+# Pod (target) port
+targetPort: 9000
+
+# Custom mongodb uri, set this if you don't want to use Chart's mongoDB instance
+mongoURI: ""
+
