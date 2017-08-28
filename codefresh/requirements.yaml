@@ -30,4 +30,14 @@ dependencies:
   repository: file://%
   tags:
     - saas
+- name: payments
+  version: 0.1.2
+  repository: file://%
+  tags:
+    - saas
+- name: cfsign
+  version: 0.1.0
+  repository: file://%
+  tags:
+    - saas
 
