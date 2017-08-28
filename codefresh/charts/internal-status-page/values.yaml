@@ -1,0 +1,19 @@
+imagePullPolicy: Always
+
+# Number of replicas
+replicaCount: 1
+
+image: codefresh/cf-internal-status-page
+imageTag: master
+
+# Service port
+port: 9000
+
+# Pod (target) port
+targetPort: 9000
+
+# Secrets, should be replaced with env specific values
+dockerhubUsername: ""
+dockerhubPassword: ""
+githubOauthToken: ""
+

@@ -60,4 +60,9 @@ dependencies:
   repository: file://charts/cfsign
   tags:
     - saas
+- name: internal-status-page
+  version: 0.0.1
+  repository: file://charts/internal-status-page
+  tags:
+    - saas
 
