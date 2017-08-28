@@ -35,6 +35,11 @@ dependencies:
   repository: file://charts/multiple-clusters
   tags:
     - saas
+- name: kube-integration
+  version: 0.0.1
+  repository: file://charts/kube-integration
+  tags:
+    - saas
 - name: payments
   version: 0.1.2
   repository: file://charts/payments
