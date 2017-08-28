@@ -132,3 +132,9 @@ global:
   # database
   postgresDatabase: codefresh
 
+  clusterProvidersService: cluster-providers
+  clusterProvidersPort: 9000
+  kubeIntegrationService: kube-integration
+  kubeIntegrationPort: 9000
+
+

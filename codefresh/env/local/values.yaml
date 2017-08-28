@@ -40,5 +40,5 @@ runtime_envs:
     namespace: dinds
 
 tags:
-  saas: true
+  saas: false
 
