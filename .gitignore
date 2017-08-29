@@ -1,5 +1,7 @@
 # dependency charts
 **/charts/*.tgz
+*.tgz
+
 
 # decrypted files
 **/*-dec.yaml
@@ -14,3 +16,4 @@ service-account.json
 QUESTIONS.md
 out/
 darwin-amd64/
+index.yaml
