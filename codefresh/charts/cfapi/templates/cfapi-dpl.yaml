@@ -149,6 +149,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          value: {{ .Values.global.tlsRejectUnauthorized }}
         - name: PAYMENTS_SERVICE
           value: {{ .Values.global.paymentsService }}
         - name: PAYMENTS_URI
