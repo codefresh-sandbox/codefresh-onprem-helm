@@ -174,3 +174,5 @@ global:
   # database
   postgresDatabase: codefresh
 
+tags:
+  saas: false
