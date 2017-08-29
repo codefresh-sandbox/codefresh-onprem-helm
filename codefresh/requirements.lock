@@ -23,5 +23,11 @@ dependencies:
 - name: ingress
   repository: file://../ingress
   version: 0.1.0
-digest: sha256:06fa0dd6ec1aebbfb478c6352957713576acdbe14ce4182ab0e546606872a379
-generated: 2017-07-16T14:10:23.430594479+03:00
+- name: cfsign
+  repository: file://charts/cfsign
+  version: 0.1.0
+- name: payments
+  repository: file://charts/payments
+  version: 0.1.2
+digest: sha256:98857d9cad92994b1425d47ccd519558ebb66bea40e18e7878aa56bdf962f7c6
+generated: 2017-08-29T10:45:43.195169231+03:00
