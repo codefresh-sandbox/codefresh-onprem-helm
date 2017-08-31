@@ -47,6 +47,8 @@ cfapi:
     awsCredentials:
         awsAccessKeyId: ENC[AES256_GCM,data:d0h0Ft52rTA8gr1vyorzQI9tCr0=,iv:nB42OTPXjzDFc+GBPDDs0aGA/HNg8ARYGtL3ngW9T2Y=,tag:UpGDDmn8ZZ0lm0RnjXIGhw==,type:str]
         awsSecretAccessKey: ENC[AES256_GCM,data:aVSc/1By0PV8YBbMBiL0w5zlNvOolJS7rHqiLgF5NZlbSq9/UL8ZsA==,iv:0j7pbTW5jNkqkQE9CnLguOW7904LXE3J09rc7pBYRV8=,tag:GPCzX4qekjWPPIwlYnXEnw==,type:str]
+cfui:
+    segmentKey: ENC[AES256_GCM,data:tqNXtv5fQFjlzMJTioOL2ItPDs8IG0lh5f3cmpCctpM=,iv:mpkeLEMLPONhKSJqbzBgcJoJ/o99Ij69uys820DL+WU=,tag:YdKE9yw/pBiD/Z/mlPtN4g==,type:str]
 sisma: ENC[AES256_GCM,data:cbY6fphenjAFUvx0EyY=,iv:WZavFDDpq4ASAP8BmFxA7Y3aMbnAzWLtTPQXeTmzgKI=,tag:3kZQuG6/Uf2LXQKpVyV+lA==,type:str]
 dockercfg: ENC[AES256_GCM,data:zRfvzgjy7D69os/kuRgFA5X0/msXZC0mEAM4L1ZJcABsaekrxTU4e+PQmB1VG2lYpzvyXRJ2rT2ahDmF+yT011No4XPI/wQGy3TRT1NifOSpE76qgM2sGpuK2NI591jKBsuut6rPmPruek2U5qL/k44fvyXu53GUSc1W7YsHfRi8ZwU3/ZXzFuRvv7ManIgHXf+5AsnBdCtxTm/Dt+h+CPpQpaaCYr3/t6V0eVPZQY0/N42HEuPoAaetDbyhp5LG/Eh2g7BSAD3JFAWoa/Evpqyn6w9xBO+sXka2K5fon7cOLRZ/2pQMBchwvUusAGjamGDxIEfEmqjsctBsAfRgvz14nS+c1EpVxL3aArdYksSTWsHz4Try+xeHMNCm27LLiTK34SovOohg+Za+8DOj4oadBG4xkLz+ukVRtQZ8TbQ5VifnGkjjqWnkSkY=,iv:2IoWvaT1D+NM831Gr/FsPr7wt/NRiNyDMf7zLg+5Jtw=,tag:6pcysmMfEJpTq5aIFvr5uQ==,type:str]
 cluster-providers:
@@ -59,13 +61,14 @@ internal-status-page:
     dockerhubUsername: ENC[AES256_GCM,data:4mTJi0SWsyeRvqimaw==,iv:wl1mUz74ruEn9NGY+jchU/l9xu0Xzq29h/1d4hmKZy4=,tag:O0xHF/KfdT36qrvm5/+UXQ==,type:str]
     dockerhubPassword: ENC[AES256_GCM,data:Jt2W/caRDDkB,iv:203x9iKLtqeeMozfZx8iLWphAt1twI4yV4nuf89b0HE=,tag:ikmDxyY/4mkXdFGw0v+yVg==,type:str]
     githubOauthToken: ENC[AES256_GCM,data:klBIxqn8BcCKFfIuhGYLIXeHL4SylB5BKmBzTJzSg1pA7hwG9DpvVw==,iv:2y3i/wwGzmECx1ECyrhYqmnKfEBfPbpLAmq/a0b4OHw=,tag:DOAJo7mYWsJxuTZ/XuGwCQ==,type:str]
+segmentKey: ENC[AES256_GCM,data:/8Y26qpIxIlaGwCI22c014KBNuV+OOTP9Gc3N1sH5xY=,iv:LzpZXtLJ9AyGvEqfftzQB/qhrhBmKs/jvbna3WGEAKo=,tag:GDWcEZl/rHTxuBad15lQJg==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-08-28T15:34:14Z'
-    mac: ENC[AES256_GCM,data:kb5vQQPkIy82buflrGVKWxfZB0l5Tkq8ES8aK9LZ4qDO+Z/oDBpIqcpm7e15eWbwPNTygGJcLUpUqe/OPPxpm0cpbikTaLcCEws3keK0G23zZ8vUkCrlW0/RC59qSUpq1c2X4J6dKmse2Vj5cg7bYd3GO6SjXfzeDYSAT5W4Ln4=,iv:8zVlFVgL5XW5qSg6q2/j9KUk2o5X9jzoi+FAA+Hgnz4=,tag:YtMrSVNaVDV2Q6O8++LSSg==,type:str]
+    lastmodified: '2017-08-31T12:51:09Z'
+    mac: ENC[AES256_GCM,data:BgMdS/YI9nbTPoRk4ItFSKT8dY4WxUZ48b6Bm3ifRHTbdyBkQi4RprRqtxpNuvV6GjkHpMlkzeJ4izLqN2wHTTVPGYmHLlyldNiOjid44+8jDfMcpG5ohlGRPwgQ4rHTHtdiyV2wDWGlg0l29DQlUvo/XMNGJCqz/iXfS1AuHRA=,iv:bAzS3daP2FKipCE4d7AWqwXIs5D1W29iEOd4nLq+DK8=,tag:IO1FlPzXh+fmWmiVr4Y4jQ==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

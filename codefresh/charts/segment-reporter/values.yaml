@@ -1,0 +1,17 @@
+imagePullPolicy: Always
+
+# Number of replicas
+replicaCount: 1
+
+image: codefresh/segment-reporter
+imageTag: master
+
+# Service port
+port: 80
+
+# Pod (target) port
+targetPort: 9000
+
+blacklistUsers: ""
+eventbusInterval: 5
+

@@ -47,18 +47,28 @@ cfapi:
     awsCredentials:
         awsAccessKeyId: ENC[AES256_GCM,data:d0h0Ft52rTA8gr1vyorzQI9tCr0=,iv:nB42OTPXjzDFc+GBPDDs0aGA/HNg8ARYGtL3ngW9T2Y=,tag:UpGDDmn8ZZ0lm0RnjXIGhw==,type:str]
         awsSecretAccessKey: ENC[AES256_GCM,data:aVSc/1By0PV8YBbMBiL0w5zlNvOolJS7rHqiLgF5NZlbSq9/UL8ZsA==,iv:0j7pbTW5jNkqkQE9CnLguOW7904LXE3J09rc7pBYRV8=,tag:GPCzX4qekjWPPIwlYnXEnw==,type:str]
+cfui:
+    segmentKey: ENC[AES256_GCM,data:FTCu7YpuWqf2sxpt5326S/3yeNhZv9Vfh3cIZYOjQqA=,iv:lhrhmoxaRZMEz6OpcgRm/V9noX3DKqPHi+aX9wmLvug=,tag:0VzHpH7roQlWNwAPwYGZzQ==,type:str]
 sisma: ENC[AES256_GCM,data:cbY6fphenjAFUvx0EyY=,iv:WZavFDDpq4ASAP8BmFxA7Y3aMbnAzWLtTPQXeTmzgKI=,tag:3kZQuG6/Uf2LXQKpVyV+lA==,type:str]
+dockercfg: ENC[AES256_GCM,data:GBSm3ObMy6aMRm0N0eim1wBUpLuD4RWlVwq4pnwikPTuqMBlQmAPBbzSNJ4q2AeMnVbncfDM8nHW196KKZ2vZ8jo/S9FVjjrbKFheaqaeCvqVFS+khQM2s8t6+cOn3Iz/wV5AMpiPdb2b3yFEigSVMpBL9MPYQoiCJlZ6vz5n26WZzY0U84ghcdHF3s0A0jts98lef9glIAmPiUrUeXhIDzSHU+Oznq7Dp/1c1uZpX9K1seKNV1OOPY0/sbxW/xVVfXL7X+Jx7xNV6GTpESGVDqX0Tp3NzB0iac7KezQqe73qAFd7obOU/IT0ByaTjJd2oDSAux5aT4E7Vlhbr730pNkkiZdt/pbBwDKbdDHhAx0wPQyyZjtUcmsON5tYm/BANyaTe30tdRFZyiMbl3Qzq22xyzaT57XG6e/n4TfpkupQxtRKKIjgPW4vlQ=,iv:RY4zbVLp1ScOq2pabqjy+LsaDhcPwP4n5CBMf4U/SNc=,tag:EaI8ub66aynl6uCNAy6m3Q==,type:str]
 cluster-providers:
     client-id: ENC[AES256_GCM,data:TcNtNaZuQ7twVDPhSqzMQ69I+xLHtxYXMTxEmMwoUkbYaS+6PnYLDpg/AIlTkww5EH0dKKqpjyluKfxRjq4qowWOUMdNqZuf,iv:9m961LKXFhw5iMPvABqY+/TZFpEbw4KZP/z66OLEU5M=,tag:xeqjnz1qjzS0Lw5wfx65hA==,type:str]
     client-secret: ENC[AES256_GCM,data:M8012w19Znuj2gq68OARtEwa9HTcA9FH,iv:g4g9J0NSuAog6HVsINtFyA4GB9xAvuHTaNX4II7eiI8=,tag:u02e8wYl0pOaWdjJjFmv7A==,type:str]
     safe-secret: ENC[AES256_GCM,data:3XBk746V3pKCeLwyXXJ3TTO6lC0=,iv:5wLRw1zcPP/mORKOWhd5Wt9T8zoEjyX9K+y0buaI220=,tag:ZxicMvBxAzsa2Fbh/yf66g==,type:str]
+mailer:
+    sendgridKey: ENC[AES256_GCM,data:w+dIrI6BnBteXchAYwlRf4WQRC5iP+r/1aB1ABQKSrF3oSzDnNyfS42krhM482xrkVyzOQmV+B+XSPjcOw0CcXlbzyjW,iv:cfMDp1ujpds4P63brJNlk6wLiLk4/1vhAMyBtI+faKM=,tag:e4NXs22XbHNNuLJCubWR5A==,type:str]
+internal-status-page:
+    dockerhubUsername: ENC[AES256_GCM,data:78c88pCYhxSJ1pYviA==,iv:xODSsg+aphnI2xiRu6o7CRutZxfxe00myBIDFJMXikY=,tag:Oxjh8vdFU81b9oFnayAlZw==,type:str]
+    dockerhubPassword: ENC[AES256_GCM,data:qwW9DmqT2GKm,iv:GTnqyRlxr04qaB6B9saKw1aXAdOMh5tPqcFRUxAoiaU=,tag:kxZn5uImb1jKpVKCpRgx2g==,type:str]
+    githubOauthToken: ENC[AES256_GCM,data:4QFnNZVi25Rj+Ja7RNxugxue2X/GOYhdfHaIo1MP99vNuzoSkDOfcA==,iv:7d4yMCDBAAun+myRdXlo27H6EqO4KwdDN0ls7iV36UA=,tag:Ke/XxkZYF83h15Ysm+btZg==,type:str]
+segmentKey: ENC[AES256_GCM,data:+ISK5FXvLuRzywX1KjIg3gtcB86speUcllM8QQEwW0I=,iv:L8N0NsdrC2bdXTycVz548Q5bYV5Us/LnPHB5PcfOJss=,tag:65aH9EdKp+jNoiPS5P+PGA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-08-23T13:55:27Z'
-    mac: ENC[AES256_GCM,data:CK5ErhcUf3DSsEBgsxm7JREhryrwllaNFOtBePAmKCZX1UJSIK+mVpy/rFUBV/KYu+ri7HK4GuKG4moCuqaZ/INKwfs/EAXKcwujdpMg5dIjP2W0sqFewxQLoybOD+EJn2dwOMfYHvUqBQlYzu1uuKCQRLsuDo10FdCkpObg/Js=,iv:DvKSPiSjuqRUOqtn1KFoIOxZuDYlPwzgr3eWHtvPNac=,tag:28QuIhuYrKsLaugaQUctnQ==,type:str]
+    lastmodified: '2017-08-31T12:50:35Z'
+    mac: ENC[AES256_GCM,data:jFkSQh9oMM4oRdqVaoJPRTe3ZlCPlA3Ajq9oxyxYj/7eWOcpI0BcZjzkTMSGb1U+9U439C0uPYm6WrlqMPSI+CR6pr89MjrRgMHB5LWwn1HSEPxDrlH7RzIKG7z33RMfWR2bt23bJs6hMT1uoB2fIyP/EVb66N6Kt/bD6eFrSrc=,iv:+NdXQ/Kd7upQk4No5u5lxwSVz/DnFcpG/j6svlor/oc=,tag:G1Sxn6SsRue2V43k6Yzx4Q==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
