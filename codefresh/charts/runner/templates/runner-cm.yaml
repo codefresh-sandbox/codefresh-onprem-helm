@@ -22,7 +22,8 @@ data:
       "tls": true,
       "tlscacert": "/etc/ssl/cf/ca.pem",
       "tlscert": "/etc/ssl/cf/cert.pem",
-      "tlskey": "/etc/ssl/cf/key.pem"
+      "tlskey": "/etc/ssl/cf/key.pem",
+      "insecure-registries" : [{{ .Values.global.insecureRegistries | quote }}]
     }
   # register runner
   register: |
