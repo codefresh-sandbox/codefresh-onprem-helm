@@ -70,4 +70,9 @@ dependencies:
   repository: file://charts/segment-reporter
   tags:
     - saas
+- name: workflow-baseline-invoker
+  version: 0.0.1
+  repository: file://charts/workflow-baseline-invoker
+  tags:
+    - saas
 

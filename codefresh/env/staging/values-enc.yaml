@@ -62,13 +62,15 @@ internal-status-page:
     dockerhubPassword: ENC[AES256_GCM,data:Jt2W/caRDDkB,iv:203x9iKLtqeeMozfZx8iLWphAt1twI4yV4nuf89b0HE=,tag:ikmDxyY/4mkXdFGw0v+yVg==,type:str]
     githubOauthToken: ENC[AES256_GCM,data:klBIxqn8BcCKFfIuhGYLIXeHL4SylB5BKmBzTJzSg1pA7hwG9DpvVw==,iv:2y3i/wwGzmECx1ECyrhYqmnKfEBfPbpLAmq/a0b4OHw=,tag:DOAJo7mYWsJxuTZ/XuGwCQ==,type:str]
 segmentKey: ENC[AES256_GCM,data:/8Y26qpIxIlaGwCI22c014KBNuV+OOTP9Gc3N1sH5xY=,iv:LzpZXtLJ9AyGvEqfftzQB/qhrhBmKs/jvbna3WGEAKo=,tag:GDWcEZl/rHTxuBad15lQJg==,type:str]
+workflow-baseline-invoker:
+    jwt: ENC[AES256_GCM,data:wyvEGWyK5D7RJss1CNn098tvjyh3MGmipG+bih368b10f+4XdmXvOs9EpY3wKCxIMFzk3yuGzHEKq4NBw6mf4B2bbM5WnYgHlsRcgfqh8G4s7omGbR3g1kdsRDwdHhXkGUjjrMQl5A/o0/PoR8I5cHYzdnsfwaj31QvDoQWLflFdCAbD11Pu3oCZQIaQ6AyVqpi5cj9LqrNUifr1fz5ho5VEJhHwherpRRRX/4qAoxdX9vaT9/tzLNZMXcwDV/Cgs8cXUFmHfpAo,iv:0uKNAot2JcTXoHz6bLhm3fKtcJbBUIQrFiIhoUbwX+A=,tag:PPj5XN87L/BDh0/FbqGz5w==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-08-31T12:51:09Z'
-    mac: ENC[AES256_GCM,data:BgMdS/YI9nbTPoRk4ItFSKT8dY4WxUZ48b6Bm3ifRHTbdyBkQi4RprRqtxpNuvV6GjkHpMlkzeJ4izLqN2wHTTVPGYmHLlyldNiOjid44+8jDfMcpG5ohlGRPwgQ4rHTHtdiyV2wDWGlg0l29DQlUvo/XMNGJCqz/iXfS1AuHRA=,iv:bAzS3daP2FKipCE4d7AWqwXIs5D1W29iEOd4nLq+DK8=,tag:IO1FlPzXh+fmWmiVr4Y4jQ==,type:str]
+    lastmodified: '2017-08-31T13:41:48Z'
+    mac: ENC[AES256_GCM,data:feozVyAD45ESVxNDrL7amxqmfW3CGc5tQZCk0rGdwRtmZPkPhfKlnVfUIF/s4/0fTjPWcYQS/Wd/MtgC3Gw6k+iuPWx+xub3SdGT86GB4rhy7B1kTnrqubbANH2pDDlkEF/bkM4tvdPiCsQYq6nk23vK0ZMChozHkas5spw0HUE=,iv:dMvFBnRiND5se1TeKrSaosBlLKH5edbvsLX9VBpbIEg=,tag:96bh4+mw6NDO+gXmj4Ec+A==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
