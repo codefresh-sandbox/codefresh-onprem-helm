@@ -58,5 +58,6 @@ spec:
         args:
         - /nginx-ingress-controller
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
+        - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         - --watch-namespace={{ .Release.Namespace }}
 
