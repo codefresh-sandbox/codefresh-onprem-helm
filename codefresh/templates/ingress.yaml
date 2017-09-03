@@ -13,7 +13,9 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 spec:
   tls:
-    - secretName: {{ template "fullname" . }}-star-selfsigned
+    hosts:
+      - '{{ .Values.ingress.domain }}'
+      secretName: {{ template "fullname" . }}-star-selfsigned
   backend:
     serviceName: {{ .Release.Name }}-cfui
     servicePort: {{ .Values.servicePort }}
