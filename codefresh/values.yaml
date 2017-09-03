@@ -73,11 +73,11 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v167
+  imageTag: onprem-v221
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v169
+  imageTag: onprem-v182
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
@@ -85,7 +85,7 @@ cfapi:
 
 cfruntime:
   image: gcr.io/codefresh-enterprise/cf-runtime
-  imageTag: onprem-v111
+  imageTag: onprem-v119
 
 global:
   #appUrl: app-url
