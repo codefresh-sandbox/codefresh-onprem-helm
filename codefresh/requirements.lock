@@ -23,11 +23,20 @@ dependencies:
 - name: ingress
   repository: file://../ingress
   version: 0.1.0
-- name: cfsign
-  repository: file://charts/cfsign
-  version: 0.1.0
+- name: cluster-providers
+  repository: file://charts/cluster-providers
+  version: 0.0.1
+- name: multiple-clusters
+  repository: file://charts/multiple-clusters
+  version: 0.0.1
+- name: kube-integration
+  repository: file://charts/kube-integration
+  version: 0.0.1
 - name: payments
   repository: file://charts/payments
   version: 0.1.2
-digest: sha256:98857d9cad92994b1425d47ccd519558ebb66bea40e18e7878aa56bdf962f7c6
-generated: 2017-08-29T10:45:43.195169231+03:00
+- name: cfsign
+  repository: file://charts/cfsign
+  version: 0.1.0
+digest: sha256:acf725a550117577c34e060162233ea92b844d8cd7e53ff77d16f50bb076076e
+generated: 2017-09-03T15:16:15.442469275+03:00
