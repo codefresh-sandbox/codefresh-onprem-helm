@@ -32,14 +32,14 @@ defaults for the package.
 ## 3. Package and update helm repo
 
 ```
-helm dependency update codefresh/
+helm dependency update codefresh
 
 helm package codefresh
 
 wget http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com/index.yaml
 helm repo index . --merge index.yaml --url http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com
 
-s3cmd cp index.yaml s3://codefresh-helm-charts/
-s3cmd cp <package-full-name>.tgz s3://codefresh-helm-charts/
+aws s3 cp index.yaml s3://codefresh-helm-charts/
+aws s3 cp <package-full-name>.tgz s3://codefresh-helm-charts/
 ```
 
