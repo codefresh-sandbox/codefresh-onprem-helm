@@ -13,7 +13,7 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 spec:
   tls:
-    hosts:
+    - hosts:
       - '{{ .Values.ingress.domain }}'
       secretName: {{ template "fullname" . }}-star-selfsigned
   backend:
