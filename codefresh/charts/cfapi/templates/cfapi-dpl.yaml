@@ -150,7 +150,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
         - name: PAYMENTS_SERVICE
-          value: {{ .Values.global.paymentsService }}
+          value: "{{ .Release.Name }}-{{ .Values.global.paymentsService }}"
         - name: PAYMENTS_URI
           value: http://$(PAYMENTS_SERVICE)
         - name: PORT
@@ -158,7 +158,7 @@ spec:
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -231,9 +231,9 @@ spec:
         - name: CLUSTER_PROVIDERS_PORT
           value: {{ .Values.global.clusterProvidersPort | quote }}
         - name: ACCOUNTS_REFERRALS_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.accountReferralsServer }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsServer }}"
         - name: ACCOUNTS_REFERRALS_PORT
-          value: {{ .Values.global.accountReferralsPort | quote }}
+          value: {{ .Values.global.accountsReferralsPort | quote }}
         - name: MULTIPLE_CLUSTERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
         - name: MULTIPLE_CLUSTERS_PORT
