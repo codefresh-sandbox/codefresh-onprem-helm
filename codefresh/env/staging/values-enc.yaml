@@ -9,6 +9,9 @@ global:
     gitlabClientSecret: ENC[AES256_GCM,data:HlJop7BbmJAdnHlz5ocmf1PYy9aZvfpX7/Ssf2aLUMtjrDsHDtrq/r3zAmvFZW0i/q8HF3gpyFyWSeu8KU3beg==,iv:/FMzTESs43w7grBonzJGTom0E38WrdeJP1w0SxKCQn4=,tag:4L/xejgKsVV0TiH6cVEzpQ==,type:str]
     # api safe key for encrypt/dedcrypt of env vars
 apiSafeSecret: ENC[AES256_GCM,data:MZQdORQGX3dwP5InYd74DbSDVes=,iv:h9jLxp/7n2Mq0pPX27rR1/u2pQG4xMFSrH+/cZRo6S8=,tag:IbRYA1/sun5aVeqTYPe75A==,type:str]
+logglyToken: ENC[AES256_GCM,data:YDPQjtuCUJz1opnrStIYc9zCB3vhpWg75g9p1gRQ1FRgL2gF,iv:gyc+EJEs6BMN6ll8wjrxIqpU286p67tmypBiZjr/hmU=,tag:FkB/eM7YrZ7t9XZpLvJPjw==,type:str]
+registryAuthKey: ENC[AES256_GCM,data:LD3YCtBG4J5hDEDYtgV51JnLNMSrWSuTKNGgh144fzX7CVsH,iv:7B85wzCgyJ1eoGCz+VsfEd/REMroDjUzx48YZTa3q5I=,tag:HY89otdxcasO7jmrdawSSw==,type:str]
+registryAdminToken: ENC[AES256_GCM,data:tfgiWI6m3kUopmkzKE5WfOS6C121rCJjBnKLF2aThqs=,iv:2202nSaz0dyGA37onAMMup+bPfvA63Hjoy9fYsxUvrU=,tag:H7qugIB/Lx/tixsI8aWLOw==,type:str]
 # firebase secret
 firebaseSecret: ENC[AES256_GCM,data:+JoMotzWPwn8K6s5OKGZkCqZjUxU6f3LRiQbEDcKXrjJiaV22NKBdw==,iv:fvGNLbCyHRF+m1Jbw5HgS4yHIQLXK48FKjHZVu9YzuA=,tag:AGqbsAD05cSWpH0ZIRC3hg==,type:str]
 # new relic license
@@ -69,8 +72,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-09-04T11:53:27Z'
-    mac: ENC[AES256_GCM,data:5AjCnuZw35ndT5jay6cXAJRo3EIr1+60HyUKLLIFJINvW3BONmBglmKQMQUO0mOvw4QmoHDFCgwhwGtVTA1GpNH76mPZKXKKenS2JAbltCFd9kj327DA9kHLTbXrelTSgjEbak7gZmIT+0+E6oY0wb2PowE8b/4FUEvIrM/aIcY=,iv:Z0S6W4UC9gAfn0gbTn4J2gC0C2pZ3WvJ0m02XgJeIEU=,tag:BPKqqXE4EpT9ukhBQ2SWgQ==,type:str]
+    lastmodified: '2017-09-04T14:41:16Z'
+    mac: ENC[AES256_GCM,data:lZvkbVcu5cd88I6ddAwqN4di3JRjgMEwrFMCP6zAOphSHPTpzgg8EBFNv5dAZa3NdsyHjm8+fOiFAXa6bmebjQGveyEqp1roDbipOmIrWnz/EhcLKpocDzbwWcF8Bml0OtfWC1q5QZfd3ktNyaCCZJ+jsyzVz8LIg+2BNI3nVes=,iv:I0vO1VD4RS8vFGJ9nnmPvUhBLVaSXAsMinZPm7lNGsY=,tag:SfZjx9Nd/7HEA6E25o8R4Q==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

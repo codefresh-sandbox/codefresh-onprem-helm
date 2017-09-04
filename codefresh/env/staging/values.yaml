@@ -42,6 +42,7 @@ runtime_envs:
 # customize cfapi
 cfapi:
   replicaCount: 2
+  internalRegistryProtocol: https
   providersData: |
     {
       "aws": {
@@ -114,6 +115,7 @@ cfapi:
     }
   env:
     ON_PREMISE: ""
+    APP_ENV: staging
 
 cluster-providers:
   replicaCount: 2

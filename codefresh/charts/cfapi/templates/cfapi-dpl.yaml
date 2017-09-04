@@ -64,6 +64,8 @@ spec:
               key: segment-blacklist-users
         - name: CF_HOST_NAME
           value: {{ .Values.global.appUrl | quote }}
+        - name: CF_REGISTRY_PROTOCOL
+          value: {{ default "http" .Values.internalRegistryProtocol | quote }}
         - name: CF_REGISTRY_ADMIN_TOKEN
           valueFrom:
             secretKeyRef:

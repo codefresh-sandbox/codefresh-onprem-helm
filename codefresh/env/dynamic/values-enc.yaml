@@ -9,6 +9,7 @@ global:
     gitlabClientSecret: ENC[AES256_GCM,data:HlJop7BbmJAdnHlz5ocmf1PYy9aZvfpX7/Ssf2aLUMtjrDsHDtrq/r3zAmvFZW0i/q8HF3gpyFyWSeu8KU3beg==,iv:/FMzTESs43w7grBonzJGTom0E38WrdeJP1w0SxKCQn4=,tag:4L/xejgKsVV0TiH6cVEzpQ==,type:str]
     # api safe key for encrypt/dedcrypt of env vars
 apiSafeSecret: ENC[AES256_GCM,data:ablfv1NlCVroJUiJlsJxeo+6BNc=,iv:LM8ArKSo7XmU4uMzFvk2vD6/ebkuimDHZijxNaecxiI=,tag:tjiUvtrZhQDDrDoHv543iA==,type:str]
+logglyToken: ENC[AES256_GCM,data:cmlUTmCLuYRplZQjycs2o22TTBl7NfKZamPzmy/1B/3GvO1z,iv:xzc85riMrHB4QKp32rvvgIZvikwBe8vPsAtTqOCb8BU=,tag:GyvOj9lfFqFwZtWt6iCOAg==,type:str]
 # firebase secret
 firebaseSecret: ENC[AES256_GCM,data:+JoMotzWPwn8K6s5OKGZkCqZjUxU6f3LRiQbEDcKXrjJiaV22NKBdw==,iv:fvGNLbCyHRF+m1Jbw5HgS4yHIQLXK48FKjHZVu9YzuA=,tag:AGqbsAD05cSWpH0ZIRC3hg==,type:str]
 # new relic license
@@ -69,8 +70,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-09-04T11:53:10Z'
-    mac: ENC[AES256_GCM,data:6ulEIYYsV05KF1PK2k3r+3leGb6O1cNgp43jc53B2bAIEJIRbeGL4+CfpuJGe4INKt63dkuchskVVo7/msAw7neus4W2YMAhoB3z8UNLeWgqkDguLQCbEQ47tlFHsvtSEYkW5BeSK67KF5xEfnzMk2PgTBrcSH6B11EIDXfQv4g=,iv:zwPR6wL3LRqF9Nlgpu48TXxty+sRcSHPxGVNfCejpXE=,tag:ZZmB3vmkkzdwXamwnyVSpg==,type:str]
+    lastmodified: '2017-09-04T13:20:16Z'
+    mac: ENC[AES256_GCM,data:JijGEwoRR793mKik3VGf6oTBtvf9nwFdgWo41iBxquGhddw93DEVJTmJxIpUP1Q0921xnvd0upysUj0+h0rwcd+2yWDusLCNRUU31lKjQ6hVA9mGyLGZ4VvRg+KD7BITsmt20L/yW4jZXWWiHs6ZEXBsTRHdov/JccQipmNyVaY=,iv:KcyWGJT6hT+ZK0kyJ4FM0Z+5jzDjJR3qXJvJWdJPWWQ=,tag:OkOsGa371hpSb28aCMhaCw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
