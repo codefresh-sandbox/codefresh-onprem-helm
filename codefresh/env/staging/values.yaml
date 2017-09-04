@@ -112,6 +112,8 @@ cfapi:
           "services": {}
       }
     }
+  env:
+    ON_PREMISE: ""
 
 cluster-providers:
   replicaCount: 2
