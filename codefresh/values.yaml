@@ -136,5 +136,8 @@ global:
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-
+  multipleClustersService: multiple-clusters
+  multipleClustersPort: 9000
+  accountReferralsService: account-referrals
+  accountReferralsPort: 9000
 

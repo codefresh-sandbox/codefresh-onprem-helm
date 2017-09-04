@@ -223,9 +223,21 @@ spec:
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: tls-client-key 
+              key: tls-client-key
         - name: TLS_SIGN_URL
           value: {{ $tlsSignService | quote }}
+        - name: CLUSTER_PROVIDERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
+        - name: CLUSTER_PROVIDERS_PORT
+          value: {{ .Values.global.clusterProvidersPort | quote }}
+        - name: ACCOUNTS_REFERRALS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.accountReferralsServer }}"
+        - name: ACCOUNTS_REFERRALS_PORT
+          value: {{ .Values.global.accountReferralsPort | quote }}
+        - name: MULTIPLE_CLUSTERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
+        - name: MULTIPLE_CLUSTERS_PORT
+          value: {{ .Values.global.multipleClustersPort | quote }}
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:
