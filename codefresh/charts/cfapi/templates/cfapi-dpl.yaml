@@ -79,6 +79,10 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
+        - name: CLUSTER_PROVIDERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
+        - name: CLUSTER_PROVIDERS_PORT
+          value: "{{ .Values.global.clusterProvidersPort }}"
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
         - name: EXTERNAL_URL

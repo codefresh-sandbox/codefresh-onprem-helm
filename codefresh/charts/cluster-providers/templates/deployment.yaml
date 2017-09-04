@@ -69,7 +69,7 @@ spec:
               name: {{ template "fullname" . }}
               key: mongo-uri
           {{ else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongodbDatabase }}"
+          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Chart.Name }}"
           {{ end }}
         - name: RABBIT_PASSWORD
           valueFrom:
