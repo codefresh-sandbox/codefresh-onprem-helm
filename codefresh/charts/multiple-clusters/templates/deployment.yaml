@@ -56,11 +56,11 @@ spec:
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
-          value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersPort }}"
+          value: "{{ .Values.global.clusterProvidersPort }}"
         - name: KUBE_INTEGRATION_URI
           value: "{{ .Release.Name }}-{{ .Values.global.kubeIntegrationService }}"
         - name: KUBE_INTEGRATION_PORT
-          value: "{{ .Release.Name }}-{{ .Values.global.kubeIntegrationPort }}"
+          value: "{{ .Values.global.kubeIntegrationPort }}"
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
