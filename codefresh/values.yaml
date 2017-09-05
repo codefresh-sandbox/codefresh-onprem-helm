@@ -189,10 +189,12 @@ global:
   # database
   postgresDatabase: codefresh
 
+  # k8s-beta
   clusterProvidersService: cluster-providers
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-
+  multipleClustersService: multiple-clusters
+  multipleClustersPort: 9000
 tags:
   saas: false
