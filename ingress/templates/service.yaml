@@ -2,6 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotation:
+  {{- if .Values.elbEnable }}
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+  {{ end }}
   name: {{ template "fullname" . }}-controller
   labels:
     app: {{ template "fullname" . }}
