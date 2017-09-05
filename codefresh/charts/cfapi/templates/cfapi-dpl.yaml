@@ -83,6 +83,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
           value: "{{ .Values.global.clusterProvidersPort }}"
+        - name: MULTIPLE_CLUSTERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
+        - name: MULTIPLE_CLUSTERS_PORT
+          value: "{{ .Values.global.multipleClustersPort }}"
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
         - name: EXTERNAL_URL
