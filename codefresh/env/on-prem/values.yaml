@@ -73,11 +73,11 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v167
+  imageTag: onprem-v221
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v169
+  imageTag: onprem-v182
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
@@ -85,7 +85,22 @@ cfapi:
 
 cfruntime:
   image: gcr.io/codefresh-enterprise/cf-runtime
-  imageTag: onprem-v111
+  imageTag: onprem-v119
+
+cluster-providers:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/cluster-providers
+  imageTag: onprem-v16
+
+multiple-clusters:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/multiple-clusters
+  imageTag: onprem-v12
+
+kube-integration:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/kube-integration
+  imageTag: onprem-v30
 
 global:
   #appUrl: app-url
@@ -121,7 +136,7 @@ global:
   runnerService: runner
 
   # dind image with tag
-  dindImage: docker:17.05-dind
+  dindImage: docker:17.06-dind
 
   # dind cpu requests
   dindCPU: 100m
@@ -174,11 +189,12 @@ global:
   # database
   postgresDatabase: codefresh
 
-  # k8s beta
+  # k8s-beta
   clusterProvidersService: cluster-providers
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-
+  multipleClustersService: multiple-clusters
+  multipleClustersPort: 9000
 tags:
   saas: false
