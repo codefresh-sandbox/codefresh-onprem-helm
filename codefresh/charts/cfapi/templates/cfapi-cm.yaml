@@ -21,6 +21,7 @@ data:
         "runtimeEnvironment" : "codefresh",
         "canUsePrivateRepos" : true,
         "dedicatedInfrastructure" : false,
+        "cfcrRepositoryPath": "admin-cf",
         "build" : {
             "nodes" : NumberInt(0),
             "parallel" : NumberInt(1),
