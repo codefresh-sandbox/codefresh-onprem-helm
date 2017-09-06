@@ -23,9 +23,9 @@ data:
       "tlscacert": "/etc/ssl/cf/ca.pem",
       "tlscert": "/etc/ssl/cf/cert.pem",
       "tlskey": "/etc/ssl/cf/key.pem",
-      "insecure-registries" : [ {{- range .Values.global.insecureRegistries }}
-                                {{ . | quote }}, ]
-                                {{ end }}
+      {{- range .Values.global.insecureRegistries }}
+      "insecure-registries" : [ {{ . | quote }} ]
+      {{ end }}
 
     }
 
