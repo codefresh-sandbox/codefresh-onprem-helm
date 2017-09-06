@@ -1,8 +1,12 @@
----
-#
-imagePullPolicy: IfNotPresent
+# Ebable RBAC for K8s cluster
+# Requires Kubernetes 1.6.4+
+# rbacEnable: true
 
-dockercfg: placeholder
+## Specify a imagePullPolicy
+## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+imagePullPolicy: IfNotPresent
 
 # default service port
 servicePort: 80
@@ -10,112 +14,57 @@ servicePort: 80
 # image with kubectl that can work with our K8s version
 kubectlImage: lachlanevenson/k8s-kubectl:v1.6.7
 
-slackAppID: "4027524866.65820083427"
-slackAppSecret: placeholder
+# CFCR domain
+# cfcrDomain: staging.cfcr.io (default)
 
-stripeSecretKey: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
-stripePublicKey: ""
-stripeWebhookSecret: ""
+# Segment black list
+# segmentBlackList: "" by default
 
-rollbarAccessToken: ""
+# OAuth router callback
+# oauthRouterCallback: empty (default)
 
-logglyToken: invalid-token
+# GCE project
+# gceProject: savvy-badge-103912 (default == staging)
 
-firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
-firebaseSecret: placeholder
 
-ingress:
-  enabled: true
-  domain: '*'
+# override mongodb chart values
+mongodb:
+  # image to use
+  image: bitnami/mongodb:3.4.6-r0
 
-consul:
-  DatacenterName: codefresh-onprem
-  Replicas: 1
-  Memory: 64Mi
-
+# override PostgresSQL settings
 postgresql:
   postgresDatabase: codefresh
-  postgresUser: postgres
-  postgresPassword: eC9arYka4ZbH
-  resources:
-    requests:
-      memory: 128Mi
 
-mongodb:
-  image: bitnami/mongodb:3.4.6-r0
-  mongodbRootPassword: XT9nmM8dZD
-  resources:
-    requests:
-      memory: 64Mi
-
-redis:
-  redisPassword: hoC9szf7NtrU
-  resources:
-    requests:
-      memory: 64Mi
-
-rabbitmq:
-  rabbitmqUsername: user
-  rabbitmqPassword: cVz9ZdJKYm7u
-
+# overrride registry 
 registry:
   mainChart: codefresh
-  storageSize: 4Gi
 
-builder:
-  replicaCount: 1
-
-runtime_envs:
-  - name: codefresh-inc
-    inCluster: true
-    selectorRuntimeEnv: codefresh-inc
-    namespace: dinds
-
-cfui:
-  image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v221
-
+# use mongodb service name; should be same as mongo.nameOverride
 cfapi:
-  image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v182
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
+    # set on-premise flag
     ON_PREMISE: true
+    # set LOG Level to DEBUG
     LOGGER_LEVEL: debug
 
-cfruntime:
-  image: gcr.io/codefresh-enterprise/cf-runtime
-  imageTag: onprem-v119
+# internal ingress controller; disable by default
+ingress:
+  enabled: false
+  domain: '*'
 
-cluster-providers:
-  replicaCount: 1
-  image: gcr.io/codefresh-enterprise/cluster-providers
-  imageTag: onprem-v16
+dindImage: docker:17.05-dind
 
-multiple-clusters:
-  replicaCount: 1
-  image: gcr.io/codefresh-enterprise/multiple-clusters
-  imageTag: onprem-v12
-
-kube-integration:
-  replicaCount: 1
-  image: gcr.io/codefresh-enterprise/kube-integration
-  imageTag: onprem-v30
-
+#======================= 
+# GLOBAL settings
+#=======================
 global:
-  #appUrl: app-url
-  githubInternalToken: placeholder
-  githubClientSecret: placeholder
-  githubClientID: placeholder
-
-  gitlabClientID: placeholder
-  gitlabClientSecret: placeholder
-
-  bitbucketClientID: invalid-id
-  bitbucketClientSecret: invalid-secret
-
-  # Global codefresh chart name; all subcharts use this name to access secrets and configmaps
+  # Global codefresh chart name; all subcharts use this name to access secrets and configmaps 
   codefresh: codefresh
+ 
+  # application url root
+  appUrl: codefresh.dev
 
   # default application protocol
   appProtocol: http
@@ -136,23 +85,22 @@ global:
   runnerService: runner
 
   # dind image with tag
-  dindImage: docker:17.06-dind
-
+  dindImage: docker:17.05-dind
   # dind cpu requests
   dindCPU: 100m
-
   # dind memory requests
   dindMemory: 256Mi
-
   # dind cpu limits
   dindCPULimits: 1000m
-
   # dind memory limits
   dindMemoryLimits: 4096Mi
 
   # tls-sign service
   tlsSignService: cfsign
   tlsSignPort: 4999
+
+  #----
+  # Names and ports for commomn services
 
   # nats service
   natsService: nats
@@ -165,12 +113,9 @@ global:
   mongoService: mongodb
   mongoPort: 27017
   mongodbDatabase: codefresh
-  mongodbPassword: mTiXcU2wafr9
-  mongodbUsername: cfuser
 
   # consul service
   consulService: consul
-
   # consul http port
   consulHttpPort: 8500
 
@@ -179,22 +124,11 @@ global:
 
   # Docker Registry service
   registryService: registry
-
   # registry port
   registryPort: 5000
 
   # PostgresSQL service
   postgresService: postgresql
-
   # database
   postgresDatabase: codefresh
 
-  # k8s-beta
-  clusterProvidersService: cluster-providers
-  clusterProvidersPort: 9000
-  kubeIntegrationService: kube-integration
-  kubeIntegrationPort: 9000
-  multipleClustersService: multiple-clusters
-  multipleClustersPort: 9000
-tags:
-  saas: false
