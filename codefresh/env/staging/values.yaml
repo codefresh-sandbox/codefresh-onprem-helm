@@ -4,6 +4,11 @@
 
 firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
 
+webTLS:
+  secretName: star.codefresh.io
+  #key:
+  #cert:
+
 postgresql:
   postgresHostname: postgres.default.svc
   #postgresUser:
