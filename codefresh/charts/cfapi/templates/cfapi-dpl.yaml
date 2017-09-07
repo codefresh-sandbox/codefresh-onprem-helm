@@ -243,7 +243,7 @@ spec:
         - name: CLUSTER_PROVIDERS_PORT
           value: {{ .Values.global.clusterProvidersPort | quote }}
         - name: ACCOUNTS_REFERRALS_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsServer }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsService }}"
         - name: ACCOUNTS_REFERRALS_PORT
           value: {{ .Values.global.accountsReferralsPort | quote }}
         - name: MULTIPLE_CLUSTERS_URI
