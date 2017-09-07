@@ -22,9 +22,8 @@ data:
       "tls": true,
       "tlscacert": "/etc/ssl/cf/ca.pem",
       "tlscert": "/etc/ssl/cf/cert.pem",
-      "tlskey": "/etc/ssl/cf/key.pem"{{- range .Values.global.insecureRegistries }},
-      "insecure-registries" : [ {{ . | quote }} ]
-      {{ end }}
+      "tlskey": "/etc/ssl/cf/key.pem",
+      "insecure-registries" : [ {{- range $i, $e := .Values.global.insecureRegistries }} {{- if $i }},{{ end }} {{ $e | quote }} {{- end }} ]
     }
 
   register: |
