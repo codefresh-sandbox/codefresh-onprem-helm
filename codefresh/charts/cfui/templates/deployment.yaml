@@ -28,7 +28,7 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
-        version: {{ .Values.imageTag | quote }} 
+        version: {{ .Values.imageTag | quote }}
     spec:
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
@@ -62,7 +62,7 @@ spec:
             value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}."
           # PostgresSQL environment variables
           - name: POSTGRES_HOST
-            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
           - name: POSTGRES_DATABASE
             value: {{ .Values.global.postgresDatabase }}
           - name: POSTGRES_USER
@@ -82,7 +82,7 @@ spec:
                 key: rollbar-access-token
           # Redis environment variables
           - name: REDIS_URL
-            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}" 
+            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}"
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -104,7 +104,7 @@ spec:
           - name: SEGMENT_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+                name: {{ template "fullname" . }}
                 key: segment-key
           - name: LOGGLY_TOKEN
             valueFrom:

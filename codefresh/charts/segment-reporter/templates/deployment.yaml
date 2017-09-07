@@ -34,10 +34,9 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: nodeType
-                operator: NotIn
+                operator: In
                 values:
                 - internal
-                - worker
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 10
@@ -46,31 +45,10 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        - name: API_PROTOCOL
-          value: {{ .Values.global.appProtocol | quote }}
-        - name: API_URL
-          value: {{ .Values.global.appUrl | quote }}
+        - name: BL_USERS
+          value: {{ .Values.blacklistUsers | quote }}
         - name: NODE_ENV
-          value: kubernetes
-        - name: GC_AUTH_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-id
-        - name: GC_AUTH_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-secret
-        - name: MONGO_URI
-          {{ if .Values.mongoURI }}
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: mongo-uri
-          {{ else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
-          {{ end }}
+          value: production
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -83,31 +61,13 @@ spec:
               key: rabbitmq-username
         - name: EVENTBUS_URI
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
-        - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
-        - name: POSTGRES_DATABASE
-          value: {{ .Values.global.postgresDatabase }}
-        - name: POSTGRES_USER
+        - name: EVENTBUS_INTERVAL
+          value: {{ .Values.eventbusInterval | quote }}
+        - name: SEGMENT_KEY
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: postgres-user
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: postgres-password
-        - name: NEWRELIC_LICENSE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: newrelic-license-key
-        - name: SAFE_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Chart.Name }}"
-              name: {{ template "fullname" . }}
-              key: safe-secret
+              key: segment-key
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
@@ -119,4 +79,12 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
       restartPolicy: Always
+

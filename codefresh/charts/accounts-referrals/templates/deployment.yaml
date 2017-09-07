@@ -46,22 +46,8 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        - name: API_PROTOCOL
-          value: {{ .Values.global.appProtocol | quote }}
-        - name: API_URL
-          value: {{ .Values.global.appUrl | quote }}
         - name: NODE_ENV
           value: kubernetes
-        - name: GC_AUTH_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-id
-        - name: GC_AUTH_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-secret
         - name: MONGO_URI
           {{ if .Values.mongoURI }}
           valueFrom:
@@ -69,7 +55,7 @@ spec:
               name: {{ template "fullname" . }}
               key: mongo-uri
           {{ else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
+          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.accountsReferralsService }}"
           {{ end }}
         - name: RABBIT_PASSWORD
           valueFrom:
@@ -102,12 +88,6 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
-        - name: SAFE_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Chart.Name }}"
-              name: {{ template "fullname" . }}
-              key: safe-secret
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
@@ -120,3 +100,4 @@ spec:
           successThreshold: 1
           failureThreshold: 5
       restartPolicy: Always
+

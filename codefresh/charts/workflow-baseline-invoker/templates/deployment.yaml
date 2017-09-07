@@ -34,10 +34,9 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: nodeType
-                operator: NotIn
+                operator: In
                 values:
                 - internal
-                - worker
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 10
@@ -46,31 +45,17 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        - name: API_PROTOCOL
-          value: {{ .Values.global.appProtocol | quote }}
+        - name: NODE_ENV
+          value: production
+        - name: INTERVAL
+          value: {{ .Values.interval | quote }}
         - name: API_URL
           value: {{ .Values.global.appUrl | quote }}
-        - name: NODE_ENV
-          value: kubernetes
-        - name: GC_AUTH_CLIENT_ID
+        - name: JWT
           valueFrom:
             secretKeyRef:
               name: {{ template "fullname" . }}
-              key: client-id
-        - name: GC_AUTH_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-secret
-        - name: MONGO_URI
-          {{ if .Values.mongoURI }}
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: mongo-uri
-          {{ else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
-          {{ end }}
+              key: jwt
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -83,31 +68,6 @@ spec:
               key: rabbitmq-username
         - name: EVENTBUS_URI
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
-        - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
-        - name: POSTGRES_DATABASE
-          value: {{ .Values.global.postgresDatabase }}
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: postgres-user
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: postgres-password
-        - name: NEWRELIC_LICENSE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: newrelic-license-key
-        - name: SAFE_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Chart.Name }}"
-              name: {{ template "fullname" . }}
-              key: safe-secret
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
@@ -119,4 +79,12 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+        volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
       restartPolicy: Always
+

@@ -46,31 +46,6 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        - name: API_PROTOCOL
-          value: {{ .Values.global.appProtocol | quote }}
-        - name: API_URL
-          value: {{ .Values.global.appUrl | quote }}
-        - name: NODE_ENV
-          value: kubernetes
-        - name: GC_AUTH_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-id
-        - name: GC_AUTH_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: client-secret
-        - name: MONGO_URI
-          {{ if .Values.mongoURI }}
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "fullname" . }}
-              key: mongo-uri
-          {{ else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
-          {{ end }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -102,21 +77,25 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
-        - name: SAFE_SECRET
+        - name: OPERATOR
+          value: sendgrid
+        - name: SENDGRID_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Chart.Name }}"
               name: {{ template "fullname" . }}
-              key: safe-secret
+              key: sendgrid-key
+        - name: ACTIVE
+          value: {{ default "" .Values.active | quote }}
         ports:
-        - containerPort: {{ .Values.port }}
+        - containerPort: {{ .Values.targetPort }}
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/ping
-            port: {{ .Values.port }}
+            port: {{ .Values.targetPort }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
       restartPolicy: Always
+

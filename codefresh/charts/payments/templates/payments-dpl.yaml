@@ -40,7 +40,7 @@ spec:
         - name: INTERNAL_API_URI
           value: "http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}:"
         - name: MONGO_URI
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Chart.Name }}"
+          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.paymentsService }}"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:

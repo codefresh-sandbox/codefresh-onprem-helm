@@ -196,5 +196,6 @@ global:
   kubeIntegrationPort: 9000
   multipleClustersService: multiple-clusters
   multipleClustersPort: 9000
+
 tags:
   saas: false

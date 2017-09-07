@@ -11,10 +11,10 @@ imagePullPolicy: Always
 # image name
 image: codefresh/cf-ui
 
-# image tag  
+# image tag
 imageTag: master
 
-# port 
+# port
 port: 80
 
 # ENV
@@ -25,4 +25,7 @@ env:
   LOGGER_MORAN_ACTIVE: "false"
   LOGS_PATH: /var/log/cf-ui.log
   NEW_USER_REDIRECT: ""
+
+# Secrets specific to the UI component. Usually defined in the env/* value files.
+segmentKey: "blerg"
 

@@ -15,7 +15,7 @@ data:
   firebase-url: {{ .Values.firebaseUrl | quote }}
 
   # CFCR
-  cfcr-domain: {{ default "cfcr.staging.io" .Values.cfcrDomain | quote }}
+  cfcr-domain: {{ default "staging.cfcr.io" .Values.cfcrDomain | quote }}
 
   # GCE Project
   google-compute-engine-project: {{ default "savvy-badge-103912" .Values.gceProject }}

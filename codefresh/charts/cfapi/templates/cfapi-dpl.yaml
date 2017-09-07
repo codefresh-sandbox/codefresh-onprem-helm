@@ -64,6 +64,8 @@ spec:
               key: segment-blacklist-users
         - name: CF_HOST_NAME
           value: {{ .Values.global.appUrl | quote }}
+        - name: CF_REGISTRY_PROTOCOL
+          value: {{ default "http" .Values.internalRegistryProtocol | quote }}
         - name: CF_REGISTRY_ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
@@ -160,7 +162,7 @@ spec:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
         - name: PAYMENTS_SERVICE
-          value: {{ .Values.global.paymentsService }}
+          value: "{{ .Release.Name }}-{{ .Values.global.paymentsService }}"
         - name: PAYMENTS_URI
           value: http://$(PAYMENTS_SERVICE)
         - name: PORT
@@ -168,7 +170,7 @@ spec:
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -233,9 +235,21 @@ spec:
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: tls-client-key 
+              key: tls-client-key
         - name: TLS_SIGN_URL
           value: {{ $tlsSignService | quote }}
+        - name: CLUSTER_PROVIDERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
+        - name: CLUSTER_PROVIDERS_PORT
+          value: {{ .Values.global.clusterProvidersPort | quote }}
+        - name: ACCOUNTS_REFERRALS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsServer }}"
+        - name: ACCOUNTS_REFERRALS_PORT
+          value: {{ .Values.global.accountsReferralsPort | quote }}
+        - name: MULTIPLE_CLUSTERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
+        - name: MULTIPLE_CLUSTERS_PORT
+          value: {{ .Values.global.multipleClustersPort | quote }}
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:
