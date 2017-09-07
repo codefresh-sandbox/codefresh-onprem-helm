@@ -82,9 +82,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname | quote }}
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER

@@ -4,26 +4,19 @@
 
 firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
 
-# customize consul chart
-consul:
-  DatacenterName: dynamic
-  Replicas: 1
-  Memory: 64Mi
-
 postgresql:
-  resources:
-    requests:
-      memory: 128Mi
-
-mongodb:
-  resources:
-    requests:
-      memory: 64Mi
+  postgresHostname: postgres.default.svc
+  #postgresUser:
+  #postgresPassword:
 
 redis:
-  resources:
-    requests:
-      memory: 64Mi
+  redisUrl: redis.default.svc
+  #redisPassword:
+
+rabbitmq:
+  rabbitmqHostname: rabbit.default.svc
+  #rabbitmqUsername:
+  #rabbitmqPassword:
 
 # use smaller registry storage
 registry:
@@ -123,24 +116,29 @@ cluster-providers:
   replicaCount: 2
   # We won't use Chart's installed mongo instance for staging, instead, we'll use
   # an already deployed mongodb pod.
-  mongoURI: "mongodb://mongo:27017/cluster-providers"
+  mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 multiple-clusters:
   replicaCount: 2
 
 kube-integration:
   replicaCount: 2
-  mongoURI: "mongodb://mongo:27017/cluster-providers"
+  mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
   replicaCount: 2
-  mongoURI: "mongodb://mongo:27017/accounts-referrals"
+  mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
   replicaCount: 2
 
 global:
   appProtocol: https
+  postgresDatabase: postgres
+  queueServers: nats://queue.default.svc:4222
+  seedJobs: false
 
 tags:
   saas: true
+  infra: false
+

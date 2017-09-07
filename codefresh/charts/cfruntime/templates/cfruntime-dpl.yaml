@@ -65,7 +65,7 @@ spec:
         - name: CONSUL_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
         - name: QUEUE_SERVERS
-          value: {{ $natsService | quote }}
+          value: {{ default $natsService .Values.global.queueServers | quote }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -77,9 +77,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: RABBIT_URL
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname | quote }}
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_USER
@@ -93,12 +93,12 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
         - name: REDIS_URL
-          value: "{{ .Release.Name }}-{{ .Values.global.redisService }}" 
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-              key: redis-password 
+              key: redis-password
         - name: DOCKER_PUSHER_IMAGE
           value: "{{ .Values.pusherImage }}:{{ .Values.pusherImageTag }}"
         - name: DOCKER_PULLER_IMAGE

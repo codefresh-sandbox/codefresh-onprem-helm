@@ -8,6 +8,12 @@ global:
     gitlabClientID: ENC[AES256_GCM,data:5YS2AsXNq6xyPe589gKc5b/ixSC65bfGorkCGrnNp0bHwOmY56nCB9RMj5xq+Le+iQ/023LKWRSxoIkw3lX1pg==,iv:88JSdte21Aqk4V1II4DIujchDR0EOdOJ74zbwBKV+Mo=,tag:MxgYVEZMoV/RmddUxWyy8w==,type:str]
     gitlabClientSecret: ENC[AES256_GCM,data:HlJop7BbmJAdnHlz5ocmf1PYy9aZvfpX7/Ssf2aLUMtjrDsHDtrq/r3zAmvFZW0i/q8HF3gpyFyWSeu8KU3beg==,iv:/FMzTESs43w7grBonzJGTom0E38WrdeJP1w0SxKCQn4=,tag:4L/xejgKsVV0TiH6cVEzpQ==,type:str]
     # api safe key for encrypt/dedcrypt of env vars
+    mongoURI: ENC[AES256_GCM,data:bO5ScSrvJ2puyPAQxvIO6TJ1SBRwswoR6mz2sYP5NWVgrjvUHaJmgt7AwLopRyzXNrMSoQ8FPN/DqMjFPTnVZSL4rxB+3hShXTeRi+CmEzaZmFwsWYHhn09gWj5nsqyOBCq0E90omaDCwnHWI2aVY/D003PXzcClUTAJO7ivLiXBF8Zo,iv:KlLvw0djfY+SWHtpMLIBYYdzq9mVBwmxUJ/6ZCKPmzY=,tag:1GLKeMrGCfxnUWzisyd4sA==,type:str]
+    postgresUser: ENC[AES256_GCM,data:Lo19rV4vZ4w=,iv:4CuC6DVs1q8QFde6iA3feMripfhB1qRiXf1pIqg2CpA=,tag:D0pHCOr+1rYqwGgV8d7umQ==,type:str]
+    postgresPassword: ENC[AES256_GCM,data:y8q6Ch+JIRs=,iv:qdLxxvebVQYnII3VA4pzYiExDhqKmI7HIT0EeMJcm9M=,tag:UsEFL1a5DQ02RjovjKxG5g==,type:str]
+    redisPassword: ENC[AES256_GCM,data:BGsvLfdLVk3SEQuvdQ==,iv:2UH7B8lewKIHz9V0tkrG9+WSCNt8oQdiFk13cW2ywJE=,tag:d7z9ljIMIL7GCQiiMa909Q==,type:str]
+    rabbitmqUsername: ENC[AES256_GCM,data:N0jczLw=,iv:9+Sri8xSheRayVXewBUb++jGKwnm2zM9SY9D8Wdgewo=,tag:UO7NAVzlU1uC5K5l96eKow==,type:str]
+    rabbitmqPassword: ENC[AES256_GCM,data:zhOeZOo=,iv:Jm9TRSL3qPSMvVi9aRPMHiKa9l417hBgDIxnibIJnNI=,tag:xi9yuw5fcB5zjpmClflMdg==,type:str]
 api.safe-secret: ENC[AES256_GCM,data:i1ZX9kA43y9XC2+Qi4O/imVe+bk=,iv:ToVnb8K9+hkS6ekzKDNoA/Q/IMk2l8mntmxGZ5Ytm4Q=,tag:84zNsh3/yhALRz9WNBC0lA==,type:str]
 apiSafeSecret: ENC[AES256_GCM,data:MZQdORQGX3dwP5InYd74DbSDVes=,iv:h9jLxp/7n2Mq0pPX27rR1/u2pQG4xMFSrH+/cZRo6S8=,tag:IbRYA1/sun5aVeqTYPe75A==,type:str]
 logglyToken: ENC[AES256_GCM,data:YDPQjtuCUJz1opnrStIYc9zCB3vhpWg75g9p1gRQ1FRgL2gF,iv:gyc+EJEs6BMN6ll8wjrxIqpU286p67tmypBiZjr/hmU=,tag:FkB/eM7YrZ7t9XZpLvJPjw==,type:str]
@@ -73,8 +79,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-09-04T14:41:16Z'
-    mac: ENC[AES256_GCM,data:lZvkbVcu5cd88I6ddAwqN4di3JRjgMEwrFMCP6zAOphSHPTpzgg8EBFNv5dAZa3NdsyHjm8+fOiFAXa6bmebjQGveyEqp1roDbipOmIrWnz/EhcLKpocDzbwWcF8Bml0OtfWC1q5QZfd3ktNyaCCZJ+jsyzVz8LIg+2BNI3nVes=,iv:I0vO1VD4RS8vFGJ9nnmPvUhBLVaSXAsMinZPm7lNGsY=,tag:SfZjx9Nd/7HEA6E25o8R4Q==,type:str]
+    lastmodified: '2017-09-07T14:12:00Z'
+    mac: ENC[AES256_GCM,data:jMk1UhPfZ570//13q3388FX+xUqC/gP1uWSIKr4ritjiYQSEkN6MMpTowGOMKona8LGNSq+uPwiU9nImffqn81qMMA2hQkGYePgC70/VeBAZcUdwYvj/yTrr4pA3AjnGjP7o+kX3EESIAd7Xu2WLUvH9zVUAj1rUeZz59IiJS4A=,iv:t/wqCmykTOZqyTmmbGUyV+m54+8f35UeheFo4n7O9no=,tag:U0ShOPWmh/oKHP4bGPvdXA==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

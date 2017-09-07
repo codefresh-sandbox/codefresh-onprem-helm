@@ -56,13 +56,16 @@ ingress:
 
 dindImage: docker:17.05-dind
 
-#======================= 
+#=======================
 # GLOBAL settings
 #=======================
 global:
+  # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
+  seedJobs: true
+
   # Global codefresh chart name; all subcharts use this name to access secrets and configmaps 
   codefresh: codefresh
- 
+
   # application url root
   appUrl: codefresh.dev
 
@@ -105,6 +108,7 @@ global:
   # nats service
   natsService: nats
   natsPort: 4222
+  # queueServers: nats://queue:4222
 
   # rabbitmq service name
   rabbitService: rabbitmq

@@ -56,7 +56,9 @@ providersData: |
 # Internal registry protocol
 # internalRegistryProtocol: http
 
-# ENV
+mongoURI: ""
+
+# Static ENV variables
 env:
   ACTIVITY_LOG_URI: http://activity-log
   APP_ENV: kubernetes

@@ -199,3 +199,5 @@ global:
 
 tags:
   saas: false
+  infra: true
+

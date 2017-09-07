@@ -41,4 +41,5 @@ runtime_envs:
 
 tags:
   saas: false
+  infra: true
 
