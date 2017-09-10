@@ -37,6 +37,14 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - |
+                  cat /etc/admin/hosts.added >> /etc/hosts
         env:
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
@@ -90,7 +98,7 @@ spec:
         - name: MULTIPLE_CLUSTERS_PORT
           value: "{{ .Values.global.multipleClustersPort }}"
         - name: CONSUL_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.consulService) .Values.global.consulHost | quote }}
         - name: EXTERNAL_URL
           value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
         - name: FIREBASE_SECRET
@@ -153,10 +161,10 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: MONGO_URI
-          {{ if .Values.mongoURI }}
+          {{ if .Values.global.mongoURI }}
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongo-uri
           {{ else }}
           value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongodbDatabase }}"
@@ -250,7 +258,7 @@ spec:
         - name: CLUSTER_PROVIDERS_PORT
           value: {{ .Values.global.clusterProvidersPort | quote }}
         - name: ACCOUNTS_REFERRALS_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsServer }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsService }}"
         - name: ACCOUNTS_REFERRALS_PORT
           value: {{ .Values.global.accountsReferralsPort | quote }}
         - name: MULTIPLE_CLUSTERS_URI

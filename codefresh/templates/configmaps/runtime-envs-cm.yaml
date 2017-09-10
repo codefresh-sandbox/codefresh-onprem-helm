@@ -17,6 +17,9 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 data:
   runtimeEnvironments.json: |
+{{- if .Values.runtimeEnvBlob }}
+{{ .Values.runtimeEnvBlob | indent 4 }}
+{{- else }}
     {
         {{- range $i, $env := .Values.runtime_envs }}{{if $i}},{{end}}
         "{{ $env.name }}": {
@@ -29,6 +32,7 @@ data:
                     "codefresh/runtime-environment": "{{ $env.selectorRuntimeEnv }}"}
             },
             "dindImage": "{{ default $dindImage $env.dindImage }}",
+            "connectByPodIp": {{ default "false" $env.connectByPodIp }},
             "command": "{{ default "dockerd" $env.command }}",
             "defaultDindResources": {
                 "limits": {
@@ -51,3 +55,4 @@ data:
             }
         }{{- end }}
     }
+{{- end }}

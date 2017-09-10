@@ -56,8 +56,6 @@ providersData: |
 # Internal registry protocol
 # internalRegistryProtocol: http
 
-mongoURI: ""
-
 # Static ENV variables
 env:
   ACTIVITY_LOG_URI: http://activity-log

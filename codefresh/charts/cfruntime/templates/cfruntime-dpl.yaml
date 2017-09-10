@@ -63,7 +63,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: CONSUL_HOST
-          value: "{{ .Release.Name }}-{{ .Values.global.consulService }}"
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.consulService) .Values.global.consulHost | quote }}
         - name: QUEUE_SERVERS
           value: {{ default $natsService .Values.global.queueServers | quote }}
         - name: RABBIT_PASSWORD
