@@ -32,11 +32,26 @@ dependencies:
 - name: kube-integration
   repository: file://charts/kube-integration
   version: 0.0.1
+- name: accounts-referrals
+  repository: file://charts/accounts-referrals
+  version: 0.0.1
+- name: mailer
+  repository: file://charts/mailer
+  version: 0.0.1
 - name: payments
   repository: file://charts/payments
   version: 0.1.2
 - name: cfsign
   repository: file://charts/cfsign
   version: 0.1.0
-digest: sha256:acf725a550117577c34e060162233ea92b844d8cd7e53ff77d16f50bb076076e
-generated: 2017-09-03T15:16:15.442469275+03:00
+- name: internal-status-page
+  repository: file://charts/internal-status-page
+  version: 0.0.1
+- name: segment-reporter
+  repository: file://charts/segment-reporter
+  version: 0.0.1
+- name: workflow-baseline-invoker
+  repository: file://charts/workflow-baseline-invoker
+  version: 0.0.1
+digest: sha256:d97d7d108b05cf8a59eb120e08404f161d8f1eaffde8b757b0b3f1831c1e4edc
+generated: 2017-09-10T17:37:16.212099232+03:00
