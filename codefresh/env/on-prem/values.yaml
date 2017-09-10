@@ -73,11 +73,11 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v221
+  imageTag: onprem-v232
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v182
+  imageTag: onprem-v190
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
@@ -90,7 +90,7 @@ cfruntime:
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/cluster-providers
-  imageTag: onprem-v16
+  imageTag: onprem-v18
 
 multiple-clusters:
   replicaCount: 1
