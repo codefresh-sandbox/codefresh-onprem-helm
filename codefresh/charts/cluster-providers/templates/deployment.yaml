@@ -97,6 +97,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: postgres-password
+        - name: PORT
+          value: "{{ .Values.global.clusterProvidersPort }}"
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:

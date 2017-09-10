@@ -61,6 +61,8 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.kubeIntegrationService }}"
         - name: KUBE_INTEGRATION_PORT
           value: "{{ .Values.global.kubeIntegrationPort }}"
+        - name: PORT
+          value: "{{ .Values.global.multipleClustersPort }}"
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP

@@ -58,6 +58,8 @@ spec:
               key: rabbitmq-username
         - name: EVENTBUS_URI
           value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
+        - name: PORT
+          value: "{{ .Values.global.paymentsServicePort }}"
         - name: POSTGRES_HOST
           value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}" 
         - name: POSTGRES_DATABASE

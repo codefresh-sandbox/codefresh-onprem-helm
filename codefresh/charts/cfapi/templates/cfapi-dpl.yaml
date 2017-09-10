@@ -164,7 +164,7 @@ spec:
         - name: PAYMENTS_SERVICE
           value: "{{ .Release.Name }}-{{ .Values.global.paymentsService }}"
         - name: PAYMENTS_URI
-          value: http://$(PAYMENTS_SERVICE)
+          value: $(PAYMENTS_SERVICE)
         - name: PORT
           value: {{ .Values.port | quote }}
         - name: POSTGRES_DATABASE

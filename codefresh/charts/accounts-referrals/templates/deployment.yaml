@@ -88,6 +88,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
+        - name: PORT
+          value: "{{ .Values.global.accountsReferralsPort }}"
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP

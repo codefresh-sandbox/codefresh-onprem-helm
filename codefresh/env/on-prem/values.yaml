@@ -122,6 +122,7 @@ global:
 
   # Codefresh Payments service
   paymentsService: payments
+  paymentsServicePort: 9000
 
   # cfapi service name
   cfapiService: cfapi
