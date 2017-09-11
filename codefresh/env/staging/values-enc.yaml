@@ -11,7 +11,7 @@ global:
     mongoURI: ENC[AES256_GCM,data:bO5ScSrvJ2puyPAQxvIO6TJ1SBRwswoR6mz2sYP5NWVgrjvUHaJmgt7AwLopRyzXNrMSoQ8FPN/DqMjFPTnVZSL4rxB+3hShXTeRi+CmEzaZmFwsWYHhn09gWj5nsqyOBCq0E90omaDCwnHWI2aVY/D003PXzcClUTAJO7ivLiXBF8Zo,iv:KlLvw0djfY+SWHtpMLIBYYdzq9mVBwmxUJ/6ZCKPmzY=,tag:1GLKeMrGCfxnUWzisyd4sA==,type:str]
     postgresUser: ENC[AES256_GCM,data:Lo19rV4vZ4w=,iv:4CuC6DVs1q8QFde6iA3feMripfhB1qRiXf1pIqg2CpA=,tag:D0pHCOr+1rYqwGgV8d7umQ==,type:str]
     postgresPassword: ENC[AES256_GCM,data:y8q6Ch+JIRs=,iv:qdLxxvebVQYnII3VA4pzYiExDhqKmI7HIT0EeMJcm9M=,tag:UsEFL1a5DQ02RjovjKxG5g==,type:str]
-    redisPassword: ENC[AES256_GCM,data:BGsvLfdLVk3SEQuvdQ==,iv:2UH7B8lewKIHz9V0tkrG9+WSCNt8oQdiFk13cW2ywJE=,tag:d7z9ljIMIL7GCQiiMa909Q==,type:str]
+    redisPassword: ENC[AES256_GCM,data:+XDxoDZmZM6a0tWbBg==,iv:1i72Ji4ndIXBCTLwFzOf6ZvrCsgd5nl+cYgYyWe3Wks=,tag:EaNTNu00j5sYsQWFPiMMFQ==,type:str]
     rabbitmqUsername: ENC[AES256_GCM,data:N0jczLw=,iv:9+Sri8xSheRayVXewBUb++jGKwnm2zM9SY9D8Wdgewo=,tag:UO7NAVzlU1uC5K5l96eKow==,type:str]
     rabbitmqPassword: ENC[AES256_GCM,data:zhOeZOo=,iv:Jm9TRSL3qPSMvVi9aRPMHiKa9l417hBgDIxnibIJnNI=,tag:xi9yuw5fcB5zjpmClflMdg==,type:str]
 webTLS:
@@ -84,8 +84,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-09-10T13:19:04Z'
-    mac: ENC[AES256_GCM,data:2HBBO3jkJehBk9+EjSzrVCjDwwOH7cMaWXADXbuxJWZ81qSfyAoqwsOzLP36LlIlgj6GIrAdN8RyxG81DJmJK7m62wJ9syi4PYvrNtRsysGGB+DaCSdDImWuf+3ROskzDgB2whPRqz5roW3g9j4KpdBV9rlvpDGJQ+Yaqz9rhk4=,iv:j/qbTU2SMkon0D4XQGW8zQ8QyzuUc9xl76lzUi/Ovsg=,tag:ZmsWqRrtyIOkRsC3lfHKzQ==,type:str]
+    lastmodified: '2017-09-11T14:39:39Z'
+    mac: ENC[AES256_GCM,data:OhYDZjKHp/eRhgsEfH8YyqzjJpffQek13bYRG5wvZ5QJmlLgyhW4EmSnAP13Y6PnfOmftEaFMQaiUmdE5NbGvZGSmbUNlHlznlq6IdKVz2KjahkaGGUFMejVzUy5RjZUkQs9+8ef9xSuTFetO+O38YyAFIojRZUboCGE7eyzXBs=,iv:j4NEJXHLDl6So6940k46WxcasAveqebQMKiY2en0fnI=,tag:bt8R2emoDmt43Rjb7LAM+g==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9
