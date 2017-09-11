@@ -16,6 +16,7 @@ metadata:
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service  | quote }}
 data:
+{{- if not .Values.webTLS }}
   gen-website-tls: |
     #!/bin/sh
 
@@ -29,6 +30,7 @@ data:
 
     kubectl create secret tls {{ template "fullname" . }}-star-selfsigned --cert=tls.crt --key=tls.key
     kubectl label secret {{ template "fullname" . }}-star-selfsigned app={{ template "fullname" . }}
+{{- end }}
   gen-runtime-certs: |
     #!/bin/sh
     err() { echo "ERROR: $1"; exit 1; }

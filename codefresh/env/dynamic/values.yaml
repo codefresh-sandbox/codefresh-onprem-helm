@@ -116,4 +116,5 @@ cfapi:
 
 tags:
   saas: true
+  infra: true
 

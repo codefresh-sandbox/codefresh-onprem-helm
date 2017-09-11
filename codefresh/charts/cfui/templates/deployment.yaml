@@ -44,50 +44,14 @@ spec:
           - name: PORT
             value: {{ .Values.port | quote }}
           - name: CODEFRESH_API_URL
-            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
+            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
           - name: QUEUE_SERVERS
-            value: {{ $natsService | quote }}
-          # Rabbitmq environment variables
-          - name: RABBIT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-                key: rabbitmq-password
-          - name: RABBIT_USER
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-                key: rabbitmq-username
-          - name: RABBIT_URL
-            value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}."
-          # PostgresSQL environment variables
-          - name: POSTGRES_HOST
-            value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
-          - name: POSTGRES_DATABASE
-            value: {{ .Values.global.postgresDatabase }}
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-                key: postgres-user
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-                key: postgres-password
+            value: {{ default $natsService .Values.global.queueServers | quote }}
           - name: ROLLBAR_ACCESS_TOKEN
             valueFrom:
               secretKeyRef:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: rollbar-access-token
-          # Redis environment variables
-          - name: REDIS_URL
-            value: "{{ .Release.Name }}-{{ .Values.global.redisService }}"
-          - name: REDIS_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
-                key: redis-password
           - name: STRIPE_PUBLIC_KEY
             valueFrom:
               secretKeyRef:

@@ -15,7 +15,11 @@ spec:
   tls:
     - hosts:
       - '{{ .Values.ingress.domain }}'
+      {{- if .Values.webTLS }}
+      secretName: {{ template "fullname" . }}-{{ .Values.webTLS.secretName }}
+      {{- else }}
       secretName: {{ template "fullname" . }}-star-selfsigned
+      {{- end }}
   backend:
     serviceName: {{ .Release.Name }}-cfui
     servicePort: {{ .Values.servicePort }}

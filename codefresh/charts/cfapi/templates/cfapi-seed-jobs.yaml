@@ -1,3 +1,4 @@
+{{- if .Values.global.seedJobs }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -39,3 +40,4 @@ spec:
       - name: seed
         configMap:
           name: {{ template "fullname" . }}
+{{- end }}

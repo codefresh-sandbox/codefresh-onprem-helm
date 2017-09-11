@@ -60,7 +60,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: "amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ .Release.Name }}-{{ .Values.global.rabbitService }}"
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: EVENTBUS_INTERVAL
           value: {{ .Values.eventbusInterval | quote }}
         - name: SEGMENT_KEY
