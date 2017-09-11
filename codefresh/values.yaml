@@ -74,6 +74,7 @@ global:
 
   # Codefresh Payments service
   paymentsService: payments
+  paymentsPort: 80
 
   # cfapi service name
   cfapiService: cfapi
