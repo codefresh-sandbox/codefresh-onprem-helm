@@ -81,6 +81,8 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
+        - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
+          value: /etc/admin/runtimeEnvironments.json
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
@@ -250,6 +252,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
         - name: MULTIPLE_CLUSTERS_PORT
           value: {{ .Values.global.multipleClustersPort | quote }}
+        {{- if .Values.deploymentTemplateImages }}
+        - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
+          value: /etc/admin/deploymentTemplateImages.json
+        {{- end }}
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:
@@ -294,6 +300,11 @@ spec:
         - name: api-secrets
           mountPath: /root/.aws/credentials
           subPath: aws-credentials
+        {{- end }}
+        {{- if .Values.deploymentTemplateImages }}
+        - name: config
+          mountPath: /etc/admin/deploymentTemplateImages.json
+          subPath: deploymentTemplateImages.json
         {{- end }}
       volumes:
       - name: config

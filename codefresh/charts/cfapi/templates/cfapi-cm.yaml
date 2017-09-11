@@ -10,6 +10,8 @@ metadata:
 data:
   providers.json: |
 {{ .Values.providersData | indent 4 }}
+  deploymentTemplateImages.json: |
+{{ .Values.deploymentTemplateImages | indent 4 }}
   accounts.json: |
     {
         "_id" : ObjectId("59009117c102763beda7ce71"),
