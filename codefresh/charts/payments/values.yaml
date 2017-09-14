@@ -11,11 +11,11 @@ imagePullPolicy: Always
 # image name
 image: codefresh/payments
 
-# image tag  
+# image tag
 imageTag: master
 
 # exposed port
-port: 80
+port: 9000
 
 # application target port
 targetPort: 9000

@@ -318,6 +318,11 @@ spec:
           mountPath: /root/.aws/credentials
           subPath: aws-credentials
         {{- end }}
+        {{- if .Values.gceCredentials }}
+        - name: api-secrets
+          mountPath: /etc/admin/gce_creds.json
+          subPath: gce-credentials
+        {{- end }}
         {{- if .Values.deploymentTemplateImages }}
         - name: config
           mountPath: /etc/admin/deploymentTemplateImages.json
@@ -340,6 +345,11 @@ spec:
         secret:
           secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
       {{- if .Values.awsCredentials }}
+      - name: api-secrets
+        secret:
+          secretName: {{ template "fullname" . }}
+      {{- end }}
+      {{- if .Values.gceCredentials }}
       - name: api-secrets
         secret:
           secretName: {{ template "fullname" . }}

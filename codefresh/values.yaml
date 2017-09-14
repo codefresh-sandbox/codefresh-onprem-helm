@@ -115,6 +115,7 @@ global:
   rabbitService: rabbitmq
 
   # mongodb service
+  # This is the mongodb database that will be created in on-prem environments
   mongoService: mongodb
   mongoPort: 27017
   mongodbDatabase: codefresh
