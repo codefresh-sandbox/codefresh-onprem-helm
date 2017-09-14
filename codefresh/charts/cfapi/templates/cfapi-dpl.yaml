@@ -314,12 +314,12 @@ spec:
           readOnly: true
           name: cf-certs-client
         {{- if .Values.awsCredentials }}
-        - name: api-secrets
+        - name: api-secrets-aws
           mountPath: /root/.aws/credentials
           subPath: aws-credentials
         {{- end }}
         {{- if .Values.gceCredentials }}
-        - name: api-secrets
+        - name: api-secrets-gce
           mountPath: /etc/admin/gce_creds.json
           subPath: gce-credentials
         {{- end }}
@@ -345,12 +345,12 @@ spec:
         secret:
           secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
       {{- if .Values.awsCredentials }}
-      - name: api-secrets
+      - name: api-secrets-aws
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
       {{- if .Values.gceCredentials }}
-      - name: api-secrets
+      - name: api-secrets-gce
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
