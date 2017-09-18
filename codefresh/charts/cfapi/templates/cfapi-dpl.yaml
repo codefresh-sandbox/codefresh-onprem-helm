@@ -23,6 +23,10 @@ spec:
       app: {{ template "fullname" . }}
   template:
     metadata:
+      {{- if .Values.redeploy }}
+      annotations:
+        forceRedeployUniqId: {{ now | quote }}
+      {{- end }}
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"

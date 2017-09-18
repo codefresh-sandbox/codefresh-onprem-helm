@@ -1,6 +1,7 @@
 # number of replicas
 # by default 2
 # replicaCount: 2
+redeploy: false
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'

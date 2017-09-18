@@ -15,6 +15,9 @@ spec:
   template:
     metadata:
       annotations:
+      {{- if .Values.redeploy }}
+        forceRedeployUniqId: {{ now | quote }}
+      {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/runner-cm.yaml") . | sha256sum }}
         pod.beta.kubernetes.io/init-containers: '[
           {

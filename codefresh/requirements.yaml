@@ -31,10 +31,12 @@ dependencies:
     - infra
 - name: builder
   repository: file://charts/builder
+  version: 0.1.2
   tags:
     - infra
 - name: runner
   repository: file://charts/runner
+  version: 0.1.2
   tags:
     - infra
 - name: registry
