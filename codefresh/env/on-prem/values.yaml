@@ -228,3 +228,5 @@ global:
 tags:
   saas: false
   infra: true
+  old-scheduler: true
+

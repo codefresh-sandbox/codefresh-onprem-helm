@@ -42,4 +42,5 @@ runtime_envs:
 tags:
   saas: false
   infra: true
+  old-scheduler: false
 

@@ -4,7 +4,7 @@ imagePullPolicy: Always
 replicaCount: 1
 redeploy: false
 
-image: r.cfcr.io/codefresh-inc/codefresh/cf-internal-status-page
+image: codefresh/cf-internal-status-page
 imageTag: master
 
 # Service port
