@@ -223,6 +223,7 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
+  imageTag: staging
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
@@ -304,28 +305,46 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
 
+cfui:
+  imageTag: staging
+
 payments:
+  imageTag: staging
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
 
 cluster-providers:
+  imageTag: staging
   replicaCount: 2
   # We won't use Chart's installed mongo instance for staging, instead, we'll use
   # an already deployed mongodb pod.
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
+internal-status-page:
+  imageTag: staging
+
 multiple-clusters:
+  imageTag: staging
   replicaCount: 2
 
 kube-integration:
+  imageTag: staging
   replicaCount: 2
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
+  imageTag: staging
   replicaCount: 2
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
+  imageTag: staging
   replicaCount: 2
+
+segment-reporter:
+  imageTag: staging
+
+workflow-baseline-invoker:
+  imageTag: staging
 
 global:
   appProtocol: https
