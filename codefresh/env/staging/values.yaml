@@ -99,13 +99,13 @@ runtimeEnvBlob: |
               "internal-registry": {
                  "name": "internal-registry",
                  "secret": {
-                    "secretName": "internal-registry"
+                    "secretName": "staging-internal-registry"
                  }
               },
               "additional-internal-registries": {
                  "name": "additional-internal-registries",
                  "secret": {
-                    "secretName": "internal-registry"
+                    "secretName": "staging-internal-registry"
                  }
               },
               "resource-limitations": {
