@@ -10,7 +10,7 @@ redeploy: false
 # replicaCount: 1
 
 # image name
-image: codefresh/cf-runtime
+image: r.cfcr.io/codefresh-inc/codefresh/cf-runtime
 
 # image tag  
 imageTag: master

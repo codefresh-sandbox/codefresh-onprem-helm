@@ -4,7 +4,7 @@ redeploy: false
 # Number of replicas
 replicaCount: 1
 
-image: codefresh/segment-reporter
+image: r.cfcr.io/codefresh-inc/codefresh/segment-reporter
 imageTag: master
 
 # Service port
