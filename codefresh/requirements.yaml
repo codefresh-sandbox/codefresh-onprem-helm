@@ -29,6 +29,14 @@ dependencies:
   repository: file://../nats
   tags:
     - infra
+- name: builder
+  repository: file://charts/builder
+  tags:
+    - infra
+- name: runner
+  repository: file://charts/runner
+  tags:
+    - infra
 - name: registry
   version: 0.1.0
   repository: file://../registry
