@@ -20,6 +20,7 @@ readonly clusterName="${3:-cf-staging}"
 readonly zone="${4:-us-central1-a}"
 
 [ -z "$namespaceName" ] && err "Please specify the namespace name!"
+readonly publicIp=$(getIngressIp "$namespaceName")
 
 [[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]] && err "Please set your AWS credentials"
 [[ -z "$GOOGLE_SERVICE_ACCOUNT" ]] && err "Please set the service-account env var!"
@@ -66,6 +67,5 @@ else
   kubectl delete namespace $namespaceName
 
   msg "Removing the environment from DNS..."
-  publicIp=$(getIngressIp "$namespaceName")
   deleteFromRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
 fi
