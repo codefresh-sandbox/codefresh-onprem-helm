@@ -80,21 +80,9 @@ runtimeEnvBlob: |
            "type": "KubernetesPod",
            "cluster": {
               "inCluster": true,
-              "namespace": "codefresh",
-              "kubeconfigFilePath": "/root/.kube/config",
-              "nodeSelector": {"codefresh/node-type": "app"}
+              "namespace": "codefresh"
            },
            "image": "codefresh/engine:v2",
-           "resources": {
-              "requests": {
-                 "cpu": "100m",
-                 "memory": "100Mi"
-              },
-              "limits": {
-                 "cpu": "1000m",
-                 "memory": "2048Mi"
-              }
-           },
            "envVars": {
               "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
               "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
@@ -105,7 +93,8 @@ runtimeEnvBlob: |
               "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
               "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v9",
               "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1"
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1",
+              "NODE_TLS_REJECT_UNAUTHORIZED": "0"
            },
            "volumeMounts": {
               "internal-registry": {
@@ -125,25 +114,36 @@ runtimeEnvBlob: |
                  "mountPath": "/etc/admin/resource-limitations.json",
                  "subPath": "resource-limitations.json",
                  "readOnly": true
+              },
+              "cf-certs": {
+                 "name": "cf-certs",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
               }
            },
            "volumes": {
               "internal-registry": {
                  "name": "internal-registry",
-                 "secret": {
-                    "secretName": "cf-codefresh-registry"
+                 "configMap": {
+                    "name": "cf-codefresh-registry"
                  }
               },
               "additional-internal-registries": {
                  "name": "additional-internal-registries",
-                 "secret": {
-                    "secretName": "cf-codefresh-registry"
+                 "configMap": {
+                    "name": "cf-codefresh-registry"
                  }
               },
               "resource-limitations": {
                  "name": "resource-limitations",
                  "configMap": {
                     "name": "cf-codefresh-resource-limitations"
+                 }
+              },
+              "cf-certs": {
+                 "name": "cf-certs",
+                 "secret": {
+                    "secretName": "cf-codefresh-cf-certs"
                  }
               }
            }
@@ -163,7 +163,7 @@ cfui:
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v092
+  imageTag: onprem-v207
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
