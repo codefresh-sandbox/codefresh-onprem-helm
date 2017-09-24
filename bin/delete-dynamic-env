@@ -56,6 +56,9 @@ if [ "$DRY_RUN" == "true" ]; then
   dry_run_flag="--dry-run"
 fi
 
+# get ingress public ip
+publicIp=$(getIngressIp "$namespaceName")
+
 msg "Delete the release using helm delete --purge"
 helm delete --purge $dry_run_flag $wait_flag $debug_flag $timeout_flag $namespaceName
 
@@ -66,6 +69,5 @@ else
   kubectl delete namespace $namespaceName
 
   msg "Removing the environment from DNS..."
-  publicIp=$(getIngressIp "$namespaceName")
   deleteFromRoute53 "${namespaceName}.dev.codefresh.io" "$publicIp"
 fi
