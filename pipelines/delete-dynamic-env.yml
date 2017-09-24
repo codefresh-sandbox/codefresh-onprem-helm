@@ -8,5 +8,5 @@ steps:
   delete_disposable_env:
     image: ${{build}}
     commands:
-      - bash -c -x "bin/delete-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE"
+      - bash -c "bin/delete-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE"
 

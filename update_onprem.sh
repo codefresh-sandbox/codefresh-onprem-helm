@@ -50,4 +50,4 @@ helm repo index . --merge index.yaml --url http://codefresh-helm-charts.s3-websi
 aws s3 cp index.yaml s3://codefresh-helm-charts/
 aws s3 cp ${package} s3://codefresh-helm-charts/
 
-msg "Codefrsh Onprem upadted to ${new_version}"
+msg "Codefresh Onprem upadted to ${new_version}"
