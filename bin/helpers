@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 readonly DEV_HOSTEDZONE_ID=Z18GWS8XMDYRQ6
 
 msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
