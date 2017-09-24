@@ -36,6 +36,7 @@ changeRoute53() {
 	local value="$2"
 	local action="${3:-UPSERT}"
 	eval aws route53 change-resource-record-sets \
+	  --debug \
 		--hosted-zone-id ${DEV_HOSTEDZONE_ID} \
 		--change-batch "'{\"Changes\": [{\"Action\": \"$action\", \"ResourceRecordSet\": {\"Name\": \"$name\", \"Type\": \"A\", \"TTL\": 300, \"ResourceRecords\": [{\"Value\": \"$value\"} ] } } ] }'"
 }
