@@ -45,9 +45,9 @@ cfui:
 sisma: ENC[AES256_GCM,data:cbY6fphenjAFUvx0EyY=,iv:WZavFDDpq4ASAP8BmFxA7Y3aMbnAzWLtTPQXeTmzgKI=,tag:3kZQuG6/Uf2LXQKpVyV+lA==,type:str]
 dockercfg: ENC[AES256_GCM,data:GBSm3ObMy6aMRm0N0eim1wBUpLuD4RWlVwq4pnwikPTuqMBlQmAPBbzSNJ4q2AeMnVbncfDM8nHW196KKZ2vZ8jo/S9FVjjrbKFheaqaeCvqVFS+khQM2s8t6+cOn3Iz/wV5AMpiPdb2b3yFEigSVMpBL9MPYQoiCJlZ6vz5n26WZzY0U84ghcdHF3s0A0jts98lef9glIAmPiUrUeXhIDzSHU+Oznq7Dp/1c1uZpX9K1seKNV1OOPY0/sbxW/xVVfXL7X+Jx7xNV6GTpESGVDqX0Tp3NzB0iac7KezQqe73qAFd7obOU/IT0ByaTjJd2oDSAux5aT4E7Vlhbr730pNkkiZdt/pbBwDKbdDHhAx0wPQyyZjtUcmsON5tYm/BANyaTe30tdRFZyiMbl3Qzq22xyzaT57XG6e/n4TfpkupQxtRKKIjgPW4vlQ=,iv:RY4zbVLp1ScOq2pabqjy+LsaDhcPwP4n5CBMf4U/SNc=,tag:EaI8ub66aynl6uCNAy6m3Q==,type:str]
 cluster-providers:
-    client-id: ENC[AES256_GCM,data:TcNtNaZuQ7twVDPhSqzMQ69I+xLHtxYXMTxEmMwoUkbYaS+6PnYLDpg/AIlTkww5EH0dKKqpjyluKfxRjq4qowWOUMdNqZuf,iv:9m961LKXFhw5iMPvABqY+/TZFpEbw4KZP/z66OLEU5M=,tag:xeqjnz1qjzS0Lw5wfx65hA==,type:str]
-    client-secret: ENC[AES256_GCM,data:M8012w19Znuj2gq68OARtEwa9HTcA9FH,iv:g4g9J0NSuAog6HVsINtFyA4GB9xAvuHTaNX4II7eiI8=,tag:u02e8wYl0pOaWdjJjFmv7A==,type:str]
-    safe-secret: ENC[AES256_GCM,data:3XBk746V3pKCeLwyXXJ3TTO6lC0=,iv:5wLRw1zcPP/mORKOWhd5Wt9T8zoEjyX9K+y0buaI220=,tag:ZxicMvBxAzsa2Fbh/yf66g==,type:str]
+    gcAuthClientID: ENC[AES256_GCM,data:B5+s9JcZ67f4hKTOTFiC14YG03IHPWRQofn682PL3eF7h0rf3p3bK0WEA4i7Ypvie1IbsYjXw0XrZlqpA9snSPw8/WeKbmj+,iv:FGMsQTT7t9AHO6XpUUtW8iZCtBkvr3rYPj7VcVPhD3c=,tag:QMKd7n9kl2Z1xACrHQ/8yQ==,type:str]
+    gcAuthClientSecret: ENC[AES256_GCM,data:FEtles6m6AGgHRCL9Rs6B+/vYu1APt9a,iv:L2MTsmvOo+R/om++oCmOyrg7StMdhe1+g1+HCqw05h4=,tag:m9MF3hpLbYT3NdoR8ooZAg==,type:str]
+    safeSecret: ENC[AES256_GCM,data:FanihKWkv4HhdtJCLlq1mJ5qfyA=,iv:zvpV/9DF1keVTb+9kQPNW0ON4nLWqmDyM/olg9skKfY=,tag:FzUPTbdRVPPHLWa9bu17tQ==,type:str]
 mailer:
     sendgridKey: ENC[AES256_GCM,data:w+dIrI6BnBteXchAYwlRf4WQRC5iP+r/1aB1ABQKSrF3oSzDnNyfS42krhM482xrkVyzOQmV+B+XSPjcOw0CcXlbzyjW,iv:cfMDp1ujpds4P63brJNlk6wLiLk4/1vhAMyBtI+faKM=,tag:e4NXs22XbHNNuLJCubWR5A==,type:str]
 internal-status-page:
@@ -62,8 +62,8 @@ sops:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
         created_at: '2017-08-06T14:13:52Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwF0P9VuXJpBc1pkpVZMkNZPAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM+pUhB/YrqDqVakf5AgEQgDu5lHXxMeF0w9VzY0k+dGjWjSTOehClngMLhrKf6+lSnV10qfxvD12hAQJYwnOjufoV4rHFp6VI11Ql7A==
-    lastmodified: '2017-09-14T15:08:55Z'
-    mac: ENC[AES256_GCM,data:IoLZNj+KvUz9r4O2ORnoX3i5zC8S8K+Hhwh5p1ylfGbLLjrxRTC5GDcGBZ5AdlwRWae2biFcNlBPHH9BrFehc3oRGgnGE8A2E2NLKkj9Zq081H/FGfYJQDDhmC96V2iezonaPWgPeu9pv0k/3adzUqOLUaC2s1vjFcdZOuGQ3C4=,iv:wtVKrsUPkz4LVPsF3RHEHyU1/SPz8t7+EB64l3XWaGk=,tag:LTGIxSWwWqV3Ccozea/ocg==,type:str]
+    lastmodified: '2017-09-25T14:05:00Z'
+    mac: ENC[AES256_GCM,data:Qz5ugIhWZoDJ5ZJgNfg2HmIMXmwjhW7fgJURGSgT3398oIOQvlZTfFxgy7As90y4IInvGNqNZo/db3YnHb1viiyaCvMOubaj5vin7wFRv6d7nUWMy5qIQYlx0R/unfIIm1FNOc0nKtQZIMtzFzDZoQtig26oD19Feyqa8M+FplY=,iv:MleqJ8aHU/cLoSesA4RJaHID+0s23be9K/VafVPZxbQ=,tag:roMv4N60ydNK5NwkADwRjg==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 2.0.9

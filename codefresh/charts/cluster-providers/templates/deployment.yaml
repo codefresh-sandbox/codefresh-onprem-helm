@@ -111,7 +111,6 @@ spec:
         - name: SAFE_SECRET
           valueFrom:
             secretKeyRef:
-              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Chart.Name }}"
               name: {{ template "fullname" . }}
               key: safe-secret
         ports:
