@@ -6,6 +6,8 @@ msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
 
 err() { echo -e "\e[31mERR ---> $1\e[0m" ; exit 1; }
 
+channel=${1:-dev}
+
 version_bump() {
   old_version=$(grep version codefresh/Chart.yaml | awk -F ': ' '{print $2}')
 
@@ -44,10 +46,10 @@ mv codefresh/values.yaml.bak codefresh/values.yaml
 
 rm -f index.yaml
 
-wget http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com/index.yaml
-helm repo index . --merge index.yaml --url http://codefresh-helm-charts.s3-website-us-east-1.amazonaws.com
+wget http://charts.codefresh.io/${branch}/index.yaml
+helm repo index . --merge index.yaml --url http://charts.codefresh.io/${channel}/
 
-aws s3 cp index.yaml s3://codefresh-helm-charts/
-aws s3 cp ${package} s3://codefresh-helm-charts/
+aws s3 cp index.yaml s3://charts.codefresh.io/${channel}/
+aws s3 cp ${package} s3://charts.codefresh.io/${channel}/
 
-msg "Codefresh Onprem upadted to ${new_version}"
+msg "Codefresh Onprem updated to ${new_version}"
