@@ -888,9 +888,8 @@ cluster-providers:
   imageTag: v19
   replicaCount: 2
 
-# We should disable it for production
 internal-status-page:
-  imageTag: load
+  enabled: false
 
 multiple-clusters:
   imageTag: v15
@@ -899,7 +898,6 @@ multiple-clusters:
 kube-integration:
   imageTag: v39
   replicaCount: 2
-  #mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
   imageTag: v12
