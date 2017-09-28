@@ -1,0 +1,933 @@
+---
+firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
+
+hostsApp: |
+  50.56.64.16   stash.ironsrc.com
+
+webTLS:
+  secretName: star.codefresh.io
+  #key:
+  #cert:
+
+postgresql:
+  postgresHostname: 35.188.141.216
+  #postgresUser:
+  #postgresPassword:
+
+redis:
+  redisUrl: redis.default.svc
+  #redisPassword:
+
+rabbitmq:
+  rabbitmqHostname: rabbit.default.svc
+  #rabbitmqUsername:
+  #rabbitmqPassword:
+
+runtimeEnvBlob: |
+  {
+     "default": {
+        "dockerDaemonScheduler": {
+           "type": "ConsulNodes",
+           "cluster": {
+              "name": "",
+              "type": "builder",
+              "returnRunnerIfNoBuilder": true
+           }
+        },
+        "runtimeScheduler": {
+           "type": "KubernetesPod",
+           "cluster": {
+              "name": "cluster-cf-1.cf-cd.com",
+              "namespace": "workflow",
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "app"}
+           },
+           "image": "codefresh/engine:v3",
+           "resources": {
+              "requests": {
+                 "cpu": "100m",
+                 "memory": "100Mi"
+              },
+              "limits": {
+                 "cpu": "1000m",
+                 "memory": "2048Mi"
+              }
+           },
+           "envVars": {
+              "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
+              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+           },
+           "volumeMounts": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "mountPath": "/etc/admin/internal-registry.json",
+                 "subPath": "internal-registry.json",
+                 "readOnly": true
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "mountPath": "/etc/admin/additional-internal-registries.json",
+                 "subPath": "additional-internal-registries.json",
+                 "readOnly": true
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "mountPath": "/etc/admin/resource-limitations.json",
+                 "subPath": "resource-limitations.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "configMap": {
+                    "name": "resource-limitations"
+                 }
+              }
+           }
+        }
+     },
+      "codefresh": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
+           "cluster": {
+              "name": "cluster-cf-1.cf-cd.com",
+              "namespace": "workflow",
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh"}
+           },
+           "dindImage": "codefresh/cf-dind:v5",
+           "connectByPodIp": true,
+           "defaultDindResources": {
+              "requests": {
+                 "cpu": "700m",
+                 "memory": "512Mi"
+              },
+              "limits": {
+                 "cpu": "2500m",
+                 "memory": "2048Mi"
+              }
+           },
+           "volumeMounts": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "secret": {
+                    "secretName": "cf-certs-dind"
+                 }
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "configMap": {
+                    "name": "dind-config"
+                 }
+              }
+           }
+        }
+     },
+      "codefresh-inc": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
+           "cluster": {
+              "name": "cluster-cf-1.cf-cd.com",
+              "namespace": "workflow",
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh-inc"}
+           },
+           "dindImage": "codefresh/cf-dind:v5",
+           "connectByPodIp": true,
+           "defaultDindResources": {
+              "requests": {
+                 "cpu": "390m",
+                 "memory": "256Mi"
+              },
+              "limits": {
+                 "cpu": "2500m",
+                 "memory": "2048Mi"
+              }
+           },
+           "volumeMounts": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "secret": {
+                    "secretName": "cf-certs-dind"
+                 }
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "configMap": {
+                    "name": "dind-config"
+                 }
+              }
+           }
+        }
+     },
+      "secful": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
+           "cluster": {
+              "name": "cluster-cf-1.cf-cd.com",
+              "namespace": "workflow",
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh"}
+           },
+           "dindImage": "codefresh/cf-dind:v5",
+           "connectByPodIp": true,
+           "defaultDindResources": {
+              "requests": {
+                 "cpu": "700m",
+                 "memory": "512Mi"
+              },
+              "limits": {
+                 "cpu": "2500m",
+                 "memory": "4096Mi"
+              }
+           },
+           "volumeMounts": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "secret": {
+                    "secretName": "cf-certs-dind"
+                 }
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "configMap": {
+                    "name": "dind-config"
+                 }
+              }
+           }
+        }
+     },
+      "UNICEF": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
+           "cluster": {
+              "name": "cluster-cf-1.cf-cd.com",
+              "namespace": "workflow",
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh"}
+           },
+           "dindImage": "codefresh/cf-dind:v5",
+           "connectByPodIp": true,
+           "defaultDindResources": {
+              "requests": {
+                 "cpu": "700m",
+                 "memory": "512Mi"
+              },
+              "limits": {
+                 "cpu": "2500m",
+                 "memory": "4096Mi"
+              }
+           },
+           "volumeMounts": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "secret": {
+                    "secretName": "cf-certs-dind"
+                 }
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "configMap": {
+                    "name": "dind-config"
+                 }
+              }
+           }
+        }
+     },
+     "sctechdevservice": {
+        "runtimeScheduler": {
+           "type": "KubernetesPod",
+           "cluster": {
+              "namespace": "default",
+              "inCluster": true,
+              "nodeSelector": {"nodeType": "worker", "codefresh/node-type": "app"}
+           },
+           "image": "codefresh/engine:v3",
+           "resources": {
+              "requests": {
+                 "cpu": "100m",
+                 "memory": "100Mi"
+              },
+              "limits": {
+                 "cpu": "500m",
+                 "memory": "1024Mi"
+              }
+           },
+           "envVars": {
+              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+           },
+           "volumeMounts": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "mountPath": "/etc/admin/internal-registry.json",
+                 "subPath": "internal-registry.json",
+                 "readOnly": true
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "mountPath": "/etc/admin/additional-internal-registries.json",
+                 "subPath": "additional-internal-registries.json",
+                 "readOnly": true
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "mountPath": "/etc/admin/resource-limitations.json",
+                 "subPath": "resource-limitations.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "configMap": {
+                    "name": "resource-limitations"
+                 }
+              }
+           }
+        }
+     },
+     "ironsource": {
+        "runtimeScheduler": {
+           "type": "KubernetesPod",
+           "cluster": {
+              "namespace": "default",
+              "inCluster": true,
+              "nodeSelector": {"nodeType": "worker", "codefresh/node-type": "app"}
+           },
+           "image": "codefresh/engine:v3",
+           "resources": {
+              "requests": {
+                 "cpu": "100m",
+                 "memory": "100Mi"
+              },
+              "limits": {
+                 "cpu": "500m",
+                 "memory": "1024Mi"
+              }
+           },
+           "envVars": {
+              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+           },
+           "volumeMounts": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "mountPath": "/etc/admin/internal-registry.json",
+                 "subPath": "internal-registry.json",
+                 "readOnly": true
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "mountPath": "/etc/admin/additional-internal-registries.json",
+                 "subPath": "additional-internal-registries.json",
+                 "readOnly": true
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "mountPath": "/etc/admin/resource-limitations.json",
+                 "subPath": "resource-limitations.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "configMap": {
+                    "name": "resource-limitations"
+                 }
+              }
+           }
+        }
+     },
+     "avibeetul": {
+        "runtimeScheduler": {
+           "type": "KubernetesPod",
+           "cluster": {
+              "namespace": "default",
+              "inCluster": true,
+              "nodeSelector": {"nodeType": "worker", "codefresh/node-type": "app"}
+           },
+           "image": "codefresh/engine:v3",
+           "resources": {
+              "requests": {
+                 "cpu": "100m",
+                 "memory": "100Mi"
+              },
+              "limits": {
+                 "cpu": "500m",
+                 "memory": "1024Mi"
+              }
+           },
+           "envVars": {
+              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+           },
+           "volumeMounts": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "mountPath": "/etc/admin/internal-registry.json",
+                 "subPath": "internal-registry.json",
+                 "readOnly": true
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "mountPath": "/etc/admin/additional-internal-registries.json",
+                 "subPath": "additional-internal-registries.json",
+                 "readOnly": true
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "mountPath": "/etc/admin/resource-limitations.json",
+                 "subPath": "resource-limitations.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "configMap": {
+                    "name": "resource-limitations"
+                 }
+              }
+           }
+        }
+     },
+      "giphy": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
+           "cluster": {
+              "clusterProvider": {
+                  "selector": "k8s-qa1",
+                  "accountId": "59a0f26e6a0ccc000197173a"
+              },
+              "namespace": "default"
+           },
+           "clientCertPath": "/etc/ssl/cf/giphy-",
+           "dindImage": "codefresh/cf-dind:v5",
+           "connectByPodIp": true,
+           "defaultDindResources": {
+              "requests": {
+                 "cpu": "390m",
+                 "memory": "256Mi"
+              },
+              "limits": {
+                 "cpu": "2500m",
+                 "memory": "2048Mi"
+              }
+           },
+           "volumeMounts": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
+                 "readOnly": true
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "secret": {
+                    "secretName": "cf-certs-dind"
+                 }
+              },
+              "dind-config": {
+                 "name": "dind-config",
+                 "configMap": {
+                    "name": "dind-config"
+                 }
+              }
+           }
+        },
+        "runtimeScheduler": {
+           "type": "KubernetesPod",
+           "cluster": {
+             "clusterProvider": {
+                  "selector": "k8s-qa1",
+                  "accountId": "59a0f26e6a0ccc000197173a"
+              },
+              "namespace": "default"
+           },
+           "image": "codefresh/engine:v3",
+           "resources": {
+              "requests": {
+                 "cpu": "100m",
+                 "memory": "100Mi"
+              },
+              "limits": {
+                 "cpu": "1000m",
+                 "memory": "2048Mi"
+              }
+           },
+           "envVars": {
+              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+           },
+           "volumeMounts": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "mountPath": "/etc/admin/internal-registry.json",
+                 "subPath": "internal-registry.json",
+                 "readOnly": true
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "mountPath": "/etc/admin/additional-internal-registries.json",
+                 "subPath": "additional-internal-registries.json",
+                 "readOnly": true
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "mountPath": "/etc/admin/resource-limitations.json",
+                 "subPath": "resource-limitations.json",
+                 "readOnly": true
+              }
+           },
+           "volumes": {
+              "internal-registry": {
+                 "name": "internal-registry",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "additional-internal-registries": {
+                 "name": "additional-internal-registries",
+                 "secret": {
+                    "secretName": "internal-registry"
+                 }
+              },
+              "resource-limitations": {
+                 "name": "resource-limitations",
+                 "configMap": {
+                    "name": "resource-limitations"
+                 }
+              }
+           }
+        }
+     }
+  }
+
+# customize cfapi
+cfapi:
+  imageTag: v212
+  replicaCount: 8
+  internalRegistryProtocol: https
+  providersData: |
+    {
+      "aws": {
+        "name": "aws",
+        "settings": {
+          "KeyName": "cf-prod-1",
+          "route53Zone": "ZVG87U9HV33SS"
+        },
+        "services": {
+          "docker-node-us-east-1": {
+            "region": "us-east-1",
+            "name": "docker-node",
+            "dnsPrefix": "cf-aue1-docker-node",
+            "dnsDomain": "cf-cd.com.",
+            "iface": "public",
+            "imageName": "ami-e33d40f5",
+            "machineTypes": {
+              "all": [
+                "c4.large",
+                "c4.xlarge",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m3.medium"
+              ],
+              "default": "m4.large"
+            },
+            "volumeTypes": {
+              "all": [
+                "standard",
+                "gp2"
+              ],
+              "default": "gp2"
+            },
+            "securityGroupIds": [
+              "sg-ef5ed293", "sg-075bd77b"
+            ],
+            "BlockDeviceMappings": [
+              {
+                "DeviceName": "/dev/sda1",
+                "Ebs": {
+                  "DeleteOnTermination": true,
+                  "VolumeSize": 200,
+                  "VolumeType": "gp2"
+                }
+              }
+            ],
+            "subnetId": [
+              "subnet-af5bb5d8",
+              "subnet-d1363d97"
+            ],
+            "metadata": {
+              "autoscale": "docker-node",
+              "environment": "aws-production"
+            }
+          },
+          "docker-node-eu-central-1": {
+            "region": "eu-central-1",
+            "name": "docker-node",
+            "dnsPrefix": "cf-aec1-docker-node",
+            "dnsDomain": "cf-cd.com.",
+            "iface": "public",
+            "imageName": "ami-b6fd24d9",
+            "machineTypes": {
+              "all": [
+                "c4.large",
+                "c4.xlarge",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m3.medium"
+              ],
+              "default": "m4.large"
+            },
+            "volumeTypes": {
+                  "all": [
+                    "standard",
+                    "gp2"
+                  ],
+                  "default": "gp2"
+            },
+            "securityGroupIds": [
+              "sg-9e3a22f6", "sg-003c2468"
+            ],
+            "BlockDeviceMappings": [
+              {
+                "DeviceName": "/dev/sda1",
+                "Ebs": {
+                  "DeleteOnTermination": true,
+                  "VolumeSize": 200,
+                  "VolumeType": "gp2"
+                }
+              }
+            ],
+            "metadata": {
+              "autoscale": "docker-node",
+              "environment": "aws_production"
+            }
+          },
+          "docker-node-jfrog-eu-central-1a": {
+            "region": "eu-central-1",
+            "name": "docker-node",
+            "dnsPrefix": "jfrog-node",
+            "dnsDomain": "cf-cd.com.",
+            "iface": "public",
+            "imageName": "ami-071eca68",
+            "machineTypes": {
+              "all": [
+                "c4.large",
+                "c4.xlarge",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m3.medium"
+              ],
+              "default": "c4.large"
+            },
+            "volumeTypes": {
+              "all": [
+                "standard",
+                "gp2"
+              ],
+              "default": "gp2"
+            },
+            "securityGroupIds": [
+              "sg-c33b23ab", "sg-0731296f"
+            ],
+            "BlockDeviceMappings": [
+              {
+                "DeviceName": "/dev/sda1",
+                "Ebs": {
+                  "DeleteOnTermination": true,
+                  "VolumeSize": 200,
+                  "VolumeType": "gp2"
+                }
+              }
+            ],
+            "KeyName": "cf-customers-1",
+            "subnetId": "subnet-66e7280e",
+            "metadata": {
+              "autoscale": "docker-node",
+              "environment": "aws-production"
+            }
+          },
+          "docker-node-jfrog-eu-central-1b": {
+            "region": "eu-central-1",
+            "name": "docker-node",
+            "dnsPrefix": "jfrog-node",
+            "dnsDomain": "cf-cd.com.",
+            "iface": "public",
+            "imageName": "ami-071eca68",
+            "machineTypes": {
+              "all": [
+                "c4.large",
+                "c4.xlarge",
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "m3.medium"
+              ],
+              "default": "c4.large"
+            },
+            "volumeTypes": {
+              "all": [
+                "standard",
+                "gp2"
+              ],
+              "default": "gp2"
+            },
+            "securityGroupIds": [
+              "sg-c33b23ab", "sg-0731296f"
+            ],
+            "BlockDeviceMappings": [
+              {
+                "DeviceName": "/dev/sda1",
+                "Ebs": {
+                  "DeleteOnTermination": true,
+                  "VolumeSize": 200,
+                  "VolumeType": "gp2"
+                }
+              }
+            ],
+            "KeyName": "cf-customers-1",
+            "subnetId": "subnet-53839f28",
+            "metadata": {
+              "autoscale": "docker-node",
+              "environment": "aws-production"
+            }
+          }
+        }
+      },
+      "gce": {
+          "name": "gce",
+          "settings": {
+            "keyFilename": "/etc/admin/gce_creds.json",
+            "projectId": "codefresh-production"
+          },
+          "services": {}
+      }
+    }
+  env:
+    ON_PREMISE: ""
+    APP_ENV: production
+    ADMIN_FEATURES_DELETE_ACCOUNT_DISABLED: "true"
+    ADMIN_FEATURES_DELETE_USER_WHITELIST: "superfresh,superfresh_github,Superfresh"
+    GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
+    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
+
+cfui:
+  imageTag: v246
+
+payments:
+  imageTag: v11
+
+cluster-providers:
+  imageTag: v19
+  replicaCount: 2
+
+# We should disable it for production
+internal-status-page:
+  imageTag: load
+
+multiple-clusters:
+  imageTag: v15
+  replicaCount: 2
+
+kube-integration:
+  imageTag: v39
+  replicaCount: 2
+  #mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
+
+accounts-referrals:
+  imageTag: v12
+  replicaCount: 2
+
+mailer:
+  imageTag: v9
+  replicaCount: 2
+
+segment-reporter:
+  imageTag: v19
+
+workflow-baseline-invoker:
+  imageTag: v5
+
+global:
+  appProtocol: https
+  postgresDatabase: eventbus
+  queueServers: nats://queue.default.svc:4222
+  consulHost: consul.default.svc
+  rabbitmqHostname: rabbit.default.svc
+  postgresHostname: postgres.default.svc
+  redisUrl: redis.default.svc
+  seedJobs: false
+  cfcrDomain: r.cfcr.io
+
+tags:
+  saas: true
+  infra: false
+  old-scheduler: false
+
