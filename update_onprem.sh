@@ -46,7 +46,7 @@ mv codefresh/values.yaml.bak codefresh/values.yaml
 
 rm -f index.yaml
 
-wget http://charts.codefresh.io/${branch}/index.yaml
+wget http://charts.codefresh.io/${channel}/index.yaml
 helm repo index . --merge index.yaml --url http://charts.codefresh.io/${channel}/
 
 aws s3 cp index.yaml s3://charts.codefresh.io/${channel}/
