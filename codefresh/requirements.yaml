@@ -29,19 +29,24 @@ dependencies:
   repository: file://../nats
   tags:
     - infra
+    - nats
 - name: builder
   repository: file://charts/builder
   version: 0.1.2
   tags:
     - infra
+    - builder
 - name: runner
   repository: file://charts/runner
   version: 0.1.2
   tags:
     - infra
+    - runner
 - name: registry
-  version: 0.1.0
   repository: file://../registry
+  version: 0.1.0
+  tags:
+    - infra
 - name: ingress
   version: 0.1.0
   repository: file://../ingress
