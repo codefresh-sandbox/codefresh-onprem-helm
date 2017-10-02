@@ -327,7 +327,7 @@ cfapi:
     ADMIN_FEATURES_DELETE_ACCOUNT_DISABLED: ""
     ADMIN_FEATURES_DELETE_USER_WHITELIST: ""
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
-    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
+    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-load
 
 cfui:
   imageTag: load
