@@ -2,7 +2,7 @@
 
 ## Prerequisites
 1. minikube `brew cask install minikube`
-2. helm `brew install helm`
+2. helm `brew install kubernetes-helm`
 3. sops `brew install sops`
 4. go 1.8.1 (or newer)
 5. helm plugin chartify `helm plugin install https://github.com/rimusz/helm-chartify`
