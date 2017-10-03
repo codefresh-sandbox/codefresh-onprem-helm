@@ -2,7 +2,6 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-metadata:
   name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
@@ -50,10 +49,11 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
-        - name: API_PROTOCOL
-          value: {{ .Values.global.appProtocol | quote }}
-        - name: API_URL
-          value: {{ .Values.global.appUrl | quote }}
+        - name: AGENT
+          value: {{ .Values.global.agent }}
+        # Mode variable to start it as http server
+        - name: MODE
+          value: "1"
         - name: NODE_ENV
           value: kubernetes
         - name: MONGO_URI
@@ -76,7 +76,8 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
+          value: 'amqp://{{ .Values.global.rabbitmqUsername }}:{{ .Values.global.rabbitmqPassword }}@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}'
+          # value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: POSTGRES_HOST
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname | quote }}
         - name: POSTGRES_DATABASE
@@ -99,12 +100,12 @@ spec:
         - name: PORT
           value: "{{ .Values.global.kubeIntegrationPort }}"
         ports:
-        - containerPort: {{ .Values.port }}
+        - containerPort: {{ .Values.targetPort }}
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/ping
-            port: {{ .Values.port }}
+            port: {{ .Values.targetPort }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1
