@@ -73,6 +73,7 @@ check kubectl
 
 [ "$1" == "-h" ] && usage
 
+
 [ -z "$APP_DNS" ] && echo "Please set APP_DNS, example: export APP_DNS=app-staging.codefresh.io" && exit 1;
 [ -z "$ENVIRONMENT" ] && echo "Please set ENVIRONMENT, example: export ENVIRONMENT=staging" && exit 1;
 [ -z "$CLUSTER_NAME" ] && echo "Please set CLUSTER_NAME, example: export CLUSTER_NAME=cf-staging" && exit 1;
@@ -87,17 +88,12 @@ if [ -z "$NAMESPACE" ]; then
   export NAMESPACE=default
 fi
 
-#: ${APP_DNS:=app-staging.codefresh.io}
-#: ${ENVIRONMENT:=staging}
-#: ${CLUSTER_NAME:=cf-staging}
-#: ${PROJECT_NAME:=savvy-badge-103912}
-#: ${NAMESPACE:=default}
-#: ${ZONE:=us-central1-a}
-
-activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
+if [[ -n "$GOOGLE_SERVICE_ACCOUNT" ]]; then
+   activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
+fi
 
 msg "Decrypting all secrets"
-./sops.sh -d
+# ./sops.sh -d
 
 msg "Install Helm Tiller or upgrade, if needed"
 helm init --upgrade
@@ -109,11 +105,11 @@ sleep 3
 msg "Helm version"
 helm version
 
-msg "Fetching latest helm dependencies"
-helm dependency update codefresh/
+# msg "Fetching latest helm dependencies"
+# helm dependency update codefresh/
 
 msg "The following services are going to be deployed: "
-echo "@$"
+echo "$@"
 
 customVals=$(processCustomVals)
 redeployArgs=$(genRedeployArgs $@)

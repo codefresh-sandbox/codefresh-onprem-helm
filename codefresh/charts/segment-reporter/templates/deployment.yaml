@@ -73,12 +73,12 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: segment-key
         ports:
-        - containerPort: {{ .Values.port }}
+        - containerPort: {{ .Values.targetPort }}
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/ping
-            port: {{ .Values.port }}
+            port: {{ .Values.targetPort }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1
