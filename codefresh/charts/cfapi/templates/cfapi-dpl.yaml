@@ -371,6 +371,6 @@ spec:
       {{- if .Values.global.addResolvConf }}
       - name: resolvconf
         configMap:
-        name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
       restartPolicy: Always

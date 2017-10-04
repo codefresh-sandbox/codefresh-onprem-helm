@@ -112,6 +112,6 @@ spec:
           readOnly: true
       volumes:
       - name: resolvconf
-       configMap:
-       name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
