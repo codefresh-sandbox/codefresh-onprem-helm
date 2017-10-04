@@ -86,6 +86,12 @@ spec:
           name: runner-config
           readOnly: true
           subPath: daemon.json
+        {{- if .Values.global.addResolvConf }}
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
       volumes:
       - name: cf-certs
         secret:
@@ -93,3 +99,8 @@ spec:
       - name: runner-config
         configMap:
           name: {{ template "fullname" . }}
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+        name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}

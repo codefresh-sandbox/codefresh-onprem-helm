@@ -332,6 +332,12 @@ spec:
           mountPath: /etc/admin/deploymentTemplateImages.json
           subPath: deploymentTemplateImages.json
         {{- end }}
+        {{- if .Values.global.addResolvConf }}
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
       volumes:
       - name: config
         configMap:
@@ -361,5 +367,10 @@ spec:
       - name: api-secrets-gce
         secret:
           secretName: {{ template "fullname" . }}
+      {{- end }}
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+        name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
       restartPolicy: Always

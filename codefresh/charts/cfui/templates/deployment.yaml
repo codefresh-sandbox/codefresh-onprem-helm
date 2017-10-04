@@ -104,3 +104,14 @@ spec:
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
+      {{- if .Values.global.addResolvConf }}
+        volumeMounts:
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+      volumes:
+      - name: resolvconf
+       configMap:
+       name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}
