@@ -159,11 +159,11 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v237
+  imageTag: onprem-v251
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v207
+  imageTag: onprem-v218
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
@@ -198,17 +198,17 @@ cfruntime:
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/cluster-providers
-  imageTag: onprem-v18
+  imageTag: onprem-v19
 
 multiple-clusters:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/multiple-clusters
-  imageTag: onprem-v12
+  imageTag: onprem-v15
 
 kube-integration:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/kube-integration
-  imageTag: onprem-v30
+  imageTag: onprem-v39
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
