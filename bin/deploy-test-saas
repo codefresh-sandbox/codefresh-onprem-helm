@@ -118,8 +118,6 @@ msg "Deploying helm package"
 helmCmd=$(cat <<END
 helm upgrade ${ENVIRONMENT} codefresh \
 	--install \
-	--force \
-	--reset-values \
 	--namespace ${NAMESPACE} \
 	--set ingress.domain="${APP_DNS}" \
 	--set ingress.enabled=true \

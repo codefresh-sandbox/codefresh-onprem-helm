@@ -58,7 +58,7 @@ dependencies:
   version: 0.0.1
   repository: file://charts/multiple-clusters
 - name: kube-integration
-  version: 0.0.1
+  version: 0.0.2
   repository: file://charts/kube-integration
 - name: accounts-referrals
   version: 0.0.1
@@ -86,12 +86,12 @@ dependencies:
   tags:
     - saas
 - name: segment-reporter
-  version: 0.0.1
+  version: 0.0.2
   repository: file://charts/segment-reporter
   tags:
     - saas
 - name: workflow-baseline-invoker
-  version: 0.0.1
+  version: 0.0.2
   repository: file://charts/workflow-baseline-invoker
   tags:
     - saas
