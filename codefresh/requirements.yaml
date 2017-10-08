@@ -83,6 +83,7 @@ dependencies:
 - name: internal-status-page
   version: 0.0.1
   repository: file://charts/internal-status-page
+  condition: internal-status-page.enabled
   tags:
     - saas
 - name: segment-reporter

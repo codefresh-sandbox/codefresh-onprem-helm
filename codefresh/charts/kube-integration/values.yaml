@@ -13,8 +13,3 @@ port: 9000
 # Pod (target) port
 targetPort: 9000
 
-# Secrets, should be replaced with env specific values
-
-# Custom mongodb uri, set this if you don't want to use Chart's mongoDB instance
-mongoURI: ""
-
