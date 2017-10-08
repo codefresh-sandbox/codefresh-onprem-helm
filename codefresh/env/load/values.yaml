@@ -473,6 +473,9 @@ segment-reporter:
 workflow-baseline-invoker:
   imageTag: load
 
+dind-provider:
+  imageTag: load
+
 global:
   appProtocol: https
   postgresDatabase: postgres

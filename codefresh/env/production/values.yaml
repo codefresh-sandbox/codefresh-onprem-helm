@@ -913,6 +913,9 @@ segment-reporter:
 workflow-baseline-invoker:
   imageTag: v5
 
+dind-provider:
+  imageTag: v6
+
 global:
   appProtocol: https
   postgresDatabase: eventbus

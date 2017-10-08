@@ -96,3 +96,8 @@ dependencies:
   repository: file://charts/workflow-baseline-invoker
   tags:
     - saas
+- name: dind-provider
+  version: 0.1.0
+  repository: file://charts/dind-provider
+  tags:
+    - saas
