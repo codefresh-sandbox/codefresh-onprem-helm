@@ -34,6 +34,27 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodeType
+                operator: NotIn
+                values:
+                - internal
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - cfapi
+              topologyKey: kubernetes.io/hostname
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
@@ -273,6 +294,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
         - name: MULTIPLE_CLUSTERS_PORT
           value: {{ .Values.global.multipleClustersPort | quote }}
+        - name: DIND_PROVIDER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.dindProviderService }}"
+        - name: DIND_PROVIDER_PORT
+          value: {{ .Values.global.dindProviderPort | quote }}
         {{- if .Values.deploymentTemplateImages }}
         - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
           value: /etc/admin/deploymentTemplateImages.json
