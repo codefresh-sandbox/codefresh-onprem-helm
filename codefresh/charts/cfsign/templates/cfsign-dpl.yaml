@@ -44,10 +44,10 @@ spec:
         volumeMounts:
         - mountPath: /cacerts/cf-ca.pem
           name: ca
-          subPath: ca.pem
+          subPath: cf-ca.pem
         - mountPath: /cacerts/cf-ca-key.pem
           name: ca-key
-          subPath: key.pem
+          subPath: cf-ca-key.pem
         - mountPath: /.secrets/sisma
           name: sisma
           subPath: sisma
@@ -55,11 +55,11 @@ spec:
       volumes:
       - name: ca
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+          secretName: {{ template "fullname" . }}
       - name: ca-key
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+          secretName: {{ template "fullname" . }}
       - name: sisma
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
+          secretName: {{ template "fullname" . }}
 
