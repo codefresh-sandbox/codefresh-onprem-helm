@@ -441,7 +441,7 @@ payments:
 
 cluster-providers:
   imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   # We won't use Chart's installed mongo instance for load, instead, we'll use
   # an already deployed mongodb pod.
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
@@ -451,21 +451,21 @@ internal-status-page:
 
 multiple-clusters:
   imageTag: load
-  replicaCount: 2
+  replicaCount: 1
 
 kube-integration:
   imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
   imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
   imageTag: load
-  replicaCount: 2
+  replicaCount: 1
 
 segment-reporter:
   imageTag: load
