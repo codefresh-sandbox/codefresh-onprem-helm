@@ -4,55 +4,47 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
     - infra
-    - consul
 - name: mongodb
   version: 0.4.12
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: mongo.enabled
   tags:
     - infra
-    - mongo
 - name: postgresql
   version: 0.7.1
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
     - infra
-    - postgres
 - name: redis
   version: 0.8.0
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
     - infra
-    - redis
 - name: rabbitmq
   version: 0.5.3
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
     - infra
-    - rabbitmq
 - name: nats
   version: 0.1.0
   repository: file://../nats
   tags:
     - infra
-    - nats
 - name: builder
   repository: file://charts/builder
   version: 0.1.2
   tags:
     - infra
-    - builder
 - name: runner
   repository: file://charts/runner
   version: 0.1.2
   tags:
     - infra
-    - runner
 - name: registry
   repository: file://../registry
   version: 0.1.0
   tags:
     - infra
-    - registry
 - name: ingress
   version: 0.1.0
   repository: file://../ingress
