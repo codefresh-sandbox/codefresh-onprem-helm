@@ -476,10 +476,20 @@ workflow-baseline-invoker:
 dind-provider:
   imageTag: load
 
+salesforce-reporter:
+  imageTag: master
+  active: ""
+  oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
+  host: "https://3513510456354.my.salesforce.com"
+  clientId: "3MVG9g9rbsTkKnAWYUH3_kcQ9b4COqHyFdSi_B_TB3BQQKyB9W0ykwe5eghwle2YFnwv3hi3p5lzu5NLmoubx"
+  username: "itai@codefresh.io"
+  env:
+    HTTP_LOGGER_LEVEL: error
+
 global:
   appProtocol: https
   postgresDatabase: postgres
-  queueServers: nats://queue.default.svc:4222
+#  queueServers: nats://queue.default.svc:4222
   consulHost: consul.default.svc
   rabbitmqHostname: rabbit.default.svc
   postgresHostname: postgres.default.svc

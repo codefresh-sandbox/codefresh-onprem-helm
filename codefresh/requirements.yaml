@@ -29,6 +29,7 @@ dependencies:
   repository: file://../nats
   tags:
     - infra
+    - saas
 - name: builder
   repository: file://charts/builder
   version: 0.1.2
@@ -99,5 +100,10 @@ dependencies:
 - name: dind-provider
   version: 0.1.0
   repository: file://charts/dind-provider
+  tags:
+    - saas
+- name: salesforce-reporter
+  version: 0.1.1
+  repository: file://charts/salesforce-reporter
   tags:
     - saas

@@ -34,8 +34,9 @@ It will decrypt all values-enc.yaml to values-dec.yaml
 `git commit -am "chart main-service changed" && git push`
 * run cf-helm pipeline to apply changes
   
-### Adding helm chart for microservice
-We recommend add new chart using our cf-helm-starter, see https://github.com/codefresh-io/cf-helm-starter  
+### Adding new helm chart for a microservice
+We recommend to add a new chart using our cf-helm-starter boilerplate: 
+https://github.com/codefresh-io/cf-helm-starter  
   
 ### Dev environment setup
 Recommended way is to use cf-helm Codefresh pipeline - see codefresh yamls in pipeline/ and Dockerfile
