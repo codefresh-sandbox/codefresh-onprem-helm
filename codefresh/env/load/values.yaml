@@ -33,6 +33,9 @@ registry:
 builder:
   replicaCount: 1
 
+ingress:
+  replicaCount: 2
+
 runtimeEnvBlob: |
   {
      "default": {
