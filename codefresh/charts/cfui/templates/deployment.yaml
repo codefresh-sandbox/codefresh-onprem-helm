@@ -35,26 +35,7 @@ spec:
         version: {{ .Values.imageTag | quote }}
     spec:
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodeType
-                operator: NotIn
-                values:
-                - internal
-                - worker
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - cfui
-              topologyKey: kubernetes.io/hostname
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       containers:

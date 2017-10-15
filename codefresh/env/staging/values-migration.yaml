@@ -2,7 +2,7 @@
 # records to /etc/hosts of the containers
 # hostsApp: default empty
 
-firebaseUrl: "https://codefresh-load-37330.firebaseio.com/load"
+firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
 
 hostsApp: |
   50.56.64.16   stash.ironsrc.com
@@ -35,7 +35,7 @@ builder:
 
 runtimeEnvBlob: |
   {
-     "default": {
+      "default": {
         "dockerDaemonScheduler": {
            "type": "ConsulNodes",
            "cluster": {
@@ -49,7 +49,8 @@ runtimeEnvBlob: |
            "cluster": {
               "name": "cluster-dev-1.cf-cd.com",
               "namespace": "default",
-              "kubeconfigFilePath": "/root/.kube/config"
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "app"}
            },
            "image": "codefresh/engine:v4",
            "resources": {
@@ -98,13 +99,13 @@ runtimeEnvBlob: |
               "internal-registry": {
                  "name": "internal-registry",
                  "secret": {
-                    "secretName": "internal-registry"
+                    "secretName": "staging-internal-registry"
                  }
               },
               "additional-internal-registries": {
                  "name": "additional-internal-registries",
                  "secret": {
-                    "secretName": "internal-registry"
+                    "secretName": "staging-internal-registry"
                  }
               },
               "resource-limitations": {
@@ -191,7 +192,7 @@ runtimeEnvBlob: |
                                    	"cluster": {
                                    		"namespace": "default"
                                    	},
-                                   	"dindImage": "codefresh/cf-dind:v6",
+                                   	"dindImage": "codefresh/cf-dind:v5",
                                    	"connectByPodIp": true,
                                    	"defaultDindResources": {
                                    		"requests": {
@@ -246,9 +247,11 @@ runtimeEnvBlob: |
            "cluster": {
               "name": "cluster-dev-1.cf-cd.com",
               "namespace": "default",
-              "kubeconfigFilePath": "/root/.kube/config"
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh"}
            },
-           "dindImage": "codefresh/cf-dind:v6",
+           "dindImage": "codefresh/cf-dind:v5",
            "connectByPodIp": true,
            "defaultDindResources": {
               "requests": {
@@ -257,7 +260,7 @@ runtimeEnvBlob: |
               },
               "limits": {
                  "cpu": "2500m",
-                 "memory": "4096Mi"
+                 "memory": "2048Mi"
               }
            },
            "volumeMounts": {
@@ -286,13 +289,6 @@ runtimeEnvBlob: |
                     "name": "dind-config"
                  }
               }
-           },
-           "tolerations": {
-              "dind": {
-                  "key": "codefresh/dind",
-                  "operator": "Exists",
-                  "effect": "NoSchedule"
-              }
            }
         }
      },
@@ -306,7 +302,7 @@ runtimeEnvBlob: |
               "nodeSelector": {"codefresh/node-type": "dind",
                   "codefresh/runtime-environment": "codefresh"}
            },
-           "dindImage": "codefresh/cf-dind:v6",
+           "dindImage": "codefresh/cf-dind:v5",
            "connectByPodIp": true,
            "defaultDindResources": {
               "requests": {
@@ -351,6 +347,7 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
+  imageTag: staging
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
@@ -365,7 +362,7 @@ cfapi:
           "docker-node-us-east-1": {
             "region": "us-east-1",
             "name": "docker-node",
-            "dnsPrefix": "cf-load-aue1-docker-node",
+            "dnsPrefix": "cf-staging-aue1-docker-node",
             "dnsDomain": "cf-cd.com.",
             "iface": "public",
             "imageName": "ami-e33d40f5",
@@ -391,7 +388,7 @@ cfapi:
                   "default": "gp2"
             },
             "securityGroupIds": [
-              "sg-ef5ed293", "sg-2b117e57"
+              "sg-ef5ed293", "sg-95fa54e9"
             ],
             "BlockDeviceMappings": [
               {
@@ -409,7 +406,7 @@ cfapi:
             ],
             "metadata": {
               "autoscale": "docker-node",
-              "environment": "aws-load"
+              "environment": "aws-staging"
             }
           }
         }
@@ -418,53 +415,67 @@ cfapi:
           "name": "gce",
           "settings": {
             "keyFilename": "/etc/admin/gce_creds.json",
-            "projectId": "codefresh-load"
+            "projectId": "savvy-badge-103912"
           },
           "services": {}
       }
     }
+
   env:
     ON_PREMISE: ""
-    APP_ENV: load
+    APP_ENV: staging
     ADMIN_FEATURES_DELETE_ACCOUNT_DISABLED: ""
     ADMIN_FEATURES_DELETE_USER_WHITELIST: ""
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
-    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-load
+    PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
 
 cfui:
+  imageTag: staging
 
 payments:
+  imageTag: staging
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
 
 cluster-providers:
+  imageTag: staging
   replicaCount: 1
-  # We won't use Chart's installed mongo instance for load, instead, we'll use
+  # We won't use Chart's installed mongo instance for staging, instead, we'll use
   # an already deployed mongodb pod.
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 internal-status-page:
+  imageTag: staging
 
 multiple-clusters:
+  imageTag: staging
   replicaCount: 1
 
 kube-integration:
+  imageTag: staging
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
+  imageTag: staging
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
+  imageTag: staging
   replicaCount: 1
+  active: ""
 
 segment-reporter:
+  imageTag: staging
 
 workflow-baseline-invoker:
+  imageTag: staging
 
 dind-provider:
+  imageTag: staging
 
 salesforce-reporter:
+  imageTag: master
   active: ""
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
   host: "https://3513510456354.my.salesforce.com"
@@ -472,6 +483,9 @@ salesforce-reporter:
   username: "itai@codefresh.io"
   env:
     HTTP_LOGGER_LEVEL: error
+
+nats:
+  replicaCount: 3
 
 global:
   appProtocol: https
@@ -482,7 +496,7 @@ global:
   postgresHostname: postgres.default.svc
   redisUrl: redis.default.svc
   seedJobs: false
-  cfcrDomain: load.cfcr.io
+  cfcrDomain: staging.cfcr.io
   agent: io.codefresh.load
 
 tags:

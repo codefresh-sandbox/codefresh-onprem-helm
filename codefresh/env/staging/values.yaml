@@ -33,6 +33,9 @@ registry:
 builder:
   replicaCount: 1
 
+ingress:
+  replicaCount: 2
+
 runtimeEnvBlob: |
   {
       "default": {
@@ -192,7 +195,7 @@ runtimeEnvBlob: |
                                    	"cluster": {
                                    		"namespace": "default"
                                    	},
-                                   	"dindImage": "codefresh/cf-dind:v5",
+                                   	"dindImage": "codefresh/cf-dind:v6",
                                    	"connectByPodIp": true,
                                    	"defaultDindResources": {
                                    		"requests": {
@@ -251,7 +254,7 @@ runtimeEnvBlob: |
               "nodeSelector": {"codefresh/node-type": "dind",
                   "codefresh/runtime-environment": "codefresh"}
            },
-           "dindImage": "codefresh/cf-dind:v5",
+           "dindImage": "codefresh/cf-dind:v6",
            "connectByPodIp": true,
            "defaultDindResources": {
               "requests": {
@@ -302,7 +305,7 @@ runtimeEnvBlob: |
               "nodeSelector": {"codefresh/node-type": "dind",
                   "codefresh/runtime-environment": "codefresh"}
            },
-           "dindImage": "codefresh/cf-dind:v5",
+           "dindImage": "codefresh/cf-dind:v6",
            "connectByPodIp": true,
            "defaultDindResources": {
               "requests": {
@@ -347,7 +350,6 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
-  imageTag: staging
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
@@ -429,15 +431,34 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
 
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - staging-cfapi
+          topologyKey: kubernetes.io/hostname
+
 cfui:
-  imageTag: staging
 
 payments:
-  imageTag: staging
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
 
 cluster-providers:
-  imageTag: staging
   replicaCount: 1
   # We won't use Chart's installed mongo instance for staging, instead, we'll use
   # an already deployed mongodb pod.
@@ -447,35 +468,27 @@ internal-status-page:
   imageTag: staging
 
 multiple-clusters:
-  imageTag: staging
   replicaCount: 1
 
 kube-integration:
-  imageTag: staging
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
-  imageTag: staging
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
-  imageTag: staging
   replicaCount: 1
   active: ""
 
 segment-reporter:
-  imageTag: staging
 
 workflow-baseline-invoker:
-  imageTag: staging
 
 dind-provider:
-  imageTag: staging
 
 salesforce-reporter:
-  imageTag: master
   active: ""
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
   host: "https://3513510456354.my.salesforce.com"
@@ -498,9 +511,30 @@ global:
   seedJobs: false
   cfcrDomain: staging.cfcr.io
   agent: io.codefresh.load
+#  externalUrl: https://app-staging-new.codefresh.io
+
+  appServiceAffinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+
+  internalServiceAffinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: In
+            values:
+            - internal
 
 tags:
   saas: true
   infra: false
   old-scheduler: false
-

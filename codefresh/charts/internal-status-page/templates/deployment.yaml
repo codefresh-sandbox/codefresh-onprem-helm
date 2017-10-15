@@ -33,14 +33,7 @@ spec:
       # service nodes which don't run internal pods like monitoring.
       # This is needed to ensure a good quality of service.
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodeType
-                operator: In
-                values:
-                - internal
+{{ toYaml (default .Values.global.internalServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 10

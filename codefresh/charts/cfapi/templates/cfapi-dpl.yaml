@@ -35,26 +35,7 @@ spec:
         version: {{ .Values.imageTag | quote }}
     spec:
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodeType
-                operator: NotIn
-                values:
-                - internal
-                - worker
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - cfapi
-              topologyKey: kubernetes.io/hostname
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
@@ -127,7 +108,7 @@ spec:
         - name: CONSUL_HOST
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.consulService) .Values.global.consulHost | quote }}
         - name: EXTERNAL_URL
-          value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
+          value: {{ default (printf "%s://%s" .Values.global.appProtocol .Values.global.appUrl) .Values.global.externalUrl }}
         - name: FIREBASE_SECRET
           valueFrom:
             secretKeyRef:

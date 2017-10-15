@@ -32,18 +32,8 @@ spec:
       # The following setting makes sure that your applicaiton will run on
       # service nodes which don't run internal pods like monitoring.
       # This is needed to ensure a good quality of service.
-      {{- if .Values.affinity }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodeType
-                operator: NotIn
-                values:
-                - internal
-                - worker
-      {{- end }}
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 10

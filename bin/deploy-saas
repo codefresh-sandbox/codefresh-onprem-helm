@@ -101,13 +101,6 @@ if [ -z "$NAMESPACE" ]; then
   export NAMESPACE=default
 fi
 
-#: ${APP_DNS:=app-staging.codefresh.io}
-#: ${ENVIRONMENT:=staging}
-#: ${CLUSTER_NAME:=cf-staging}
-#: ${PROJECT_NAME:=savvy-badge-103912}
-#: ${NAMESPACE:=default}
-#: ${ZONE:=us-central1-a}
-
 if [[ $RUNNING_ON_CF == 1 ]]; then
     activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
 
@@ -133,6 +126,10 @@ echo "@$"
 customVals=$(processCustomVals)
 redeployArgs=$(genRedeployArgs $@)
 
+if [[ -f codefresh/env/${ENVIRONMENT}/versions.yaml ]]; then
+  versionsVals=" --values codefresh/env/${ENVIRONMENT}/versions.yaml "
+fi
+
 msg "Deploying helm package"
 helmCmd=$(cat <<END
 helm upgrade ${ENVIRONMENT} codefresh \
@@ -148,6 +145,7 @@ helm upgrade ${ENVIRONMENT} codefresh \
 	--values codefresh/regsecret-dec.yaml \
 	--values codefresh/env/${ENVIRONMENT}/values-dec.yaml \
 	--values codefresh/env/${ENVIRONMENT}/values.yaml \
+	$versionsVals \
 	$customVals \
 	$redeployArgs
 END

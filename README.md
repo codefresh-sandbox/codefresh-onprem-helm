@@ -1,9 +1,18 @@
 # Helm for Codefresh
 
-### Updaing microservice version and other non-secret parameters:
-Edit `codefresh/env/<environment>/values.yaml`
-For example, to change api version to v399 on production open `codefresh/env/<environment>/values.yaml`
+### Updaing microservice version:
+Edit `codefresh/env/<environment>/versions.yaml`
+For example, to change api version to v399 on production open `codefresh/env/production/versions.yaml`
 and set `cfapi.imageTag: v399`
+```
+git commit -am "cfapi updated to ..."
+git push
+```
+Than go to Codefresh and launch appropriative cf-helm pipeline
+For production it is configured to start automatically by webhook
+
+### Updaing microservice non-secret parameters:
+Edit `codefresh/env/<environment>/values.yaml`
 ```
 git commit -am "cfapi updated to ..."
 git push
@@ -51,10 +60,10 @@ Setup environment:
 ```
 kubectl config use-context <context>
 ./sops -d
-. codefresh/env/<environment>/export-envs
+export ENVRIRONMENT=staging
 ```
 
 and launch deploy script from bin/ :
 ```
-bin/deploy-test-saas
+bin/deploy-saas
 ```

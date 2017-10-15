@@ -23,6 +23,9 @@ rabbitmq:
   #rabbitmqUsername:
   #rabbitmqPassword:
 
+ingress:
+  replicaCount: 2
+
 runtimeEnvBlob: |
     {
        "default": {
@@ -241,7 +244,7 @@ runtimeEnvBlob: |
                 "nodeSelector": {"codefresh/node-type": "dind",
                     "codefresh/runtime-environment": "codefresh"}
              },
-             "dindImage": "codefresh/cf-dind:v5",
+             "dindImage": "codefresh/cf-dind:v6",
              "connectByPodIp": true,
              "defaultDindResources": {
                 "requests": {
@@ -292,7 +295,7 @@ runtimeEnvBlob: |
                 "nodeSelector": {"codefresh/node-type": "dind",
                     "codefresh/runtime-environment": "codefresh-inc"}
              },
-             "dindImage": "codefresh/cf-dind:v5",
+             "dindImage": "codefresh/cf-dind:v6",
              "connectByPodIp": true,
              "defaultDindResources": {
                 "requests": {
@@ -343,7 +346,7 @@ runtimeEnvBlob: |
                 "nodeSelector": {"codefresh/node-type": "dind",
                     "codefresh/runtime-environment": "codefresh"}
              },
-             "dindImage": "codefresh/cf-dind:v5",
+             "dindImage": "codefresh/cf-dind:v6",
              "connectByPodIp": true,
              "defaultDindResources": {
                 "requests": {
@@ -394,7 +397,7 @@ runtimeEnvBlob: |
                 "nodeSelector": {"codefresh/node-type": "dind",
                     "codefresh/runtime-environment": "codefresh"}
              },
-             "dindImage": "codefresh/cf-dind:v5",
+             "dindImage": "codefresh/cf-dind:v6",
              "connectByPodIp": true,
              "defaultDindResources": {
                 "requests": {
@@ -662,7 +665,7 @@ runtimeEnvBlob: |
                 "namespace": "default"
              },
              "clientCertPath": "/etc/ssl/cf/giphy-",
-             "dindImage": "codefresh/cf-dind:v5",
+             "dindImage": "codefresh/cf-dind:v6",
              "connectByPodIp": true,
              "defaultDindResources": {
                 "requests": {
@@ -780,7 +783,6 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
-  imageTag: v212
   replicaCount: 8
   internalRegistryProtocol: https
   providersData: |
@@ -1003,29 +1005,45 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
 
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - production-cfapi
+          topologyKey: kubernetes.io/hostname
+
 cfui:
-  imageTag: v246
 
 payments:
-  imageTag: v11
 
 cluster-providers:
-  imageTag: v19
   replicaCount: 2
 
 internal-status-page:
   enabled: false
 
 multiple-clusters:
-  imageTag: v15
   replicaCount: 2
 
 kube-integration:
-  imageTag: v39
   replicaCount: 2
 
 accounts-referrals:
-  imageTag: v12
   replicaCount: 2
 
 mailer:
@@ -1033,16 +1051,12 @@ mailer:
   replicaCount: 2
 
 segment-reporter:
-  imageTag: v19
 
 workflow-baseline-invoker:
-  imageTag: v5
 
 dind-provider:
-  imageTag: v6
 
 salesforce-reporter:
-  imageTag: v4
   replicaCount: 2
   active: "true"
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
@@ -1051,6 +1065,9 @@ salesforce-reporter:
   username: "itai@codefresh.io"
   env:
     HTTP_LOGGER_LEVEL: error
+
+nats:
+  replicaCount: 3
 
 global:
   appProtocol: https
@@ -1062,6 +1079,28 @@ global:
   redisUrl: redis.default.svc
   seedJobs: false
   cfcrDomain: r.cfcr.io
+#  externalUrl: https://g-new.codefresh.io
+
+  appServiceAffinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+
+  internalServiceAffinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: In
+            values:
+            - internal
 
 tags:
   saas: true
