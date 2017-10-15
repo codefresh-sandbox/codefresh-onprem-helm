@@ -73,8 +73,22 @@ check kubectl
 
 [ "$1" == "-h" ] && usage
 
-[ -z "$APP_DNS" ] && echo "Please set APP_DNS, example: export APP_DNS=app-staging.codefresh.io" && exit 1;
 [ -z "$ENVIRONMENT" ] && echo "Please set ENVIRONMENT, example: export ENVIRONMENT=staging" && exit 1;
+if [[ -n "$CF_REPO_NAME" && -n "$CF_REPO_OWNER" ]]; then
+  RUNNING_ON_CF=1
+  msg "Running on Codefresh Pipeline - pushing to kubernetes using cf-deploy-kubernetes.sh"
+else
+  msg "Running Locally - do not sops and helm dependencies"
+fi
+
+
+ENV_FILE=codefresh/env/${ENVIRONMENT}/export-envs
+if [[ -f ${ENV_FILE} ]]; then
+  echo "Loading ${ENV_FILE} "
+  . ${ENV_FILE}
+fi
+
+[ -z "$APP_DNS" ] && echo "Please set APP_DNS, example: export APP_DNS=app-staging.codefresh.io" && exit 1;
 [ -z "$CLUSTER_NAME" ] && echo "Please set CLUSTER_NAME, example: export CLUSTER_NAME=cf-staging" && exit 1;
 [ -z "$PROJECT_NAME" ] && echo "Please set PROJECT_NAME, example: export PROJECT_NAME=savvy-badge-103912" && exit 1;
 
@@ -87,36 +101,34 @@ if [ -z "$NAMESPACE" ]; then
   export NAMESPACE=default
 fi
 
-#: ${APP_DNS:=app-staging.codefresh.io}
-#: ${ENVIRONMENT:=staging}
-#: ${CLUSTER_NAME:=cf-staging}
-#: ${PROJECT_NAME:=savvy-badge-103912}
-#: ${NAMESPACE:=default}
-#: ${ZONE:=us-central1-a}
+if [[ $RUNNING_ON_CF == 1 ]]; then
+    activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
 
-activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
+    msg "Decrypting all secrets"
+    ./sops.sh -d
 
-msg "Decrypting all secrets"
-./sops.sh -d
+    msg "Install Helm Tiller or upgrade, if needed"
+    helm init --upgrade
 
-msg "Install Helm Tiller or upgrade, if needed"
-helm init --upgrade
+    msg "Waiting for Helm to be ready ..."
+    waitForHelm
 
-msg "Waiting for Helm to be ready ..."
-waitForHelm
+    sleep 3
+    msg "Helm version"
+    helm version
 
-sleep 3
-msg "Helm version"
-helm version
-
-msg "Fetching latest helm dependencies"
-helm dependency update codefresh/
-
+    msg "Fetching latest helm dependencies"
+    helm dependency update codefresh/
+fi
 msg "The following services are going to be deployed: "
 echo "@$"
 
 customVals=$(processCustomVals)
 redeployArgs=$(genRedeployArgs $@)
+
+if [[ -f codefresh/env/${ENVIRONMENT}/versions.yaml ]]; then
+  versionsVals=" --values codefresh/env/${ENVIRONMENT}/versions.yaml "
+fi
 
 msg "Deploying helm package"
 helmCmd=$(cat <<END
@@ -133,6 +145,7 @@ helm upgrade ${ENVIRONMENT} codefresh \
 	--values codefresh/regsecret-dec.yaml \
 	--values codefresh/env/${ENVIRONMENT}/values-dec.yaml \
 	--values codefresh/env/${ENVIRONMENT}/values.yaml \
+	$versionsVals \
 	$customVals \
 	$redeployArgs
 END

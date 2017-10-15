@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+# set -x
 
 readonly DEV_HOSTEDZONE_ID=Z18GWS8XMDYRQ6
 

@@ -34,6 +34,8 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      affinity:
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
@@ -106,7 +108,7 @@ spec:
         - name: CONSUL_HOST
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.consulService) .Values.global.consulHost | quote }}
         - name: EXTERNAL_URL
-          value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
+          value: {{ default (printf "%s://%s" .Values.global.appProtocol .Values.global.appUrl) .Values.global.externalUrl }}
         - name: FIREBASE_SECRET
           valueFrom:
             secretKeyRef:
@@ -273,6 +275,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
         - name: MULTIPLE_CLUSTERS_PORT
           value: {{ .Values.global.multipleClustersPort | quote }}
+        - name: DIND_PROVIDER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.dindProviderService }}"
+        - name: DIND_PROVIDER_PORT
+          value: {{ .Values.global.dindProviderPort | quote }}
         {{- if .Values.deploymentTemplateImages }}
         - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
           value: /etc/admin/deploymentTemplateImages.json
