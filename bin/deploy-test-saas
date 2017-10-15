@@ -96,14 +96,14 @@ msg "Decrypting all secrets"
 # ./sops.sh -d
 
 msg "Install Helm Tiller or upgrade, if needed"
-helm init --upgrade
+# helm init --upgrade
 
 msg "Waiting for Helm to be ready ..."
-waitForHelm
+# waitForHelm
 
 sleep 3
 msg "Helm version"
-helm version
+# helm version
 
 # msg "Fetching latest helm dependencies"
 # helm dependency update codefresh/

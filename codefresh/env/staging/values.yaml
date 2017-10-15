@@ -484,6 +484,9 @@ salesforce-reporter:
   env:
     HTTP_LOGGER_LEVEL: error
 
+nats:
+  replicaCount: 3
+
 global:
   appProtocol: https
   postgresDatabase: postgres

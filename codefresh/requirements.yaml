@@ -25,7 +25,7 @@ dependencies:
   tags:
     - infra
 - name: nats
-  version: 0.1.0
+  version: 0.1.1
   repository: file://../nats
   tags:
     - infra
