@@ -2,7 +2,7 @@ cfapi:
   imageTag: v226
 
 cfui:
-  imageTag: v264
+  imageTag: v265
 
 payments:
   imageTag: v12
