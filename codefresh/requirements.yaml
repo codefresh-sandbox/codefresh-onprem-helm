@@ -2,6 +2,7 @@ dependencies:
 - name: consul
   version: 0.3.0
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: consul.enabled
   tags:
     - infra
 - name: mongodb
