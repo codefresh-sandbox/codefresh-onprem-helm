@@ -19,6 +19,8 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         k8s-app: {{ template "fullname" . }}-http-backend
     spec:
+      affinity:
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       terminationGracePeriodSeconds: 60
       containers:
       - name: {{ template "fullname" . }}-http-backend

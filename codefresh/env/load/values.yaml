@@ -486,6 +486,7 @@ global:
   redisUrl: redis.default.svc
   seedJobs: false
   cfcrDomain: load.cfcr.io
+  gceProject: codefresh-load
   agent: io.codefresh.load
 
 tags:

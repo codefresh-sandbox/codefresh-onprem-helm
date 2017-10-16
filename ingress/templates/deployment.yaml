@@ -24,6 +24,8 @@ spec:
       # that said, since hostPort is broken on CNI (https://github.com/kubernetes/kubernetes/issues/31307) we have to use hostNetwork where CNI is used
       # like with kubeadm
       # hostNetwork: true
+      affinity:
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       hostNetwork: true
       terminationGracePeriodSeconds: 60
       containers:

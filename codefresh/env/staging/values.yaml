@@ -510,6 +510,7 @@ global:
   redisUrl: redis.default.svc
   seedJobs: false
   cfcrDomain: staging.cfcr.io
+  gceProject: savvy-badge-103912
   agent: io.codefresh.load
 #  externalUrl: https://app-staging-new.codefresh.io
 

@@ -1004,6 +1004,8 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: "superfresh,superfresh_github,Superfresh"
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
+    LOGGER_LEVEL: error
+    EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
   affinity:
     nodeAffinity:
@@ -1050,11 +1052,14 @@ accounts-referrals:
 
 mailer:
   replicaCount: 2
+  active: "true"
 
 segment-reporter:
   replicaCount: 2
 
 workflow-baseline-invoker:
+  env:
+    API_URL: app.codefresh.io
 
 dind-provider:
   replicaCount: 2
@@ -1078,11 +1083,13 @@ global:
 #  queueServers: nats://queue.default.svc:4222
   consulHost: consul.default.svc
   rabbitmqHostname: rabbit.default.svc
-  postgresHostname: postgres.default.svc
+  postgresHostname: 35.188.141.216
   redisUrl: redis.default.svc
   seedJobs: false
   cfcrDomain: r.cfcr.io
-#  externalUrl: https://g-new.codefresh.io
+  gceProject: codefresh-production
+  agent: io.codefresh.production
+#  externalUrl: https://app.codefresh.io
 
   appServiceAffinity:
     nodeAffinity:

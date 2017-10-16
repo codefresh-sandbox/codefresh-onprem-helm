@@ -44,7 +44,7 @@ dependencies:
   version: 0.1.0
   repository: file://../registry
 - name: ingress
-  version: 0.1.0
+  version: 0.1.1
   repository: file://../ingress
   condition: ingress.enabled
 - name: cfruntime
@@ -93,7 +93,7 @@ dependencies:
   tags:
     - saas
 - name: workflow-baseline-invoker
-  version: 0.0.3
+  version: 0.0.4
   repository: file://charts/workflow-baseline-invoker
   tags:
     - saas
