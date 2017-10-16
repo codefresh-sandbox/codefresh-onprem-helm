@@ -24,7 +24,7 @@ rabbitmq:
   #rabbitmqPassword:
 
 ingress:
-  replicaCount: 2
+  replicaCount: 4
 
 runtimeEnvBlob: |
     {
@@ -783,7 +783,7 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
-  replicaCount: 2
+  replicaCount: 8
   internalRegistryProtocol: https
   providersData: |
     {
@@ -1030,7 +1030,7 @@ cfapi:
           topologyKey: kubernetes.io/hostname
 
 cfui:
-  replicaCount: 2
+  replicaCount: 4
 
 payments:
   replicaCount: 2
@@ -1066,7 +1066,7 @@ dind-provider:
 
 salesforce-reporter:
   replicaCount: 1
-  active: ""
+  active: "true"
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
   host: "https://3513510456354.my.salesforce.com"
   clientId: "3MVG9g9rbsTkKnAWYUH3_kcQ9b4COqHyFdSi_B_TB3BQQKyB9W0ykwe5eghwle2YFnwv3hi3p5lzu5NLmoubx"
