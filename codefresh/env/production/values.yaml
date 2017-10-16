@@ -783,7 +783,7 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
-  replicaCount: 8
+  replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
     {
@@ -1028,8 +1028,10 @@ cfapi:
           topologyKey: kubernetes.io/hostname
 
 cfui:
+  replicaCount: 2
 
 payments:
+  replicaCount: 2
 
 cluster-providers:
   replicaCount: 2
@@ -1047,18 +1049,19 @@ accounts-referrals:
   replicaCount: 2
 
 mailer:
-  imageTag: v9
   replicaCount: 2
 
 segment-reporter:
+  replicaCount: 2
 
 workflow-baseline-invoker:
 
 dind-provider:
+  replicaCount: 2
 
 salesforce-reporter:
-  replicaCount: 2
-  active: "true"
+  replicaCount: 1
+  active: ""
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
   host: "https://3513510456354.my.salesforce.com"
   clientId: "3MVG9g9rbsTkKnAWYUH3_kcQ9b4COqHyFdSi_B_TB3BQQKyB9W0ykwe5eghwle2YFnwv3hi3p5lzu5NLmoubx"
