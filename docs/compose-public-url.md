@@ -76,18 +76,18 @@ the `host` entry in the ingress resources the API will submit to K8s' API.
 
 # Risks And Considerations
 
-*) It may take time for the ingress controller to refresh it's configuration.
-We need to measure if the average refresh time is acceptable and how it changes
-based on the amount of defined ingress resources.
-*) What is the maximum amount of ingress resources that are supported by one
-ingress controller? We are going to have one ingress resource **per each
-composition in the system!**
-*) The ingress resource should be cleaned along the composition. This may add
-complexity and can lead to orphan ingress resources.
-*) We probably should rate limit the amount of requests that each exposed
-composition will support. Since we will serve **all** compositions using the
-same (clustered) nginx controller, we don't want to overload it for everyone
-because of one user. We can also create dedicated ingress controller for high
-profile users using a namespace since it's possible to create multiple ingress
-controllers in one cluster if they are deployed in separate namespaces.
+- It may take time for the ingress controller to refresh it's configuration.
+ We need to measure if the average refresh time is acceptable and how it changes
+ based on the amount of defined ingress resources.
+- What is the maximum amount of ingress resources that are supported by one
+ ingress controller? We are going to have one ingress resource **per each
+ composition in the system!**
+- The ingress resource should be cleaned along the composition. This may add
+ complexity and can lead to orphan ingress resources.
+- We probably should rate limit the amount of requests that each exposed
+ composition will support. Since we will serve **all** compositions using the
+ same (clustered) nginx controller, we don't want to overload it for everyone
+ because of one user. We can also create dedicated ingress controller for high
+ profile users using a namespace since it's possible to create multiple ingress
+ controllers in one cluster if they are deployed in separate namespaces.
 
