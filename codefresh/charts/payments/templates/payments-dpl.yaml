@@ -44,7 +44,7 @@ spec:
         - name: API_PROTOCOL
           value: {{ .Values.global.appProtocol | quote }}
         - name: INTERNAL_API_URI
-          value: "http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}:"
+          value: "http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}"
         - name: MONGO_URI
           {{ if .Values.mongoURI }}
           valueFrom:
