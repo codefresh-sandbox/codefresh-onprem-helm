@@ -72,7 +72,7 @@ dependencies:
   tags:
     - saas
 - name: payments
-  version: 0.1.5
+  version: 0.1.6
   repository: file://charts/payments
   tags:
     - saas

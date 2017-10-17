@@ -671,10 +671,6 @@ runtimeEnvBlob: |
                 "requests": {
                    "cpu": "390m",
                    "memory": "256Mi"
-                },
-                "limits": {
-                   "cpu": "2500m",
-                   "memory": "2048Mi"
                 }
              },
              "volumeMounts": {
@@ -1034,6 +1030,8 @@ cfui:
 
 payments:
   replicaCount: 2
+  env:
+    HTTP_LOGGER_LEVEL: error
 
 cluster-providers:
   replicaCount: 2

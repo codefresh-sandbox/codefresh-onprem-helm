@@ -39,6 +39,10 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
         - name: API_URL
           value: {{ .Values.global.appUrl | quote }}
         - name: API_PROTOCOL
@@ -97,3 +101,11 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: stripe-webhook-sign-secret
+        readinessProbe:
+          httpGet:
+            path: /api/ping
+            port: {{ .Values.targetPort }}
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
