@@ -1,0 +1,38 @@
+cfapi:
+  imageTag: load
+
+cfui:
+  imageTag: load
+
+payments:
+  imageTag: load
+
+cluster-providers:
+  imageTag: load
+
+internal-status-page:
+  imageTag: load
+
+multiple-clusters:
+  imageTag: load
+
+kube-integration:
+  imageTag: load
+
+accounts-referrals:
+  imageTag: load
+
+mailer:
+  imageTag: load
+
+segment-reporter:
+  imageTag: load
+
+workflow-baseline-invoker:
+  imageTag: load
+
+dind-provider:
+  imageTag: load
+
+salesforce-reporter:
+  imageTag: master

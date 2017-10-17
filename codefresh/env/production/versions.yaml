@@ -1,0 +1,38 @@
+cfapi:
+  imageTag: v226
+
+cfui:
+  imageTag: v264
+
+payments:
+  imageTag: v12
+
+cluster-providers:
+  imageTag: v19
+
+internal-status-page:
+  imageTag: v8
+
+multiple-clusters:
+  imageTag: v18
+
+kube-integration:
+  imageTag: v40
+
+accounts-referrals:
+  imageTag: v12
+
+mailer:
+  imageTag: v9
+
+segment-reporter:
+  imageTag: v19
+
+workflow-baseline-invoker:
+  imageTag: v5
+
+dind-provider:
+  imageTag: v6
+
+salesforce-reporter:
+  imageTag: v4

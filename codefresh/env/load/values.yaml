@@ -33,6 +33,9 @@ registry:
 builder:
   replicaCount: 1
 
+ingress:
+  replicaCount: 2
+
 runtimeEnvBlob: |
   {
      "default": {
@@ -51,15 +54,15 @@ runtimeEnvBlob: |
               "namespace": "default",
               "kubeconfigFilePath": "/root/.kube/config"
            },
-           "image": "codefresh/engine:v3",
+           "image": "codefresh/engine:v4",
            "resources": {
               "requests": {
-                 "cpu": "390m",
-                 "memory": "256Mi"
+                 "cpu": "100m",
+                 "memory": "100Mi"
               },
               "limits": {
-                 "cpu": "2500m",
-                 "memory": "4096Mi"
+                 "cpu": "1000m",
+                 "memory": "2048Mi"
               }
            },
            "envVars": {
@@ -72,7 +75,7 @@ runtimeEnvBlob: |
               "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
               "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
               "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1"
+              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
            },
            "volumeMounts": {
               "internal-registry": {
@@ -122,7 +125,7 @@ runtimeEnvBlob: |
                               	"cluster": {
                               		"namespace": "default"
                               	},
-                              	"image": "codefresh/engine:v3",
+                              	"image": "codefresh/engine:v4",
                               	"resources": {
                               		"requests": {
                               			"cpu": "100m",
@@ -191,7 +194,7 @@ runtimeEnvBlob: |
                                    	"cluster": {
                                    		"namespace": "default"
                                    	},
-                                   	"dindImage": "codefresh/cf-dind:v5",
+                                   	"dindImage": "codefresh/cf-dind:v6",
                                    	"connectByPodIp": true,
                                    	"defaultDindResources": {
                                    		"requests": {
@@ -248,7 +251,7 @@ runtimeEnvBlob: |
               "namespace": "default",
               "kubeconfigFilePath": "/root/.kube/config"
            },
-           "dindImage": "codefresh/cf-dind:v5",
+           "dindImage": "codefresh/cf-dind:v6",
            "connectByPodIp": true,
            "defaultDindResources": {
               "requests": {
@@ -296,73 +299,52 @@ runtimeEnvBlob: |
            }
         }
      },
-     "codefresh-inc": {
-        "runtimeScheduler": {
-           "type": "KubernetesPod",
+      "codefresh-inc": {
+        "dockerDaemonScheduler": {
+           "type": "DindKubernetesPod",
            "cluster": {
+              "name": "cluster-dev-1.cf-cd.com",
               "namespace": "default",
-              "inCluster": true
+              "kubeconfigFilePath": "/root/.kube/config",
+              "nodeSelector": {"codefresh/node-type": "dind",
+                  "codefresh/runtime-environment": "codefresh"}
            },
-           "image": "codefresh/engine:v3",
-           "resources": {
+           "dindImage": "codefresh/cf-dind:v6",
+           "connectByPodIp": true,
+           "defaultDindResources": {
               "requests": {
                  "cpu": "390m",
                  "memory": "256Mi"
               },
               "limits": {
                  "cpu": "2500m",
-                 "memory": "4096Mi"
+                 "memory": "2048Mi"
               }
            },
-           "envVars": {
-              "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
-              "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
-              "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
-              "LOGGER_LEVEL": "debug",
-              "NODE_ENV": "kubernetes",
-              "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
-              "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-              "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v9",
-              "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-              "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1"
-           },
            "volumeMounts": {
-              "internal-registry": {
-                 "name": "internal-registry",
-                 "mountPath": "/etc/admin/internal-registry.json",
-                 "subPath": "internal-registry.json",
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
+                 "mountPath": "/etc/ssl/cf",
                  "readOnly": true
               },
-              "additional-internal-registries": {
-                 "name": "additional-internal-registries",
-                 "mountPath": "/etc/admin/additional-internal-registries.json",
-                 "subPath": "additional-internal-registries.json",
-                 "readOnly": true
-              },
-              "resource-limitations": {
-                 "name": "resource-limitations",
-                 "mountPath": "/etc/admin/resource-limitations.json",
-                 "subPath": "resource-limitations.json",
+              "dind-config": {
+                 "name": "dind-config",
+                 "mountPath": "/etc/docker/daemon.json",
+                 "subPath": "daemon.json",
                  "readOnly": true
               }
            },
            "volumes": {
-              "internal-registry": {
-                 "name": "internal-registry",
+              "cf-certs-dind": {
+                 "name": "cf-certs-dind",
                  "secret": {
-                    "secretName": "internal-registry"
+                    "secretName": "cf-certs-dind"
                  }
               },
-              "additional-internal-registries": {
-                 "name": "additional-internal-registries",
-                 "secret": {
-                    "secretName": "internal-registry"
-                 }
-              },
-              "resource-limitations": {
-                 "name": "resource-limitations",
+              "dind-config": {
+                 "name": "dind-config",
                  "configMap": {
-                    "name": "resource-limitations"
+                    "name": "dind-config"
                  }
               }
            }
@@ -372,7 +354,6 @@ runtimeEnvBlob: |
 
 # customize cfapi
 cfapi:
-  imageTag: load
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
@@ -454,50 +435,51 @@ cfapi:
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-load
 
 cfui:
-  imageTag: load
 
 payments:
-  imageTag: load
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
 
 cluster-providers:
-  imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   # We won't use Chart's installed mongo instance for load, instead, we'll use
   # an already deployed mongodb pod.
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 internal-status-page:
-  imageTag: load
 
 multiple-clusters:
-  imageTag: load
-  replicaCount: 2
+  replicaCount: 1
 
 kube-integration:
-  imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"
 
 accounts-referrals:
-  imageTag: load
-  replicaCount: 2
+  replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
 mailer:
-  imageTag: load
-  replicaCount: 2
+  replicaCount: 1
 
 segment-reporter:
-  imageTag: load
 
 workflow-baseline-invoker:
-  imageTag: load
+
+dind-provider:
+
+salesforce-reporter:
+  active: ""
+  oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
+  host: "https://3513510456354.my.salesforce.com"
+  clientId: "3MVG9g9rbsTkKnAWYUH3_kcQ9b4COqHyFdSi_B_TB3BQQKyB9W0ykwe5eghwle2YFnwv3hi3p5lzu5NLmoubx"
+  username: "itai@codefresh.io"
+  env:
+    HTTP_LOGGER_LEVEL: error
 
 global:
   appProtocol: https
   postgresDatabase: postgres
-  queueServers: nats://queue.default.svc:4222
+#  queueServers: nats://queue.default.svc:4222
   consulHost: consul.default.svc
   rabbitmqHostname: rabbit.default.svc
   postgresHostname: postgres.default.svc

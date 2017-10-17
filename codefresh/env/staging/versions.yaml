@@ -1,0 +1,38 @@
+cfapi:
+  imageTag: staging
+
+cfui:
+  imageTag: staging
+
+payments:
+  imageTag: staging
+
+cluster-providers:
+  imageTag: staging
+
+internal-status-page:
+  imageTag: staging
+
+multiple-clusters:
+  imageTag: staging
+
+kube-integration:
+  imageTag: staging
+
+accounts-referrals:
+  imageTag: staging
+
+mailer:
+  imageTag: staging
+
+segment-reporter:
+  imageTag: staging
+
+workflow-baseline-invoker:
+  imageTag: staging
+
+dind-provider:
+  imageTag: staging
+
+salesforce-reporter:
+  imageTag: master

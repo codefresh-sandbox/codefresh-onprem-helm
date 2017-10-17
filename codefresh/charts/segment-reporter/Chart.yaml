@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Codefresh API Engine
 name: segment-reporter
-version: 0.0.1
+version: 0.0.3
 keywords:
 - codefresh
 - kubernetes

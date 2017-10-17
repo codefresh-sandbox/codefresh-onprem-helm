@@ -147,3 +147,6 @@ global:
   accountsReferralsService: accounts-referrals
   accountsReferralsPort: 9000
 
+  dindProviderService: dind-provider
+  dindProviderPort: 9000
+
