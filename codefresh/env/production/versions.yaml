@@ -14,7 +14,7 @@ internal-status-page:
   imageTag: v8
 
 multiple-clusters:
-  imageTag: v18
+  imageTag: v19
 
 kube-integration:
   imageTag: v40
