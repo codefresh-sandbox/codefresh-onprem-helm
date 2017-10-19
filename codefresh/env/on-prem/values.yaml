@@ -82,7 +82,7 @@ runtimeEnvBlob: |
           "inCluster": true,
           "namespace": "codefresh"
         },
-        "image": "codefresh/engine:v2",
+        "image": "codefresh/engine:v5",
         "envVars": {
           "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
