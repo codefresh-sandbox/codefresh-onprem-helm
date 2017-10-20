@@ -984,6 +984,7 @@ cfapi:
     LOGGER_LEVEL: error
     EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
+  imagePullPolicy: IfNotPresent
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
