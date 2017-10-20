@@ -704,7 +704,10 @@ runtimeEnvBlob: |
             "selector": "k8s-qa1",
             "accountId": "59a0f26e6a0ccc000197173a"
           },
-          "namespace": "default"
+          "namespace": "default",
+          "nodeSelector": {
+            "codefresh/node-type": "worker"
+          }
         },
         "image": "codefresh/engine:v5",
         "resources": {
@@ -727,6 +730,19 @@ runtimeEnvBlob: |
           "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
           "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v2"
+        },
+        "tolerations": {
+           "codefreshWorker": {
+              "key": "codefresh",
+              "value": "worker",
+              "operator": "Equal",
+              "effect": "NoSchedule"
+           },
+           "imaging": {
+              "key": "imaging",
+              "operator": "Exists",
+              "effect": "NoSchedule"
+           }
         },
         "volumeMounts": {
           "internal-registry": {
