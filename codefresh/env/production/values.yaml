@@ -662,6 +662,11 @@ runtimeEnvBlob: |
               "value": "worker",
               "operator": "Equal",
               "effect": "NoSchedule"
+           },
+           "imaging": {
+              "key": "imaging",
+              "operator": "Exists",
+              "effect": "NoSchedule"
            }
         },
         "volumeMounts": {
