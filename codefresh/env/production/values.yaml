@@ -642,16 +642,27 @@ runtimeEnvBlob: |
             "selector": "k8s-qa1",
             "accountId": "59a0f26e6a0ccc000197173a"
           },
-          "namespace": "default"
+          "namespace": "default",
+          "nodeSelector": {
+            "codefresh/node-type": "worker"
+          }
         },
         "clientCertPath": "/etc/ssl/cf/giphy-",
         "dindImage": "codefresh/cf-dind:v6",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
-            "cpu": "390m",
-            "memory": "256Mi"
+            "cpu": "500m",
+            "memory": "1024Mi"
           }
+        },
+        "tolerations": {
+           "codefreshWorker": {
+              "key": "codefresh",
+              "value": "worker",
+              "operator": "Equal",
+              "effect": "NoSchedule"
+           }
         },
         "volumeMounts": {
           "cf-certs-dind": {
