@@ -127,7 +127,7 @@ runtimeEnvBlob: |
         "type": "KubernetesPod",
         "cluster": {
           "namespace": "default"
-        },
+        },KubernetesPod
         "image": "codefresh/engine:v5",
         "resources": {
           "requests": {
@@ -295,6 +295,20 @@ runtimeEnvBlob: |
             "configMap": {
               "name": "dind-config"
             }
+          }
+        }
+      }
+    },
+    "dind-provider": {
+      "dockerDaemonScheduler": {
+        "type": "DindAsAService",
+        "cluster": {
+          "name": "cluster-dev-1.cf-cd.com",
+          "namespace": "workflow",
+          "kubeconfigFilePath": "/root/.kube/config",
+          "nodeSelector": {
+            "codefresh/node-type": "dind",
+            "codefresh/runtime-environment": "codefresh"
           }
         }
       }
