@@ -93,6 +93,8 @@ spec:
               key: redis-password
         - name: REDIS_DB
           value: {{ .Values.redisDb | quote }}
+        - name: VOLUME_SIZE
+          value: {{ .Values.dindVolumeSize | quote }}
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP

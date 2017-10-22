@@ -18,4 +18,6 @@ mongoURI: ""
 
 redisDb: "2"
 
+dindVolumeSize: "200Gi"
+
 
