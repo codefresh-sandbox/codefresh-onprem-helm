@@ -303,20 +303,20 @@ runtimeEnvBlob: |
         }
       }
     },
-    "soluto": {
-      "dockerDaemonScheduler": {
-        "type": "DindAsAService",
-        "cluster": {
-          "name": "cluster-cf-1.cf-cd.com",
-          "namespace": "workflow",
-          "kubeconfigFilePath": "/root/.kube/config",
-          "nodeSelector": {
-            "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh"
-          }
-        }
-      }
-    },
+    # "soluto": {
+    #   "dockerDaemonScheduler": {
+    #     "type": "DindAsAService",
+    #     "cluster": {
+    #       "name": "cluster-cf-1.cf-cd.com",
+    #       "namespace": "workflow",
+    #       "kubeconfigFilePath": "/root/.kube/config",
+    #       "nodeSelector": {
+    #         "codefresh/node-type": "dind",
+    #         "codefresh/runtime-environment": "codefresh"
+    #       }
+    #     }
+    #   }
+    # },
     "secful": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
