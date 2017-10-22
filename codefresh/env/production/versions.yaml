@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v234
+  imageTag: v233
 
 cfui:
   imageTag: v273
@@ -8,16 +8,16 @@ payments:
   imageTag: v12
 
 cluster-providers:
-  imageTag: v20
+  imageTag: v19
 
 internal-status-page:
   imageTag: v8
 
 multiple-clusters:
-  imageTag: v20
+  imageTag: v19
 
 kube-integration:
-  imageTag: v41
+  imageTag: v40
 
 accounts-referrals:
   imageTag: v12
