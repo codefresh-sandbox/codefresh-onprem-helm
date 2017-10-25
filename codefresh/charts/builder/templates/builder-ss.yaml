@@ -46,6 +46,13 @@ spec:
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        - key: {{ .Values.tolerations.key | quote }}
+          operator: {{ .Values.tolerations.operator | quote }}
+          value: {{ .Values.tolerations.value | quote }}
+          effect: {{ .Values.tolerations.effect | quote }}
+      {{- end }}
       containers:
       - image: {{ .Values.global.dindImage | quote }}
         name:  {{ template "fullname" . }}

@@ -35,9 +35,13 @@ spec:
               {
                 "name": "POD_NAME",
                 "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
+              },
+              {
+                "name": "POD_IP",
+                "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "status.podIP" } }
               }
             ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ .Values.global.appUrl }}"]
+            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ default "${POD_IP}" .Values.global.runnerAppUrl }}"]
           }
         ]'
       labels:
@@ -46,6 +50,13 @@ spec:
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        - key: {{ .Values.tolerations.key | quote }}
+          operator: {{ .Values.tolerations.operator | quote }}
+          value: {{ .Values.tolerations.value | quote }}
+          effect: {{ .Values.tolerations.effect | quote }}
+      {{- end }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
