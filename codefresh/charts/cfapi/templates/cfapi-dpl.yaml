@@ -39,6 +39,7 @@ spec:
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
+      restartPolicy: Always
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -368,4 +369,7 @@ spec:
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
-      restartPolicy: Always
+
+    {{- if .Values.global.maintenanceMode }}
+    {{ MaintenanceContainer }}
+    {{- end }}

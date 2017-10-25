@@ -1,0 +1,7 @@
+global:
+  maintenanceMode: true
+cfapi:
+  targetPort: 1080
+cfui:
+  targetPort: 1080
+
