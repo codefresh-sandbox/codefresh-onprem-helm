@@ -41,6 +41,12 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         - name: AGENT
           value: {{ .Values.global.agent }}
         # Mode variable to start it as http server

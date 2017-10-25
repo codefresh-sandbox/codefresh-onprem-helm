@@ -52,6 +52,12 @@ spec:
                 - |
                   cat /etc/admin/hosts.added >> /etc/hosts
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
@@ -95,8 +101,6 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
-        - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
-          value: /etc/admin/runtimeEnvironments.json
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT

@@ -63,6 +63,12 @@ spec:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
         - name: RUNTIME_LOCAL_REGISTRY_NAME
