@@ -312,7 +312,7 @@ runtimeEnvBlob: |
           "kubeconfigFilePath": "/root/.kube/config",
           "nodeSelector": {
             "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh"
+            "codefresh/runtime-environment": "codefresh-inc"
           }
         }
       }
