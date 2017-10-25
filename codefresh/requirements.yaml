@@ -48,7 +48,7 @@ dependencies:
   tags:
     - infra
 - name: ingress
-  version: 0.1.0
+  version: 0.1.1
   repository: file://../ingress
   condition: ingress.enabled
 - name: cfruntime
@@ -76,7 +76,7 @@ dependencies:
   tags:
     - saas
 - name: payments
-  version: 0.1.4
+  version: 0.1.6
   repository: file://charts/payments
   tags:
     - saas
@@ -97,7 +97,7 @@ dependencies:
   tags:
     - saas
 - name: workflow-baseline-invoker
-  version: 0.0.3
+  version: 0.0.4
   repository: file://charts/workflow-baseline-invoker
   tags:
     - saas

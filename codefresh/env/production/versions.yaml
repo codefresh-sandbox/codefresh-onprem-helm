@@ -1,23 +1,23 @@
 cfapi:
-  imageTag: v226
+  imageTag: v241
 
 cfui:
-  imageTag: v264
+  imageTag: v281
 
 payments:
   imageTag: v12
 
 cluster-providers:
-  imageTag: v19
+  imageTag: v23
 
 internal-status-page:
   imageTag: v8
 
 multiple-clusters:
-  imageTag: v18
+  imageTag: v21
 
 kube-integration:
-  imageTag: v40
+  imageTag: v41
 
 accounts-referrals:
   imageTag: v12
@@ -26,7 +26,7 @@ mailer:
   imageTag: v9
 
 segment-reporter:
-  imageTag: v19
+  imageTag: v20
 
 workflow-baseline-invoker:
   imageTag: v5
