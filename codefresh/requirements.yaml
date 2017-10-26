@@ -27,6 +27,7 @@ dependencies:
 - name: nats
   version: 0.1.1
   repository: file://../nats
+  condition: nats.enabled
   tags:
     - infra
     - saas
