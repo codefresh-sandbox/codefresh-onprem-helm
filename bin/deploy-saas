@@ -132,7 +132,7 @@ fi
 
 
 if [[ "${MAINTENANCE_MODE}" == "true" ]]; then
-   maintenanceVals=" --values codefresh/maintanceValues.yaml "
+   maintenanceVals=" --values codefresh/maintenanceValues.yaml "
 fi
 
 msg "Deploying helm package"
