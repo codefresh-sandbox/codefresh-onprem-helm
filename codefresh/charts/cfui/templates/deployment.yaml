@@ -106,3 +106,10 @@ spec:
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceContainer | indent 6 }}
+{{- end }}
+      volumes:
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
+{{- end }}

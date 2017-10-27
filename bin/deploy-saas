@@ -138,6 +138,7 @@ fi
 msg "Deploying helm package"
 helmCmd=$(cat <<END
 helm upgrade ${ENVIRONMENT} codefresh \
+  --debug \
 	--install \
 	--force \
 	--reset-values \
@@ -152,8 +153,8 @@ helm upgrade ${ENVIRONMENT} codefresh \
 	--values codefresh/env/${ENVIRONMENT}/values.yaml \
 	$versionsVals \
 	$customVals \
-	$redeployArgs \
-	$maintenanceVals
+	$redeployArgs
+#	$maintenanceVals
 END
 )
 

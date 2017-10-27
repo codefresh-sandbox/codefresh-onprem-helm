@@ -339,6 +339,9 @@ spec:
           mountPath: /etc/admin/deploymentTemplateImages.json
           subPath: deploymentTemplateImages.json
         {{- end }}
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceContainer | indent 6 }}
+{{- end }}
       volumes:
       - name: config
         configMap:
@@ -369,7 +372,6 @@ spec:
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
-
-    {{- if .Values.global.maintenanceMode }}
-    {{ MaintenanceContainer }}
-    {{- end }}
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
+{{- end }}
