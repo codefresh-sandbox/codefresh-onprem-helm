@@ -1,5 +1,5 @@
 {{- $natsService := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
-{{- $tlsSignService := printf "http://%s-%s.%s.svc:%v/sign" .Release.Name .Values.global.tlsSignService .Release.Namespace .Values.global.tlsSignPort }}
+{{- $tlsSignService := printf "http://%s-%s.%s.svc:%v" .Release.Name .Values.global.tlsSignService .Release.Namespace .Values.global.tlsSignPort }}
 
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -262,7 +262,9 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key
         - name: TLS_SIGN_URL
-          value: {{ $tlsSignService | quote }}
+          value: "{{ $tlsSignService }}/sign"
+        - name: TLS_PKI_URL
+          value: "{{ $tlsSignService }}"
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
