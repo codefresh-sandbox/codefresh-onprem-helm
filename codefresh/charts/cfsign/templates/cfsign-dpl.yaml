@@ -12,11 +12,6 @@ metadata:
 spec:
   replicas: {{ default 1 .Values.replicaCount }}
   revisionHistoryLimit: 50
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 50%
-      maxSurge: 50%
   selector:
     matchLabels:
       app: {{ template "fullname" . }}
@@ -53,6 +48,8 @@ spec:
         - mountPath: /.secrets/sisma
           name: sisma
           subPath: sisma
+        - mountPath: /certs
+          name: certs-data
       restartPolicy: Always
       volumes:
       - name: ca
@@ -64,4 +61,6 @@ spec:
       - name: sisma
         secret:
           secretName: {{ template "fullname" . }}
-
+      - name: certs-data
+        persistentVolumeClaim:
+          claimName: {{ template "fullname" . }}

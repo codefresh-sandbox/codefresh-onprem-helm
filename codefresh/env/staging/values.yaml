@@ -45,7 +45,8 @@ runtimeEnvBlob: |
           "name": "",
           "type": "builder",
           "returnRunnerIfNoBuilder": true
-        }
+        },
+        "clientCertPath": "/etc/ssl/cf"
       },
       "runtimeScheduler": {
         "type": "KubernetesPod",
@@ -135,12 +136,11 @@ runtimeEnvBlob: |
             "memory": "100Mi"
           },
           "limits": {
-            "cpu": "1900m",
-            "memory": "4096Mi"
+            "cpu": "1000m",
+            "memory": "2048Mi"
           }
         },
         "envVars": {
-          "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
@@ -163,31 +163,19 @@ runtimeEnvBlob: |
             "mountPath": "/etc/admin/additional-internal-registries.json",
             "subPath": "additional-internal-registries.json",
             "readOnly": true
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "mountPath": "/etc/admin/resource-limitations.json",
-            "subPath": "resource-limitations.json",
-            "readOnly": true
           }
         },
         "volumes": {
           "internal-registry": {
             "name": "internal-registry",
             "secret": {
-              "secretName": "internal-registry"
+              "secretName": "codefresh-internal-registry"
             }
           },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
-              "secretName": "internal-registry"
-            }
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "configMap": {
-              "name": "resource-limitations"
+              "secretName": "codefresh-internal-registry"
             }
           }
         }
@@ -227,19 +215,19 @@ runtimeEnvBlob: |
           "cf-certs-dind": {
             "name": "cf-certs-dind",
             "secret": {
-              "secretName": "cf-certs-dind"
+              "secretName": "codefresh-certs-server"
             }
           },
           "dind-config": {
             "name": "dind-config",
             "configMap": {
-              "name": "dind-config"
+              "name": "codefresh-dind-config"
             }
           }
         },
         "tolerations": {
           "dind": {
-            "key": "codefresh/dind",
+            "key": "codefresh/worker",
             "operator": "Exists",
             "effect": "NoSchedule"
           }
@@ -258,6 +246,7 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
+        "clientCertPath": "/etc/ssl/cf",
         "dindImage": "codefresh/cf-dind:v6",
         "connectByPodIp": true,
         "defaultDindResources": {
@@ -310,7 +299,8 @@ runtimeEnvBlob: |
             "codefresh/node-type": "dind",
             "codefresh/runtime-environment": "codefresh"
           }
-        }
+        },
+        "clientCertPath": "/etc/ssl/cf"
       }
     },
     "codefresh-inc": {
@@ -324,7 +314,8 @@ runtimeEnvBlob: |
             "codefresh/node-type": "dind",
             "codefresh/runtime-environment": "codefresh"
           }
-        }
+        },
+        "clientCertPath": "/etc/ssl/cf"
       }
     }
   }

@@ -36,3 +36,6 @@ dind-provider:
 
 salesforce-reporter:
   imageTag: master
+
+cfsign:
+  imageTag: master

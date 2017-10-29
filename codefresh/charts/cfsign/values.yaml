@@ -2,6 +2,7 @@ imagePullPolicy: Always
 redeploy: false
 replicaCount: 1
 image: r.cfcr.io/codefresh-inc/codefresh/cf-tls-sign
-imageTag: develop
+imageTag: master
 port: 4999
+certVolumeSize: 3Gi
 
