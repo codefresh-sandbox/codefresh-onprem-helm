@@ -216,8 +216,6 @@ spec:
         - name: RABBIT_URL
           value: amqp://{{.Values.global.rabbitmqHostname }}
         {{- else }}
-        - name: RABBIT_URL
-          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -228,6 +226,8 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
+        - name: RABBIT_URL
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         {{- end }}
         - name: REDIS_URL
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}
