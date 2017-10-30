@@ -47,7 +47,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -118,7 +118,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -434,7 +434,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -509,7 +509,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -584,7 +584,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -723,7 +723,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "worker"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
