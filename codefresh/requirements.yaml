@@ -77,7 +77,7 @@ dependencies:
   tags:
     - saas
 - name: cfsign
-  version: 0.2.1
+  version: 0.3.1
   repository: file://charts/cfsign
   tags:
     - saas

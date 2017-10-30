@@ -262,8 +262,6 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key
         - name: TLS_SIGN_URL
-          value: "{{ $tlsSignService }}/sign"
-        - name: TLS_PKI_URL
           value: "{{ $tlsSignService }}"
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"

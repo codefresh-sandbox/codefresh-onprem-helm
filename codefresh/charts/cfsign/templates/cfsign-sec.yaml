@@ -14,6 +14,5 @@ stringData:
 {{ .Values.global.CertsCa.ca | indent 4 }}
   cf-ca-key.pem: |
 {{ .Values.global.CertsCa.caKey | indent 4 }}
-  cf-ca-key-password: {{ .Values.global.CertsCa.caKeyPassword | quote }}
-  sisma: {{ .Values.global.CertsCa.sisma | quote }}
+  cf-ca-sign-secret: {{ .Values.global.CertsCa.caKeyPassword | substr 10 -1 | quote }}
 {{- end }}

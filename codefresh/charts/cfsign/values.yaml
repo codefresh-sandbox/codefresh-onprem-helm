@@ -5,4 +5,3 @@ image: r.cfcr.io/codefresh-inc/codefresh/cf-tls-sign
 imageTag: master
 port: 4999
 certVolumeSize: 3Gi
-

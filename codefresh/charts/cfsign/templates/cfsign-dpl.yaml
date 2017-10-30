@@ -39,26 +39,13 @@ spec:
         - containerPort: {{ .Values.port }}
           protocol: TCP
         volumeMounts:
-        - mountPath: /cacerts/cf-ca.pem
-          name: ca
-          subPath: cf-ca.pem
-        - mountPath: /cacerts/cf-ca-key.pem
-          name: ca-key
-          subPath: cf-ca-key.pem
-        - mountPath: /.secrets/sisma
-          name: sisma
-          subPath: sisma
+        - mountPath: /cacerts
+          name: cf-ca
         - mountPath: /certs
           name: certs-data
       restartPolicy: Always
       volumes:
-      - name: ca
-        secret:
-          secretName: {{ template "fullname" . }}
-      - name: ca-key
-        secret:
-          secretName: {{ template "fullname" . }}
-      - name: sisma
+      - name: cf-ca
         secret:
           secretName: {{ template "fullname" . }}
       - name: certs-data
