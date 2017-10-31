@@ -44,7 +44,7 @@ dependencies:
   version: 0.1.0
   repository: file://../registry
 - name: ingress
-  version: 0.1.1
+  version: 0.1.4
   repository: file://../ingress
   condition: ingress.enabled
 - name: cfruntime

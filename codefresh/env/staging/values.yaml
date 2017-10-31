@@ -35,6 +35,7 @@ builder:
 
 ingress:
   replicaCount: 2
+  webTLSsecretName: "star.codefresh.io"
 
 runtimeEnvBlob: |
   {
