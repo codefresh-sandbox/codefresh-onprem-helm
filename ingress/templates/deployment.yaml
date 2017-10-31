@@ -62,4 +62,4 @@ spec:
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
         - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         - --watch-namespace={{ .Release.Namespace }}
-        {{ if .Values.global.maintenanceMode }}- --configmap=$(POD_NAMESPACE)/load-codefresh-ingress-controller{{ end }}
+        {{ if .Values.global.maintenanceMode }}- --configmap=$(POD_NAMESPACE)/{{ template "fullname" . }}-controller{{ end }}

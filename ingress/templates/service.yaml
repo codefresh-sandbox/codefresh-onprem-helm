@@ -14,7 +14,7 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  {{ if .Values.global.maintenanceMode }}externalTrafficPolicy: Local{{ else }}externalTrafficPolicy: Cluster{{ end }}
   ports:
   - name: "http"
     port: {{ .Values.controllerHostPost }}

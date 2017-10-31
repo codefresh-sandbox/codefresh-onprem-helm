@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "fullname" . }}-ingress-controller
+  name: {{ template "fullname" . }}-controller
   labels:
     app: {{ template "fullname" . }}-controller
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
