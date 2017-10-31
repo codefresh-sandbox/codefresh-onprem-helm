@@ -25,6 +25,7 @@ rabbitmq:
 
 ingress:
   replicaCount: 4
+  webTlsSecretName: "star.codefresh.io"
 
 runtimeEnvBlob: |
   {
