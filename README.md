@@ -62,7 +62,10 @@ kubectl config use-context <context>
 ./sops -d
 export ENVRIRONMENT=staging
 ```
-
+Update dependencies for codefresh chart:
+```
+helm dependency update codefresh
+```
 and launch deploy script from bin/ :
 ```
 bin/deploy-saas
