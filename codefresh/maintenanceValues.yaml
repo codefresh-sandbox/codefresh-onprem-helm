@@ -1,5 +1,7 @@
 global:
   maintenanceMode: true
+  maintenancePort: 1080
+  useproxyprotocol: true
 # Definition for maintenance-proxy container
   maintenanceContainer:
   - image: codefresh/cf-maintenance-page:master
@@ -28,8 +30,3 @@ global:
     - name: maintenance-reason
       configMap:
         name: maintenance-reason
-cfapi:
-  port: 1080
-cfui:
-  port: 1080
-

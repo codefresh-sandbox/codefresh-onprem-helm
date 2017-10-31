@@ -1,35 +1,35 @@
 dependencies:
-  #- name: consul
-  #version: 0.3.0
-  #repository: https://kubernetes-charts.storage.googleapis.com/
-  #tags:
-  #  - infra
-  #- name: mongodb
-  #version: 0.4.12
-  #repository: https://kubernetes-charts.storage.googleapis.com/
-  #tags:
-  #  - infra
-  #- name: postgresql
-  #version: 0.7.1
-  #repository: https://kubernetes-charts.storage.googleapis.com/
-  #tags:
-  #  - infra
-  #- name: redis
-  #version: 0.8.0
-  #repository: https://kubernetes-charts.storage.googleapis.com/
-  #tags:
-  #  - infra
-  #- name: rabbitmq
-  #version: 0.5.3
-  #repository: https://kubernetes-charts.storage.googleapis.com/
-  #tags:
-  #  - infra
-  #- name: nats
-  #version: 0.1.1
-  #repository: file://../nats
-  #tags:
-  #  - infra
-  #  - saas
+- name: consul
+  version: 0.3.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags:
+    - infra
+- name: mongodb
+  version: 0.4.12
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags:
+    - infra
+- name: postgresql
+  version: 0.7.1
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags:
+    - infra
+- name: redis
+  version: 0.8.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags:
+    - infra
+- name: rabbitmq
+  version: 0.5.3
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags:
+    - infra
+- name: nats
+  version: 0.1.1
+  repository: file://../nats
+  tags:
+    - infra
+    - saas
 - name: builder
   repository: file://charts/builder
   version: 0.1.2
@@ -40,13 +40,13 @@ dependencies:
   version: 0.1.2
   tags:
     - infra
-  #- name: registry
-  #version: 0.1.0
-  #repository: file://../registry
-  #- name: ingress
-  #version: 0.1.1
-  #repository: file://../ingress
-  #condition: ingress.enabled
+- name: registry
+  version: 0.1.0
+  repository: file://../registry
+- name: ingress
+  version: 0.1.3
+  repository: file://../ingress
+  condition: ingress.enabled
 - name: cfruntime
   repository: file://charts/cfruntime
   version: 0.1.2

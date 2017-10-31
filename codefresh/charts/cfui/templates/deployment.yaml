@@ -48,7 +48,7 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           - name: PORT
-            value: {{ .Values.port | quote }}
+            {{ if .Values.global.maintenanceMode }}value: {{ .Values.global.maintenancePort | quote }}{{ else }}value: {{ .Values.port | quote }}{{ end }}
           - name: CODEFRESH_API_URL
             value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
           - name: QUEUE_SERVERS
@@ -104,7 +104,7 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: cfcr-domain
         ports:
-        - containerPort: {{ .Values.port }}
+        - {{ if .Values.global.maintenanceMode }}containerPort: {{ .Values.global.maintenancePort }}{{ else }}containerPort: {{ .Values.port }}{{ end }}
           protocol: TCP
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceContainer | indent 6 }}

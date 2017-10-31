@@ -4,7 +4,7 @@ metadata:
   name: {{ template "fullname" . }}-controller
   labels:
     app: {{ template "fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
     k8s-app: nginx-ingress-controller
@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app: {{ template "fullname" . }}
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
         k8s-app: nginx-ingress-controller
@@ -62,4 +62,4 @@ spec:
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
         - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         - --watch-namespace={{ .Release.Namespace }}
-
+        {{ if .Values.global.maintenanceMode }}- --configmap=$(POD_NAMESPACE)/load-codefresh-ingress-controller{{ end }}

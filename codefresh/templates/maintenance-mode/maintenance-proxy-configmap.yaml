@@ -8,6 +8,7 @@ data:
   maintenance-proxy.conf: |
     # Look for client IP in the X-Forwarded-For header
     real_ip_header X-Forwarded-For;
+    #real_ip_header proxy_protocol;
 
     # Ignore trusted IPs
     real_ip_recursive on;
@@ -37,9 +38,12 @@ data:
         server localhost:1080;
     }
     server {
-            listen 80 ;
+            listen 80; #proxy_protocol;
             server_name  ~^.*$;
             port_in_redirect off;
+
+            #set_real_ip_from 0.0.0.0/0;
+            #real_ip_header   proxy_protocol;
 
             set $ui_proxy "http://cfui";
             set $api_proxy "http://cfapi";
@@ -59,10 +63,16 @@ data:
 
             location / {
                     proxy_pass $ui_proxy;
+                    #proxy_set_header Host            $host;
+                    #proxy_set_header X-Real-IP       $proxy_protocol_addr;
+                    #proxy_set_header X-Forwarded-For $proxy_protocol_addr;
             }
 
             location /api {
                     proxy_pass $api_proxy;
+                    #proxy_set_header Host            $host;
+                    #proxy_set_header X-Real-IP       $proxy_protocol_addr;
+                    #proxy_set_header X-Forwarded-For $proxy_protocol_addr;
             }
 
             location /maintenance {
