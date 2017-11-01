@@ -60,6 +60,10 @@ spec:
         args:
         - /nginx-ingress-controller
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
-        - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         - --watch-namespace={{ .Release.Namespace }}
+        {{- if .Values.webTlsSecretName }}
+        - --default-ssl-certificate={{ .Release.Namespace }}/{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Values.webTlsSecretName }}
+        {{- else }}
+        - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
+        {{- end }}
 
