@@ -22,7 +22,6 @@ data:
       10.0.0.0/14 gke-lb-1;
       10.128.0.0/9 gke-lb-2;
       127.0.0.1/32 local;
-
       82.80.42.234/32 admin;
       104.155.130.126/32 admin;
     }
@@ -42,9 +41,6 @@ data:
             server_name  ~^.*$;
             port_in_redirect off;
 
-            #set_real_ip_from 0.0.0.0/0;
-            #real_ip_header   proxy_protocol;
-
             set $ui_proxy "http://cfui";
             set $api_proxy "http://cfapi";
             set $maintenance_page "http://maintenance.codefresh.io";
@@ -63,16 +59,10 @@ data:
 
             location / {
                     proxy_pass $ui_proxy;
-                    #proxy_set_header Host            $host;
-                    #proxy_set_header X-Real-IP       $proxy_protocol_addr;
-                    #proxy_set_header X-Forwarded-For $proxy_protocol_addr;
             }
 
             location /api {
                     proxy_pass $api_proxy;
-                    #proxy_set_header Host            $host;
-                    #proxy_set_header X-Real-IP       $proxy_protocol_addr;
-                    #proxy_set_header X-Forwarded-For $proxy_protocol_addr;
             }
 
             location /maintenance {
