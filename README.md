@@ -70,3 +70,21 @@ and launch deploy script from bin/ :
 ```
 bin/deploy-saas
 ```
+### Switching maintenance mode
+To switch maintenance mode ON
+```
+cd cf-helm
+cf-helm$ kubectl config use-context <kubernetes_cluster_name>
+cf-helm$ ./sops.sh -d  ### keys decryption 
+cf-helm$ helm dependency update codefresh ### codefresh chart dependencies update
+cf-helm$ export ENVIRONMENT=<environment_name> 
+cf-helm$ export MAINTENANCE_MODE=true ### switch maintenance mode ON
+cf-helm$ ./bin/deploy-saas ### update environment
+```
+To switch maintenance mode OFF
+```
+cf-helm$ unset MAINTENANCE_MODE ### switch maintenance mode OFF
+cf-helm$ ./bin/deploy-saas ### update environment
+```
+
+
