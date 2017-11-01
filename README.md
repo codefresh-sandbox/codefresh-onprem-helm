@@ -23,11 +23,11 @@ For production it is configured to start automatically by webhook
 ### Updating secret values
 All secret values for helm are stored in file ç encrypted with sops - https://github.com/mozilla/sops  
 
-* Install sops from https://github.com/mozilla/sops/releases
+* Install sops from https://github.com/mozilla/sops/releases (or using brew)
 * setup aws credentials file ( ~/.aws/credentials )
 ```
 git pull
-sops -d [folder with values-enc.yaml, default ./ ]
+./sops.sh -d [folder with values-enc.yaml, default ./ ]
 ```
 It will decrypt all values-enc.yaml to values-dec.yaml
 * edit values-dec.yaml
@@ -62,7 +62,10 @@ kubectl config use-context <context>
 ./sops -d
 export ENVRIRONMENT=staging
 ```
-
+Update dependencies for codefresh chart:
+```
+helm dependency update codefresh
+```
 and launch deploy script from bin/ :
 ```
 bin/deploy-saas

@@ -25,6 +25,7 @@ rabbitmq:
 
 ingress:
   replicaCount: 4
+  webTlsSecretName: "star.codefresh.io"
 
 runtimeEnvBlob: |
   {
@@ -47,7 +48,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -118,7 +119,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -291,7 +292,7 @@ runtimeEnvBlob: |
     },
     "codefresh-inc": {
       "dockerDaemonScheduler": {
-        "type": "DindAsAService",
+        "type": "DindKubernetesPod",
         "cluster": {
           "name": "cluster-cf-1.cf-cd.com",
           "namespace": "workflow",
@@ -300,19 +301,44 @@ runtimeEnvBlob: |
             "codefresh/node-type": "dind",
             "codefresh/runtime-environment": "codefresh-inc"
           }
-        }
-      }
-    },
-    "soluto": {
-      "dockerDaemonScheduler": {
-        "type": "DindAsAService",
-        "cluster": {
-          "name": "cluster-cf-1.cf-cd.com",
-          "namespace": "workflow",
-          "kubeconfigFilePath": "/root/.kube/config",
-          "nodeSelector": {
-            "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh"
+        },
+        "dindImage": "codefresh/cf-dind:v6",
+        "connectByPodIp": true,
+        "defaultDindResources": {
+          "requests": {
+            "cpu": "390m",
+            "memory": "256Mi"
+          },
+          "limits": {
+            "cpu": "2500m",
+            "memory": "2048Mi"
+          }
+        },
+        "volumeMounts": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": true
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "mountPath": "/etc/docker/daemon.json",
+            "subPath": "daemon.json",
+            "readOnly": true
+          }
+        },
+        "volumes": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "secret": {
+              "secretName": "cf-certs-dind"
+            }
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "configMap": {
+              "name": "dind-config"
+            }
           }
         }
       }
@@ -434,7 +460,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -509,7 +535,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -584,7 +610,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -723,7 +749,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "worker"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v6",
         "resources": {
           "requests": {
             "cpu": "100m",
