@@ -46,24 +46,10 @@ runtimeEnvBlob: |
       "runtimeScheduler": {
         "type": "KubernetesPod",
         "cluster": {
-          "name": "cluster-dev-1.cf-cd.com",
-          "namespace": "default",
-          "kubeconfigFilePath": "/root/.kube/config",
-          "nodeSelector": {
-            "codefresh/node-type": "app"
-          }
+          "inCluster": true,
+          "namespace": "codefresh"
         },
-        "image": "codefresh/engine:v5",
-        "resources": {
-          "requests": {
-            "cpu": "100m",
-            "memory": "100Mi"
-          },
-          "limits": {
-            "cpu": "1000m",
-            "memory": "2048Mi"
-          }
-        },
+        "image": "codefresh/engine:v9",
         "envVars": {
           "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
@@ -74,7 +60,8 @@ runtimeEnvBlob: |
           "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
           "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v9",
           "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1"
+          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1",
+          "NODE_TLS_REJECT_UNAUTHORIZED": "0"
         },
         "volumeMounts": {
           "internal-registry": {
@@ -94,131 +81,36 @@ runtimeEnvBlob: |
             "mountPath": "/etc/admin/resource-limitations.json",
             "subPath": "resource-limitations.json",
             "readOnly": true
+          },
+          "cf-certs": {
+            "name": "cf-certs",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": true
           }
         },
         "volumes": {
           "internal-registry": {
             "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
+            "configMap": {
+              "name": "cf-codefresh-registry"
             }
           },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
-            "secret": {
-              "secretName": "internal-registry"
+            "configMap": {
+              "name": "cf-codefresh-registry"
             }
           },
           "resource-limitations": {
             "name": "resource-limitations",
             "configMap": {
-              "name": "resource-limitations"
+              "name": "cf-codefresh-resource-limitations"
             }
-          }
-        }
-      }
-    },
-    "codefresh": {
-      "dockerDaemonScheduler": {
-        "type": "DindKubernetesPod",
-        "cluster": {
-          "name": "cluster-dev-1.cf-cd.com",
-          "namespace": "default",
-          "kubeconfigFilePath": "/root/.kube/config",
-          "nodeSelector": {
-            "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh"
-          }
-        },
-        "dindImage": "codefresh/cf-dind:v5",
-        "connectByPodIp": true,
-        "defaultDindResources": {
-          "requests": {
-            "cpu": "390m",
-            "memory": "256Mi"
           },
-          "limits": {
-            "cpu": "2500m",
-            "memory": "2048Mi"
-          }
-        },
-        "volumeMounts": {
-          "cf-certs-dind": {
-            "name": "cf-certs-dind",
-            "mountPath": "/etc/ssl/cf",
-            "readOnly": true
-          },
-          "dind-config": {
-            "name": "dind-config",
-            "mountPath": "/etc/docker/daemon.json",
-            "subPath": "daemon.json",
-            "readOnly": true
-          }
-        },
-        "volumes": {
-          "cf-certs-dind": {
-            "name": "cf-certs-dind",
+          "cf-certs": {
+            "name": "cf-certs",
             "secret": {
-              "secretName": "cf-certs-dind"
-            }
-          },
-          "dind-config": {
-            "name": "dind-config",
-            "configMap": {
-              "name": "dind-config"
-            }
-          }
-        }
-      }
-    },
-    "codefresh-inc": {
-      "dockerDaemonScheduler": {
-        "type": "DindKubernetesPod",
-        "cluster": {
-          "name": "cluster-dev-1.cf-cd.com",
-          "namespace": "default",
-          "kubeconfigFilePath": "/root/.kube/config",
-          "nodeSelector": {
-            "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh"
-          }
-        },
-        "dindImage": "codefresh/cf-dind:v5",
-        "connectByPodIp": true,
-        "defaultDindResources": {
-          "requests": {
-            "cpu": "390m",
-            "memory": "256Mi"
-          },
-          "limits": {
-            "cpu": "2500m",
-            "memory": "2048Mi"
-          }
-        },
-        "volumeMounts": {
-          "cf-certs-dind": {
-            "name": "cf-certs-dind",
-            "mountPath": "/etc/ssl/cf",
-            "readOnly": true
-          },
-          "dind-config": {
-            "name": "dind-config",
-            "mountPath": "/etc/docker/daemon.json",
-            "subPath": "daemon.json",
-            "readOnly": true
-          }
-        },
-        "volumes": {
-          "cf-certs-dind": {
-            "name": "cf-certs-dind",
-            "secret": {
-              "secretName": "cf-certs-dind"
-            }
-          },
-          "dind-config": {
-            "name": "dind-config",
-            "configMap": {
-              "name": "dind-config"
+              "secretName": "cf-codefresh-cf-certs"
             }
           }
         }
