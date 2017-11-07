@@ -48,7 +48,11 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           - name: PORT
-            {{ if .Values.global.maintenanceMode }}value: {{ .Values.global.maintenancePort | quote }}{{ else }}value: {{ .Values.port | quote }}{{ end }}
+            {{- if .Values.global.maintenanceMode }}
+            value: {{ .Values.global.maintenancePort | quote }}
+            {{- else }}
+            value: {{ .Values.port | quote }}
+            {{- end }}
           - name: CODEFRESH_API_URL
             value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
           - name: QUEUE_SERVERS
@@ -104,12 +108,28 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: cfcr-domain
         ports:
-        - {{ if .Values.global.maintenanceMode }}containerPort: {{ .Values.global.maintenancePort }}{{ else }}containerPort: {{ .Values.port }}{{ end }}
+        {{- if .Values.global.maintenanceMode }}
+        - containerPort: {{ .Values.global.maintenancePort }}
+        {{- else }}
+        - containerPort: {{ .Values.port }}
+        {{- end }}
           protocol: TCP
+        {{- if .Values.global.addResolvConf }}
+        volumeMounts:
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceContainer | indent 6 }}
 {{- end }}
       volumes:
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
 {{- end }}

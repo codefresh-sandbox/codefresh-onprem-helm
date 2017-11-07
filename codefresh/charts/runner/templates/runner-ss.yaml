@@ -25,6 +25,13 @@ spec:
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        - key: {{ .Values.tolerations.key | quote }}
+          operator: {{ .Values.tolerations.operator | quote }}
+          value: {{ .Values.tolerations.value | quote }}
+          effect: {{ .Values.tolerations.effect | quote }}
+      {{- end }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       initContainers:
@@ -80,6 +87,12 @@ spec:
           name: runner-config
           readOnly: true
           subPath: daemon.json
+        {{- if .Values.global.addResolvConf }}
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
       volumes:
       - name: cf-certs
         secret:
@@ -87,3 +100,8 @@ spec:
       - name: runner-config
         configMap:
           name: {{ template "fullname" . }}
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}

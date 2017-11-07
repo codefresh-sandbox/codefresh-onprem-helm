@@ -2,11 +2,13 @@ dependencies:
 - name: consul
   version: 0.3.0
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: consul.enabled
   tags:
     - infra
 - name: mongodb
   version: 0.4.12
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: mongo.enabled
   tags:
     - infra
 - name: postgresql
@@ -41,8 +43,10 @@ dependencies:
   tags:
     - infra
 - name: registry
-  version: 0.1.0
   repository: file://../registry
+  version: 0.1.0
+  tags:
+    - infra
 - name: ingress
   version: 0.1.5
   repository: file://../ingress
