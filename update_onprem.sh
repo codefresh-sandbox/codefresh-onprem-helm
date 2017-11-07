@@ -23,7 +23,7 @@ version_bump() {
 
   new_version=${new_version:-${increased_version}}
 
-  sed -i "s/^version.*/version: ${new_version}/" codefresh/Chart.yaml
+  sed -i'' -e "s/^version.*/version: ${new_version}/" codefresh/Chart.yaml
 
   git commit -m "CF Helm Onprem updated to ${new_version} " codefresh/Chart.yaml
 
