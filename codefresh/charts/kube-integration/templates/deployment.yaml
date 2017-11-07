@@ -55,14 +55,14 @@ spec:
         - name: NODE_ENV
           value: kubernetes
         - name: MONGO_URI
-          {{ if .Values.mongoURI }}
+          {{- if .Values.mongoURI }}
           valueFrom:
             secretKeyRef:
               name: {{ template "fullname" . }}
               key: mongo-uri
-          {{ else }}
+          {{- else }}
           value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
-          {{ end }}
+          {{- end }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -74,8 +74,8 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: rabbitmq-username
         - name: EVENTBUS_URI
-          value: 'amqp://{{ .Values.global.rabbitmqUsername }}:{{ .Values.global.rabbitmqPassword }}@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}'
-          # value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
+          #value: 'amqp://{{ .Values.global.rabbitmqUsername }}:{{ .Values.global.rabbitmqPassword }}@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}'
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
         - name: POSTGRES_HOST
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname | quote }}
         - name: POSTGRES_DATABASE

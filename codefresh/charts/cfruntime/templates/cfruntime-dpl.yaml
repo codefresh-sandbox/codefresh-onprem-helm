@@ -59,8 +59,10 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
+        {{- with .Values.global.tlsRejectUnauthorized }}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+        {{- end }}
         - name: LOGGLY_TOKEN
           valueFrom:
             secretKeyRef:

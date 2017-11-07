@@ -74,8 +74,10 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: stripe-public-key
           # other licenses and keys
+          {{- with .Values.global.tlsRejectUnauthorized }}
           - name: NODE_TLS_REJECT_UNAUTHORIZED
             value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+          {{- end }}
           - name: NEWRELIC_LICENSE_KEY
             valueFrom:
               secretKeyRef:

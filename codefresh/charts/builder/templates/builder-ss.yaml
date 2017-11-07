@@ -76,8 +76,10 @@ spec:
           value: {{ $value | quote }}
         {{- end}}
         {{- end}}
+        {{- with .Values.global.tlsRejectUnauthorize }}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+        {{- end }}
         - name: RUNTIME_LOCAL_REGISTRY_NAME
           value: {{ $registryService | quote }}
         command:
