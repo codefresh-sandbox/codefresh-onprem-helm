@@ -29,22 +29,26 @@ dependencies:
 - name: nats
   version: 0.1.1
   repository: file://../nats
+  condition: nats.enabled
   tags:
     - infra
     - saas
 - name: builder
   repository: file://charts/builder
+  condition: builder.enabled
   version: 0.1.2
   tags:
     - infra
 - name: runner
   repository: file://charts/runner
+  condition: runner.enabled
   version: 0.1.2
   tags:
     - infra
 - name: registry
-  repository: file://../registry
   version: 0.1.0
+  repository: file://../registry
+  condition: registry.enabled
   tags:
     - infra
 - name: ingress

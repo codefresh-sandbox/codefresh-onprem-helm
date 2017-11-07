@@ -60,6 +60,12 @@ spec:
                 - |
                   cat /etc/admin/hosts.added >> /etc/hosts
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
@@ -103,8 +109,6 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
-        - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
-          value: /etc/admin/runtimeEnvironments.json
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
@@ -220,6 +224,10 @@ spec:
               key: postgres-user
         - name: PROTOCOL
           value: {{ .Values.global.appProtocol | quote }}
+        {{- if .Values.global.rabbitmqNoPassword }}
+        - name: RABBIT_URL
+          value: amqp://{{.Values.global.rabbitmqHostname }}
+        {{- else }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -232,6 +240,7 @@ spec:
               key: rabbitmq-username
         - name: RABBIT_URL
           value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
+        {{- end }}
         - name: REDIS_URL
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}
         - name: REDIS_PASSWORD
