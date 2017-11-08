@@ -34,6 +34,13 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        - key: {{ .Values.tolerations.key | quote }}
+          operator: {{ .Values.tolerations.operator | quote }}
+          value: {{ .Values.tolerations.value | quote }}
+          effect: {{ .Values.tolerations.effect | quote }}
+      {{- end }}
       affinity:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       imagePullSecrets:
@@ -53,6 +60,12 @@ spec:
                 - |
                   cat /etc/admin/hosts.added >> /etc/hosts
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
@@ -96,8 +109,6 @@ spec:
             configMapKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: cfcr-domain
-        - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
-          value: /etc/admin/runtimeEnvironments.json
         - name: CLUSTER_PROVIDERS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
@@ -170,21 +181,23 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: loggly-token
         - name: MONGO_URI
-          {{ if .Values.global.mongoURI }}
+          {{- if .Values.global.mongoURI }}
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: mongo-uri
-          {{ else }}
+          {{- else }}
           value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.mongodbDatabase }}"
-          {{ end }}
+          {{- end }}
         - name: NEWRELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
+        {{- with .Values.global.tlsRejectUnauthorized }}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+        {{- end }}
         - name: PAYMENTS_SERVICE
           value: "{{ .Release.Name }}-{{ .Values.global.paymentsService }}"
         - name: PAYMENTS_URI
@@ -192,7 +205,11 @@ spec:
         - name: PAYMENTS_PORT
           value: {{ .Values.global.paymentsServicePort | quote }}
         - name: PORT
-          {{ if .Values.global.maintenanceMode }}value: {{ .Values.global.maintenancePort | quote }}{{ else }}value: {{ .Values.port | quote }}{{ end }}
+          {{- if .Values.global.maintenanceMode }}
+          value: {{ .Values.global.maintenancePort | quote }}
+          {{- else }}
+          value: {{ .Values.port | quote }}
+          {{- end }}
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
         - name: POSTGRES_HOST
@@ -209,6 +226,10 @@ spec:
               key: postgres-user
         - name: PROTOCOL
           value: {{ .Values.global.appProtocol | quote }}
+        {{- if .Values.global.rabbitmqNoPassword }}
+        - name: RABBIT_URL
+          value: amqp://{{.Values.global.rabbitmqHostname }}
+        {{- else }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -221,6 +242,7 @@ spec:
               key: rabbitmq-username
         - name: RABBIT_URL
           value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
+        {{- end }}
         - name: REDIS_URL
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}
         - name: REDIS_PASSWORD
@@ -294,14 +316,22 @@ spec:
         #      name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
         #      key: oauth-router-callback
         ports:
-        - {{ if .Values.global.maintenanceMode }}containerPort: {{ .Values.global.maintenancePort }}{{ else }}containerPort: {{ .Values.port }}{{ end }}
+        {{- if .Values.global.maintenanceMode }}
+        - containerPort: {{ .Values.global.maintenancePort }}
+          {{- else }}
+        - containerPort: {{ .Values.port }}
+        {{- end }}
           protocol: TCP
         - containerPort: {{ .Values.targetInternalPort }}
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /api/ping
-            {{ if .Values.global.maintenanceMode }}port: {{ .Values.global.maintenancePort }}{{ else }}port: {{ .Values.port }}{{ end }}
+            {{- if .Values.global.maintenanceMode }}
+            port: {{ .Values.global.maintenancePort }}
+            {{- else }}
+            port: {{ .Values.port }}
+            {{- end }}
           periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1
@@ -343,6 +373,12 @@ spec:
           mountPath: /etc/admin/deploymentTemplateImages.json
           subPath: deploymentTemplateImages.json
         {{- end }}
+	      {{- if .Values.global.addResolvConf }}
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceContainer | indent 6 }}
 {{- end }}
@@ -376,6 +412,12 @@ spec:
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}
+      restartPolicy: Always
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
 {{- end }}

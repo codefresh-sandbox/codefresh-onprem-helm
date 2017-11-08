@@ -42,6 +42,12 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         - name: API_PROTOCOL
           value: {{ .Values.global.appProtocol | quote }}
         - name: API_URL
@@ -116,4 +122,15 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+      {{- if .Values.global.addResolvConf }}
+        volumeMounts:
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+      volumes:
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}
       restartPolicy: Always

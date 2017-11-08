@@ -20,3 +20,4 @@ out/
 darwin-amd64/
 index.yaml
 **/.DS_Store
+*.orig

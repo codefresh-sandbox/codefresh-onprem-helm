@@ -2,11 +2,13 @@ dependencies:
 - name: consul
   version: 0.3.0
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: consul.enabled
   tags:
     - infra
 - name: mongodb
   version: 0.4.12
   repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: mongo.enabled
   tags:
     - infra
 - name: postgresql
@@ -27,22 +29,28 @@ dependencies:
 - name: nats
   version: 0.1.1
   repository: file://../nats
+  condition: nats.enabled
   tags:
     - infra
     - saas
 - name: builder
   repository: file://charts/builder
+  condition: builder.enabled
   version: 0.1.2
   tags:
     - infra
 - name: runner
   repository: file://charts/runner
+  condition: runner.enabled
   version: 0.1.2
   tags:
     - infra
 - name: registry
   version: 0.1.0
   repository: file://../registry
+  condition: registry.enabled
+  tags:
+    - infra
 - name: ingress
   version: 0.1.5
   repository: file://../ingress

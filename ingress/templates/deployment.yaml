@@ -1,5 +1,9 @@
 apiVersion: extensions/v1beta1
+{{- if .Values.ingressDeamonSet }}
+kind: DeamonSet
+{{- else }}
 kind: Deployment
+{{- end }}
 metadata:
   name: {{ template "fullname" . }}-controller
   labels:
@@ -9,7 +13,9 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
     k8s-app: nginx-ingress-controller
 spec:
+  {{- if not .Values.ingressDeamonSet }}
   replicas:  {{ default 1 .Values.replicaCount }}
+  {{- end }}
   template:
     metadata:
       labels:

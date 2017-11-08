@@ -38,7 +38,7 @@ mv codefresh/values.yaml codefresh/values.yaml.bak
 # copy on-prem values instead default
 cp codefresh/env/on-prem/values.yaml codefresh/values.yaml
 
-helm dependency update codefresh
+helm dependency update --skip-refresh codefresh
 
 package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')
 
