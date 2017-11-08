@@ -99,7 +99,7 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: slack-app-id
           - name: SLACK_REDIRECTURI
-            value: $(CODEFRESH_API_URL)/slack-return
+            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/slack-return"
           - name: WALKME
             valueFrom:
               secretKeyRef:
