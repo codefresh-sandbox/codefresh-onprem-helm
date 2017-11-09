@@ -14,13 +14,14 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 spec:
   type: LoadBalancer
+  {{ if .Values.global.maintenanceMode }}externalTrafficPolicy: Local{{ else }}externalTrafficPolicy: Cluster{{ end }}
   ports:
   - name: "http"
     port: {{ .Values.controllerHostPost }}
     protocol: TCP
     targetPort: {{ .Values.controllerContainerPort }}
   - name: "https"
-    port: {{ .Values.controllerSecureHostPort }} 
+    port: {{ .Values.controllerSecureHostPort }}
     protocol: TCP
     targetPort: {{ .Values.controllerSecureContainerPort }}
   selector:

@@ -1,20 +1,26 @@
 apiVersion: extensions/v1beta1
+{{- if .Values.ingressDeamonSet }}
+kind: DeamonSet
+{{- else }}
 kind: Deployment
+{{- end }}
 metadata:
   name: {{ template "fullname" . }}-controller
   labels:
     app: {{ template "fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
     k8s-app: nginx-ingress-controller
 spec:
+  {{- if not .Values.ingressDeamonSet }}
   replicas:  {{ default 1 .Values.replicaCount }}
+  {{- end }}
   template:
     metadata:
       labels:
         app: {{ template "fullname" . }}
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
         k8s-app: nginx-ingress-controller
@@ -61,10 +67,9 @@ spec:
         - /nginx-ingress-controller
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
         - --watch-namespace={{ .Release.Namespace }}
-        {{- if .Values.webTLSsecretName }}
-        - --default-ssl-certificate={{ .Release.Namespace }}/{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Values.webTLSsecretName }}
+        {{- if .Values.webTlsSecretName }}
+        - --default-ssl-certificate={{ .Release.Namespace }}/{{ .Release.Name }}-{{ .Values.global.codefresh }}-{{ .Values.webTlsSecretName }}
         {{- else }}
-        - --default-ssl-certificate={{ template "fullname" . }}-star-selfsigned
+        - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         {{- end }}
-
-
+        {{ if .Values.global.maintenanceMode }}- --configmap=$(POD_NAMESPACE)/{{ template "fullname" . }}-controller{{ end }}

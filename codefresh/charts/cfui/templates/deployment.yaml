@@ -43,12 +43,22 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+          {{- if .Values.global.env }}
+          {{- range $key, $value := .Values.global.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end}}
+          {{- end}}
           {{- range $key, $value := .Values.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
           - name: PORT
+            {{- if .Values.global.maintenanceMode }}
+            value: {{ .Values.global.maintenancePort | quote }}
+            {{- else }}
             value: {{ .Values.port | quote }}
+            {{- end }}
           - name: CODEFRESH_API_URL
             value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
           - name: QUEUE_SERVERS
@@ -64,8 +74,10 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: stripe-public-key
           # other licenses and keys
+          {{- with .Values.global.tlsRejectUnauthorized }}
           - name: NODE_TLS_REJECT_UNAUTHORIZED
             value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+          {{- end }}
           - name: NEWRELIC_LICENSE_KEY
             valueFrom:
               secretKeyRef:
@@ -87,7 +99,7 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: slack-app-id
           - name: SLACK_REDIRECTURI
-            value: $(CODEFRESH_API_URL)/slack-return
+            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/slack-return"
           - name: WALKME
             valueFrom:
               secretKeyRef:
@@ -104,5 +116,28 @@ spec:
                 name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
                 key: cfcr-domain
         ports:
+        {{- if .Values.global.maintenanceMode }}
+        - containerPort: {{ .Values.global.maintenancePort }}
+        {{- else }}
         - containerPort: {{ .Values.port }}
+        {{- end }}
           protocol: TCP
+        {{- if .Values.global.addResolvConf }}
+        volumeMounts:
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceContainer | indent 6 }}
+{{- end }}
+      volumes:
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}
+{{- if .Values.global.maintenanceMode }}
+{{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
+{{- end }}

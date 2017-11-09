@@ -19,35 +19,36 @@ spec:
         forceRedeployUniqId: {{ now | quote }}
       {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/runner-cm.yaml") . | sha256sum }}
-        pod.beta.kubernetes.io/init-containers: '[
-          {
-            "name": "register-runner-container",
-            "image": "alexeiled/curl:3.6",
-            "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
-            "volumeMounts": [
-              {
-                "name": "runner-config",
-                "mountPath": "/opt/dind/register",
-                "subPath": "register"
-              }
-            ],
-            "env": [
-              {
-                "name": "POD_NAME",
-                "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
-              }
-            ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ .Values.global.appUrl }}"]
-          }
-        ]'
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        - key: {{ .Values.tolerations.key | quote }}
+          operator: {{ .Values.tolerations.operator | quote }}
+          value: {{ .Values.tolerations.value | quote }}
+          effect: {{ .Values.tolerations.effect | quote }}
+      {{- end }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+      initContainers:
+      - name: register-runner-container
+        image: alexeiled/curl:3.6
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        command: ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ .Values.global.appUrl }}"]
+        volumeMounts:
+        - name: runner-config
+          mountPath: /opt/dind/register
+          subPath: register
       containers:
       - image: {{ .Values.global.dindImage | quote }}
         name: {{ template "fullname" . }}
@@ -65,8 +66,16 @@ spec:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
+        {{- with .Values.global.tlsRejectUnauthorized }}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
+        {{- end }}
         - name: RUNTIME_LOCAL_REGISTRY_NAME
           value: {{ $registryService | quote }}
         command:
@@ -86,6 +95,12 @@ spec:
           name: runner-config
           readOnly: true
           subPath: daemon.json
+        {{- if .Values.global.addResolvConf }}
+        - mountPath: /etc/resolv.conf
+          name: resolvconf
+          subPath: resolv.conf
+          readOnly: true
+        {{- end }}
       volumes:
       - name: cf-certs
         secret:
@@ -93,3 +108,8 @@ spec:
       - name: runner-config
         configMap:
           name: {{ template "fullname" . }}
+      {{- if .Values.global.addResolvConf }}
+      - name: resolvconf
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
+      {{- end }}

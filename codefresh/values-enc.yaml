@@ -1,46 +1,49 @@
 global:
-    mongodbPassword: ENC[AES256_GCM,data:CO4RQ+OaOuJPrYh/,iv:CY+eP0tMQ5JIAXfIsWiko4Ib606zcKhpe0p4cMoWvFk=,tag:+jGvuvnQ544vQlbAToAvkA==,type:str]
-    mongodbUsername: ENC[AES256_GCM,data:f4souUVY,iv:x3zBIW9dIV+zMl15DdhT6QHc9ZzVhYjqZQI2wDYMz+s=,tag:ZenRW1Pxskajr4aZJ1EpGQ==,type:str]
-    # github internal token
-    githubInternalToken: ENC[AES256_GCM,data:sB/lnqsrh6BscPDR53t6Rj6m6kWX4qgxEJx/cg4jt0KmeH5t+Ygfqg==,iv:YsU6/F60hKZot8PnKxntz+HZHx6vkQt8CUeryeAgN0k=,tag:faBAK46IZGUnHCEpnaRDgw==,type:str]
-    # override mongodb root password
+    mongodbPassword: ENC[AES256_GCM,data:SirCfc37/AdZIgiT,iv:mW/SYkq523l689Ks0Kqgsesh6Kgqj9u7V/CYF6aUr1Y=,tag:au0kAV5CGFVNbbcgQZcQoQ==,type:str]
+    mongodbUsername: ENC[AES256_GCM,data:9eHkiUYc,iv:egatxkqupbmYQIHcGHarB7Mly2NEBTMAATHvaG6eWQs=,tag:UFyYAYcZuiki/zYZN2ENlA==,type:str]
+    #ENC[AES256_GCM,data:sU0iNTMigZ5DR5KYNs7JdHIUrbc8xA==,iv:SiXgbNf98aQSzwXz79BKUV6ebM1d37GeTsuTBWoCMgU=,tag:IWNKi095pHbYeCuTJraFtA==,type:comment]
+    githubInternalToken: ENC[AES256_GCM,data:MGa+NMFLjy0tFbSaBnoWtPwHFZe5bQcc0KpG7JktZyxNYSaqDbJ21Q==,iv:u8pZuXFH8XVfw0pFMWxmGdtgKHbQ/+cD8b+JkvZosog=,tag:qphn2f/jWT7f/9IbwNBFqA==,type:str]
+    #ENC[AES256_GCM,data:tb4gU1tJFAdc639bMWaJvBAHZx1TEaECZ2xabqRiBg==,iv:rhOPR6mWkrVdgqtMXkEDQOha1IeI9JHii+1YsYiHKEo=,tag:NQIHuzfA7WX74YBvnp0skQ==,type:comment]
 mongodb:
-    mongodbRootPassword: ENC[AES256_GCM,data:zvnckYDlDpnIpQ==,iv:gdBV/93bzhD/VXa7OBDIXy8GAPo9YxcjSX/JY/UT+oI=,tag:QMJn1IBiLpAcW28oHLXtIg==,type:str]
-    # rabbitmq credentials
+    mongodbRootPassword: ENC[AES256_GCM,data:cNkB+eGf5IK6Ew==,iv:yMJ1RYuYrtolUZrmVIVcamYICfs2BJrrKc6zwiSBmkQ=,tag:6QzNRhVNMRO26F9bCWODfw==,type:str]
+    #ENC[AES256_GCM,data:bVjeoMKYDRnEqK0vaZGG5n9JKAit,iv:hNLNwE3Z583H3gCCjcUtnE6N8sV4UPybixNPBkovySM=,tag:DdVHj/r95MeW98caYpgdJQ==,type:comment]
 rabbitmq:
-    rabbitmqUsername: ENC[AES256_GCM,data:l3KPLQ==,iv:Cg6K3O1LJhY0P7N7on1iPDes2Z5JXFLgPj/t9Q0HTEo=,tag:C91AVxU9+sC4AOt+2BahEg==,type:str]
-    rabbitmqPassword: ENC[AES256_GCM,data:VxykBDVXu0OvMQ9O,iv:dEJcCXdeqpuDxk9a87jYm9sBVVOjOXa6Dxb8BO0MHAQ=,tag:UVZcCMKPRBPML2gcvKbKqw==,type:str]
-    # postgres credentials
+    rabbitmqUsername: ENC[AES256_GCM,data:Y6ntyQ==,iv:MR+P0CCK0N59j6qKE6OwW7OiWoFkw7lZRBupWggIiVE=,tag:IGc2P1+wQqm91kw0andeag==,type:str]
+    rabbitmqPassword: ENC[AES256_GCM,data:bgw9Hkbpa6gvicvD,iv:PUjN//AKL8xdr47MjrPiMDgq4HQzhCCYAel69Ze36kQ=,tag:trDNnfz6a1rS/sXi3CsvlA==,type:str]
+    #ENC[AES256_GCM,data:6sZKh5ZIC9lXY6OLUCMAX+t98VGn,iv:12WghzHtT5vqy4VNOnctnTABDxPyFDmkDUe14PgOPAE=,tag:wH3njWdYhOzEs0aA3GtiHQ==,type:comment]
 postgresql:
-    postgresUser: ENC[AES256_GCM,data:e3VotoMZxXs=,iv:Hk1Z5oiqz9jakGnrFzCHynsSDKErgJ/QPJhVgIjJIH4=,tag:IHlh7SpcCqXlak72tXj7fw==,type:str]
-    postgresPassword: ENC[AES256_GCM,data:UwAzeufqFueMW7Gg,iv:zbOtCbSlv0IK1dvU/sdoz4aCOijKn6ggF6SXKjGsM4w=,tag:C1Gl4XKidcLgKjVCyWrGqg==,type:str]
-    # redis credentials
+    postgresUser: ENC[AES256_GCM,data:3SuzobMe9M4=,iv:yIGycPwRHFbho5xjxWJQreWDHhLh19929I1QZr4RybM=,tag:/OU4IgcR2lFtWUIWmfAfEQ==,type:str]
+    postgresPassword: ENC[AES256_GCM,data:g/zgtgz+6HXmgfTq,iv:jc6z1oqPn2kxIOcGkBAYQgLE7B2wkWhYAaeJJTT4G0M=,tag:9BSNrYHhtQOGJwYLT4kvdw==,type:str]
+    #ENC[AES256_GCM,data:aBgFhstaQtCEsnlW7APTgpPw,iv:jQFa5/OHP2v9l8DV3qssb4eQ6Zc3EUdOAeEirATfO9g=,tag:zJ150LPB/61SQsTRkdIm7Q==,type:comment]
 redis:
-    redisPassword: ENC[AES256_GCM,data:pADF6xquf3kgXr8A,iv:Afvft/J+l13NSlK0EI2k5etxjcrIwnhCWd+O4nvL5k4=,tag:vOGSOKIqeGsCsFvPCTRoQg==,type:str]
-    # misc
-slackAppID: ENC[AES256_GCM,data:/c+EiAEWcdBDh5ount1pE6XjPQa0TA==,iv:TMMnOBTPGr1zmtsdX0GMXZE1jV5Y9GI6HEKscjHi4IA=,tag:T0KdOycnaBZXy2DATCQCkg==,type:str]
-slackAppSecret: ENC[AES256_GCM,data:BlxOQqpOlLPpOH9i2YwQnuZm0syKjdSSnZXB1QuFO2Q=,iv:x9cbzj4h0/U8yuaR9SwD4U44CeZ6dtRGR39XUmjt8Hk=,tag:AcMdKBGHI3/vxpV0UfJ3xQ==,type:str]
-# stripe keys
-stripeSecretKey: ENC[AES256_GCM,data:1FzBLd29JvyBVCkqq8z8H/SzcY34/FZAuQFP+BsUqKg=,iv:5GkHuvmsOIXUlYB4LoOgL0TepyvfnBA9SC5YpdSVBqw=,tag:d1a0LPRaCbq9RQw75ORREQ==,type:str]
-stripePublicKey: ENC[AES256_GCM,data:Iuy/NkA/W9zfPARSKMU3yTHSZaz0NdhUqjhuyTKUB6k=,iv:3FkGXVrSH2DpWDqMsafHfr3VE0JtqLDNk4bADF9sNUw=,tag:rwphhER/KOhfWT+NnWA1zA==,type:str]
-stripeWebhookSecret: ENC[AES256_GCM,data:Bc4bDj98F5PZGbdGKAMAQ4Br9bCWNiS82BcIja61E4hHjX1y3Jo=,iv:hBSQlTWddCwy8jyzrhgj7N36A0TDUDnrs5hdZBVggNc=,tag:sfxM9heuOwgWPZ1YEJYRfg==,type:str]
-# rollbar access token
-rollbarAccessToken: ENC[AES256_GCM,data:31kaNpvD0S3jdOmZJfta2ZQinpAJjT/bSebmLMb0/SY=,iv:vcgUL19nr0/DWP7Qny6FbPnBlJ2IY7K3ufBsFKpFYKY=,tag:NO8ZVvc69Qu6k3766GqDYQ==,type:str]
-# all these invalid secrets are here because of cfapi bugs!
-logglyToken: ENC[AES256_GCM,data:EwwrWqSKGAjS1O6kPA==,iv:DAdqDoJkdV4FyOCQywKPLaU74FZQxOFF9PTpE2sNJE4=,tag:0O75lWRb7LtJ7MEh0pcr2w==,type:str]
-bitbucketClientID: ENC[AES256_GCM,data:09eSMGG1c3P2ew==,iv:bQIMrsxF3sZGPUn98bed/4mWznE8n4R7WD2Hgwh/wEM=,tag:67qgzRDfEXWYee1YhLuEbA==,type:str]
-bitbucketClientSecret: ENC[AES256_GCM,data:5ZVnwgTcJ7fnT255zTo=,iv:i6oXRw8vdCa/nivlUhf8kEdhsjSjawVhvKmMWi8QZLE=,tag:SO7MG73IrhU6fZ2EALsxjw==,type:str]
-# CFCR registry auth API key
-registryAuthKey: ENC[AES256_GCM,data:5tOyJOfpv7NxTZv5OW3ooYkbGDgi7mBFRn8UHNzzPE8QCz4+,iv:WTwA9J2Ap27HbNErtHeMHShZutB8QqO22I1siigKAto=,tag:LNK+yOHdYvIejxAO93/EeA==,type:str]
-# Internal Registry admin token
-registryAdminToken: ENC[AES256_GCM,data:YdsQbf20/A0e9C4JahatYO0s3/dcRG93L4yPUUHbcyQ=,iv:sIspYAoiiu0CXzAxSby6gRl4wxkdMiNC+s/bURVwj1A=,tag:fh/37DFWteHeTGeJHU1qqA==,type:str]
+    redisPassword: ENC[AES256_GCM,data:z8j1fUMmQd1DJI8N,iv:b8/YmL43Z1nVyiU0tf/g9x+Jp3dkmjcV2yAfFzK+X1U=,tag:qCsIBWAmkdcGj4cTdAXcwQ==,type:str]
+    #ENC[AES256_GCM,data:NlS53Ao=,iv:hzqiqni2jZTTgRVN6L14b1uJXCCGKHNZBAkOucITUgs=,tag:Rh4qHiC6REmIzgx5Unenhg==,type:comment]
+slackAppID: ENC[AES256_GCM,data:d4s0dmUyM9GqI93U/alM2c4dqftEWA==,iv:1mnkL42/kSYPc4UJpxb90rCBJrfOxQqwyjhNJaDwPsY=,tag:VAgV2iKq9/6HLYheRqyuhA==,type:str]
+slackAppSecret: ENC[AES256_GCM,data:Ukno9RqfYEdYmpq4A9XxfuFM8DZqr33pvdhR7Qz6ehE=,iv:MKtzEI9cRUj4ChGOJ2wxxzr7vtZ5gVMSxKbW7b2htWk=,tag:lTYURjrScwZsKv3fqPaydw==,type:str]
+#ENC[AES256_GCM,data:Tj0g/0XuXr4XwAC6,iv:IrYyNzVlnEZ4pXQIqIUXgBSQbdC4trowXtuy2qGt/8s=,tag:9Ts62C5yTpvFSRIK1VhEZw==,type:comment]
+stripeSecretKey: ENC[AES256_GCM,data:JjAH2J06PmSbUszpl1uKSQyHevLk+EHHjNnfwVwpgpE=,iv:TrpMSeLhSWipz2+u1shTEJ0TJ01Yz/Gr/WvflMArG8U=,tag:VtaINRfqTSXLCBY9IhzFQw==,type:str]
+stripePublicKey: ENC[AES256_GCM,data:97REQsV3S1fErkg8dJzakfYkye4zw48BB/RvIUx0zpQ=,iv:/pPwMLYx3fft7Iek3Pex9sddygiEgbOSyS+/uJ5L8YY=,tag:zGiONFsdNwTlcfnI++A8Lg==,type:str]
+stripeWebhookSecret: ENC[AES256_GCM,data:UVF3WaO/sfadnP3IvXFYn8Ej+UVQZP9O0ogvpPPlB049j1ZQzB4=,iv:d2rexzThanLQYsFSA1+ulNhr1A1nf/U541uKPQCLw2o=,tag:1pXP03PAq1ZlKOLZyH+ILg==,type:str]
+#ENC[AES256_GCM,data:zi5kPdfMMGkW8htw,iv:bnyUqsP/KQkQeQHF/aDamq4njO1jStkhGuRVMRsH07w=,tag:vkGmtd02+IXPBN/zbmsehA==,type:comment]
+githubWebhookSecret: ENC[AES256_GCM,data:G3/TLXqv,iv:9KZjlw/LahmOH1v89tq8kYelgItqu0maY1v6b5CuCEk=,tag:8qBHPK1mnOrCkIhYYfxqIw==,type:str]
+#ENC[AES256_GCM,data:ep2uCPA8sqU7TNybxxFdUrI9xsve,iv:qhvlbjpG/OUBAzhfBIiwAU58QwnMsbpVgsMpQtG1so8=,tag:9S8se4cjs6f8XKCCe8O+6Q==,type:comment]
+rollbarAccessToken: ENC[AES256_GCM,data:DoxmNmL6kITIQz9dfKzRiapP0xVC0VwxyutmaVr+Nxo=,iv:Hofr/sUT4blK8jy3ChlYk5dhOG/S2T2v4MiafMHVMRA=,tag:5QNaYsLYcPfH+lGHlnV5Cg==,type:str]
+#ENC[AES256_GCM,data:f4bp+vEmD6cjUgrUTjciYJG/NqTXVVP9+Qu9M+0VvUcEzYQROuXY8wdsuzbEHh1BSl05SQP4/5jTow==,iv:Qi/rIhTSGXeAIOXHWYHaUzPPGIgFW01YZfArJltcI8s=,tag:5lN/NT3JAbFwgObqGWeX9Q==,type:comment]
+logglyToken: ENC[AES256_GCM,data:jp7EnayNA8VlFNLDqA==,iv:1S1+azdaPhJdbEUQrIXXvSVL6r4hw2p+1pOc2FxMTaA=,tag:3qZsxNgR6R8HQMXjQytgRA==,type:str]
+bitbucketClientID: ENC[AES256_GCM,data:II+Wz/hkovCGZQ==,iv:86BhyPRbtbG7JDlVAg6Z1V1MsljqViu2lfHK7FBVvN4=,tag:2/oBD5I4MMoj6aCv7F2IEQ==,type:str]
+bitbucketClientSecret: ENC[AES256_GCM,data:z8um3h+yv0TN0a6JBYg=,iv:Bj9fig2gM8x3dHBpNPIjIF+PQt31L7yiJciJ/CdRDzo=,tag:N5BmMVZiLmQekLC46jc8Bw==,type:str]
+#ENC[AES256_GCM,data:XWipNio5kd5cxENmGYy4NyDKWBAN/spI31VA,iv:jfeFADe8b+gTUPUIuzLy7mY9QiBZULfHUI3oIrzD0IM=,tag:gkWQnBgbA6qrgtQz441mJQ==,type:comment]
+registryAuthKey: ENC[AES256_GCM,data:fpcf15g5gapcCKwxqQpXBoBCNdNWsJFCdZms0hoW79zVBEft,iv:FDU/WxQAFei/U7eAaTNFumqrw5a/cKywd4eG5EtJPHQ=,tag:w32gm9lRlgyEKct4y9cyVQ==,type:str]
+#ENC[AES256_GCM,data:WdRJOT5BphRvHiXMDV7qyF+yg6mCME3Lvo7Ts1Dl,iv:bRZPe/9ZM5EY5TCXu/ETTRSK1Sp7IxFvtR8AKG9Vmmw=,tag:BvafRk4kA+6hEK5rLi+t4A==,type:comment]
+registryAdminToken: ENC[AES256_GCM,data:xLqkVos+OvmjSmZlgmgGui+uUNmB5nFhC7cyBmB3TZs=,iv:rnyIfvTwn2qFrj2NwhzIz8QgaKTmYk4VjUhxF9Mv3rI=,tag:Bu1Q2XMuD97CNAfT4lfeTA==,type:str]
 sops:
     kms:
     -   arn: arn:aws:kms:us-east-1:839151377425:key/8f4d2cf9-30fb-4f16-a9a8-6cfb6815626e
-        created_at: '2017-10-30T08:50:26Z'
-        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwFnbQjLyhC4PZGj7lNA8AMUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMDEoL2eyRk6C+6huKAgEQgDsfDv6KK0OQXGMfSKTPVvoLSIVpSIibz/JLAjipInXOLn/zU14D7eig1Buw7PRjEMjs3bdXQ/7q7NJfmQ==
-    lastmodified: '2017-10-30T08:50:34Z'
-    mac: ENC[AES256_GCM,data:CH6wr3aPqia4jVLYky/bfHdakt8KgJCFOMRxuWPyMJ4daVRIOGW68ZJ6qTTx+DpkKVaNqn772H1x8gn/CtqKvZ0Zt4E4ivFBIldXyj5PknQZqhwd+AplHuthoVsXIDCTMCuamgD1o3ZiQgcOtQkyClqT8V/Wivqm6KAhuEO6pEI=,iv:HKKTBBr5A02Y8ElQbqfpeepSHOCyqJ/F207qPwunQMU=,tag:YdJyWFMr57OYL7ZX9Tst0A==,type:str]
+        created_at: '2017-11-02T10:59:40Z'
+        enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwEyXrM4oPVdKZeFD6l6QtDkAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMOHRSIbk3TJtlQFJrAgEQgDuWVI2WvHJPhNm27b6ae2grpbYtTD9R4t5iqqqvkNqISmQqsPLz6p/dnDAzbPZUB1fwSF5kqFn6LgnrSA==
+    gcp_kms: []
+    lastmodified: '2017-11-02T10:59:46Z'
+    mac: ENC[AES256_GCM,data:fuPRXhxhA0acRilcnTKz+t5srEomVP/tkWbUPEvKvN3vAhzFCWsdo66yuMogBcKBEWwT9Y+cC8D0m9BiNaTqQAmJBikOoZqbQQVN7pYnvZx5KWc61Bay2HZKBwzhrwqtd0IlKw24jxGpWpIpcNP6EVvlqD8yEGF21gflD/5JJx8=,iv:b9JQaRo4q+iZ9G/cr+j+lFyKLzwFODAUnIFlh5fiRJU=,tag:7i6bhIBH2+QNRVEu7o5ISw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
-    version: 2.0.9
+    version: 3.0.0

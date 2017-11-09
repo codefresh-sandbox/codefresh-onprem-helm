@@ -82,7 +82,7 @@ runtimeEnvBlob: |
           "inCluster": true,
           "namespace": "codefresh"
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v10",
         "envVars": {
           "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
@@ -93,7 +93,7 @@ runtimeEnvBlob: |
           "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
           "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v9",
           "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v1",
+          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3",
           "NODE_TLS_REJECT_UNAUTHORIZED": "0"
         },
         "volumeMounts": {
@@ -159,11 +159,11 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/cf-ui
-  imageTag: onprem-v251
+  imageTag: onprem-v302
 
 cfapi:
   image: gcr.io/codefresh-enterprise/cf-api
-  imageTag: onprem-v218
+  imageTag: onprem-v258
   mongodbImage: bitnami/mongodb:3.4.6-r0
   env:
     ON_PREMISE: true
@@ -198,17 +198,17 @@ cfruntime:
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/cluster-providers
-  imageTag: onprem-v19
+  imageTag: onprem-v23
 
 multiple-clusters:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/multiple-clusters
-  imageTag: onprem-v15
+  imageTag: onprem-v22
 
 kube-integration:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/kube-integration
-  imageTag: onprem-v39
+  imageTag: onprem-v44
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
@@ -314,4 +314,4 @@ global:
 tags:
   saas: false
   infra: true
-  old-scheduler: true
+  old-scheduler: false

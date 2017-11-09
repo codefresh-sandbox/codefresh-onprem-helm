@@ -1,0 +1,14 @@
+{{- if .Values.global.maintenanceMode }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-controller
+  labels:
+    app: {{ template "fullname" . }}-controller
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+data:
+  use-proxy-protocol: {{ .Values.global.useproxyprotocol | quote }}
+{{- end }}

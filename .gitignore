@@ -6,6 +6,9 @@
 # decrypted files
 **/*-dec.yaml
 
+# backup files
+**/bak/*
+
 .env
 .vscode/
 
@@ -20,3 +23,4 @@ out/
 darwin-amd64/
 index.yaml
 **/.DS_Store
+*.orig
