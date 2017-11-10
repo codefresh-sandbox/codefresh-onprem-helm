@@ -5,7 +5,7 @@ cfui:
   imageTag: v305
 
 payments:
-  imageTag: v14
+  imageTag: v15
 
 cluster-providers:
   imageTag: v23
