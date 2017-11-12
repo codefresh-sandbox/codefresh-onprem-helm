@@ -47,7 +47,7 @@ runtimeEnvBlob: |
           "type": "builder",
           "returnRunnerIfNoBuilder": true
         },
-        "clientCertPath": "/etc/ssl/cf"
+        "clientCertPath": "/etc/ssl/cf/"
       },
       "runtimeScheduler": {
         "type": "KubernetesPod",
@@ -186,7 +186,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -247,8 +247,8 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "clientCertPath": "/etc/ssl/cf",
-        "dindImage": "codefresh/cf-dind:v6",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -301,7 +301,7 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "clientCertPath": "/etc/ssl/cf"
+        "clientCertPath": "/etc/ssl/cf/"
       }
     },
     "codefresh-inc": {
@@ -316,7 +316,7 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "clientCertPath": "/etc/ssl/cf"
+        "clientCertPath": "/etc/ssl/cf/"
       }
     }
   }
