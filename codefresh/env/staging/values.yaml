@@ -59,7 +59,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v11",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -130,7 +130,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v5",
+        "image": "codefresh/engine:v11",
         "resources": {
           "requests": {
             "cpu": "100m",
