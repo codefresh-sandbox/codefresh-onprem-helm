@@ -739,7 +739,6 @@ runtimeEnvBlob: |
       },
       "runtimeScheduler": {
         "type": "KubernetesPod",
-        "clientCertPath": "/etc/ssl/cf/",
         "cluster": {
           "clusterProvider": {
             "selector": "k8s-qa1",
