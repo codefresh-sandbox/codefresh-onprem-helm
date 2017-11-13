@@ -183,7 +183,7 @@ runtimeEnvBlob: |
       },
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
-        "clientCertPath": "/etc/cf/ssl/",
+        "clientCertPath": "/etc/ssl/cf/",
         "cluster": {
           "namespace": "default"
         },
