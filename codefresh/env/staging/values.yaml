@@ -187,7 +187,7 @@ runtimeEnvBlob: |
           "namespace": "default"
         },
         "dindImage": "codefresh/cf-dind:v7",
-        "connectByPodIp": true,
+        "connectByPodIp": false,
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",
@@ -249,7 +249,7 @@ runtimeEnvBlob: |
         },
         "clientCertPath": "/etc/ssl/cf/",
         "dindImage": "codefresh/cf-dind:v7",
-        "connectByPodIp": true,
+        "connectByPodIp": false,
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",

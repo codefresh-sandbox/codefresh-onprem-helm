@@ -36,7 +36,8 @@ runtimeEnvBlob: |
           "name": "",
           "type": "builder",
           "returnRunnerIfNoBuilder": true
-        }
+        },
+        "clientCertPath": "/etc/ssl/cf/"
       },
       "runtimeScheduler": {
         "type": "KubernetesPod",
@@ -48,7 +49,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v11",
+        "image": "codefresh/engine:v12",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -154,31 +155,19 @@ runtimeEnvBlob: |
             "mountPath": "/etc/admin/additional-internal-registries.json",
             "subPath": "additional-internal-registries.json",
             "readOnly": true
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "mountPath": "/etc/admin/resource-limitations.json",
-            "subPath": "resource-limitations.json",
-            "readOnly": true
           }
         },
         "volumes": {
           "internal-registry": {
             "name": "internal-registry",
             "secret": {
-              "secretName": "internal-registry"
+              "secretName": "codefresh-internal-registry"
             }
           },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
-              "secretName": "internal-registry"
-            }
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "configMap": {
-              "name": "resource-limitations"
+              "secretName": "codefresh-internal-registry"
             }
           }
         }
@@ -188,7 +177,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -218,13 +207,13 @@ runtimeEnvBlob: |
           "cf-certs-dind": {
             "name": "cf-certs-dind",
             "secret": {
-              "secretName": "cf-certs-dind"
+              "secretName": "codefresh-certs-server"
             }
           },
           "dind-config": {
             "name": "dind-config",
             "configMap": {
-              "name": "dind-config"
+              "name": "codefresh-dind-config"
             }
           }
         },
@@ -249,7 +238,8 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -302,8 +292,9 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh-inc"
           }
         },
-        "dindImage": "codefresh/cf-dind:v6",
-        "connectByPodIp": true,
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/cf-dind:v7",
+        "connectByPodIp": false,
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",
@@ -355,7 +346,8 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -408,7 +400,8 @@ runtimeEnvBlob: |
             "codefresh/runtime-environment": "codefresh"
           }
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -688,7 +681,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/giphy-",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
