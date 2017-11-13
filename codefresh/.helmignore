@@ -2,3 +2,5 @@ env/*
 regsecret-*
 values-*
 
+# backup files
+bak/*

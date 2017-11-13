@@ -6,6 +6,9 @@
 # decrypted files
 **/*-dec.yaml
 
+# backup files
+**/bak/*
+
 .env
 .vscode/
 
