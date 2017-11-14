@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v263
+  imageTag: v264
 
 cfui:
   imageTag: v313
@@ -26,7 +26,7 @@ mailer:
   imageTag: v9
 
 segment-reporter:
-  imageTag: v20
+  imageTag: v21
 
 workflow-baseline-invoker:
   imageTag: v5
