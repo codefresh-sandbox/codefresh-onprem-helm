@@ -11,7 +11,7 @@ cluster-providers:
   imageTag: v23
 
 internal-status-page:
-  imageTag: v8
+  imageTag: v9
 
 multiple-clusters:
   imageTag: v22
