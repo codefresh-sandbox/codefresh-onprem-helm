@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v264
+  imageTag: v265
 
 cfui:
   imageTag: v313
