@@ -132,7 +132,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
