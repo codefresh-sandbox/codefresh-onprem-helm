@@ -13,9 +13,6 @@ cluster-providers:
 internal-status-page:
   imageTag: load
 
-multiple-clusters:
-  imageTag: load
-
 kube-integration:
   imageTag: load
 

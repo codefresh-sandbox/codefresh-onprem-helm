@@ -446,10 +446,6 @@ cluster-providers:
 internal-status-page:
   imageTag: staging
 
-multiple-clusters:
-  imageTag: staging
-  replicaCount: 1
-
 kube-integration:
   imageTag: staging
   replicaCount: 1
@@ -503,4 +499,3 @@ tags:
   saas: true
   infra: false
   old-scheduler: false
-

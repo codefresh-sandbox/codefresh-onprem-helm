@@ -1064,9 +1064,6 @@ cluster-providers:
 internal-status-page:
   enabled: false
 
-multiple-clusters:
-  replicaCount: 2
-
 kube-integration:
   replicaCount: 2
 

@@ -200,11 +200,6 @@ cluster-providers:
   image: gcr.io/codefresh-enterprise/cluster-providers
   imageTag: onprem-v23
 
-multiple-clusters:
-  replicaCount: 1
-  image: gcr.io/codefresh-enterprise/multiple-clusters
-  imageTag: onprem-v22
-
 kube-integration:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/kube-integration
@@ -306,8 +301,6 @@ global:
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-  multipleClustersService: multiple-clusters
-  multipleClustersPort: 9000
   accountsReferralsService: accounts-referrals
   accountsReferralsPort: 9000
 

@@ -113,10 +113,6 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
         - name: CLUSTER_PROVIDERS_PORT
           value: "{{ .Values.global.clusterProvidersPort }}"
-        - name: MULTIPLE_CLUSTERS_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
-        - name: MULTIPLE_CLUSTERS_PORT
-          value: "{{ .Values.global.multipleClustersPort }}"
         - name: CONSUL_HOST
           value: {{ default (printf "%s-%s" .Release.Name .Values.global.consulService) .Values.global.consulHost | quote }}
         - name: EXTERNAL_URL
@@ -298,10 +294,6 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsService }}"
         - name: ACCOUNTS_REFERRALS_PORT
           value: {{ .Values.global.accountsReferralsPort | quote }}
-        - name: MULTIPLE_CLUSTERS_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.multipleClustersService }}"
-        - name: MULTIPLE_CLUSTERS_PORT
-          value: {{ .Values.global.multipleClustersPort | quote }}
         - name: DIND_PROVIDER_URI
           value: "{{ .Release.Name }}-{{ .Values.global.dindProviderService }}"
         - name: DIND_PROVIDER_PORT

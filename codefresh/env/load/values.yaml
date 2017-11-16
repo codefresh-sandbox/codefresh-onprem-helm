@@ -450,9 +450,6 @@ cluster-providers:
 
 internal-status-page:
 
-multiple-clusters:
-  replicaCount: 1
-
 kube-integration:
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/cluster-providers"

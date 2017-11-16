@@ -63,9 +63,6 @@ dependencies:
 - name: cluster-providers
   version: 0.0.2
   repository: file://charts/cluster-providers
-- name: multiple-clusters
-  version: 0.0.2
-  repository: file://charts/multiple-clusters
 - name: kube-integration
   version: 0.0.3
   repository: file://charts/kube-integration

@@ -13,9 +13,6 @@ cluster-providers:
 internal-status-page:
   imageTag: staging
 
-multiple-clusters:
-  imageTag: staging
-
 kube-integration:
   imageTag: staging
 
