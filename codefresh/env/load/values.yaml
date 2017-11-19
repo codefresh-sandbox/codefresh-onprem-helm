@@ -330,7 +330,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "soluto": {
+    "ceph-tst-1": {
       "dockerDaemonScheduler": {
         "type": "DindPodPvc",
         "cluster": {
@@ -340,7 +340,6 @@ runtimeEnvBlob: |
         },
         "clientCertPath": "/etc/ssl/cf/",
         "dindImage": "codefresh/cf-dind:v6",
-        "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
             "cpu": "300m",
