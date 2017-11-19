@@ -2,7 +2,7 @@ cfapi:
   imageTag: v267
 
 cfui:
-  imageTag: v316
+  imageTag: v317
 
 payments:
   imageTag: v15
@@ -14,7 +14,7 @@ internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v44
+  imageTag: v45
 
 accounts-referrals:
   imageTag: v12
