@@ -358,6 +358,17 @@ runtimeEnvBlob: |
             "memory": "4096Mi"
           }
         },
+        "envVars": {
+          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+          "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+          "LOGGER_LEVEL": "debug",
+          "NODE_ENV": "kubernetes",
+          "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+          "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+          "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+          "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
+        },
         "volumeMounts": {
           "cf-certs-dind": {
             "name": "cf-certs-dind",
