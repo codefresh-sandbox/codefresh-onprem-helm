@@ -5,3 +5,4 @@ values-*
 # backup files
 bak/*
 *.orig
+*.bak

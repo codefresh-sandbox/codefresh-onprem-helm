@@ -389,11 +389,7 @@ spec:
           secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-node-clusters"
       - name: cf-certs-client
         secret:
-          {{- if .Values.global.clientCertsCA }}
           secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
-          {{ else }}
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-cf-certs"
-          {{- end}}
       {{- if .Values.awsCredentials }}
       - name: api-secrets-aws
         secret:
