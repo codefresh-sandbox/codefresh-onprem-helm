@@ -100,6 +100,9 @@ activateServiceAccount "$clusterName" "$zone" "$projectName"
 msg "Decrypting all secrets"
 ./sops.sh -d
 
+msg "Creating configmap for dynamic env"
+sed 's/RELEASE/$namespaceName/g' /opt/codefresh/files/dynamic-runtimeEnvironments.json.tmpl > /opt/codefresh/files/dynamic-runtimeEnvironments.json
+
 msg "Install Helm Tiller or upgrade, if needed"
 helm init --upgrade
 
