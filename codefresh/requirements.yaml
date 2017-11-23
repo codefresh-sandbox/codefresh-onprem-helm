@@ -84,6 +84,7 @@ dependencies:
 - name: cfsign
   version: 0.3.1
   repository: file://charts/cfsign
+  condition: cfsign.enabled
   tags:
     - saas
 - name: internal-status-page
