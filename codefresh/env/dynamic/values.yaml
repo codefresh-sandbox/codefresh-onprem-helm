@@ -200,3 +200,6 @@ tags:
   saas: true
   infra: true
   old-scheduler: false
+
+cfsign:
+  enabled: false
