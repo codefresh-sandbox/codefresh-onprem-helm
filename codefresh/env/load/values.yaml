@@ -56,7 +56,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v13",
+        "image": "codefresh/engine:v15",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -114,7 +114,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v13",
+        "image": "codefresh/engine:v15",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -385,7 +385,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v13",
+        "image": "codefresh/engine:v15",
         "resources": {
           "requests": {
             "cpu": "100m",
