@@ -100,10 +100,6 @@ activateServiceAccount "$clusterName" "$zone" "$projectName"
 msg "Decrypting all secrets"
 ./sops.sh -d
 
-msg "Creating configmap for dynamic env"
-
-sed -i "s/RELEASE/$namespaceName/g" /opt/codefresh/codefresh/files/dynamic-runtimeEnvironments.json
-
 msg "Install Helm Tiller or upgrade, if needed"
 helm init --upgrade
 
@@ -145,6 +141,9 @@ helm upgrade $namespaceName codefresh \
 	$customVals
 END
 )
+
+msg "Setting runtimeEnvironments.json for dynamic env"
+sed -i "s/RELEASE/${namespaceName}/g" codefresh/files/dynamic-runtimeEnvironments.json
 
 msg "Running helm upgrade command"
 echo $helmCmd
