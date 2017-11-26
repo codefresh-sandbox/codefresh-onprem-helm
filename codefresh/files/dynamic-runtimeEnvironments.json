@@ -6,7 +6,7 @@
         "name": "",
         "type": "builder",
         "returnRunnerIfNoBuilder": true
-      }
+      },
       "connectByPodIp": true
     },
     "runtimeScheduler": {
