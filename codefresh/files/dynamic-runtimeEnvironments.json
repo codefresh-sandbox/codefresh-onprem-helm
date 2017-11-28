@@ -113,26 +113,26 @@
       "volumes": {
         "internal-registry": {
           "name": "internal-registry",
-          "configMap": {
-            "name": "RELEASE-codefresh-registry"
+          "secret": {
+            "secretName": "staging-internal-registry"
           }
         },
         "additional-internal-registries": {
           "name": "additional-internal-registries",
-          "configMap": {
-            "name": "RELEASE-codefresh-registry"
+          "secret": {
+            "secretName": "staging-internal-registry"
           }
         },
         "resource-limitations": {
           "name": "resource-limitations",
           "configMap": {
-            "name": "RELEASE-codefresh-resource-limitations"
+            "name": "resource-limitations"
           }
         },
         "cf-certs": {
           "name": "cf-certs",
           "secret": {
-            "secretName": "RELEASE-codefresh-cf-certs"
+            "secretName": "cf-certs-dind"
           }
         }
       }
