@@ -76,7 +76,7 @@ data:
     cp -v $SERVER_PEM $CLIENT_CERT
     cp -v $SERVER_KEY $CLIENT_KEY
 
-    secretName={{ template "fullname" . }}-cf-certs
+    secretName={{ template "fullname" . }}-certs-client
 
     if ! kubectl get secret $secretName; then
       kubectl create secret generic {{ template "fullname" . }}-certs-client \
