@@ -104,7 +104,7 @@ spec:
       volumes:
       - name: cf-certs
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-clients"
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
       - name: runner-config
         configMap:
           name: {{ template "fullname" . }}
