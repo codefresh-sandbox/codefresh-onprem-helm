@@ -1,8 +1,8 @@
 cfapi:
-  imageTag: v271
+  imageTag: v274
 
 cfui:
-  imageTag: v322
+  imageTag: v328
 
 payments:
   imageTag: v15
@@ -23,7 +23,7 @@ mailer:
   imageTag: v9
 
 segment-reporter:
-  imageTag: v21
+  imageTag: v22
 
 workflow-baseline-invoker:
   imageTag: v5
