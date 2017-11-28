@@ -204,8 +204,5 @@ tags:
 cfsign:
   enabled: false
 
-runner:
-  enabled: false
-
 builder:
   enabled: false
