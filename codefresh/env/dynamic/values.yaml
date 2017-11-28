@@ -201,7 +201,7 @@ tags:
   infra: true
   old-scheduler: false
 
-cfsign:
+runner:
   enabled: false
 
 builder:
