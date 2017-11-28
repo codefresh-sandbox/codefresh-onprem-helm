@@ -142,9 +142,6 @@ helm upgrade $namespaceName codefresh \
 END
 )
 
-msg "Setting runtimeEnvironments.json for dynamic env"
-sed -i "s/RELEASE/${namespaceName}/g" codefresh/files/dynamic-runtimeEnvironments.json
-
 msg "Running helm upgrade command"
 echo $helmCmd
 eval "$helmCmd"
