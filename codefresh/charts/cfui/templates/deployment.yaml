@@ -62,7 +62,7 @@ spec:
           - name: CODEFRESH_API_URL
             value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
           - name: QUEUE_SERVERS
-            value: {{ default $natsService .Values.global.queueServers | quote }}
+            value: {{ default $natsService .Values.global.queueServers | "" }}
           - name: ROLLBAR_ACCESS_TOKEN
             valueFrom:
               secretKeyRef:
