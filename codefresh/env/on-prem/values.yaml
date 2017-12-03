@@ -303,6 +303,8 @@ global:
   kubeIntegrationPort: 9000
   accountsReferralsService: accounts-referrals
   accountsReferralsPort: 9000
+  helmChartsService: helm-charts
+  helmChartsPort: 9000
 
 tags:
   saas: false

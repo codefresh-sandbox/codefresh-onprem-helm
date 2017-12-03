@@ -1,0 +1,18 @@
+imagePullPolicy: Always
+redeploy: false
+
+# Number of replicas
+replicaCount: 1
+
+image: r.cfcr.io/codefresh-inc/codefresh/helm-chart
+imageTag: master
+
+# Service port
+port: 9000
+
+# Pod (target) port
+targetPort: 9009
+
+# Custom mongodb uri, set this if you don't want to use Chart's mongoDB instance
+mongoURI: ""
+

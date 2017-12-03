@@ -456,6 +456,10 @@ accounts-referrals:
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
+helm-charts:
+  imageTag: staging
+  replicaCount: 1
+
 mailer:
   imageTag: staging
   replicaCount: 1

@@ -39,3 +39,6 @@ cfsign:
 
 background-job-manager:
   imageTag: staging
+
+helm-charts:
+  imageTag: staging
