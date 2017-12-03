@@ -33,3 +33,6 @@ dind-provider:
 
 salesforce-reporter:
   imageTag: master
+
+background-job-manager:
+  imageTag: load

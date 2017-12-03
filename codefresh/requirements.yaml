@@ -112,3 +112,6 @@ dependencies:
   repository: file://charts/salesforce-reporter
   tags:
     - saas
+- name: background-job-manager
+  version: 0.0.1
+  repository: file://charts/background-job-manager

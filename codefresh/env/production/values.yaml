@@ -1,4 +1,8 @@
 ---
+
+background-job-manager:
+  imagePullPolicy: IfNotPresent
+
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
 hostsApp: |

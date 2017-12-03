@@ -36,3 +36,6 @@ salesforce-reporter:
 
 cfsign:
   imageTag: master
+
+background-job-manager:
+  imageTag: staging

@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v275
+  imageTag: v276
 
 cfui:
   imageTag: v329
@@ -33,3 +33,6 @@ dind-provider:
 
 salesforce-reporter:
   imageTag: v4
+
+background-job-manager:
+  imageTag: v1

@@ -1,0 +1,8 @@
+imagePullPolicy: Always
+redeploy: false
+
+# Number of replicas
+replicaCount: 1
+
+image: r.cfcr.io/codefresh-inc/codefresh/background-job-manager
+imageTag: master
