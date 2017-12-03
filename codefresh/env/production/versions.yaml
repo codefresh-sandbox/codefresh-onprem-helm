@@ -1,8 +1,8 @@
 cfapi:
-  imageTag: v274
+  imageTag: v277
 
 cfui:
-  imageTag: v328
+  imageTag: v331
 
 payments:
   imageTag: v15
@@ -14,7 +14,7 @@ internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v45
+  imageTag: v46
 
 accounts-referrals:
   imageTag: v12
@@ -33,3 +33,6 @@ dind-provider:
 
 salesforce-reporter:
   imageTag: v4
+
+background-job-manager:
+  imageTag: v1
