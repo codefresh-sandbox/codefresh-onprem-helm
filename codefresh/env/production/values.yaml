@@ -1020,7 +1020,7 @@ kube-integration:
 accounts-referrals:
   replicaCount: 2
 
-helm-charts:
+charts-manager:
   replicaCount: 2
 
 mailer:
