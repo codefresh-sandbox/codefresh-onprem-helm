@@ -145,8 +145,8 @@ global:
   accountsReferralsService: accounts-referrals
   accountsReferralsPort: 9000
 
-  helmChartsService: helm-charts
-  helmChartsPort: 9000
+  chartsManagerService: charts-manager
+  chartsManagerPort: 9000
 
   dindProviderService: dind-provider
   dindProviderPort: 9000

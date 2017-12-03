@@ -50,7 +50,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
         - name: PORT
-          value: "{{ .Values.global.helmChartsPort }}"
+          value: "{{ .Values.global.chartsManagerPort }}"
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP

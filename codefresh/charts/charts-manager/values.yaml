@@ -4,7 +4,7 @@ redeploy: false
 # Number of replicas
 replicaCount: 1
 
-image: r.cfcr.io/codefresh-inc/codefresh/helm-chart
+image: r.cfcr.io/codefresh-inc/codefresh/charts-manager
 imageTag: master
 
 # Service port

@@ -542,7 +542,7 @@ accounts-referrals:
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
 
-helm-charts:
+charts-manager:
   replicaCount: 1
 
 mailer:

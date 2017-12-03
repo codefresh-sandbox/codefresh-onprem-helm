@@ -37,5 +37,5 @@ salesforce-reporter:
 background-job-manager:
   imageTag: v1
 
-helm-charts:
+charts-manager:
   imageTag: v1
