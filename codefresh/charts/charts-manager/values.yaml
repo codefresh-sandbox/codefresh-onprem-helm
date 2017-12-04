@@ -11,5 +11,5 @@ imageTag: master
 port: 9000
 
 # Pod (target) port
-targetPort: 9000
+targetPort: 9009
 
