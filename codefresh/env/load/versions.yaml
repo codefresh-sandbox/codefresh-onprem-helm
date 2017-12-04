@@ -36,3 +36,6 @@ salesforce-reporter:
 
 background-job-manager:
   imageTag: load
+
+context-manager:
+  imageTag: load

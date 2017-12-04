@@ -147,3 +147,6 @@ global:
 
   dindProviderService: dind-provider
   dindProviderPort: 9000
+
+  contextManagerService: context-manager
+  contextManagerPort: 9000
