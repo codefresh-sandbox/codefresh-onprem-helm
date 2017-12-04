@@ -294,6 +294,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.accountsReferralsService }}"
         - name: ACCOUNTS_REFERRALS_PORT
           value: {{ .Values.global.accountsReferralsPort | quote }}
+        - name: CHARTS_MANAGER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.chartsManagerService }}"
+        - name: CHARTS_MANAGER_PORT
+          value: {{ .Values.global.chartsManagerPort | quote }}
         - name: DIND_PROVIDER_URI
           value: "{{ .Release.Name }}-{{ .Values.global.dindProviderService }}"
         - name: DIND_PROVIDER_PORT
