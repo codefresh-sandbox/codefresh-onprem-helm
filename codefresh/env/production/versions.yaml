@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v284
+  imageTag: v285
 
 cfui:
   imageTag: v333
@@ -38,4 +38,4 @@ background-job-manager:
   imageTag: v3
 
 context-manager:
-  imageTag: v2
+  imageTag: v3
