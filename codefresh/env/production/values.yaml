@@ -765,7 +765,7 @@ runtimeEnvBlob: |
         "volumeSize": "200Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v3",
+        "dindImage": "codefresh/dind:17.06-v4",
         "notCheckServerCa": true,
         "defaultDindResources": {
           "requests": {
