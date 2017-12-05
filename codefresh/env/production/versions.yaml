@@ -35,7 +35,7 @@ salesforce-reporter:
   imageTag: v4
 
 background-job-manager:
-  imageTag: v3
+  imageTag: v4
 
 context-manager:
   imageTag: v3
