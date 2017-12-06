@@ -38,4 +38,4 @@ background-job-manager:
   imageTag: v1
 
 charts-manager:
-  imageTag: v1
+  imageTag: v2
