@@ -39,3 +39,6 @@ background-job-manager:
 
 charts-manager:
   imageTag: load
+
+context-manager:
+  imageTag: load

@@ -118,3 +118,10 @@ dependencies:
 - name: background-job-manager
   version: 0.0.1
   repository: file://charts/background-job-manager
+  tags:
+    - saas
+- name: context-manager
+  version: 0.0.1
+  repository: file://charts/context-manager
+  tags:
+    - saas

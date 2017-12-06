@@ -31,7 +31,7 @@ git pull
 ```
 It will decrypt all values-enc.yaml to values-dec.yaml
 * edit values-dec.yaml
-* run `sops -e [folder with values-enc.yaml, default ./ ]`
+* run `./sops.sh -e [folder with values-enc.yaml, default ./ ]`
   It will encrypt all values-dec.yaml to values-enc.yaml
 * commit and push
   `git commit -am "secrets for production changed" && git push`

@@ -436,6 +436,57 @@ runtimeEnvBlob: |
           }
         }
       }
+    },
+    "dind-ebs-pro": {
+      "dockerDaemonScheduler": {
+        "type": "DindPodPvc",
+        "cluster": {
+          "name": "cluster-dev-1.cf-cd.com",
+          "kubeconfigFilePath": "/root/.kube/config"
+        },
+        "storageClassName": "dind-ebs-provisioner",
+        "volumeSize": "15Gi",
+        "reuseVolumeSelector": "app_env,runtime_env",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/dind:17.06-v3",
+        "defaultDindResources": {
+          "requests": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          },
+          "limits": {
+            "cpu": "2500m",
+            "memory": "2048Mi"
+          }
+        },
+        "volumeMounts": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": false
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "mountPath": "/etc/docker/daemon.json",
+            "subPath": "daemon.json",
+            "readOnly": true
+          }
+        },
+        "volumes": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "secret": {
+              "secretName": "cf-certs-dind"
+            }
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "configMap": {
+              "name": "dind-config"
+            }
+          }
+        }
+      }
     }
   }
 
@@ -525,6 +576,9 @@ cfui:
 
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
+
+context-manager:
+  mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
 
 cluster-providers:
   replicaCount: 1

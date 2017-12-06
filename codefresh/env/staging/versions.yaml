@@ -42,3 +42,6 @@ background-job-manager:
 
 charts-manager:
   imageTag: staging
+
+context-manager:
+  imageTag: staging
