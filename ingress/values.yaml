@@ -19,8 +19,8 @@ livenessPort: 8080
 containerPort: 8080
 servicePort: 80
 
-controllerImage: gcr.io/google_containers/nginx-ingress-controller
-controllerImageTag: 0.9.0-beta.11
+controllerImage: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+controllerImageTag: 0.9.0
 
 controllerContainerPort: 80
 controllerHostPost: 80

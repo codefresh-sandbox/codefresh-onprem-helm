@@ -36,6 +36,7 @@ builder:
 ingress:
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
+  # disableAccessLog: true
 
 runtimeEnvBlob: |
   {

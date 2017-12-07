@@ -33,6 +33,7 @@ rabbitmq:
 ingress:
   replicaCount: 4
   webTlsSecretName: "star.codefresh.io"
+  disableAccessLog: "true"
 
 runtimeEnvBlob: |
   {
@@ -1034,7 +1035,7 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
     LOGGER_LEVEL: error
-    EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
+    # EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
   imagePullPolicy: IfNotPresent
   affinity:
@@ -1088,7 +1089,7 @@ segment-reporter:
 
 workflow-baseline-invoker:
   env:
-    API_URL: app.codefresh.io
+    API_URL: g.codefresh.io
 
 dind-provider:
   replicaCount: 0

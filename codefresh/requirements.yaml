@@ -52,7 +52,7 @@ dependencies:
   tags:
     - infra
 - name: ingress
-  version: 0.1.5
+  version: 0.1.7
   repository: file://../ingress
   condition: ingress.enabled
 - name: cfruntime
