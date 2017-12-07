@@ -71,6 +71,9 @@ dependencies:
   repository: file://charts/accounts-referrals
   tags:
     - saas
+- name: charts-manager
+  version: 0.0.2
+  repository: file://charts/charts-manager
 - name: mailer
   version: 0.0.2
   repository: file://charts/mailer

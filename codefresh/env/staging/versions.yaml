@@ -40,5 +40,8 @@ cfsign:
 background-job-manager:
   imageTag: staging
 
+charts-manager:
+  imageTag: staging
+
 context-manager:
   imageTag: staging
