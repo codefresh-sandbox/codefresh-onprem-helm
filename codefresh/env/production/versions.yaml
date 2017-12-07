@@ -2,7 +2,7 @@ cfapi:
   imageTag: v288
 
 cfui:
-  imageTag: v337
+  imageTag: v338
 
 payments:
   imageTag: v15
@@ -36,6 +36,9 @@ salesforce-reporter:
 
 background-job-manager:
   imageTag: v7
+
+charts-manager:
+  imageTag: v2
 
 context-manager:
   imageTag: v3

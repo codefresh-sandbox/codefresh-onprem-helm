@@ -1080,6 +1080,9 @@ kube-integration:
 accounts-referrals:
   replicaCount: 2
 
+charts-manager:
+  replicaCount: 2
+
 mailer:
   replicaCount: 2
   active: "true"
