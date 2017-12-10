@@ -41,6 +41,7 @@ ingress:
 runtimeEnvBlob: |
   {
     "default": {
+      "environmentCertPath": "/etc/ssl/cf/",
       "dockerDaemonScheduler": {
         "type": "ConsulNodes",
         "cluster": {

@@ -40,6 +40,7 @@ ingress:
 runtimeEnvBlob: |
   {
     "default": {
+      "environmentCertPath": "/etc/ssl/cf/",
       "dockerDaemonScheduler": {
         "type": "ConsulNodes",
         "cluster": {
@@ -59,7 +60,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:staging",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -130,7 +131,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:staging",
         "resources": {
           "requests": {
             "cpu": "100m",
