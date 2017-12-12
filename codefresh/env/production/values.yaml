@@ -310,7 +310,7 @@ runtimeEnvBlob: |
           },
           "limits": {
             "cpu": "2500m",
-            "memory": "2048Mi"
+            "memory": "4096Mi"
           }
         },
         "volumeMounts": {
@@ -765,7 +765,7 @@ runtimeEnvBlob: |
         },
         "storageClassName": "dind-ebs-provisioner",
         "volumeSize": "200Gi",
-        "reuseVolumeSelector": "app_env,runtime_env",
+        "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
         "clientCertPath": "/etc/ssl/cf/",
         "dindImage": "codefresh/dind:17.06-v4",
         "notCheckServerCa": true,
