@@ -256,7 +256,7 @@ runtimeEnvBlob: |
           },
           "limits": {
             "cpu": "2500m",
-            "memory": "2048Mi"
+            "memory": "5104Mi"
           }
         },
         "volumeMounts": {
