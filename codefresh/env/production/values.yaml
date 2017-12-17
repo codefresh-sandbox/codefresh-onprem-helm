@@ -51,17 +51,17 @@ runtimeEnvBlob: |
       "runtimeScheduler": {
         "type": "KubernetesPod",
         "cluster": {
-          "name": "cluster-cf-1.cf-cd.com",
-          "namespace": "workflow",
-          "kubeconfigFilePath": "/root/.kube/config",
+          "namespace": "default",
+          "inCluster": true,
           "nodeSelector": {
+            "nodeType": "worker",
             "codefresh/node-type": "app"
           }
         },
         "image": "codefresh/engine:v17",
         "resources": {
           "requests": {
-            "cpu": "100m",
+            "cpu": "50m",
             "memory": "100Mi"
           },
           "limits": {
@@ -234,7 +234,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "codefresh": {
+    "codefresh-bak": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
@@ -363,7 +363,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "secful": {
+    "secful-bak": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
