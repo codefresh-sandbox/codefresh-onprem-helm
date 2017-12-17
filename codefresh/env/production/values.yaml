@@ -765,7 +765,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "dind"
           }
         },
-        "storageClassName": "dind-local-provisioner",
+        "storageClassName": "dind-local-volume-provisioner",
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
