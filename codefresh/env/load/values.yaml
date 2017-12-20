@@ -230,7 +230,7 @@ runtimeEnvBlob: |
           "kubeconfigFilePath": "/root/.kube/config"
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -291,7 +291,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {

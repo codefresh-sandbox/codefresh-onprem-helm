@@ -185,7 +185,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -247,7 +247,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -301,7 +301,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -355,7 +355,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -560,7 +560,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/giphy-",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
