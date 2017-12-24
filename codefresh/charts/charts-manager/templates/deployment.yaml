@@ -51,6 +51,10 @@ spec:
               key: newrelic-license-key
         - name: PORT
           value: "{{ .Values.global.chartsManagerPort }}"
+        - name: CONTEXT_MANAGER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.contextManagerService }}"
+        - name: CONTEXT_MANAGER_PORT
+          value: {{ .Values.global.contextManagerPort | quote }}
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
