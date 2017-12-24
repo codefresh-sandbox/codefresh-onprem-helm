@@ -713,7 +713,7 @@ runtimeEnvBlob: |
         "volumeSize": "200Gi",
         "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v4",
+        "dindImage": "codefresh/dind:17.06-v5",
         "notCheckServerCa": true,
         "defaultDindResources": {
           "requests": {
@@ -769,7 +769,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v4",
+        "dindImage": "codefresh/dind:17.06-v5",
         "notCheckServerCa": true,
         "defaultDindResources": {
           "requests": {

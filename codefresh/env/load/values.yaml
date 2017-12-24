@@ -58,7 +58,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:v20",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -116,7 +116,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:v20",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -172,7 +172,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -341,7 +341,7 @@ runtimeEnvBlob: |
           "kubeconfigFilePath": "/root/.kube/config"
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v4",
+        "dindImage": "codefresh/dind:17.06-v5",
         "defaultDindResources": {
           "requests": {
             "cpu": "300m",
@@ -387,7 +387,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:v20",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -450,7 +450,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v4",
+        "dindImage": "codefresh/dind:17.06-v5",
         "defaultDindResources": {
           "requests": {
             "cpu": "100m",
@@ -501,7 +501,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v4",
+        "dindImage": "codefresh/dind:17.06-v5",
         "defaultDindResources": {
           "requests": {
             "cpu": "100m",
