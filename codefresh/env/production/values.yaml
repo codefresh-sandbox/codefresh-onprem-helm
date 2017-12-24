@@ -234,7 +234,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "codefresh": {
+    "codefresh-pvc-local": {
       "dockerDaemonScheduler": {
         "type": "DindPodPvc",
         "cluster": {
@@ -290,7 +290,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "codefresh-bak": {
+    "codefresh": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
