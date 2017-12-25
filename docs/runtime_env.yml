@@ -18,7 +18,7 @@ data:
               "inCluster": true,
               "namespace": "ext"
            },
-           "image": "codefresh/engine:v2",
+           "image": "codefresh/engine:v21",
            "resources": {
               "requests": {
                  "cpu": "100m",
@@ -109,7 +109,7 @@ data:
               "inCluster": true,
               "namespace": "ext"
            },
-           "image": "codefresh/engine:v2",
+           "image": "codefresh/engine:v21",
            "resources": {
               "requests": {
                  "cpu": "100m",
