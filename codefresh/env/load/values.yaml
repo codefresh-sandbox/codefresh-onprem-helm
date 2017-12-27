@@ -58,7 +58,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v20",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -70,7 +70,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -81,12 +80,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -95,12 +88,6 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
@@ -116,7 +103,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v20",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -128,7 +115,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -139,12 +125,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -153,12 +133,6 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
@@ -387,7 +361,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v20",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -399,7 +373,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -410,12 +383,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -424,12 +391,6 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
