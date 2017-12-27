@@ -52,7 +52,7 @@ dependencies:
   tags:
     - infra
 - name: ingress
-  version: 0.1.5
+  version: 0.1.7
   repository: file://../ingress
   condition: ingress.enabled
 - name: cfruntime
@@ -71,6 +71,9 @@ dependencies:
   repository: file://charts/accounts-referrals
   tags:
     - saas
+- name: charts-manager
+  version: 0.0.2
+  repository: file://charts/charts-manager
 - name: mailer
   version: 0.0.2
   repository: file://charts/mailer
@@ -116,5 +119,10 @@ dependencies:
 - name: background-job-manager
   version: 0.0.1
   repository: file://charts/background-job-manager
+  tags:
+    - saas
+- name: context-manager
+  version: 0.0.1
+  repository: file://charts/context-manager
   tags:
     - saas

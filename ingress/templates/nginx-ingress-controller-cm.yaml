@@ -1,4 +1,3 @@
-{{- if .Values.global.maintenanceMode }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,5 +9,8 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 data:
+  disable-access-log: {{ default "false" .Values.disableAccessLog | quote }}
+  enable-vts-status: "true"
+{{- if .Values.global.maintenanceMode }}
   use-proxy-protocol: {{ .Values.global.useproxyprotocol | quote }}
 {{- end }}

@@ -36,10 +36,12 @@ builder:
 ingress:
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
+  # disableAccessLog: true
 
 runtimeEnvBlob: |
   {
     "default": {
+      "environmentCertPath": "/etc/ssl/cf/",
       "dockerDaemonScheduler": {
         "type": "ConsulNodes",
         "cluster": {
@@ -56,7 +58,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -68,7 +70,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -79,12 +80,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -93,12 +88,6 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
@@ -114,7 +103,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -126,7 +115,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -137,12 +125,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -151,12 +133,6 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
@@ -170,7 +146,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -228,7 +204,7 @@ runtimeEnvBlob: |
           "kubeconfigFilePath": "/root/.kube/config"
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -289,7 +265,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
           "requests": {
@@ -339,7 +315,7 @@ runtimeEnvBlob: |
           "kubeconfigFilePath": "/root/.kube/config"
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v6",
+        "dindImage": "codefresh/dind:17.06-v5",
         "defaultDindResources": {
           "requests": {
             "cpu": "300m",
@@ -385,7 +361,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:v15",
+        "image": "codefresh/engine:22",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -397,7 +373,6 @@ runtimeEnvBlob: |
           }
         },
         "envVars": {
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
           "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
           "LOGGER_LEVEL": "debug",
           "NODE_ENV": "kubernetes",
@@ -408,12 +383,6 @@ runtimeEnvBlob: |
           "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
         },
         "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "mountPath": "/etc/admin/additional-internal-registries.json",
@@ -422,16 +391,112 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "secret": {
-              "secretName": "internal-registry"
-            }
-          },
           "additional-internal-registries": {
             "name": "additional-internal-registries",
             "secret": {
               "secretName": "internal-registry"
+            }
+          }
+        }
+      }
+    },
+    "dind-ebs-pro": {
+      "dockerDaemonScheduler": {
+        "type": "DindPodPvc",
+        "cluster": {
+          "name": "cluster-dev-1.cf-cd.com",
+          "kubeconfigFilePath": "/root/.kube/config"
+        },
+        "storageClassName": "dind-ebs-provisioner",
+        "volumeSize": "15Gi",
+        "reuseVolumeSelector": "app_env,runtime_env",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/dind:17.06-v5",
+        "defaultDindResources": {
+          "requests": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          },
+          "limits": {
+            "cpu": "2500m",
+            "memory": "2048Mi"
+          }
+        },
+        "volumeMounts": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": false
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "mountPath": "/etc/docker/daemon.json",
+            "subPath": "daemon.json",
+            "readOnly": true
+          }
+        },
+        "volumes": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "secret": {
+              "secretName": "cf-certs-dind"
+            }
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "configMap": {
+              "name": "dind-config"
+            }
+          }
+        }
+      }
+    },
+    "dind-local-pro": {
+      "dockerDaemonScheduler": {
+        "type": "DindPodPvc",
+        "cluster": {
+          "name": "cluster-dev-1.cf-cd.com",
+          "kubeconfigFilePath": "/root/.kube/config"
+        },
+        "storageClassName": "dind-local-volume-provisioner",
+        "volumeSize": "15Gi",
+        "reuseVolumeSelector": "app_env,runtime_env",
+        "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/dind:17.06-v5",
+        "defaultDindResources": {
+          "requests": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          },
+          "limits": {
+            "cpu": "2500m",
+            "memory": "2048Mi"
+          }
+        },
+        "volumeMounts": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": false
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "mountPath": "/etc/docker/daemon.json",
+            "subPath": "daemon.json",
+            "readOnly": true
+          }
+        },
+        "volumes": {
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "secret": {
+              "secretName": "cf-certs-dind"
+            }
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "configMap": {
+              "name": "dind-config"
             }
           }
         }
@@ -526,6 +591,9 @@ cfui:
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
 
+context-manager:
+  mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
+
 cluster-providers:
   replicaCount: 1
   # We won't use Chart's installed mongo instance for load, instead, we'll use
@@ -541,6 +609,9 @@ kube-integration:
 accounts-referrals:
   replicaCount: 1
   mongoURI: "mongodb://mongo.default.svc:27017/accounts-referrals"
+
+charts-manager:
+  replicaCount: 1
 
 mailer:
   replicaCount: 1

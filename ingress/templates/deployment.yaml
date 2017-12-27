@@ -72,4 +72,6 @@ spec:
         {{- else }}
         - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         {{- end }}
-        {{ if .Values.global.maintenanceMode }}- --configmap=$(POD_NAMESPACE)/{{ template "fullname" . }}-controller{{ end }}
+        - --configmap=$(POD_NAMESPACE)/{{ template "fullname" . }}-controller
+
+      #  - --annotations-prefix=nginx.ingress.kubernetes.io

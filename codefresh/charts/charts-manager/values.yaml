@@ -1,0 +1,15 @@
+imagePullPolicy: Always
+redeploy: false
+
+# Number of replicas
+replicaCount: 1
+
+image: r.cfcr.io/codefresh-inc/codefresh/charts-manager
+imageTag: master
+
+# Service port
+port: 9000
+
+# Pod (target) port
+targetPort: 9000
+

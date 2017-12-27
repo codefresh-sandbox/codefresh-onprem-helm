@@ -1,5 +1,6 @@
 {
   "default": {
+    "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
@@ -61,7 +62,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v12",
+      "image": "codefresh/engine:22",
       "resources": {
         "requests": {
           "cpu": "100m",
