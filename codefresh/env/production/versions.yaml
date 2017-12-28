@@ -41,4 +41,4 @@ charts-manager:
   imageTag: v2
 
 context-manager:
-  imageTag: v6
+  imageTag: v7
