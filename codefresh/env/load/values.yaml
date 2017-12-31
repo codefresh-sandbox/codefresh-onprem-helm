@@ -340,8 +340,11 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
+        "storageClassName": "dind-rbd-provisioner",
+        "volumeSize": "15Gi",
+        "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v5",
+        "dindImage": "codefresh/dind:cleaner",
         "defaultDindResources": {
           "requests": {
             "cpu": "300m",
@@ -501,7 +504,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v5",
+        "dindImage": "codefresh/dind:cleaner",
         "defaultDindResources": {
           "requests": {
             "cpu": "100m",
