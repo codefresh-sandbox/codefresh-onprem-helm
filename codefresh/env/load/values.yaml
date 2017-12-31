@@ -58,7 +58,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:25",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -103,7 +103,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:25",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -364,7 +364,7 @@ runtimeEnvBlob: |
           "namespace": "default",
           "kubeconfigFilePath": "/root/.kube/config"
         },
-        "image": "codefresh/engine:25",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -466,6 +466,10 @@ runtimeEnvBlob: |
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
         "dindImage": "codefresh/dind:cleaner",
+        "envVars": {
+           "CLEAN_DOCKER": "true"
+        },
+        "terminationGracePeriodSeconds": 300,
         "defaultDindResources": {
           "requests": {
             "cpu": "100m",
