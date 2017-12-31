@@ -58,7 +58,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:22",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "60m",
@@ -116,7 +116,7 @@ runtimeEnvBlob: |
         "cluster": {
           "namespace": "default"
         },
-        "image": "codefresh/engine:22",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -207,9 +207,13 @@ runtimeEnvBlob: |
         },
         "storageClassName": "dind-local-volume-provisioner",
         "volumeSize": "15Gi",
-        "reuseVolumeSelector": "app_env,runtime_env",
+        "reuseVolumeSelector": "app_env,runtime_env,account_name",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v5",
+        "dindImage": "codefresh/dind:17.06-v6",
+        "envVars": {
+           "CLEAN_DOCKER": "true"
+        },
+        "terminationGracePeriodSeconds": 300,
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",
@@ -422,7 +426,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:22",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -484,7 +488,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "app"
           }
         },
-        "image": "codefresh/engine:22",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -610,7 +614,7 @@ runtimeEnvBlob: |
             "codefresh/node-type": "worker"
           }
         },
-        "image": "codefresh/engine:22",
+        "image": "codefresh/engine:26",
         "resources": {
           "requests": {
             "cpu": "100m",
@@ -745,7 +749,11 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v5",
+        "dindImage": "codefresh/dind:17.06-v6",
+        "envVars": {
+           "CLEAN_DOCKER": "true"
+        },
+        "terminationGracePeriodSeconds": 300,
         "notCheckServerCa": true,
         "defaultDindResources": {
           "requests": {
