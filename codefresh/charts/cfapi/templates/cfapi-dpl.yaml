@@ -135,7 +135,7 @@ spec:
         - name: INTERNAL_SERVER_PORT
           value: {{ .Values.targetInternalPort | quote }}
         - name: GITHUB_API_HOST
-          value: {{ .Values.github.apiHost | quote }}
+          value: {{ .Values.github.loginHost .Values.github.apiHost | quote }}
         - name: GITHUB_API_PATH_PREFIX
           value: "{{ .Values.github.apiPathPrefix }}"
         - name: GITHUB_CLIENT_ID

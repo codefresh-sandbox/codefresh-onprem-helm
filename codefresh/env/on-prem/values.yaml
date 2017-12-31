@@ -205,6 +205,9 @@ kube-integration:
   image: gcr.io/codefresh-enterprise/codefresh/kube-integration
   imageTag: v49
 
+github:
+  apiPathPrefix: /api/v3
+
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   seedJobs: true
