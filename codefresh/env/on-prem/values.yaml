@@ -162,6 +162,8 @@ cfui:
   imageTag: v354
 
 cfapi:
+  github:
+    apiPathPrefix: /api/v3
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
   imageTag: v295
   mongodbImage: bitnami/mongodb:3.4.6-r0
@@ -204,9 +206,6 @@ kube-integration:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/kube-integration
   imageTag: v49
-
-github:
-  apiPathPrefix: /api/v3
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
