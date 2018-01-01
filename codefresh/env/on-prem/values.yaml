@@ -68,13 +68,15 @@ builder:
 runtimeEnvBlob: |
   {
     "default": {
+      "environmentCertPath": "/etc/ssl/cf/",
       "dockerDaemonScheduler": {
         "type": "ConsulNodes",
         "cluster": {
           "name": "",
           "type": "builder",
           "returnRunnerIfNoBuilder": true
-        }
+        },
+        "clientCertPath": "/etc/ssl/cf/"
       },
       "runtimeScheduler": {
         "type": "KubernetesPod",
@@ -82,7 +84,7 @@ runtimeEnvBlob: |
           "inCluster": true,
           "namespace": "codefresh"
         },
-        "image": "codefresh/engine:25",
+        "image": "codefresh/engine:26",
         "envVars": {
           "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
           "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
@@ -200,7 +202,12 @@ cfruntime:
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/cluster-providers
-  imageTag: onprem-v25
+  imageTag: v25
+
+charts-manager:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/codefresh/charts-manager
+  imageTag: v1
 
 kube-integration:
   replicaCount: 1
