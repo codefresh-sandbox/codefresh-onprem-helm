@@ -1081,9 +1081,6 @@ workflow-baseline-invoker:
   env:
     API_URL: g.codefresh.io
 
-dind-provider:
-  replicaCount: 0
-
 salesforce-reporter:
   replicaCount: 1
   active: "true"

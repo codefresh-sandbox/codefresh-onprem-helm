@@ -627,8 +627,6 @@ segment-reporter:
 
 workflow-baseline-invoker:
 
-dind-provider:
-
 salesforce-reporter:
   active: ""
   oauthEndpoint: "https://login.salesforce.com/services/oauth2/token"
