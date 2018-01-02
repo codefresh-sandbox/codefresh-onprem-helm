@@ -55,11 +55,6 @@ dependencies:
   version: 0.1.7
   repository: file://../ingress
   condition: ingress.enabled
-- name: cfruntime
-  repository: file://charts/cfruntime
-  version: 0.1.2
-  tags:
-    - old-scheduler
 - name: cluster-providers
   version: 0.0.2
   repository: file://charts/cluster-providers
@@ -104,11 +99,6 @@ dependencies:
 - name: workflow-baseline-invoker
   version: 0.0.4
   repository: file://charts/workflow-baseline-invoker
-  tags:
-    - saas
-- name: dind-provider
-  version: 0.1.1
-  repository: file://charts/dind-provider
   tags:
     - saas
 - name: salesforce-reporter
