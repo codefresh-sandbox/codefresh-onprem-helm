@@ -161,7 +161,7 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/codefresh/cf-ui
-  imageTag: v362
+  imageTag: v364
 
 cfapi:
   github:
@@ -313,4 +313,3 @@ global:
 tags:
   saas: false
   infra: true
-  old-scheduler: false
