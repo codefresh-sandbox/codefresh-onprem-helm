@@ -75,7 +75,7 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/codefresh/cf-ui
-  imageTag: v366
+  imageTag: v369
 
 cfapi:
   github:
