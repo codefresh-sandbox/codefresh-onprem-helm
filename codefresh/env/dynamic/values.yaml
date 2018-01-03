@@ -29,9 +29,6 @@ redis:
 registry:
   storageSize: 10Gi
 
-builder:
-  replicaCount: 1
-
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 
 # customize cfapi
@@ -111,7 +108,7 @@ tags:
   old-scheduler: false
 
 runner:
-  enabled: false
+  enabled: true
 
 builder:
-  enabled: false
+  enabled: true
