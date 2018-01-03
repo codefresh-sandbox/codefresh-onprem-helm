@@ -32,94 +32,7 @@ registry:
 builder:
   replicaCount: 1
 
-getRuntimeEnvs: files/dynamic-runtimeEnvironments.json
-
-runtimeEnvBlob: |
-  {
-    "default": {
-      "dockerDaemonScheduler": {
-        "type": "ConsulNodes",
-        "cluster": {
-          "name": "",
-          "type": "builder",
-          "returnRunnerIfNoBuilder": true
-        }
-        "connectByPodIp": true
-      },
-      "runtimeScheduler": {
-        "type": "KubernetesPod",
-        "cluster": {
-          "inCluster": true,
-          "namespace": "codefresh"
-        },
-        "image": "codefresh/engine:25",
-        "envVars": {
-          "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
-          "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
-          "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
-          "LOGGER_LEVEL": "debug",
-          "NODE_ENV": "kubernetes",
-          "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
-          "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-          "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v9",
-          "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-          "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3",
-          "NODE_TLS_REJECT_UNAUTHORIZED": "0"
-        },
-        "volumeMounts": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "mountPath": "/etc/admin/internal-registry.json",
-            "subPath": "internal-registry.json",
-            "readOnly": true
-          },
-          "additional-internal-registries": {
-            "name": "additional-internal-registries",
-            "mountPath": "/etc/admin/additional-internal-registries.json",
-            "subPath": "additional-internal-registries.json",
-            "readOnly": true
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "mountPath": "/etc/admin/resource-limitations.json",
-            "subPath": "resource-limitations.json",
-            "readOnly": true
-          },
-          "cf-certs": {
-            "name": "cf-certs",
-            "mountPath": "/etc/ssl/cf",
-            "readOnly": true
-          }
-        },
-        "volumes": {
-          "internal-registry": {
-            "name": "internal-registry",
-            "configMap": {
-              "name": "cf-codefresh-registry"
-            }
-          },
-          "additional-internal-registries": {
-            "name": "additional-internal-registries",
-            "configMap": {
-              "name": "cf-codefresh-registry"
-            }
-          },
-          "resource-limitations": {
-            "name": "resource-limitations",
-            "configMap": {
-              "name": "cf-codefresh-resource-limitations"
-            }
-          },
-          "cf-certs": {
-            "name": "cf-certs",
-            "secret": {
-              "secretName": "cf-codefresh-cf-certs"
-            }
-          }
-        }
-      }
-    }
-  }
+getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
@@ -141,17 +54,13 @@ cfapi:
             "imageName": "ami-e33d40f5",
             "machineTypes": {
               "all": [
-                "c4.large",
-                "c4.xlarge",
-                "t2.micro",
-                "t2.small",
                 "t2.medium",
+                "t2.large",
+                "t2.large",
                 "m4.large",
                 "m4.xlarge",
-                "m4.2xlarge",
-                "m3.medium"
               ],
-              "default": "c4.large"
+              "default": "t2.large"
             },
            "volumeTypes": {
                   "all": [

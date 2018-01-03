@@ -32,17 +32,21 @@ version_bump() {
 
 version_bump
 
-# save default values
+# save default values and .helmignore
 mv codefresh/values.yaml codefresh/values.yaml.bak
+mv codefresh/.helmignore codefresh/.helmignore.bak
 
-# copy on-prem values instead default
+# copy on-prem values and helmignore instead default
 cp codefresh/env/on-prem/values.yaml codefresh/values.yaml
+cp codefresh/.helmignore.onpem codefresh/.helmignore
 
 helm dependency update --skip-refresh codefresh
 
 package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')
 
+# restore defaults
 mv codefresh/values.yaml.bak codefresh/values.yaml
+mv codefresh/.helmignore.bak codefresh/.helmignore
 
 rm -f index.yaml
 
