@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v306
+  imageTag: v307
 
 cfui:
   imageTag: v366
@@ -38,4 +38,4 @@ charts-manager:
   imageTag: v11
 
 context-manager:
-  imageTag: v10
+  imageTag: v11
