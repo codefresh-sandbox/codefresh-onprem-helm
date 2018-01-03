@@ -38,7 +38,7 @@ mv codefresh/.helmignore codefresh/.helmignore.bak
 
 # copy on-prem values and helmignore instead default
 cp codefresh/env/on-prem/values.yaml codefresh/values.yaml
-cp codefresh/.helmignore.onpem codefresh/.helmignore
+cp codefresh/.helmignore.onprem codefresh/.helmignore
 
 helm dependency update --skip-refresh codefresh
 
