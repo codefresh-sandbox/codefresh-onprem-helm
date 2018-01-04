@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v310
+  imageTag: v311
 
 cfui:
   imageTag: v373
