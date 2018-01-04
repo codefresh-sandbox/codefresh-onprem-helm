@@ -69,6 +69,8 @@ dependencies:
 - name: charts-manager
   version: 0.0.2
   repository: file://charts/charts-manager
+  - tags:
+    - saas
 - name: mailer
   version: 0.0.2
   repository: file://charts/mailer
