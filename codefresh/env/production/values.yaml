@@ -315,13 +315,16 @@ runtimeEnvBlob: |
           "namespace": "workflow",
           "kubeconfigFilePath": "/root/.kube/config",
           "nodeSelector": {
-            "codefresh/node-type": "dind",
-            "codefresh/runtime-environment": "codefresh-inc"
+            "codefresh/node-type": "dind"
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v7",
-        "connectByPodIp": true,
+        "dindImage": "codefresh/dind:17.06-v7",
+        "metricsPort": "9100",
+        "terminationGracePeriodSeconds": 300,
+        "envVars": {
+           "USE_DIND_IMAGES_LIB": "true"
+        },
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",
@@ -343,6 +346,11 @@ runtimeEnvBlob: |
             "mountPath": "/etc/docker/daemon.json",
             "subPath": "daemon.json",
             "readOnly": true
+          },
+          "dind-lib": {
+            "name": "dind-lib",
+            "mountPath": "/opt/codefresh/dind",
+            "readOnly": false
           }
         },
         "volumes": {
@@ -356,6 +364,12 @@ runtimeEnvBlob: |
             "name": "dind-config",
             "configMap": {
               "name": "dind-config"
+            }
+          },
+          "dind-lib": {
+            "name": "dind-lib",
+            "hostPath": {
+              "path": "/opt/codefresh/dind"
             }
           }
         }
