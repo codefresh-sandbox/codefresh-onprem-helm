@@ -209,7 +209,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env,account_name",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v6",
+        "dindImage": "codefresh/dind:17.06-v8",
         "envVars": {
            "CLEAN_DOCKER": "true"
         },
@@ -266,7 +266,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v7",
+        "dindImage": "codefresh/dind:17.06-v8",
         "metricsPort": "9100",
         "terminationGracePeriodSeconds": 300,
         "envVars": {
@@ -388,7 +388,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v7",
+        "dindImage": "codefresh/dind:17.06-v8",
         "metricsPort": "9100",
         "terminationGracePeriodSeconds": 300,
         "envVars": {
@@ -776,7 +776,7 @@ runtimeEnvBlob: |
         "volumeSize": "200Gi",
         "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v5",
+        "dindImage": "codefresh/dind:17.06-v8",
         "notCheckServerCa": true,
         "defaultDindResources": {
           "requests": {
@@ -832,7 +832,7 @@ runtimeEnvBlob: |
         "volumeSize": "15Gi",
         "reuseVolumeSelector": "app_env,runtime_env",
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:17.06-v6",
+        "dindImage": "codefresh/dind:17.06-v8",
         "envVars": {
            "CLEAN_DOCKER": "true"
         },
