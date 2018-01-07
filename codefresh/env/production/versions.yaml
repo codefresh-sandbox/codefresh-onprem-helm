@@ -1,20 +1,20 @@
 cfapi:
-  imageTag: v306
+  imageTag: v313
 
 cfui:
-  imageTag: v365
+  imageTag: v376
 
 payments:
   imageTag: v15
 
 cluster-providers:
-  imageTag: v25
+  imageTag: v26
 
 internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v49
+  imageTag: v51
 
 accounts-referrals:
   imageTag: v12
@@ -38,4 +38,4 @@ charts-manager:
   imageTag: v11
 
 context-manager:
-  imageTag: v10
+  imageTag: v12
