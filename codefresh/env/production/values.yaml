@@ -266,6 +266,75 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
+        "dindImage": "codefresh/dind:17.06-v7",
+        "metricsPort": "9100",
+        "terminationGracePeriodSeconds": 300,
+        "envVars": {
+           "USE_DIND_IMAGES_LIB": "true"
+        },
+        "defaultDindResources": {
+          "requests": {
+            "cpu": "390m",
+            "memory": "512Mi"
+          },
+          "limits": {
+            "cpu": "2500m",
+            "memory": "3072Mi"
+          }
+        },
+        "volumeMounts": {
+          "dind-lib": {
+            "name": "dind-lib",
+            "mountPath": "/opt/codefresh/dind",
+            "readOnly": false
+          },
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "mountPath": "/etc/ssl/cf",
+            "readOnly": true
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "mountPath": "/etc/docker/daemon.json",
+            "subPath": "daemon.json",
+            "readOnly": true
+          }
+        },
+        "volumes": {
+          "dind-lib": {
+            "name": "dind-lib",
+            "hostPath": {
+              "path": "/opt/codefresh/dind"
+            }
+          },
+          "cf-certs-dind": {
+            "name": "cf-certs-dind",
+            "secret": {
+              "secretName": "cf-certs-dind"
+            }
+          },
+          "dind-config": {
+            "name": "dind-config",
+            "configMap": {
+              "name": "dind-config"
+            }
+          }
+        }
+      }
+    },
+    "codefresh-bak": {
+      "dockerDaemonScheduler": {
+        "type": "DindKubernetesPod",
+        "cluster": {
+          "name": "cluster-cf-1.cf-cd.com",
+          "namespace": "workflow",
+          "kubeconfigFilePath": "/root/.kube/config",
+          "nodeSelector": {
+            "codefresh/node-type": "dind",
+            "codefresh/runtime-environment": "codefresh"
+          }
+        },
+        "clientCertPath": "/etc/ssl/cf/",
         "dindImage": "codefresh/cf-dind:v7",
         "connectByPodIp": true,
         "defaultDindResources": {
