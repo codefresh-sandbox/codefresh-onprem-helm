@@ -23,13 +23,13 @@ mailer:
   imageTag: v9
 
 segment-reporter:
-  imageTag: v23
+  imageTag: v22
 
 workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v4
+  imageTag: v5
 
 background-job-manager:
   imageTag: v8
