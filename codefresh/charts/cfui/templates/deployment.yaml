@@ -59,8 +59,10 @@ spec:
             {{- else }}
             value: {{ .Values.port | quote }}
             {{- end }}
-          - name: CODEFRESH_API_URL
-            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}/api"
+          - name: CODEFRESH_API_URL_PREFIEX
+            value: "/api"
+          - name: CODEFRESH_API_URL_BASE
+            value: "{{ .Values.global.appProtocol }}://{{ .Values.global.appUrl }}"
           - name: QUEUE_SERVERS
             value: {{ default $natsService .Values.global.queueServers | quote }}
           - name: ROLLBAR_ACCESS_TOKEN

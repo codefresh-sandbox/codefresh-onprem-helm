@@ -265,7 +265,7 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/dind:dind-images-lib",
+        "dindImage": "codefresh/dind:master",
         "metricsPort": "9100",
         "terminationGracePeriodSeconds": 300,
         "envVars": {

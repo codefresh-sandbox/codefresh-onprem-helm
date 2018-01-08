@@ -1,8 +1,8 @@
 cfapi:
-  imageTag: v313
+  imageTag: v315
 
 cfui:
-  imageTag: v376
+  imageTag: v381
 
 payments:
   imageTag: v15
@@ -38,4 +38,4 @@ charts-manager:
   imageTag: v11
 
 context-manager:
-  imageTag: v12
+  imageTag: v13
