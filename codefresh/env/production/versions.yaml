@@ -2,7 +2,7 @@ cfapi:
   imageTag: v315
 
 cfui:
-  imageTag: v381
+  imageTag: v386
 
 payments:
   imageTag: v15
@@ -29,7 +29,7 @@ workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v4
+  imageTag: v5
 
 background-job-manager:
   imageTag: v8
