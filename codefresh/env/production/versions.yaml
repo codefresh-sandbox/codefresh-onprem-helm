@@ -2,7 +2,7 @@ cfapi:
   imageTag: v315
 
 cfui:
-  imageTag: v386
+  imageTag: v393
 
 payments:
   imageTag: v15
@@ -35,7 +35,7 @@ background-job-manager:
   imageTag: v8
 
 charts-manager:
-  imageTag: v11
+  imageTag: v13
 
 context-manager:
   imageTag: v13
