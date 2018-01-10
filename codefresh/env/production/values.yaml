@@ -1104,7 +1104,6 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: "superfresh,superfresh_github,Superfresh"
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
-    LOGGER_LEVEL: error
     # EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
   imagePullPolicy: IfNotPresent
