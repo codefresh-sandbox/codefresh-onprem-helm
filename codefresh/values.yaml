@@ -153,3 +153,8 @@ global:
 
   contextManagerService: context-manager
   contextManagerPort: 9000
+
+  # API Gateway: hermes trigger-manager service
+  hermesService: hermes
+  hermesPort: 8080
+  hermesProtocol: "http"

@@ -265,8 +265,12 @@ runtimeEnvBlob: |
           }
         },
         "clientCertPath": "/etc/ssl/cf/",
-        "dindImage": "codefresh/cf-dind:v7",
-        "connectByPodIp": true,
+        "dindImage": "codefresh/dind:master",
+        "metricsPort": "9100",
+        "terminationGracePeriodSeconds": 300,
+        "envVars": {
+           "USE_DIND_IMAGES_LIB": "true"
+        },
         "defaultDindResources": {
           "requests": {
             "cpu": "390m",
@@ -278,6 +282,11 @@ runtimeEnvBlob: |
           }
         },
         "volumeMounts": {
+          "dind-lib": {
+            "name": "dind-lib",
+            "mountPath": "/opt/codefresh/dind",
+            "readOnly": false
+          },
           "cf-certs-dind": {
             "name": "cf-certs-dind",
             "mountPath": "/etc/ssl/cf",
@@ -291,6 +300,12 @@ runtimeEnvBlob: |
           }
         },
         "volumes": {
+          "dind-lib": {
+            "name": "dind-lib",
+            "hostPath": {
+              "path": "/opt/codefresh/dind"
+            }
+          },
           "cf-certs-dind": {
             "name": "cf-certs-dind",
             "secret": {
@@ -626,8 +641,6 @@ mailer:
 segment-reporter:
 
 workflow-baseline-invoker:
-
-dind-provider:
 
 salesforce-reporter:
   active: ""

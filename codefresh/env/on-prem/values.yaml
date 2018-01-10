@@ -190,11 +190,6 @@ cfapi:
       }
     ]
 
-
-cfruntime:
-  image: gcr.io/codefresh-enterprise/cf-runtime
-  imageTag: onprem-v119
-
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/cluster-providers

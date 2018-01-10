@@ -471,9 +471,6 @@ segment-reporter:
 workflow-baseline-invoker:
   imageTag: staging
 
-dind-provider:
-  imageTag: staging
-
 salesforce-reporter:
   imageTag: master
   active: ""
