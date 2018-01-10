@@ -51,10 +51,10 @@ runtimeEnvBlob: |
       "runtimeScheduler": {
         "type": "KubernetesPod",
         "cluster": {
-          "namespace": "default",
-          "inCluster": true,
+          "name": "cluster-cf-1.cf-cd.com",
+          "namespace": "workflow",
+          "kubeconfigFilePath": "/root/.kube/config",
           "nodeSelector": {
-            "nodeType": "worker",
             "codefresh/node-type": "app"
           }
         },
@@ -253,7 +253,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "codefresh-dind": {
+    "codefresh": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
@@ -376,7 +376,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "codefresh-inc-bak": {
+    "codefresh-inc": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
@@ -444,7 +444,7 @@ runtimeEnvBlob: |
         }
       }
     },
-    "secful-bak": {
+    "secful": {
       "dockerDaemonScheduler": {
         "type": "DindKubernetesPod",
         "cluster": {
