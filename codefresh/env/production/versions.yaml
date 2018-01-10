@@ -38,4 +38,4 @@ charts-manager:
   imageTag: v13
 
 context-manager:
-  imageTag: v13
+  imageTag: v14
