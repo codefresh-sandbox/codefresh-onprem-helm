@@ -12,6 +12,7 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
+      "notCheckServerCa": true,
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/cf-dind:v7",
       "defaultDindResources": {
