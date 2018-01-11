@@ -1,0 +1,15 @@
+imagePullPolicy: Always
+
+# Number of replicas
+replicaCount: 1
+redeploy: false
+
+image: r.cfcr.io/codefresh-inc/codefresh/pipeline-manager
+imageTag: master
+
+# Service port
+port: 9000
+
+# Pod (target) port
+targetPort: 9000
+

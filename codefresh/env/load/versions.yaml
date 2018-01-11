@@ -39,3 +39,6 @@ charts-manager:
 
 context-manager:
   imageTag: load
+
+pipeline-manager:
+  imageTag: load
