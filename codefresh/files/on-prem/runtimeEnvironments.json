@@ -8,6 +8,7 @@
         "type": "builder",
         "returnRunnerIfNoBuilder": true
       },
+      "notCheckServerCa": true,
       "clientCertPath": "/etc/ssl/cf/"
     },
     "runtimeScheduler": {
