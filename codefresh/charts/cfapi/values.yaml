@@ -86,8 +86,6 @@ env:
   DOCKER_NODE_CERT_PATH: /etc/ssl/cf
   DOCKER_NODE_PUBLIC_DOMAIN: cf-cd.com
   #GOOGLE_KUBE_SERVICE_URI: http://cf-google-auth
-  LOGGER_LEVEL: error
-  LOGGER_MORGAN_ACTIVE: false
   LOGS_PATH: /var/log/cf-api.log
   MAIL_ACTIVE: true
   NODE_ENV: kubernetes

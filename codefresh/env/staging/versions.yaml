@@ -42,3 +42,6 @@ charts-manager:
 
 context-manager:
   imageTag: staging
+
+pipeline-manager:
+  imageTag: staging

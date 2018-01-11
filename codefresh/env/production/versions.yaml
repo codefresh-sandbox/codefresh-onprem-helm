@@ -1,8 +1,8 @@
 cfapi:
-  imageTag: v315
+  imageTag: v321
 
 cfui:
-  imageTag: v393
+  imageTag: v406
 
 payments:
   imageTag: v15
@@ -14,7 +14,7 @@ internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v51
+  imageTag: v52
 
 accounts-referrals:
   imageTag: v12
@@ -32,10 +32,13 @@ salesforce-reporter:
   imageTag: v5
 
 background-job-manager:
-  imageTag: v8
+  imageTag: v10
 
 charts-manager:
   imageTag: v13
 
 context-manager:
-  imageTag: v13
+  imageTag: v14
+
+pipeline-manager:
+  imageTag: v2

@@ -4,6 +4,11 @@ background-job-manager:
   imagePullPolicy: IfNotPresent
 
 context-manager:
+  replicaCount: 2
+  imagePullPolicy: IfNotPresent
+
+pipeline-manager:
+  replicaCount: 2
   imagePullPolicy: IfNotPresent
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
@@ -1104,7 +1109,6 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: "superfresh,superfresh_github,Superfresh"
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
-    LOGGER_LEVEL: error
     # EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
   imagePullPolicy: IfNotPresent
@@ -1161,6 +1165,7 @@ segment-reporter:
   replicaCount: 2
 
 workflow-baseline-invoker:
+  replicaCount: 0
   env:
     API_URL: g.codefresh.io
 
