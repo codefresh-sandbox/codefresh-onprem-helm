@@ -320,6 +320,12 @@ spec:
           value: "{{ default "8080" .Values.global.hermesPort }}"
         - name: HERMES_PROTOCOL
           value: "{{ default "http" .Values.global.hermesProtocol }}"
+        {{- if .Values.expirationToken }}
+        - name: SYSTEM_EXPIRATION_TOKEN
+          value: {{ .Values.cfet }}
+        - name: SYSTEM_EXPIRATION_URL
+          value: {{ .Values.expirationURL }}
+        {{- end }}
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:

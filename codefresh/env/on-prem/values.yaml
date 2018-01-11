@@ -83,6 +83,7 @@ cfapi:
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
   imageTag: v307
   mongodbImage: bitnami/mongodb:3.4.6-r0
+  expirationURL: https://codefresh.io/contact-sales
   env:
     ON_PREMISE: true
     LOGGER_LEVEL: debug
