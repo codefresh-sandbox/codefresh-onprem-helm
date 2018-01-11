@@ -29,7 +29,7 @@ redis:
 registry:
   storageSize: 10Gi
 
-getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
+getRuntimeEnvs: files/dynamic/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
