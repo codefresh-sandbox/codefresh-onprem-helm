@@ -105,9 +105,10 @@ cfapi:
 tags:
   saas: true
   infra: true
+  old-scheduler: false
 
 runner:
-  enabled: true
+  enabled: false
 
 builder:
-  enabled: true
+  enabled: false
