@@ -430,6 +430,9 @@ payments:
 context-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
 
+pipeline-manager:
+  mongoURI: "mongodb://mongo.default.svc:27017/pipeline-manager"
+
 cluster-providers:
   replicaCount: 1
   # We won't use Chart's installed mongo instance for staging, instead, we'll use

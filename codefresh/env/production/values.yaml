@@ -4,6 +4,11 @@ background-job-manager:
   imagePullPolicy: IfNotPresent
 
 context-manager:
+  replicaCount: 2
+  imagePullPolicy: IfNotPresent
+
+pipeline-manager:
+  replicaCount: 2
   imagePullPolicy: IfNotPresent
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
