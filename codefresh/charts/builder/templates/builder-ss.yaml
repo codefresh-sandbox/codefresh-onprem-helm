@@ -19,27 +19,6 @@ spec:
         forceRedeployUniqId: {{ now | quote }}
       {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/builder-cm.yaml") . | sha256sum }}
-        pod.beta.kubernetes.io/init-containers: '[
-          {
-            "name": "register-dind-container",
-            "image": "alexeiled/curl:3.6",
-            "imagePullPolicy": "{{ default "" .Values.imagePullPolicy }}",
-            "volumeMounts": [
-              {
-                "name": "builder-config",
-                "mountPath": "/opt/dind/register",
-                "subPath": "register"
-              }
-            ],
-            "env": [
-              {
-                "name": "POD_NAME",
-                "valueFrom": { "fieldRef": { "apiVersion": "v1", "fieldPath": "metadata.name" } }
-              }
-            ],
-            "command": ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace}}.svc"]
-          }
-        ]'
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -53,6 +32,21 @@ spec:
           value: {{ .Values.tolerations.value | quote }}
           effect: {{ .Values.tolerations.effect | quote }}
       {{- end }}
+      initContainers:
+      - name: register-builder-container
+        image: alexeiled/curl:3.6
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        command: ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace}}.svc"]
+        volumeMounts:
+        - name: builder-config
+          mountPath: /opt/dind/register
+          subPath: register
       containers:
       - image: {{ .Values.global.dindImage | quote }}
         name:  {{ template "fullname" . }}
@@ -108,7 +102,7 @@ spec:
       volumes:
       - name: cf-certs
         secret:
-          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-cf-certs"
+          secretName: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
       - name: builder-config
         configMap:
           name: {{ template "fullname" . }}
