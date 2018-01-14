@@ -19,6 +19,7 @@ spec:
         heritage: {{ .Release.Service  | quote }}
     spec:
       containers:
+      {{- if not .Values.global.clientCertsCA }}
       - name: {{ template "fullname" . }}-certs
         image: {{ .Values.kubectlImage }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
@@ -27,6 +28,7 @@ spec:
         - name: tools
           mountPath: "/opt/codefresh/gen-runtime-certs"
           subPath: "gen-runtime-certs"
+      {{- end }}
       {{- if not .Values.webTLS }}
       - name: {{ template "fullname" . }}-tls
         image: {{ .Values.kubectlImage }}

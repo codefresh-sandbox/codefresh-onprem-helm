@@ -16,7 +16,9 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 data:
   runtimeEnvironments.json: |
-{{- if .Values.runtimeEnvBlob }}
+{{- if .Values.getRuntimeEnvs }}
+{{ .Files.Get (print .Values.getRuntimeEnvs) | indent 4 }}
+{{- else if .Values.runtimeEnvBlob }}
 {{ .Values.runtimeEnvBlob | indent 4 }}
 {{- else }}
     {

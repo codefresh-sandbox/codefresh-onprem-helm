@@ -1,6 +1,6 @@
 dependencies:
 - name: consul
-  version: 0.3.0
+  version: 1.1.2
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: consul.enabled
   tags:
@@ -69,6 +69,8 @@ dependencies:
 - name: charts-manager
   version: 0.0.2
   repository: file://charts/charts-manager
+  tags:
+    - saas
 - name: mailer
   version: 0.0.2
   repository: file://charts/mailer
@@ -82,6 +84,7 @@ dependencies:
 - name: cfsign
   version: 0.3.1
   repository: file://charts/cfsign
+  condition: cfsign.enabled
   tags:
     - saas
 - name: internal-status-page
