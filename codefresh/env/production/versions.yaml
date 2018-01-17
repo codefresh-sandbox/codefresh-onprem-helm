@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v333
+  imageTag: v334
 
 cfui:
   imageTag: v427
@@ -32,7 +32,7 @@ salesforce-reporter:
   imageTag: v5
 
 background-job-manager:
-  imageTag: v10
+  imageTag: v11
 
 charts-manager:
   imageTag: v15
