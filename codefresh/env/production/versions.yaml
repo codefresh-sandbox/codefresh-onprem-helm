@@ -35,7 +35,7 @@ background-job-manager:
   imageTag: v10
 
 charts-manager:
-  imageTag: v14
+  imageTag: v15
 
 context-manager:
   imageTag: v15
