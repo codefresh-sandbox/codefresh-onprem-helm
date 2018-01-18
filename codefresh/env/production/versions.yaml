@@ -2,10 +2,10 @@ cfapi:
   imageTag: v335
 
 cfui:
-  imageTag: v430
+  imageTag: v431
 
 payments:
-  imageTag: v15
+  imageTag: v16
 
 cluster-providers:
   imageTag: v26
