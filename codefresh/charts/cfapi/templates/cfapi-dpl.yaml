@@ -384,6 +384,11 @@ spec:
           mountPath: /etc/admin/gce_creds.json
           subPath: gce-credentials
         {{- end }}
+        {{- if .Values.azureCredentials }}
+        - name: api-secrets-azure
+          mountPath: /etc/admin/azure_creds.json
+          subPath: azure-credentials
+        {{- end }}
         {{- if .Values.deploymentTemplateImages }}
         - name: config
           mountPath: /etc/admin/deploymentTemplateImages.json
@@ -421,6 +426,11 @@ spec:
       {{- end }}
       {{- if .Values.gceCredentials }}
       - name: api-secrets-gce
+        secret:
+          secretName: {{ template "fullname" . }}
+      {{- end }}
+      {{- if .Values.azureCredentials }}
+      - name: api-secrets-azure
         secret:
           secretName: {{ template "fullname" . }}
       {{- end }}
