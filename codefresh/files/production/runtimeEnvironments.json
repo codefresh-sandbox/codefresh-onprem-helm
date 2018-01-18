@@ -222,7 +222,7 @@
       },
       "defaultDindResources": {
         "requests": {
-          "cpu": "390m",
+          "cpu": "590m",
           "memory": "512Mi"
         },
         "limits": {
@@ -470,7 +470,7 @@
       "connectByPodIp": true,
       "defaultDindResources": {
         "requests": {
-          "cpu": "390m",
+          "cpu": "490m",
           "memory": "512Mi"
         },
         "limits": {
