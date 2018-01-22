@@ -42,6 +42,32 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              key: rabbitmq-password
+        - name: RABBIT_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              key: rabbitmq-username
+        - name: EVENTBUS_URI
+          value: amqp://$(RABBIT_USER):$(RABBIT_PASSWORD)@{{ default (printf "%s-%s" .Release.Name .Values.global.rabbitService) .Values.global.rabbitmqHostname }}
+        - name: POSTGRES_HOST
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname | quote }}
+        - name: POSTGRES_DATABASE
+          value: {{ .Values.global.postgresDatabase }}
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              key: postgres-password
         - name: NODE_ENV
           value: kubernetes
         - name: CLUSTER_PROVIDERS_URI
