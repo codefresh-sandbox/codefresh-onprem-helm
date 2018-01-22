@@ -250,6 +250,26 @@ salesforce-reporter:
 
 nats:
   replicaCount: 3
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - staging-nats
+          topologyKey: kubernetes.io/hostname
 
 global:
   appProtocol: https
