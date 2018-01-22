@@ -385,9 +385,9 @@
       }
     }
   },
-  "codefresh-inc": {
+  "codefresh-shared": {
     "dockerDaemonScheduler": {
-      "type": "DindKubernetesPod",
+      "type": "DindPodPvc",
       "cluster": {
         "name": "cluster-cf-1.cf-cd.com",
         "namespace": "workflow",
@@ -396,39 +396,37 @@
           "codefresh/node-type": "dind"
         }
       },
+      "storageClassName": "dind-local-volume-provisioner",
+      "volumeSize": "15Gi",
+      "reuseVolumeSelector": "app_env,runtime_env",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
-      "metricsPort": "9100",
-      "terminationGracePeriodSeconds": 300,
       "envVars": {
-        "USE_DIND_IMAGES_LIB": "true"
+        "CLEAN_DOCKER": "true"
       },
+      "terminationGracePeriodSeconds": 300,
+      "notCheckServerCa": true,
       "defaultDindResources": {
         "requests": {
-          "cpu": "390m",
-          "memory": "256Mi"
+          "cpu": "900m",
+          "memory": "1024Mi"
         },
         "limits": {
           "cpu": "2500m",
-          "memory": "4096Mi"
+          "memory": "7168Mi"
         }
       },
       "volumeMounts": {
         "cf-certs-dind": {
           "name": "cf-certs-dind",
           "mountPath": "/etc/ssl/cf",
-          "readOnly": true
+          "readOnly": false
         },
         "dind-config": {
           "name": "dind-config",
           "mountPath": "/etc/docker/daemon.json",
           "subPath": "daemon.json",
           "readOnly": true
-        },
-        "dind-lib": {
-          "name": "dind-lib",
-          "mountPath": "/opt/codefresh/dind",
-          "readOnly": false
         }
       },
       "volumes": {
@@ -442,12 +440,6 @@
           "name": "dind-config",
           "configMap": {
             "name": "dind-config"
-          }
-        },
-        "dind-lib": {
-          "name": "dind-lib",
-          "hostPath": {
-            "path": "/opt/codefresh/dind"
           }
         }
       }
