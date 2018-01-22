@@ -393,12 +393,13 @@
         "namespace": "workflow",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
-          "codefresh/node-type": "dind"
+          "codefresh/node-type": "dind",
+          "codefresh/runtime-environment": "codefresh-shared"
         }
       },
       "storageClassName": "dind-local-volume-provisioner",
       "volumeSize": "15Gi",
-      "reuseVolumeSelector": "app_env,runtime_env",
+      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "envVars": {
