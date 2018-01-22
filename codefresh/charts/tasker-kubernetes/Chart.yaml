@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Handle all task that should be running in the background for kubernetes.
 name: tasker-kubernetes
-version: 0.0.1
+version: 0.0.2
 keywords:
 - codefresh
 - kubernetes

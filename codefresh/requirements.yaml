@@ -109,7 +109,7 @@ dependencies:
   tags:
     - saas
 - name: tasker-kubernetes
-  version: 0.0.1
+  version: 0.0.2
   repository: file://charts/tasker-kubernetes
   tags:
     - saas
