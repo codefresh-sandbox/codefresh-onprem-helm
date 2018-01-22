@@ -34,7 +34,7 @@ salesforce-reporter:
 cfsign:
   imageTag: master
 
-background-job-manager:
+tasker-kubernetes:
   imageTag: staging
 
 charts-manager:

@@ -31,7 +31,7 @@ workflow-baseline-invoker:
 salesforce-reporter:
   imageTag: master
 
-background-job-manager:
+tasker-kubernetes:
   imageTag: load
 
 charts-manager:

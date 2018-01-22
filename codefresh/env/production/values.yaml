@@ -1,6 +1,6 @@
 ---
 
-background-job-manager:
+tasker-kubernetes:
   imagePullPolicy: IfNotPresent
 
 context-manager:

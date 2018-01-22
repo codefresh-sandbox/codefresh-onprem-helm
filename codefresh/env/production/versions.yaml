@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v336
+  imageTag: v337
 
 cfui:
   imageTag: v437
@@ -31,8 +31,8 @@ workflow-baseline-invoker:
 salesforce-reporter:
   imageTag: v5
 
-background-job-manager:
-  imageTag: v11
+tasker-kubernetes:
+  imageTag: v12
 
 charts-manager:
   imageTag: v16
