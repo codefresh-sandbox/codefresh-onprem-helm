@@ -24,6 +24,8 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
+      affinity:
+{{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       containers:
       - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         name: {{ template "fullname" . }}

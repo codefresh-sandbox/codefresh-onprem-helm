@@ -333,6 +333,7 @@ cfapi:
             values:
             - internal
             - worker
+            - elk
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
@@ -392,6 +393,30 @@ salesforce-reporter:
 
 nats:
   replicaCount: 3
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+            - elk
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - production-nats
+          topologyKey: kubernetes.io/hostname
+
+
 
 global:
   appProtocol: https
@@ -417,6 +442,7 @@ global:
             values:
             - internal
             - worker
+            - elk
 
   internalServiceAffinity:
     nodeAffinity:
