@@ -84,7 +84,5 @@ spec:
         hostPath:
           path: /var/run/docker.sock
       restartPolicy: Always
-{{- if .Values.segment-reporter.tolerations }}
       tolerations:
-{{ toYaml .Values.segment-reporter.tolerations | indent 6 }}
-{{- end}}
+{{ toYaml (default .Values.global.internalServiceTolerations .Values.tolerations) | indent 6 }}
