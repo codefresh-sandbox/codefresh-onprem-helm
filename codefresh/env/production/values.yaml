@@ -375,11 +375,6 @@ mailer:
 
 segment-reporter:
   replicaCount: 2
-  tolerations:
-  - effect: NoSchedule
-    key: nodeType
-    operator: Equal
-    value: internal
 
 workflow-baseline-invoker:
   replicaCount: 0
