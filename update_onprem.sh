@@ -19,7 +19,7 @@ version_bump() {
 
   increased_version=$(echo ${release}.${major}.${minor})
 
-  read -t10 -p "Enter new version (timeout 10 sec) [${increased_version}]: " new_version
+  read -t30 -p "Enter new version (timeout 10 sec) [${increased_version}]: " new_version
 
   new_version=${new_version:-${increased_version}}
 
