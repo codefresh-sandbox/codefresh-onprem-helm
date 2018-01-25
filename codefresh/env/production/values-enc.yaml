@@ -89,6 +89,8 @@ cluster-providers:
     mongoURI: ENC[AES256_GCM,data:9wX0tvNJ0V4BtYy3WfjvTa9D0enOSzS18NuD2ZuTq799wODAX/VwzoqkTaaSRJzjqfYALGimknAAJzczBL3DEKnvBmXQ++8Efr1icngkvcht/EU9Qi3dwUDuAW0cEETS3cdS0OWEQGfMkHt73PanNDZgX4zhM2cA5bG4I4K+TJqdyFEIjZFxPv3guHGNbDWsZRo9Xga3m4Hm33JUIiDo5233urssfrPm,iv:0YkdpDDwjX09dxyzUgPaGxDiSOeNU3FrcAncTzN8SQo=,tag:hGR16HQLqyXhfY5Jt83aaA==,type:str]
 accounts-referrals:
     mongoURI: ENC[AES256_GCM,data:tyynq0p2orcRYLofi6C41DKQC8F0Ia/X2pP4HSV0Ar7uT1R9NgdQ4RXUIjCwQMeYt7SA2lGVQLjEzTjphldPYq00/K9lS3NoafakWRvnmKOUdgGzlGg/eCHFI9XdHV+KQrrDkFnxQ8clqdZn0KBsB1h7JPrdfAweS7fSY2N7c7gRerQgDbbwvMOMTGodhR/oXOH67yEaHZlpz4A0WCCadT4NjtS+zGNBiA==,iv:AYXkPXCqi0c1xA/ElhlpVP+Oq3/WLhO0CfFvsN8Tz58=,tag:eBao52mlSCDW2/SeReF5sg==,type:str]
+charts-manager:
+    mongoURI: [PLACE HERE]
 mailer:
     sendgridKey: ENC[AES256_GCM,data:3g5xWrWIBRA201UTn1PNpM8EV/Bk0/OwWseIwSX522vBHSYTentctq0KkesyO+nH4wkT1rfg2c56Mzr76okNpdsBQw7d,iv:0Kvb5f8q4gTg1Ey/6kA/rG6SuHiWKN0AZf3ZXqh3nGo=,tag:jG80ANEzJNu+fQNKFWltFg==,type:str]
 segmentKey: ENC[AES256_GCM,data:glLpomMCb4xCdpvzVWSHhXfvcmaKI73yPS0m6umBk9Y=,iv:mSBdJntLWx93W6+cehIpYPRfV/o1S0yVfb4jJZjA2d0=,tag:yna1nE2K9lQ6jK0zUQy/ow==,type:str]
