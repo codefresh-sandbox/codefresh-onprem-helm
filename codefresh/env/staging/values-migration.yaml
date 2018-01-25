@@ -459,6 +459,7 @@ accounts-referrals:
 charts-manager:
   imageTag: staging
   replicaCount: 1
+  mongoURI: "mongodb://mongo.default.svc:27017/charts-manager"
 
 mailer:
   imageTag: staging
