@@ -19,19 +19,29 @@ spec:
         heritage: {{ .Release.Service  | quote }}
     spec:
       containers:
-      - name: {{ template "fullname" . }}-admin-account
+      - name: {{ template "fullname" . }}-admincf
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongodbDatabase }} --username {{ .Values.global.mongodbUsername }} --password {{ .Values.global.mongodbPassword }} --collection accounts --type json --file /etc/admin/accounts.json"]
+        env:
+          - name: MONGODB_ADDRESS
+            value: {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}
+          - name: MONGODB_ROOT_PASSWORD
+            value: {{ .Values.mongodb.mongodbRootPassword }}
+          - name: MONGODB_DATABASE
+            value: {{ .Values.global.mongodbDatabase }}
+          - name: MONGODB_USER
+            value: {{ .Values.global.mongodbUsername }}
+          - name: MONGODB_PASSWORD
+            value: {{ .Values.global.mongodbPassword }}
+        command:
+          - "/bin/sh"
+          - "-exc"
+          - |
+{{ .Files.Get (print .Values.global.mongoSeedJobScript ) | indent 12  }}
         volumeMounts:
         - name: seed
           mountPath: "/etc/admin/accounts.json"
           subPath: "accounts.json"
-      - name: {{ template "fullname" . }}-admin-user
-        image: {{ .Values.mongodbImage }}
-        imagePullPolicy: IfNotPresent
-        command: ["/bin/sh", "-c", "mongoimport --host {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }} --db {{ .Values.global.mongodbDatabase }} --username  {{ .Values.global.mongodbUsername }} --password {{ .Values.global.mongodbPassword }} --collection users --type json --file /etc/admin/users.json"]
-        volumeMounts:
         - name: seed
           mountPath: "/etc/admin/users.json"
           subPath: "users.json"
