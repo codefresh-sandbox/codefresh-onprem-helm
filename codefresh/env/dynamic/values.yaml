@@ -111,3 +111,6 @@ runner:
 
 builder:
   enabled: false
+
+payments:
+  stripeIgnoreAccountNotFoundErrors: true
