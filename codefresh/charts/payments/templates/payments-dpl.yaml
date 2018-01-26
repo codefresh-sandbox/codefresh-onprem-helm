@@ -109,10 +109,7 @@ spec:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: github-webhook-sign-secret
         - name: STRIPE_IGNORE_ACCOUNT_NOT_FOUND_ERRORS
-          valueFrom:
-            configMapKeyRef:
-              name:  {{ template "fullname" . }}
-              key: stripe-ignore-account-not-found-errors
+          value: "true"
         readinessProbe:
           httpGet:
             path: /api/ping
