@@ -182,6 +182,7 @@ cfui:
 
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
+  stripeIgnoreAccountNotFoundErrors: true
 
 context-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
@@ -207,6 +208,7 @@ accounts-referrals:
 
 charts-manager:
   replicaCount: 1
+  mongoURI: "mongodb://mongo.default.svc:27017/charts-manager"
 
 mailer:
   replicaCount: 1
