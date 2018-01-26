@@ -113,8 +113,6 @@ spec:
             configMapKeyRef:
               name:  {{ template "fullname" . }}
               key: stripe-ignore-account-not-found-errors
-        - name: STRIPE_TEST
-          value: "test"
         readinessProbe:
           httpGet:
             path: /api/ping
