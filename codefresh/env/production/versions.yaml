@@ -2,7 +2,7 @@ cfapi:
   imageTag: v341
 
 cfui:
-  imageTag: v442
+  imageTag: v443
 
 payments:
   imageTag: v18
@@ -35,7 +35,7 @@ tasker-kubernetes:
   imageTag: v12
 
 charts-manager:
-  imageTag: v16
+  imageTag: v18
 
 context-manager:
   imageTag: v15
