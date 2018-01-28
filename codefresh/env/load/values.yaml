@@ -182,7 +182,7 @@ cfui:
 
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
-  stripeIgnoreAccountNotFoundErrors: true
+  stripeIgnoreAccountNotFoundErrors: "true"
 
 context-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/context-manager"

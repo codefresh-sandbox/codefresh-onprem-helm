@@ -113,4 +113,4 @@ builder:
   enabled: false
 
 payments:
-  stripeIgnoreAccountNotFoundErrors: true
+  stripeIgnoreAccountNotFoundErrors: "true"
