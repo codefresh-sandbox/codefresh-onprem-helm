@@ -40,7 +40,7 @@ ingress:
   webTlsSecretName: "star.codefresh.io"
   disableAccessLog: "true"
 
-getRuntimeEnvs: files/production/runtimeEnvironments.json
+getRuntimeEnvs: files/production/runtimeEnvironments-on-nodes.json
 
 # customize cfapi
 cfapi:
