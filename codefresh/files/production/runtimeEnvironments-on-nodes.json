@@ -16,7 +16,7 @@
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
-          "codefresh/node-type": "app"
+          "codefresh/node-type": "dind"
         }
       },
       "image": "codefresh/engine:26",
