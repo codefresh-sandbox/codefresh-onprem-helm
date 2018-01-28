@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v341
+  imageTag: v342
 
 cfui:
   imageTag: v444
@@ -32,7 +32,7 @@ salesforce-reporter:
   imageTag: v5
 
 tasker-kubernetes:
-  imageTag: v12
+  imageTag: v13
 
 charts-manager:
   imageTag: v20
