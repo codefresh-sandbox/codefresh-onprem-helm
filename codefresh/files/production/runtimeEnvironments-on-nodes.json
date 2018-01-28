@@ -12,10 +12,10 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       "cluster": {
+        "name": "cluster-dev-1.cf-cd.com",
         "namespace": "default",
-        "inCluster": true,
+        "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
-          "nodeType": "worker",
           "codefresh/node-type": "app"
         }
       },
@@ -31,7 +31,6 @@
         }
       },
       "envVars": {
-        "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
@@ -40,22 +39,8 @@
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       },
-      "volumeMounts": {
-        "additional-internal-registries": {
-          "name": "additional-internal-registries",
-          "mountPath": "/etc/admin/additional-internal-registries.json",
-          "subPath": "additional-internal-registries.json",
-          "readOnly": true
-        }
-      },
-      "volumes": {
-        "additional-internal-registries": {
-          "name": "additional-internal-registries",
-          "secret": {
-            "secretName": "internal-registry"
-          }
-        }
-      }
+      "volumeMounts": {},
+      "volumes": {}
     }
   },
   "defaultUserProvidedCluster": {
@@ -249,6 +234,130 @@
           "operator": "Exists",
           "effect": "NoSchedule"
         }
+      },
+      "volumeMounts": {
+        "additional-internal-registries": {
+          "name": "additional-internal-registries",
+          "mountPath": "/etc/admin/additional-internal-registries.json",
+          "subPath": "additional-internal-registries.json",
+          "readOnly": true
+        },
+        "resource-limitations": {
+          "name": "resource-limitations",
+          "mountPath": "/etc/admin/resource-limitations.json",
+          "subPath": "resource-limitations.json",
+          "readOnly": true
+        }
+      },
+      "volumes": {
+        "additional-internal-registries": {
+          "name": "additional-internal-registries",
+          "secret": {
+            "secretName": "internal-registry"
+          }
+        },
+        "resource-limitations": {
+          "name": "resource-limitations",
+          "configMap": {
+            "name": "resource-limitations"
+          }
+        }
+      }
+    }
+  },
+  "sctechdevservice": {
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "namespace": "default",
+        "inCluster": true,
+        "nodeSelector": {
+          "nodeType": "worker",
+          "codefresh/node-type": "app"
+        }
+      },
+      "image": "codefresh/engine:26",
+      "resources": {
+        "requests": {
+          "cpu": "100m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "500m",
+          "memory": "1024Mi"
+        }
+      },
+      "envVars": {
+        "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
+      },
+      "volumeMounts": {
+        "additional-internal-registries": {
+          "name": "additional-internal-registries",
+          "mountPath": "/etc/admin/additional-internal-registries.json",
+          "subPath": "additional-internal-registries.json",
+          "readOnly": true
+        },
+        "resource-limitations": {
+          "name": "resource-limitations",
+          "mountPath": "/etc/admin/resource-limitations.json",
+          "subPath": "resource-limitations.json",
+          "readOnly": true
+        }
+      },
+      "volumes": {
+        "additional-internal-registries": {
+          "name": "additional-internal-registries",
+          "secret": {
+            "secretName": "internal-registry"
+          }
+        },
+        "resource-limitations": {
+          "name": "resource-limitations",
+          "configMap": {
+            "name": "resource-limitations"
+          }
+        }
+      }
+    }
+  },
+  "ironsource": {
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "namespace": "default",
+        "inCluster": true,
+        "nodeSelector": {
+          "nodeType": "worker",
+          "codefresh/node-type": "app"
+        }
+      },
+      "image": "codefresh/engine:26",
+      "resources": {
+        "requests": {
+          "cpu": "100m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "500m",
+          "memory": "1024Mi"
+        }
+      },
+      "envVars": {
+        "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       },
       "volumeMounts": {
         "additional-internal-registries": {
