@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "fullname" . }}-seed-mongo
+  name: {{ template "fullname" . }}-template
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -11,7 +11,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ template "fullname" . }}-seed-mongo
+      name: {{ template "fullname" . }}-template
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -19,7 +19,7 @@ spec:
         heritage: {{ .Release.Service  | quote }}
     spec:
       containers:
-      - name: {{ template "fullname" . }}-admincf
+      - name: {{ template "fullname" . }}-dbname
         image: {{ .Values.mongodbImage }}
         imagePullPolicy: IfNotPresent
         env:
@@ -28,26 +28,14 @@ spec:
           - name: MONGODB_ADDRESS
             value: {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}
           - name: MONGODB_DATABASE
-            value: {{ .Values.global.mongodbDatabase }}
+            value: {{ .Values.global.AnydbDatabase }}
           - name: MONGODB_USER
             value: {{ .Values.global.mongodbUsername }}
           - name: MONGODB_PASSWORD
             value: {{ .Values.global.mongodbPassword }}
         command:
-          - "/bin/sh"
+          - "/bin/bash"
           - "-exc"
           - |
-{{ .Files.Get (print .Values.global.mongoSeedJobScript ) | indent 12  }}
-        volumeMounts:
-        - name: seed
-          mountPath: "/etc/admin/accounts.json"
-          subPath: "accounts.json"
-        - name: seed
-          mountPath: "/etc/admin/users.json"
-          subPath: "users.json"
-      restartPolicy: OnFailure
-      volumes:
-      - name: seed
-        configMap:
-          name: {{ template "fullname" . }}
+{{ .Files.Get (print .Values.mongoCreateDbJobScript ) | indent 12  }}
 {{- end }}

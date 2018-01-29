@@ -66,6 +66,9 @@ builder:
   replicaCount: 1
 
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
+mongoSeedJobScript: files/on-prem/mongoSeedJobScript
+mongoCreateDbJobScript: files/on-prem/mongoCreateDbJobScript
+mongodbImage: bitnami/mongodb:3.4.6-r0
 
 runtime_envs:
   - name: codefresh-inc
@@ -82,7 +85,6 @@ cfapi:
     apiPathPrefix: /api/v3
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
   imageTag: v307
-  mongodbImage: bitnami/mongodb:3.4.6-r0
   expirationURL: https://codefresh.io/contact-sales
   env:
     ON_PREMISE: true
@@ -225,6 +227,8 @@ global:
   accountsReferralsPort: 9000
   chartsManagerService: charts-manager
   chartsManagerPort: 9000
+  contextManagerService: context-manager
+  pipelineManagerService: pipeline-manager
 
 tags:
   saas: false
