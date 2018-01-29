@@ -1,3 +1,5 @@
+{{- if .Values.global.seedJobs }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -84,4 +86,5 @@ data:
         "last_login_date" : ISODate("2017-04-26T12:27:21.788+0000"),
         "hashedPassword" : "jRFgMK8CYVXa4FRBVsZQyWHdw/ErWSJzO/WKqdGcLpmeOZw8e6X5TvkYIkc617LU76RCB9B1jPNsbNVaTQGt4g==",
         "salt" : "GswhajDWen9vNW+fZ+xVbA=="
-    } 
+    }
+{{- end }}
