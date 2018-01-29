@@ -195,7 +195,6 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
-  mongoJobScript: files/on-prem/mongoJobScript
 
   # consul service
   consulService: consul
