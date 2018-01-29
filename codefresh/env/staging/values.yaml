@@ -308,6 +308,12 @@ global:
             values:
             - internal
 
+  internalServiceTolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
+
 tags:
   saas: true
   infra: false

@@ -84,4 +84,5 @@ spec:
         hostPath:
           path: /var/run/docker.sock
       restartPolicy: Always
-
+      tolerations:
+{{ toYaml (default .Values.global.internalServiceTolerations .Values.tolerations) | indent 6 }}
