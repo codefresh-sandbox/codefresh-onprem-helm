@@ -60,7 +60,7 @@ cfapi:
                 "location":"centralus",
                 "virtualNetworkResourceGroup":"docker-nodes-vnet-1",
                 "virtualNetworkName":"docker-nodes-vnet",
-                "networkSecurityGroupName":"docker-nodes-nsg",
+                "networkSecurityGroupName":"docker-nodes-dev-nsg",
                 "diagnosticsStorageAccountName":"cfdockernodediagvnet1",
                 "imageReference":{
                    "publisher":"Canonical",
