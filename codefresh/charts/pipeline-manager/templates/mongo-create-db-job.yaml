@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "fullname" . }}-create-accounts-referrals-db
+  name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -11,7 +11,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ template "fullname" . }}-create-accounts-referrals-db
+      name: {{ template "fullname" . }}
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -20,16 +20,16 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - name: {{ template "fullname" . }}-create-accounts-referrals-db
-        image: {{ .Values.mongodbImage }}
+      - name: {{ template "fullname" . }}
+        image: {{ .Values.global.mongodbImage }}
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_ROOT_PASSWORD
-            value: {{ .Values.mongodb.mongodbRootPassword }}
+            value: {{ .Values.global.mongodbRootPassword }}
           - name: MONGODB_ADDRESS
             value: {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}
           - name: MONGODB_DATABASE
-            value: {{ .Values.global.accountsReferralsService }}
+            value: {{ .Values.mongodbName }}
           - name: MONGODB_USER
             value: {{ .Values.global.mongodbUsername }}
           - name: MONGODB_PASSWORD

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: {{ template "fullname" . }}-admincf
-        image: {{ .Values.mongodbImage }}
+        image: {{ .Values.global.mongodbImage }}
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_ROOT_PASSWORD
