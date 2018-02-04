@@ -2,7 +2,7 @@ cfapi:
   imageTag: v346
 
 cfui:
-  imageTag: v451
+  imageTag: v452
 
 payments:
   imageTag: v18
