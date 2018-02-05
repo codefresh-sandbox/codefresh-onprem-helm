@@ -103,6 +103,8 @@ salesforce-reporter:
     clientSecret: ENC[AES256_GCM,data:DwYo7XKrEcgUkzntNtdbEMNiaQ==,iv:ZSMdCkA5KcPClqa2U8aCdMFGWt7vYqB1BueYBx7fL34=,tag:ZLJh2ABJccoDmFXCI5DJgw==,type:str]
     password: ENC[AES256_GCM,data:bODPNA+AZPSPJpf+r7RWqiyJZg0=,iv:1xOTtucs81UpAjuQsw70OP32Hb7pE7YJzY+R9mMQAfg=,tag:L1gEbcQMidnJ1WbTFil76A==,type:str]
     securityToken: ENC[AES256_GCM,data:ezcHx3bHrhfyNs68ZZgPMSlJL8KFeInOTQ==,iv:Zee/30yURdotqJvYze6a6EtyLyywxiiU/6p2GuDx2WQ=,tag:+1Zq1dyJDYmvWLinFuy4ew==,type:str]
+charts-manager:
+    mongoURI: ENC[AES256_GCM,data:5Lenp3vpquxaYNofiOsApuCvlqVLRHHtEfylAewqkb6HzqXPt5cEIbOIL1Qy6+W39dl1+o9zifU76DoGbX0Sg2x9xQm5o7LkxSERiTsGcHWXShhkqTRvFQsD58KS8pU/C1AlENECgV7imFngu1NbPe/SjAq2AWRNUOHee3cOblGTvCIDxube7YphZLqYNjD5Rs44o7SK6HCc8Dcsvpc0IdfYw1o=,iv:y2ZZgguq6nw+TpIygV9l+oPwxn0zui5zvXWlAdYyqBM=,tag:agnIrAolQn0DahdlUjdJvg==,type:str]
 context-manager:
     mongoURI: ENC[AES256_GCM,data:R+RZBMcH16rf7hofA0CSJ/Jx5vn171nAduRdHN1aiJ6w/Pl9f2sjY3GsujHyI+sg5sB8o7WZHz0KqEBmKwNejega64LmQksrU9SxlxZSNqSBRbOrwlzOq/oryyhbzFxVDH06xlYyW00MFgNIZB+cTwue5jUDTfcHFxuMAl+8d1Xxg9AFmPUqP9fPf7Cm9/jRbnLPTu9WE4QDg3baRJc+y4PTYczCDw==,iv:W1Vdk8v6TDrd57Ww/FA1tktgC50Sf6PR9Dojhc5NIV4=,tag:kITSqGaIRVX6NTLiEbCjhQ==,type:str]
     safeSecret: ENC[AES256_GCM,data:aSENgJtUnW2psoNmlRxZtfEp6lk=,iv:93uYGeOlfQgzt1zLitf9bM0+vhhlBIYbkL2GKVIPs+8=,tag:r5Vyqk6+ZAqTmKrIsKx+jA==,type:str]
@@ -115,8 +117,8 @@ sops:
         created_at: '2018-02-05T10:33:20Z'
         enc: AQICAHh7tK2dh55HkjrL+q3qHw1Fs/LKV7qodM1JtjJ3RA8cDwFEHlJfOCSQ4IdhjHWPy19VAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMY4m/qeGTeAN7AOJqAgEQgDur/FnZRKRYoSIRH7SGAICSP8CqJIzEDjp3o6e5BZ11r6eiE5tOSvNtMEYcGe5vTiRfeSVdR5jvJd1dvQ==
     gcp_kms: []
-    lastmodified: '2018-02-05T10:33:21Z'
-    mac: ENC[AES256_GCM,data:pPreOabxZCZMZrkXf32Y6BqT1wmxkbKGR3B+S3PoQk80ZhJYgaxT7OkidMWOYD0CPYc6WNP+qRBaGmd+IvMNcGE+lwZzQz8So4IounPjPywDIBkFJ4Rxih3xYK43Jw6TtWjLmlIQTiKLd3S+1z18kE8SQTeqa3Lbcr1tXQdXy2M=,iv:IhYQ3APMKeGY0Ri6+v8avpeQDpCAx6ORA1j9ty+Sl1E=,tag:QID75wi5yRJ69rgmTmlHdg==,type:str]
+    lastmodified: '2018-02-05T15:46:47Z'
+    mac: ENC[AES256_GCM,data:UsuD2C5p8zM6qRF43P02uKdJH2XRNJZ+YhqzBvV/gi6jaVgtQyBGfMngsMaIEywVkGQQ+HbStlm/d/nXr3vEIcOmHgE1h5QkNhoS8tcWy4F8QN9eEK5SxQnGirMcI34G15O2cUWo2t91dfH5s8luwQmAwOCb/XmGdZQ9B+REJwA=,iv:Ywq1i9iUIKUcDK+g8dFFY70DjfrQCp6nVOLp+wRwdI8=,tag:TENFM3Dy1XMPg35dYz15dw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
-    version: 3.0.0
+    version: 3.0.2
