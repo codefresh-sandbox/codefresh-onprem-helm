@@ -4,53 +4,53 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: consul.enabled
   tags:
-    - infra
+  - infra
 - name: mongodb
   version: 0.4.12
   repository: https://kubernetes-charts.storage.googleapis.com/
   condition: mongo.enabled
   tags:
-    - infra
+  - infra
 - name: postgresql
   version: 0.7.1
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
-    - infra
+  - infra
 - name: redis
   version: 0.8.0
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
-    - infra
+  - infra
 - name: rabbitmq
   version: 0.6.15
   repository: https://kubernetes-charts.storage.googleapis.com/
   tags:
-    - infra
+  - infra
 - name: nats
   version: 0.1.1
   repository: file://../nats
   condition: nats.enabled
   tags:
-    - infra
-    - saas
+  - infra
+  - saas
 - name: builder
   repository: file://charts/builder
   condition: builder.enabled
   version: 0.1.2
   tags:
-    - infra
+  - infra
 - name: runner
   repository: file://charts/runner
   condition: runner.enabled
   version: 0.1.2
   tags:
-    - infra
+  - infra
 - name: registry
   version: 0.1.0
   repository: file://../registry
   condition: registry.enabled
   tags:
-    - infra
+  - infra
 - name: ingress
   version: 0.1.7
   repository: file://../ingress
@@ -65,61 +65,68 @@ dependencies:
   version: 0.0.2
   repository: file://charts/accounts-referrals
   tags:
-    - saas
+  - saas
 - name: charts-manager
   version: 0.0.2
   repository: file://charts/charts-manager
   tags:
-    - saas
+  - saas
 - name: mailer
   version: 0.0.2
   repository: file://charts/mailer
   tags:
-    - saas
+  - saas
 - name: payments
   version: 0.1.6
   repository: file://charts/payments
   tags:
-    - saas
+  - saas
 - name: cfsign
   version: 0.3.1
   repository: file://charts/cfsign
   condition: cfsign.enabled
   tags:
-    - saas
+  - saas
 - name: internal-status-page
   version: 0.0.2
   repository: file://charts/internal-status-page
   condition: internal-status-page.enabled
   tags:
-    - saas
+  - saas
 - name: segment-reporter
   version: 0.0.3
   repository: file://charts/segment-reporter
   tags:
-    - saas
+  - saas
 - name: workflow-baseline-invoker
   version: 0.0.4
   repository: file://charts/workflow-baseline-invoker
   tags:
-    - saas
+  - saas
 - name: salesforce-reporter
   version: 0.1.2
   repository: file://charts/salesforce-reporter
   tags:
-    - saas
+  - saas
 - name: tasker-kubernetes
   version: 0.0.2
   repository: file://charts/tasker-kubernetes
   tags:
-    - saas
+  - saas
 - name: context-manager
   version: 0.0.1
   repository: file://charts/context-manager
   tags:
-    - saas
+  - saas
 - name: pipeline-manager
   version: 0.0.1
   repository: file://charts/pipeline-manager
   tags:
-    - saas
+  - saas
+- name: cfui
+  version: 1.0.0
+  repository: http://35.226.2.234
+  condition: cfui.enabled
+  tags:
+  - saas
+  - infra

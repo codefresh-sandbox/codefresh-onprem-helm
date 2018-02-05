@@ -201,6 +201,8 @@ cfapi:
           topologyKey: kubernetes.io/hostname
 
 cfui:
+  webTLS:
+    secretName: star.codefresh.io
 
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"

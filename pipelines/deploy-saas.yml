@@ -8,5 +8,8 @@ steps:
   deploy_to_saas_environment:
     image: ${{build}}
     commands:
+      - helm init --client-only
+      - helm repo add cf-dev http://chartmuseum-dev.codefresh.io
+      - helm repo add cf-stable http://chartmuseum.codefresh.io
       - bash -c "bin/deploy-saas $DEPLOYED_SERVICES"
 

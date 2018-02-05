@@ -348,6 +348,8 @@ cfapi:
 
 cfui:
   replicaCount: 4
+  webTLS:
+    secretName: star.codefresh.io
 
 payments:
   replicaCount: 2

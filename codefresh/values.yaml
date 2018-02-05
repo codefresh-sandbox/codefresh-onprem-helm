@@ -161,3 +161,8 @@ global:
   hermesService: hermes
   hermesPort: 8080
   hermesProtocol: "http"
+
+
+cfui:
+  enabled: true
+  chartVersion: 0.0.1
