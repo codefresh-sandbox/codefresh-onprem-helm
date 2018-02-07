@@ -320,6 +320,8 @@ spec:
           value: "{{ default "8080" .Values.global.hermesPort }}"
         - name: HERMES_PROTOCOL
           value: "{{ default "http" .Values.global.hermesProtocol }}"
+        - name: KUBECTL_HELM_IMAGE_BASE_NAME
+          value: "{{ .Values.global.kubectlHelmImage }}"
         {{- if .Values.expirationToken }}
         - name: SYSTEM_EXPIRATION_TOKEN
           value: {{ .Values.cfet }}

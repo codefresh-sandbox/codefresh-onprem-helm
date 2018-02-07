@@ -93,3 +93,5 @@ env:
   PROGRESS_BUILDLOGS_BUCKETNAME: ""
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
   RUNTIME_ENVS_JSON_PATH: /etc/admin/runtimeEnvironments.json
+
+kubectlHelmImage: dtzar/helm-kubectl
