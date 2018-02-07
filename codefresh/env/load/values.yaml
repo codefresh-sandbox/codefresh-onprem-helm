@@ -60,7 +60,7 @@ cfapi:
                 "location":"centralus",
                 "virtualNetworkResourceGroup":"docker-nodes-vnet-1",
                 "virtualNetworkName":"docker-nodes-vnet",
-                "networkSecurityGroupName":"docker-nodes-nsg",
+                "networkSecurityGroupName":"docker-nodes-dev-nsg",
                 "diagnosticsStorageAccountName":"cfdockernodediagvnet1",
                 "imageReference":{
                    "publisher":"Canonical",
@@ -179,9 +179,12 @@ cfapi:
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-load
 
 cfui:
+  webTLS:
+    secretName: star.codefresh.io
 
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
+  stripeIgnoreAccountNotFoundErrors: "true"
 
 context-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
@@ -237,6 +240,12 @@ global:
   cfcrDomain: load.cfcr.io
   gceProject: codefresh-load
   agent: io.codefresh.load
+
+  internalServiceTolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
 
 tags:
   saas: true

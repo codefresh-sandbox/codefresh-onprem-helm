@@ -348,6 +348,8 @@ cfapi:
 
 cfui:
   replicaCount: 4
+  webTLS:
+    secretName: star.codefresh.io
 
 payments:
   replicaCount: 2
@@ -453,6 +455,12 @@ global:
             operator: In
             values:
             - internal
+
+  internalServiceTolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
 
 tags:
   saas: true

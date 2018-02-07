@@ -1,6 +1,5 @@
-# kind: scheduler-kubernetes
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
   name: {{ template "fullname" . }}
   labels:
@@ -9,12 +8,5 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
     version: {{ .Values.imageTag | quote }}
-spec:
-  type: NodePort
-  ports:
-  - name: "http"
-    port: {{ .Values.port }}
-    protocol: TCP
-    targetPort: {{ .Values.port }}
-  selector:
-    app: {{ template "fullname" . }}
+data:
+  stripe-ignore-account-not-found-errors: {{ default "" .Values.stripeIgnoreAccountNotFoundErrors | quote }}

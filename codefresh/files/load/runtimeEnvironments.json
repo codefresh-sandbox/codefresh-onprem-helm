@@ -438,7 +438,7 @@
       "volumeSize": "15Gi",
       "reuseVolumeSelector": "app_env,runtime_env",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:cleaner",
+      "dindImage": "codefresh/dind:master",
       "envVars": {
         "CLEAN_DOCKER": "true"
       },
