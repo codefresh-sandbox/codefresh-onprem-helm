@@ -76,7 +76,10 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/codefresh/cf-ui
-  imageTag: v369
+  dockercfg: placeholder
+  logglyToken: invalid-token
+  segmentKey: invalid-key
+  newrelicLicenseKey: invalid-key
 
 cfapi:
   github:
@@ -228,6 +231,12 @@ global:
   chartsManagerPort: 9000
   contextManagerService: context-manager
   pipelineManagerService: pipeline-manager
+
+  internalServiceTolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
 
 tags:
   saas: false
