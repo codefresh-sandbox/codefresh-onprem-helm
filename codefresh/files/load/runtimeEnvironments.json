@@ -16,7 +16,7 @@
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config"
       },
-      "image": "codefresh/engine:26",
+      "image": "codefresh/engine:v28",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -61,7 +61,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:26",
+      "image": "codefresh/engine:v28",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -337,7 +337,7 @@
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config"
       },
-      "image": "codefresh/engine:26",
+      "image": "codefresh/engine:v28",
       "resources": {
         "requests": {
           "cpu": "100m",
