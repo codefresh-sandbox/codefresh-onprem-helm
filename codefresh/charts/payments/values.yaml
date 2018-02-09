@@ -20,3 +20,8 @@ port: 9000
 
 # application target port
 targetPort: 9000
+
+# service database name
+mongodbName: payments
+
+mongoCreateDbJobScript: files/mongoCreateDbJobScript

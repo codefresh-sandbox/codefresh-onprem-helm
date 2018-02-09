@@ -66,6 +66,7 @@ builder:
   replicaCount: 1
 
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
+mongoSeedJobScript: files/on-prem/mongoSeedJobScript
 
 runtime_envs:
   - name: codefresh-inc
@@ -75,14 +76,16 @@ runtime_envs:
 
 cfui:
   image: gcr.io/codefresh-enterprise/codefresh/cf-ui
-  imageTag: v369
+  dockercfg: placeholder
+  logglyToken: invalid-token
+  segmentKey: invalid-key
+  newrelicLicenseKey: invalid-key
 
 cfapi:
   github:
     apiPathPrefix: /api/v3
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
   imageTag: v307
-  mongodbImage: bitnami/mongodb:3.4.6-r0
   expirationURL: https://codefresh.io/contact-sales
   env:
     ON_PREMISE: true
@@ -127,6 +130,7 @@ kube-integration:
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   seedJobs: true
+  certsJobs: true
 
   #appUrl: app-url
   githubInternalToken: placeholder
@@ -193,6 +197,8 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
+  mongodbImage: bitnami/mongodb:3.4.6-r0
+  mongodbRootPassword: XT9nmM8dZD
 
   # consul service
   consulService: consul
@@ -224,6 +230,14 @@ global:
   accountsReferralsPort: 9000
   chartsManagerService: charts-manager
   chartsManagerPort: 9000
+  contextManagerService: context-manager
+  pipelineManagerService: pipeline-manager
+
+  internalServiceTolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
 
 tags:
   saas: false

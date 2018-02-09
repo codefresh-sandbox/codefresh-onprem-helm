@@ -1,4 +1,4 @@
-{{- if .Values.global.seedJobs }}
+{{- if .Values.global.certsJobs }}
 apiVersion: batch/v1
 kind: Job
 metadata:
