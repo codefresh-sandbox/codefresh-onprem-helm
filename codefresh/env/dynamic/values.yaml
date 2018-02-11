@@ -3,6 +3,7 @@
 # hostsApp: default empty
 
 firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
+mongoSeedJobScript: files/dynamic/mongoSeedJobScript
 
 # customize consul chart
 consul:
