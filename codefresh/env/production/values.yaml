@@ -48,6 +48,61 @@ cfapi:
   internalRegistryProtocol: https
   providersData: |
     {
+      "azure":{
+          "name":"azure",
+          "settings":{
+             "AppKeyFile":"/etc/admin/azure_creds.json",
+             "dnsZoneResourceGroup":"general",
+             "dnsZoneName":"az.codefresh.io"
+          },
+          "services":{
+             "docker-node-central-us":{
+                "name":"docker-node",
+                "dnsPrefix":"cf-azuc-docker-node",
+                "location":"centralus",
+                "virtualNetworkResourceGroup":"docker-nodes-vnet-1",
+                "virtualNetworkName":"docker-nodes-vnet",
+                "networkSecurityGroupName":"docker-nodes-nsg",
+                "diagnosticsStorageAccountName":"cfdockernodediagvnet1",
+                "imageReference":{
+                   "publisher":"Canonical",
+                   "offer":"UbuntuServer",
+                   "sku":"16.04-LTS",
+                   "version":"latest"
+                },
+                "machineTypes":{
+                   "all":[
+                      "Standard_DS1_v2",
+                      "Standard_DS2_v2",
+                      "Standard_D2s_v3",
+                      "Standard_D4s_v3",
+                      "Standard_D8s_v3",
+                      "Standard_D16s_v3",
+                      "Standard_B1s",
+                      "Standard_B1ms",
+                      "Standard_B2s",
+                      "Standard_B2ms",
+                      "Standard_B4ms",
+                      "Standard_B8ms"
+                   ],
+                   "default":"Standard_D2s_v3"
+                },
+                "volumeTypes":{
+                   "all":[
+                      "Premium_LRS"
+                   ],
+                   "default":"Premium_LRS"
+                },
+                "VolumeSize":256,
+                "adminUsername":"ubuntu",
+                "adminPublicKey":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoiYIBs94+0+So+nN1Y5kR1RpHDTOmf+MWAZg2DiKn51D3xT8wV3gzgNUcfvtx01xo05Gle27mOuBeKeGA/x/AS5ciqCvqSHDoTXlW0hBDFhdj6xrxDNa7FwX3OtV75vCsHoHpnW9U+mcrH6A/KiMMm+LJfRLqREL3brntAVFC+MwJXIkUkT7/F0r1z8UWfMKRAOswWNd0BwGV5MxhaxKYMgYi2zSgwzT4XwzZ5iWF7M3jtmxZSIbW2zNIjp+AW0f/zuUmp9l7I3kNlco/h5lD+dkHjjZT0NPNtuoB1qEi9tG5Q45hC1K0b32a1x/yRRdjXVVuL2h3WujL+k29vUId",
+                "metadata":{
+                   "kind":"docker-node",
+                   "environment":"azure-production"
+                }
+             }
+          }
+       },
       "aws": {
         "name": "aws",
         "settings": {
@@ -150,160 +205,9 @@ cfapi:
               "autoscale": "docker-node",
               "environment": "aws_production"
             }
-          },
-          "docker-node-jfrog-eu-central-1a": {
-            "region": "eu-central-1",
-            "name": "docker-node",
-            "dnsPrefix": "jfrog-node",
-            "dnsDomain": "cf-cd.com.",
-            "iface": "public",
-            "imageName": "ami-071eca68",
-            "machineTypes": {
-              "all": [
-                "c4.large",
-                "c4.xlarge",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "m3.medium"
-              ],
-              "default": "c4.large"
-            },
-            "volumeTypes": {
-              "all": [
-                "standard",
-                "gp2"
-              ],
-              "default": "gp2"
-            },
-            "securityGroupIds": [
-              "sg-c33b23ab", "sg-0731296f"
-            ],
-            "BlockDeviceMappings": [
-              {
-                "DeviceName": "/dev/sda1",
-                "Ebs": {
-                  "DeleteOnTermination": true,
-                  "VolumeSize": 200,
-                  "VolumeType": "gp2"
-                }
-              }
-            ],
-            "KeyName": "cf-customers-1",
-            "subnetId": "subnet-66e7280e",
-            "metadata": {
-              "autoscale": "docker-node",
-              "environment": "aws-production"
-            }
-          },
-          "docker-node-jfrog-eu-central-1b": {
-            "region": "eu-central-1",
-            "name": "docker-node",
-            "dnsPrefix": "jfrog-node",
-            "dnsDomain": "cf-cd.com.",
-            "iface": "public",
-            "imageName": "ami-071eca68",
-            "machineTypes": {
-              "all": [
-                "c4.large",
-                "c4.xlarge",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "m3.medium"
-              ],
-              "default": "c4.large"
-            },
-            "volumeTypes": {
-              "all": [
-                "standard",
-                "gp2"
-              ],
-              "default": "gp2"
-            },
-            "securityGroupIds": [
-              "sg-c33b23ab", "sg-0731296f"
-            ],
-            "BlockDeviceMappings": [
-              {
-                "DeviceName": "/dev/sda1",
-                "Ebs": {
-                  "DeleteOnTermination": true,
-                  "VolumeSize": 200,
-                  "VolumeType": "gp2"
-                }
-              }
-            ],
-            "KeyName": "cf-customers-1",
-            "subnetId": "subnet-53839f28",
-            "metadata": {
-              "autoscale": "docker-node",
-              "environment": "aws-production"
-            }
           }
         }
       },
-       "azure":{
-          "name":"azure",
-          "settings":{
-             "AppKeyFile":"/etc/admin/azure_creds.json",
-             "dnsZoneResourceGroup":"general",
-             "dnsZoneName":"az.codefresh.io"
-          },
-          "services":{
-             "docker-node-central-us":{
-                "name":"docker-node",
-                "dnsPrefix":"cf-azuc-docker-node",
-                "location":"centralus",
-                "virtualNetworkResourceGroup":"docker-nodes-vnet-1",
-                "virtualNetworkName":"docker-nodes-vnet",
-                "networkSecurityGroupName":"docker-nodes-nsg",
-                "diagnosticsStorageAccountName":"cfdockernodediagvnet1",
-                "imageReference":{
-                   "publisher":"Canonical",
-                   "offer":"UbuntuServer",
-                   "sku":"16.04-LTS",
-                   "version":"latest"
-                },
-                "machineTypes":{
-                   "all":[
-                      "Standard_DS1_v2",
-                      "Standard_DS2_v2",
-                      "Standard_D2s_v3",
-                      "Standard_D4s_v3",
-                      "Standard_D8s_v3",
-                      "Standard_D16s_v3",
-                      "Standard_B1s",
-                      "Standard_B1ms",
-                      "Standard_B2s",
-                      "Standard_B2ms",
-                      "Standard_B4ms",
-                      "Standard_B8ms"
-                   ],
-                   "default":"Standard_D2s_v3"
-                },
-                "volumeTypes":{
-                   "all":[
-                      "Premium_LRS"
-                   ],
-                   "default":"Premium_LRS"
-                },
-                "VolumeSize":256,
-                "adminUsername":"ubuntu",
-                "adminPublicKey":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoiYIBs94+0+So+nN1Y5kR1RpHDTOmf+MWAZg2DiKn51D3xT8wV3gzgNUcfvtx01xo05Gle27mOuBeKeGA/x/AS5ciqCvqSHDoTXlW0hBDFhdj6xrxDNa7FwX3OtV75vCsHoHpnW9U+mcrH6A/KiMMm+LJfRLqREL3brntAVFC+MwJXIkUkT7/F0r1z8UWfMKRAOswWNd0BwGV5MxhaxKYMgYi2zSgwzT4XwzZ5iWF7M3jtmxZSIbW2zNIjp+AW0f/zuUmp9l7I3kNlco/h5lD+dkHjjZT0NPNtuoB1qEi9tG5Q45hC1K0b32a1x/yRRdjXVVuL2h3WujL+k29vUId",
-                "metadata":{
-                   "kind":"docker-node",
-                   "environment":"azure-production"
-                }
-             }
-          }
-       },
       "gce": {
           "name": "gce",
           "settings": {
