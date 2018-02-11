@@ -177,3 +177,5 @@ global:
     key: nodeType
     operator: Equal
     value: internal
+
+  mongodbImage: bitnami/mongodb:3.4.6-r0
