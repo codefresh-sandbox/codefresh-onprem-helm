@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -64,7 +64,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -219,7 +219,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -392,7 +392,7 @@
         }
       }
     }
-  },  
+  },
   "sctechdevservice": {
     "runtimeScheduler": {
       "type": "KubernetesPod",
@@ -404,7 +404,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -466,7 +466,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -592,7 +592,7 @@
           "codefresh/node-type": "worker"
         }
       },
-      "image": "codefresh/engine:v28",
+      "image": "codefresh/engine:29",
       "resources": {
         "requests": {
           "cpu": "100m",
