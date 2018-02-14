@@ -2,7 +2,6 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-metadata:
   name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
