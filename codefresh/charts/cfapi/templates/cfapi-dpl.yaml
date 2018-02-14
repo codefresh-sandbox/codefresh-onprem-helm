@@ -441,7 +441,6 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
-      restartPolicy: Always
 {{- if .Values.global.maintenanceMode }}
 {{ toYaml .Values.global.maintenanceVolumes | indent 6 }}
 {{- end }}
