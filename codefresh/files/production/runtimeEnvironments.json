@@ -393,7 +393,7 @@
       }
     }
   },
- "mmarmm": {
+ "arm": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
