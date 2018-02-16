@@ -414,7 +414,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:v29",
+      "image": "codefresh/engine:v31",
       "resources": {
         "requests": {
           "cpu": "60m",
