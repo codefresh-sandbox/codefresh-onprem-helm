@@ -123,6 +123,13 @@ dependencies:
   repository: file://local-charts/pipeline-manager
   tags:
   - saas
+- name: cfapi
+  version: 0.2.1
+  repository: file://local-charts/cfapi
+  condition: cfapi.enabled
+  tags:
+  - saas
+  - infra
 - name: cfui
   version: 1.1.17
   repository: http://chartmuseum.codefresh.io
