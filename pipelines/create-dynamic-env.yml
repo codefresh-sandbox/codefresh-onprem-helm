@@ -11,5 +11,5 @@ steps:
       - helm init --client-only
       - helm repo add cf-dev http://chartmuseum-dev.codefresh.io
       - helm repo add cf-stable http://chartmuseum.codefresh.io
-      - bash -c "bin/create-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE || while true; do date; sleep 60; done;"
+      - bash -c "bin/create-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE && while true; do date; sleep 60; done;"
 
