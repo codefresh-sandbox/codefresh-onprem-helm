@@ -106,7 +106,7 @@ helm init --upgrade
 msg "Waiting for Helm to be ready ..."
 waitForHelm
 
-sleep 15
+sleep 5
 msg "Helm version"
 helm version
 
