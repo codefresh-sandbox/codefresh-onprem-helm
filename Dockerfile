@@ -5,7 +5,7 @@ FROM golang:1.8-alpine3.6 AS sops
 RUN apk add --no-cache git && go get -u go.mozilla.org/sops/cmd/sops && which sops
 
 #------ helm ----
-FROM dtzar/helm-kubectl:2.5.1 as helm
+FROM dtzar/helm-kubectl:2.8.1 as helm
 
 #------- Deployer ------
 #

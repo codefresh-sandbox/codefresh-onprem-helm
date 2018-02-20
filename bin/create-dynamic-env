@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -xe
 
 readonly BASEPATH="$(dirname "$0")"
 readonly KEY_FILE="service-account.json"
@@ -100,26 +100,31 @@ activateServiceAccount "$clusterName" "$zone" "$projectName"
 msg "Decrypting all secrets"
 ./sops.sh -d
 
-msg "Install Helm Tiller or upgrade, if needed"
-helm init --upgrade
-
-msg "Waiting for Helm to be ready ..."
-waitForHelm
-
-sleep 3
-msg "Helm version"
-helm version
-
-msg "Fetching latest helm dependencies"
-helm dependency update codefresh/
-
-customFlags=$(processCustomFlags)
-customVals=$(processCustomVals)
-
 if [ "$DRY_RUN" != "true" ]; then
 	msg "Creating namespace $namespace"
 	kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
 fi
+
+msg "Install Helm Tiller or upgrade, if needed"
+helm init --tiller-namespace $namespaceName --upgrade
+
+msg "Waiting for Helm to be ready ..."
+waitForHelm
+
+sleep 15
+msg "Helm version"
+helm version --tiller-namespace $namespaceName
+
+msg "Fetching latest helm dependencies"
+helm dependency update codefresh
+
+customFlags=$(processCustomFlags)
+customVals=$(processCustomVals)
+
+#if [ "$DRY_RUN" != "true" ]; then
+#	msg "Creating namespace $namespace"
+#	kubectl get namespace $namespaceName || kubectl create namespace $namespaceName
+#fi
 
 msg "Deploy the Codefresh' helm package"
 helmCmd=$(cat <<END
@@ -127,9 +132,11 @@ helm upgrade $namespaceName codefresh \
 	--install \
 	$customFlags \
 	--force \
+  --debug \
 	--reset-values \
 	--recreate-pods \
 	--namespace $namespaceName \
+  --tiller-namespace $namespaceName \
 	--set ingress.domain="${namespaceName}.dev.codefresh.io" \
 	--set ingress.enabled=true \
 	--set global.appUrl="${namespaceName}.dev.codefresh.io" \

@@ -34,13 +34,13 @@ dependencies:
   - infra
   - saas
 - name: builder
-  repository: file://charts/builder
+  repository: file://local-charts/builder
   condition: builder.enabled
   version: 0.1.2
   tags:
   - infra
 - name: runner
-  repository: file://charts/runner
+  repository: file://local-charts/runner
   condition: runner.enabled
   version: 0.1.2
   tags:
@@ -57,70 +57,70 @@ dependencies:
   condition: ingress.enabled
 - name: cluster-providers
   version: 0.0.2
-  repository: file://charts/cluster-providers
+  repository: file://local-charts/cluster-providers
 - name: kube-integration
   version: 0.0.3
-  repository: file://charts/kube-integration
+  repository: file://local-charts/kube-integration
 - name: accounts-referrals
   version: 0.0.2
-  repository: file://charts/accounts-referrals
+  repository: file://local-charts/accounts-referrals
   tags:
   - saas
 - name: charts-manager
   version: 0.0.2
-  repository: file://charts/charts-manager
+  repository: file://local-charts/charts-manager
   tags:
   - saas
 - name: mailer
   version: 0.0.2
-  repository: file://charts/mailer
+  repository: file://local-charts/mailer
   tags:
   - saas
 - name: payments
   version: 0.1.6
-  repository: file://charts/payments
+  repository: file://local-charts/payments
   tags:
   - saas
 - name: cfsign
   version: 0.3.1
-  repository: file://charts/cfsign
+  repository: file://local-charts/cfsign
   condition: cfsign.enabled
   tags:
   - saas
 - name: internal-status-page
   version: 0.0.2
-  repository: file://charts/internal-status-page
+  repository: file://local-charts/internal-status-page
   condition: internal-status-page.enabled
   tags:
   - saas
 - name: segment-reporter
   version: 0.0.3
-  repository: file://charts/segment-reporter
+  repository: file://local-charts/segment-reporter
   tags:
   - saas
 - name: workflow-baseline-invoker
   version: 0.0.4
-  repository: file://charts/workflow-baseline-invoker
+  repository: file://local-charts/workflow-baseline-invoker
   tags:
   - saas
 - name: salesforce-reporter
   version: 0.1.2
-  repository: file://charts/salesforce-reporter
+  repository: file://local-charts/salesforce-reporter
   tags:
   - saas
 - name: tasker-kubernetes
   version: 0.0.2
-  repository: file://charts/tasker-kubernetes
+  repository: file://local-charts/tasker-kubernetes
   tags:
   - saas
 - name: context-manager
   version: 0.0.1
-  repository: file://charts/context-manager
+  repository: file://local-charts/context-manager
   tags:
   - saas
 - name: pipeline-manager
   version: 0.0.1
-  repository: file://charts/pipeline-manager
+  repository: file://local-charts/pipeline-manager
   tags:
   - saas
 - name: cfui
