@@ -285,7 +285,7 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-local-volume-provisioner",
+      "storageClassName": "dind-rbd-provisioner",
       "volumeSize": "15Gi",
       "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
