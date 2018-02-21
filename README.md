@@ -1,5 +1,8 @@
 # Helm for Codefresh
 
+[![Codefresh Helm Release Status]( https://g.codefresh.io/api/badges/release?type=cf-1&key=eyJhbGciOiJIUzI1NiJ9.NTY3MmQ4ZGViNjcyNGI2ZTM1OWFkZjYy.AN2wExsAsq7FseTbVxxWls8muNx_bBUnQWQVS8IgDTI&selector=cf-prod@codefresh-production&name=production&tillerNamespace=kube-system)]( https://g.codefresh.io/helm/releases/cf-prod@codefresh-production/kube-system/production/services)
+
+
 ### Updaing microservice version:
 Edit `codefresh/env/<environment>/versions.yaml`
 For example, to change api version to v399 on production open `codefresh/env/production/versions.yaml`
