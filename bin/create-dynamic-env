@@ -106,12 +106,12 @@ helm init --upgrade
 msg "Waiting for Helm to be ready ..."
 waitForHelm
 
-sleep 3
+sleep 5
 msg "Helm version"
 helm version
 
 msg "Fetching latest helm dependencies"
-helm dependency update codefresh/
+helm dependency update codefresh
 
 customFlags=$(processCustomFlags)
 customVals=$(processCustomVals)
