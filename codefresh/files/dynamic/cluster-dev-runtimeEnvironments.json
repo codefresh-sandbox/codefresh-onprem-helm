@@ -63,7 +63,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:29",
+      "image": "codefresh/engine:32",
       "resources": {
         "requests": {
           "cpu": "100m",
