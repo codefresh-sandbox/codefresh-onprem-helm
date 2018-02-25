@@ -9,7 +9,7 @@ payments:
   imageTag: v21
 
 cluster-providers:
-  imageTag: v27
+  imageTag: v28
 
 internal-status-page:
   imageTag: v9
