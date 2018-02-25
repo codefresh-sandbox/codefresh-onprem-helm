@@ -1,7 +1,6 @@
 global:
   maintenanceMode: true
   maintenancePort: 1080
-  useproxyprotocol: true
 # Definition for maintenance-proxy container
   maintenanceContainer:
   - image: codefresh/cf-maintenance-page:master
