@@ -59,6 +59,8 @@ spec:
               key: newrelic-license-key
         - name: PORT
           value: "{{ .Values.global.chartsManagerPort }}"
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
         - name: CONTEXT_MANAGER_URI
           value: "{{ .Release.Name }}-{{ .Values.global.contextManagerService }}"
         - name: CONTEXT_MANAGER_PORT
