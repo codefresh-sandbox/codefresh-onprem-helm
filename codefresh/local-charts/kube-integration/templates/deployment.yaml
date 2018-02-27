@@ -97,6 +97,8 @@ spec:
               key: newrelic-license-key
         - name: PORT
           value: "{{ .Values.global.kubeIntegrationPort }}"
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP

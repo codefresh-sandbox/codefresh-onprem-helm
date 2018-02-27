@@ -11,6 +11,3 @@ metadata:
 data:
   disable-access-log: {{ default "false" .Values.disableAccessLog | quote }}
   enable-vts-status: "true"
-{{- if .Values.global.maintenanceMode }}
-  use-proxy-protocol: {{ .Values.global.useproxyprotocol | quote }}
-{{- end }}

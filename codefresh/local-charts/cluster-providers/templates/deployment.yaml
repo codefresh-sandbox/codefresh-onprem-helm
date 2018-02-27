@@ -110,6 +110,8 @@ spec:
             secretKeyRef:
               name: {{ template "fullname" . }}
               key: safe-secret
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
