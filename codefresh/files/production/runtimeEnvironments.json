@@ -1013,7 +1013,10 @@
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v9",
       "envVars": {
-        "CLEAN_DOCKER": "true"
+        "CLEAN_DOCKER": "true",
+        "CLEAN_PERIOD_BUILDS": 1,
+        "IMAGE_RETAIN_PERIOD": 14400,
+        "VOLUMES_RETAIN_PERIOD": 3600
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
