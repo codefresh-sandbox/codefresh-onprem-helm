@@ -42,4 +42,4 @@ context-manager:
   imageTag: v19
 
 pipeline-manager:
-  imageTag: v4
+  imageTag: v5
