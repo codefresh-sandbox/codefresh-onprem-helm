@@ -328,6 +328,10 @@ spec:
         - name: SYSTEM_EXPIRATION_URL
           value: {{ .Values.expirationURL }}
         {{- end }}
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
+        - name: FORMAT_LOGS_TO_ELK
+          value: "{{ .Values.formatLogsToElk }}"
         #- name: OAUTH_ROUTER_CALLBACK
         #  valueFrom:
         #    configMapKeyRef:

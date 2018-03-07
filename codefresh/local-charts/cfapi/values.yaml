@@ -96,3 +96,6 @@ env:
 
 # kubectlHelmImage the base image will be used as part of helm flows(install, delete, test etc.)
 kubectlHelmImage: codefresh/cfstep-helm
+
+# formatLogsToElk logs will be formatter as elk expect to read it
+formatLogsToElk: true
