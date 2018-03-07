@@ -21,7 +21,7 @@ accounts-referrals:
   imageTag: v14
 
 mailer:
-  imageTag: v10
+  imageTag: v11
 
 segment-reporter:
   imageTag: v22

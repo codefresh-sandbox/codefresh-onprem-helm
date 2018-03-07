@@ -81,6 +81,10 @@ spec:
               key: sendgrid-key
         - name: ACTIVE
           value: {{ default "" .Values.active | quote }}
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
+        - name: FORMAT_LOGS_TO_ELK
+          value: "{{ .Values.formatLogsToElk }}"
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP
