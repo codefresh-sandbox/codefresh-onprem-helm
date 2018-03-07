@@ -21,3 +21,5 @@ mongoCreateDbJobScript: files/mongoCreateDbJobScript
 # Custom mongodb uri, set this if you don't want to use Chart's mongoDB instance
 mongoURI: ""
 
+# formatLogsToElk logs will be formatter as elk expect to read it
+formatLogsToElk: true
