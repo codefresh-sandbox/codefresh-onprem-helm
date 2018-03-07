@@ -115,6 +115,8 @@ spec:
               key: stripe-ignore-account-not-found-errors
         - name: SERVICE_NAME
           value: {{ template "name" . }}
+        - name: FORMAT_LOGS_TO_ELK
+          value: "{{ .Values.formatLogsToElk }}"
         readinessProbe:
           httpGet:
             path: /api/ping

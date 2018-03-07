@@ -25,3 +25,7 @@ targetPort: 9000
 mongodbName: payments
 
 mongoCreateDbJobScript: files/mongoCreateDbJobScript
+
+# formatLogsToElk logs will be formatter as elk expect to read it
+formatLogsToElk: true
+

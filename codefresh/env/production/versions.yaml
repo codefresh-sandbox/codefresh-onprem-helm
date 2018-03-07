@@ -6,7 +6,7 @@ cfapi:
 #   imageTag: v454
 
 payments:
-  imageTag: v26
+  imageTag: v27
 
 cluster-providers:
   imageTag: v30
