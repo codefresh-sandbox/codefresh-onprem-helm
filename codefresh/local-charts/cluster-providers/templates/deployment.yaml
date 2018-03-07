@@ -112,6 +112,8 @@ spec:
               key: safe-secret
         - name: SERVICE_NAME
           value: {{ template "name" . }}
+        - name: FORMAT_LOGS_TO_ELK
+          value: "{{ .Values.formatLogsToElk }}"
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
