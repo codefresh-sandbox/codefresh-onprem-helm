@@ -96,6 +96,10 @@ spec:
               key: newrelic-license-key
         - name: PORT
           value: "{{ .Values.global.pipelineManagerPort }}"
+        - name: SERVICE_NAME
+          value: {{ template "name" . }}
+        - name: FORMAT_LOGS_TO_ELK
+          value: "{{ .Values.formatLogsToElk }}"
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP
