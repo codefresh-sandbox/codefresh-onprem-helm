@@ -1,167 +1,90 @@
 dependencies:
 - name: consul
+  repository: https://kubernetes-charts.storage.googleapis.com/
   version: 1.1.2
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  condition: consul.enabled
-  tags:
-  - infra
 - name: mongodb
+  repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.4.12
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  condition: mongo.enabled
-  tags:
-  - infra
 - name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.7.1
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  tags:
-  - infra
 - name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.8.0
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  tags:
-  - infra
 - name: rabbitmq
-  version: 0.6.15
   repository: https://kubernetes-charts.storage.googleapis.com/
-  tags:
-  - infra
+  version: 0.6.15
 - name: nats
-  version: 0.1.1
   repository: file://../nats
-  condition: nats.enabled
-  tags:
-  - infra
-  - saas
+  version: 0.1.1
 - name: builder
   repository: file://local-charts/builder
-  condition: builder.enabled
   version: 0.1.2
-  tags:
-  - infra
 - name: runner
   repository: file://local-charts/runner
-  condition: runner.enabled
   version: 0.1.2
-  tags:
-  - infra
 - name: registry
-  version: 0.1.0
   repository: file://../registry
-  condition: registry.enabled
-  tags:
-  - infra
+  version: 0.1.0
 - name: ingress
-  version: 0.1.7
   repository: file://../ingress
-  condition: ingress.enabled
+  version: 0.1.7
 - name: cluster-providers
-  version: 0.0.2
   repository: file://local-charts/cluster-providers
+  version: 0.0.2
 - name: kube-integration
-  version: 0.0.3
   repository: file://local-charts/kube-integration
-- name: accounts-referrals
-  version: 0.0.2
-  repository: file://local-charts/accounts-referrals
-  tags:
-  - saas
-- name: charts-manager
-  version: 0.0.2
-  repository: file://local-charts/charts-manager
-  tags:
-  - saas
-- name: mailer
-  version: 0.0.2
-  repository: file://local-charts/mailer
-  tags:
-  - saas
-- name: payments
-  version: 0.1.6
-  repository: file://local-charts/payments
-  tags:
-  - saas
-- name: cfsign
-  version: 0.3.1
-  repository: file://local-charts/cfsign
-  condition: cfsign.enabled
-  tags:
-  - saas
-- name: internal-status-page
-  version: 0.0.2
-  repository: file://local-charts/internal-status-page
-  condition: internal-status-page.enabled
-  tags:
-  - saas
-- name: segment-reporter
   version: 0.0.3
-  repository: file://local-charts/segment-reporter
-  tags:
-  - saas
-- name: workflow-baseline-invoker
-  version: 0.0.4
-  repository: file://local-charts/workflow-baseline-invoker
-  tags:
-  - saas
-- name: salesforce-reporter
-  version: 0.1.2
-  repository: file://local-charts/salesforce-reporter
-  tags:
-  - saas
-- name: tasker-kubernetes
+- name: accounts-referrals
+  repository: file://local-charts/accounts-referrals
   version: 0.0.2
+- name: charts-manager
+  repository: file://local-charts/charts-manager
+  version: 0.0.2
+- name: mailer
+  repository: file://local-charts/mailer
+  version: 0.0.2
+- name: payments
+  repository: file://local-charts/payments
+  version: 0.1.6
+- name: cfsign
+  repository: file://local-charts/cfsign
+  version: 0.3.1
+- name: internal-status-page
+  repository: file://local-charts/internal-status-page
+  version: 0.0.2
+- name: segment-reporter
+  repository: file://local-charts/segment-reporter
+  version: 0.0.3
+- name: workflow-baseline-invoker
+  repository: file://local-charts/workflow-baseline-invoker
+  version: 0.0.4
+- name: salesforce-reporter
+  repository: file://local-charts/salesforce-reporter
+  version: 0.1.2
+- name: tasker-kubernetes
   repository: file://local-charts/tasker-kubernetes
-  tags:
-  - saas
+  version: 0.0.2
 - name: context-manager
-  version: 0.0.1
   repository: file://local-charts/context-manager
-  tags:
-  - saas
-- name: pipeline-manager
   version: 0.0.1
+- name: pipeline-manager
   repository: file://local-charts/pipeline-manager
-  tags:
-  - saas
+  version: 0.0.1
 - name: cfapi
-  version: 0.2.1
   repository: file://local-charts/cfapi
-  condition: cfapi.enabled
-  tags:
-  - saas
-  - infra
+  version: 0.2.1
 - name: cfui
-  version: ~1.1.91-any
-  repository: "@codefresh"
-  condition: cfui.enabled
-  tags:
-  - saas
-  - infra
-  # hermes trigger manager
+  repository: http://chartmuseum-dev.codefresh.io
+  version: 1.1.91-user-onboard-progress-widget-webpack-migrate
 - name: hermes
-  version: ~0.8.0-any
-  repository: "@codefresh"
-  condition: hermes.enabled
-  tags:
-  - trigger
-  - trigger-manager
-  # nomios DockerHub event provider
+  repository: http://chartmuseum-dev.codefresh.io
+  version: 0.8.2
 - name: nomios
-  version: ~0.4.0-any
-  repository: "@codefresh"
-  condition: hermes.enabled
-  tags:
-  - trigger
-  - event-provider
-  - registry
-  - dockerhub
-  # cronus DockerHub event provider
+  repository: http://chartmuseum-dev.codefresh.io
+  version: 0.4.2-label
 - name: cronus
-  version: ~0.1.1-any
-  repository: "@codefresh"
-  condition: hermes.enabled
-  tags:
-  - trigger
-  - event-provider
-  - cron
-
+  repository: http://chartmuseum-dev.codefresh.io
+  version: 0.1.1-label
+digest: sha256:13ea5779d1dd70135814203b67930ed295f62adcb0c2fbc3d25c14c41d5f4c7a
+generated: 2018-03-19T12:38:02.694996469+02:00

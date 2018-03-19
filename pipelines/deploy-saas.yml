@@ -9,7 +9,7 @@ steps:
     image: ${{build}}
     commands:
       - helm init --client-only
-      - helm repo add cf-dev http://chartmuseum-dev.codefresh.io
-      - helm repo add cf-stable http://chartmuseum.codefresh.io
+      - helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
+      - helm repo add codefresh http://chartmuseum.codefresh.io
       - bash -c "bin/deploy-saas $DEPLOYED_SERVICES"
 

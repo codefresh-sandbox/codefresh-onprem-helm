@@ -15,8 +15,6 @@
 # secret files
 service-account.json
 
-codefresh/requirements.lock
-
 # junk files
 QUESTIONS.md
 out/

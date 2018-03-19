@@ -315,9 +315,9 @@ spec:
           value: /etc/admin/deploymentTemplateImages.json
         {{- end }}
         - name: HERMES_URI
-          value: "{{ default (printf "%s-hermes" .Release.Name) .Values.global.hermesService }}"
+          value: "{{ .Release.Name }}-{{ .Values.global.hermesService }}"
         - name: HERMES_PORT
-          value: "{{ default "8080" .Values.global.hermesPort }}"
+          value: "{{ default "80" .Values.global.hermesPort }}"
         - name: HERMES_PROTOCOL
           value: "{{ default "http" .Values.global.hermesProtocol }}"
         - name: KUBECTL_HELM_IMAGE_BASE_NAME

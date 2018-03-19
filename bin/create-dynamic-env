@@ -110,7 +110,7 @@ sleep 5
 msg "Helm version"
 helm version
 
-msg "Fetching latest helm dependencies"
+msg "Fetching latest helm dependencies, acording to requirements.yaml"
 helm dependency update codefresh
 
 customFlags=$(processCustomFlags)

@@ -117,8 +117,13 @@ if [[ $RUNNING_ON_CF == 1 ]]; then
     msg "Helm version"
     helm version
 
-    msg "Fetching latest helm dependencies"
-    helm dependency update codefresh/
+    if [ "$USE_LOCK" == "true" ]; then
+	  msg "Fetching tested helm dependencies, according to requirements.lock"
+	  helm dependency build codefresh
+	else
+	  msg "Fetching latest helm dependencies, according to requirements.yaml"
+	  helm dependency update codefresh
+	fi
 fi
 msg "The following services are going to be deployed: "
 echo "@$"

@@ -54,6 +54,10 @@ ingress:
   enabled: false
   domain: '*'
 
+# hermes settings
+hermes:
+  enabled: true
+
 dindImage: docker:17.05-dind
 
 #=======================
@@ -159,7 +163,7 @@ global:
 
   # API Gateway: hermes trigger-manager service
   hermesService: hermes
-  hermesPort: 8080
+  hermesPort: 80
   hermesProtocol: "http"
 
 
