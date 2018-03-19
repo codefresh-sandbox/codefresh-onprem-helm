@@ -99,3 +99,6 @@ kubectlHelmImage: codefresh/cfstep-helm
 
 # formatLogsToElk logs will be formatter as elk expect to read it
 formatLogsToElk: true
+
+# auth0LoginHost Auth0 Login host
+auth0LoginHost: codefresh-login.auth0.com
