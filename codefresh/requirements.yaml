@@ -131,37 +131,33 @@ dependencies:
   - saas
   - infra
 - name: cfui
-  version: ~1.1.91-any
-  repository: "@codefresh"
+  version: 1.1.92
+  repository: '@codefresh'
   condition: cfui.enabled
   tags:
   - saas
   - infra
-  # hermes trigger manager
 - name: hermes
   version: ~0.8.0-any
-  repository: "@codefresh"
+  repository: '@codefresh'
   condition: hermes.enabled
   tags:
   - trigger
   - trigger-manager
-  # nomios DockerHub event provider
 - name: nomios
   version: ~0.4.0-any
-  repository: "@codefresh"
+  repository: '@codefresh'
   condition: hermes.enabled
   tags:
   - trigger
   - event-provider
   - registry
   - dockerhub
-  # cronus DockerHub event provider
 - name: cronus
   version: ~0.1.1-any
-  repository: "@codefresh"
+  repository: '@codefresh'
   condition: hermes.enabled
   tags:
   - trigger
   - event-provider
   - cron
-
