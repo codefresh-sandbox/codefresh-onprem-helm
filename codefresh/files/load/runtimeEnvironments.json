@@ -385,7 +385,7 @@
       }
     }
   },
-  "dind-rbd-pro": {
+  "dind-rbd-pro-rook1-xfs": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
       "cluster": {
@@ -397,24 +397,27 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-provisioner",
-      "volumeSize": "15Gi",
+      "storageClassName": "dind-rbd-pro-rook1-xfs",
+      "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v9",
       "envVars": {
-        "CLEAN_DOCKER": "true"
+        "CLEAN_DOCKER": "true",
+        "CLEAN_PERIOD_BUILDS": "2",
+        "IMAGE_RETAIN_PERIOD": "14400",
+        "VOLUMES_RETAIN_PERIOD": "7200"
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
       "defaultDindResources": {
         "requests": {
-          "cpu": "790m",
-          "memory": "512Mi"
+          "cpu": "900m",
+          "memory": "1024Mi"
         },
         "limits": {
-          "cpu": "2000m",
-          "memory": "4096Mi"
+          "cpu": "2500m",
+          "memory": "7168Mi"
         }
       },
       "volumeMounts": {
