@@ -81,6 +81,11 @@ cfui:
   segmentKey: invalid-key
   newrelicLicenseKey: invalid-key
 
+onboarding-status:
+  image: gcr.io/codefresh-enterprise/codefresh/cf-ui
+  dockercfg: placeholder
+  newrelicLicenseKey: invalid-key
+
 cfapi:
   github:
     apiPathPrefix: /api/v3
