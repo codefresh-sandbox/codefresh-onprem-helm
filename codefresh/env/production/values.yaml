@@ -255,6 +255,9 @@ cfui:
   webTLS:
     secretName: star.codefresh.io
 
+onboarding-status:
+  replicaCount: 2
+
 payments:
   replicaCount: 2
   env:
