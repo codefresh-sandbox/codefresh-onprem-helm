@@ -237,6 +237,9 @@ global:
   chartsManagerPort: 9000
   contextManagerService: context-manager
   pipelineManagerService: pipeline-manager
+  pipelineManagerPort: 9000
+  onboardingStatusService: onboarding-status
+  onboardingStatusPort: 9000
 
   internalServiceTolerations:
   - effect: NoSchedule
