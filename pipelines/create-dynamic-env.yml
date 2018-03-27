@@ -19,6 +19,7 @@ steps:
     image: ${{build}}
     commands:
       - helm repo add codefresh http://chartmuseum.codefresh.io
+      - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
     when:
       branch:
         only:
@@ -29,6 +30,7 @@ steps:
     image: ${{build}}
     commands:
       - helm repo add codefresh http://chartmuseum-dev.codefresh.io
+      - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
     when:
       branch:
         ignore:
