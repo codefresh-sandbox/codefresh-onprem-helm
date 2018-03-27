@@ -138,7 +138,7 @@ dependencies:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.1
+  version: 1.0.2
   repository: http://chartmuseum.codefresh.io
   tags:
   - saas
