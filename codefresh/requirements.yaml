@@ -138,13 +138,13 @@ dependencies:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.1
+  version: 1.0.2
   repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: hermes
-  version: ~0.8.0-any
+  version: ~0.9.0-any
   repository: '@codefresh'
   condition: hermes.enabled
   tags:
