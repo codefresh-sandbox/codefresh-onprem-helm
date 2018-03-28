@@ -41,7 +41,7 @@ tasker-kubernetes:
   imageTag: v16
 
 charts-manager:
-  imageTag: v31
+  imageTag: v32
 
 context-manager:
   imageTag: v22
