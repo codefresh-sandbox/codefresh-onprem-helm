@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -64,7 +64,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -219,7 +219,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -414,7 +414,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -466,7 +466,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -528,7 +528,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -654,7 +654,7 @@
           "codefresh/node-type": "worker"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -896,7 +896,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -979,7 +979,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1062,7 +1062,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:37",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "60m",
