@@ -310,6 +310,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.pipelineManagerService }}"
         - name: PIPELINE_MANAGER_PORT
           value: {{ .Values.global.pipelineManagerPort | quote }}
+        - name: ONBOARDING_STATUS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.onboardingStatusService }}"
+        - name: ONBOARDING_STATUS_PORT
+          value: {{ .Values.global.onboardingStatusPort | quote }}
         {{- if .Values.deploymentTemplateImages }}
         - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
           value: /etc/admin/deploymentTemplateImages.json
