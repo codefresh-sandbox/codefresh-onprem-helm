@@ -228,6 +228,10 @@ salesforce-reporter:
   env:
     HTTP_LOGGER_LEVEL: error
 
+hermes:
+  backup:
+    env: load
+
 global:
   appProtocol: https
   postgresDatabase: postgres

@@ -172,6 +172,10 @@ builder:
 payments:
   stripeIgnoreAccountNotFoundErrors: "true"
 
+hermes:
+  backup:
+    env: dynamic
+
 global:
   internalServiceTolerations:
   - effect: NoSchedule
