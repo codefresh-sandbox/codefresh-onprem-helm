@@ -41,6 +41,7 @@ getRuntimeEnvs: files/staging/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
+  formatLogsToElk: ""
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
