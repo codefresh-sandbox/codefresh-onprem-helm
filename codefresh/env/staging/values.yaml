@@ -204,6 +204,9 @@ cfui:
   webTLS:
     secretName: star.codefresh.io
 
+onboarding-status:
+  replicaCount: 1
+
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
   stripeIgnoreAccountNotFoundErrors: "true"
