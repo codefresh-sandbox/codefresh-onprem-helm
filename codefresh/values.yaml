@@ -162,7 +162,7 @@ global:
   pipelineManagerPort: 9000
 
   onboardingStatusService: onboarding-status
-  onboardingStatusPort: 9000
+  onboardingStatusPort: 80
 
   # API Gateway: hermes trigger-manager service
   hermesService: hermes
