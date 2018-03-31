@@ -476,7 +476,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39-windows",
+      "image": "codefresh/engine:40-windows",
       "resources": {
         "requests": {
           "cpu": "60m",
