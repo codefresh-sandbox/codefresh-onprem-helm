@@ -57,12 +57,18 @@ getChangedEnvironments() {
 	local from=${1:-HEAD}
 	local to=${2:-HEAD~1}
 
+	# only 'production' environment should be affected by change in requirements.lock
+	SKIP_WORD=".none"
+	if [ "$ENVIRONMENT" != "production" ]; then
+	  SKIP_WORD="requirements.lock"
+	fi
+
 	# get changes between commits
 	# save current IFS
  	SAVEIFS=$IFS
   	# change IFS to new line. 
   	IFS=$'\n'
-  	changes=($(git diff ${from} ${to} --name-only | grep -v .md | grep -v 'docs\|.gitignore\|.gitattributes'))
+  	changes=($(git diff ${from} ${to} --name-only | grep -v .md | grep -v 'docs\|.gitignore\|.gitattributes\|.dockerignore' | grep -v $SKIP_WORD))
   	# restore IFS
   	IFS=$SAVEIFS
 
