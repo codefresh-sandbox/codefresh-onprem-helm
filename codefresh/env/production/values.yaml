@@ -301,6 +301,10 @@ salesforce-reporter:
   env:
     HTTP_LOGGER_LEVEL: error
 
+hermes:
+  backup:
+    env: production
+
 nats:
   replicaCount: 3
   affinity:

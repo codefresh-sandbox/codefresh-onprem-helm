@@ -75,16 +75,19 @@ dependencies:
   repository: file://local-charts/cfapi
   version: 0.2.1
 - name: cfui
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.1.91-user-onboard-progress-widget-webpack-migrate
+  repository: http://chartmuseum.codefresh.io
+  version: 1.1.96
+- name: onboarding-status
+  repository: http://chartmuseum.codefresh.io
+  version: 1.0.7
 - name: hermes
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.8.2
+  repository: http://chartmuseum.codefresh.io
+  version: 0.9.4
 - name: nomios
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.4.2-label
+  repository: http://chartmuseum.codefresh.io
+  version: 0.4.3
 - name: cronus
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.1.1-label
-digest: sha256:13ea5779d1dd70135814203b67930ed295f62adcb0c2fbc3d25c14c41d5f4c7a
-generated: 2018-03-19T12:38:02.694996469+02:00
+  repository: http://chartmuseum.codefresh.io
+  version: 0.1.1
+digest: sha256:bc540cf84bebe8feb0a110b378f71132a84e7ed4bd9e7918ccb597a7e1364cd3
+generated: 2018-04-02T15:59:56.543011103+03:00
