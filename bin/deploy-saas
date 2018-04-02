@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
+
 
 readonly BASEPATH="$(dirname "$0")"
 readonly KEY_FILE="service-account.json"
@@ -21,6 +24,19 @@ processCustomVals() {
 	done
 
 	echo "$resultedArgs"
+}
+
+processCustomFlags() {
+	local flags=""
+
+	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
+	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
+	[ ! -z "$TIMEOUT" ] && flags="$flags --timeout $TIMEOUT"
+	if [ "$WAIT" == "true" ] || [ -z "$WAIT" ]; then
+		flags="$flags --wait"
+	fi
+
+	echo "$flags"
 }
 
 activateServiceAccount() {
@@ -130,6 +146,7 @@ echo "@$"
 
 customVals=$(processCustomVals)
 redeployArgs=$(genRedeployArgs $@)
+customFlags=$(processCustomFlags)
 
 if [[ -f codefresh/env/${ENVIRONMENT}/versions.yaml ]]; then
   versionsVals=" --values codefresh/env/${ENVIRONMENT}/versions.yaml "
@@ -144,6 +161,7 @@ msg "Deploying helm package"
 helmCmd=$(cat <<END
 helm upgrade ${ENVIRONMENT} codefresh \
 	--install \
+	$customFlags \
 	--force \
 	--reset-values \
 	--namespace ${NAMESPACE} \

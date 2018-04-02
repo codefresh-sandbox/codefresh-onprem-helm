@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
+
 
 readonly BASEPATH="$(dirname "$0")"
 readonly KEY_FILE="service-account.json"
