@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:staging",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -77,7 +77,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:staging",
+      "image": "codefresh/engine:38",
       "resources": {
         "requests": {
           "cpu": "100m",

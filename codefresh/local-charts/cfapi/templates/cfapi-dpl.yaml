@@ -334,8 +334,10 @@ spec:
         {{- end }}
         - name: SERVICE_NAME
           value: {{ template "name" . }}
+        {{- if .Values.formatLogsToElk }}
         - name: FORMAT_LOGS_TO_ELK
           value: "{{ .Values.formatLogsToElk }}"
+        {{- end }}
         - name: AUTH0_LOGIN_HOST
           value: "{{ .Values.auth0LoginHost }}"
         #- name: OAUTH_ROUTER_CALLBACK

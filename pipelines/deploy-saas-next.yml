@@ -1,0 +1,73 @@
+---
+  version: '1.0'
+  
+  steps:
+  
+    skip_environment:
+      title: skip deploying to environment if not changed
+      image: codefresh/cf-env-creator:2.8.1
+      commands:
+        - |- 
+          bash -c "
+          echo changed environments - $(bin/get-changed-env)
+          if [ $(bin/get-changed-env | grep all -c) -eq 1 ]; then
+            echo deploying to ${ENVIRONMENT} SaaS environment ...
+          elif [ $(bin/get-changed-env | grep ${ENVIRONMENT} -c) -eq 1 ]; then
+            echo deploying to ${ENVIRONMENT} SaaS environment ...
+          else
+            echo no change in ${ENVIRONMENT} SaaS environmenti, skipping ...
+            cf_export SKIP=true
+          fi"
+  
+    prepare_env:
+      title: prepare environment variables
+      image: codefresh/cf-env-creator:2.8.1
+      commands:
+        # export HELM_HOME for other steps; init if empty
+        - cf_export HELM_HOME=${HELM_HOME:-/codefresh/volume/.helm}
+      when:
+        condition:
+          all:
+            no_skip: '"${{SKIP}}" != "true"'
+  
+    init_helm:
+      title: init helm client
+      image: codefresh/cf-env-creator:2.8.1
+      commands:
+        - helm init --client-only
+        - helm repo add chartmuseum-dev http://chartmuseum-dev.codefresh.io
+        - helm repo add chartmuseum-stable http://chartmuseum.codefresh.io
+      when:
+        condition:
+          all:
+            no_skip: '"${{SKIP}}" != "true"'
+  
+    set_codefresh_repo:
+      title: set codefresh chart repo to stable
+      image: codefresh/cf-env-creator:2.8.1
+      commands:
+        - helm repo add codefresh http://chartmuseum.codefresh.io
+        - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
+      when:
+        condition:
+          all:
+            no_skip: '"${{SKIP}}" != "true"'
+  
+   
+    build_env_image:
+      type: build
+      image_name: cf-env-creator
+      when:
+        condition:
+          all:
+            no_skip: '"${{SKIP}}" != "true"'
+  
+    deploy_to_saas_environment:
+      title: deploy Codefresh to SaaS
+      image: ${{build_env_image}}
+      commands:
+        - bash -c "bin/deploy-saas $DEPLOYED_SERVICES"
+      when:
+        condition:
+          all:
+            no_skip: '"${{SKIP}}" != "true"'

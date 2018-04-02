@@ -1,0 +1,15 @@
+.env
+.git
+.gitignore
+.gitattribute
+.sops.yaml
+*.md
+*.tgz
+
+codefresh
+docs
+ingress
+nats
+out
+pipelines
+registry
