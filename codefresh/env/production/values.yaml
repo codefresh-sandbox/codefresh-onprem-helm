@@ -254,6 +254,7 @@ cfui:
   replicaCount: 4
   webTLS:
     secretName: star.codefresh.io
+  slackAppID: "4027524866.79900649782"
 
 onboarding-status:
   replicaCount: 2
@@ -373,3 +374,6 @@ tags:
   saas: true
   infra: false
   old-scheduler: false
+
+# slackAppID production application id for slack integration
+slackAppID: "4027524866.79900649782"
