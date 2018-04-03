@@ -141,7 +141,7 @@
       }
     }
   },
-  "codefresh": {
+  "codefresh-rook2": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
       "cluster": {
@@ -224,7 +224,7 @@
       }
     }
   },
-  "codefresh-bak": {
+  "codefresh": {
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
