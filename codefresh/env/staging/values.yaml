@@ -206,6 +206,7 @@ cfui:
     secretName: star.codefresh.io
 
 onboarding-status:
+  mongoURI: "mongodb://mongo.default.svc:27017/onboarding-status"
   replicaCount: 1
 
 payments:

@@ -189,6 +189,9 @@ payments:
 context-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/context-manager"
 
+onboarding-status:
+  mongoURI: "mongodb://mongo.default.svc:27017/onboarding-status"
+
 pipeline-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/pipeline-manager"
 
