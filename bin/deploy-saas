@@ -123,8 +123,8 @@ if [[ $RUNNING_ON_CF == 1 ]]; then
     msg "Decrypting all secrets"
     ./sops.sh -d
 
-    msg "Install Helm Tiller or upgrade, if needed"
-    helm init --upgrade
+    msg "Init Helm"
+    helm init --client-only
 
     msg "Waiting for Helm to be ready ..."
     waitForHelm

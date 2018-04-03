@@ -2,13 +2,16 @@
 version: '1.0'
 
 steps:
-  build:
-    type: build
-    image_name: codefresh/cf-env-creator
+  prepare_env:
+    title: prepare environment variables
+    image: codefresh/cf-env-creator:2.8.1
+    commands:
+      # export HELM_HOME for other steps; init if empty
+      - cf_export HELM_HOME=${HELM_HOME:-/codefresh/volume/.helm}
 
   init_helm:
     title: init helm client
-    image: ${{build}}
+    image: codefresh/cf-env-creator:2.8.1
     commands:
       - helm init --client-only
       - helm repo add chartmuseum-dev http://chartmuseum-dev.codefresh.io
@@ -16,7 +19,7 @@ steps:
   
   set_codefresh_repo:
     title: set codefresh chart repo to stable
-    image: ${{build}}
+    image: codefresh/cf-env-creator:2.8.1
     commands:
       - helm repo add codefresh http://chartmuseum.codefresh.io
       - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
@@ -27,7 +30,7 @@ steps:
 
   set_codefresh_dev_repo:
     title: set codefresh chart repo to develop
-    image: ${{build}}
+    image: codefresh/cf-env-creator:2.8.1
     commands:
       - helm repo add codefresh http://chartmuseum-dev.codefresh.io
       - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
@@ -35,10 +38,14 @@ steps:
       branch:
         ignore:
           - master
+
+  build_env_image:
+    type: build
+    image_name: cf-env-creator
   
   create_dynamic_env:
     title: create dynamic environment
-    image: ${{build}}
+    image: ${{build_env_image}}
     commands:
       - bash -c "bin/create-dynamic-env $NAMESPACE_NAME $PROJECT_NAME $CLUSTER_NAME $ZONE"
 

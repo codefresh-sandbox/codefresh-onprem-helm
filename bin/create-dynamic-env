@@ -89,7 +89,7 @@ check aws
 
 [ "$1" == "-h" ] && usage
 
-namespaceName="$1"
+namespaceName="${1:-$(git rev-parse --abbrev-ref HEAD)}"
 projectName="${2:-savvy-badge-103912}"
 clusterName="${3:-cf-staging}"
 zone="${4:-us-central1-a}"
@@ -103,8 +103,8 @@ activateServiceAccount "$clusterName" "$zone" "$projectName"
 msg "Decrypting all secrets"
 ./sops.sh -d
 
-msg "Install Helm Tiller or upgrade, if needed"
-helm init --upgrade
+msg "Init Helm"
+helm init --client-only
 
 msg "Waiting for Helm to be ready ..."
 waitForHelm
@@ -161,6 +161,10 @@ else
 	msg "Your environment should be accessible soon at: ${namespaceName}.dev.codefresh.io"
 fi
 
-msg "Status of all the services: "
-kubectl --namespace=$namespaceName get pods
+if [ "$DRY_RUN" == "true" ]; then
+	msg "Skip checking Helm Release status"
+else
+   msg "Helm Release status"
+   helm status $namespaceName
+fi
 
