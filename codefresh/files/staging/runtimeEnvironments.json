@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:38",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -77,7 +77,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:38",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -335,7 +335,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:38",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -415,7 +415,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:38",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -495,7 +495,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:38",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "60m",

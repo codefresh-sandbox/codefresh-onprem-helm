@@ -239,7 +239,7 @@ global:
   pipelineManagerService: pipeline-manager
   pipelineManagerPort: 9000
   onboardingStatusService: onboarding-status
-  onboardingStatusPort: 9000
+  onboardingStatusPort: 80
 
   internalServiceTolerations:
   - effect: NoSchedule
