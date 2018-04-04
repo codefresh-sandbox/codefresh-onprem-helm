@@ -562,7 +562,7 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       "cluster": {
-        "name": "cluster-cf-1.cf-cd.com",
+        "name": "cluster-dev-1.cf-cd.com",
         "namespace": "workflow",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
