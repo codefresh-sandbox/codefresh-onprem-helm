@@ -140,6 +140,7 @@ dependencies:
 - name: onboarding-status
   version: 1.0.7
   repository: http://chartmuseum.codefresh.io
+  condition: onboarding-status.enabled
   tags:
   - saas
   - infra

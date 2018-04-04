@@ -82,7 +82,8 @@ cfui:
   newrelicLicenseKey: invalid-key
 
 onboarding-status:
-  image: gcr.io/codefresh-enterprise/codefresh/cf-ui
+  enabled: false
+  image: gcr.io/codefresh-enterprise/codefresh/onboarding-status
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
 
