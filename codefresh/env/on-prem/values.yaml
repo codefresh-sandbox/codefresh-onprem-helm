@@ -223,6 +223,11 @@ global:
   # PostgresSQL service
   postgresService: postgresql
 
+  # PostgresSQL user name
+  postgresUser: postgres
+  # PostgresSQL password
+  postgresPassword: eC9arYka4ZbH
+
   # database
   postgresDatabase: codefresh
 
