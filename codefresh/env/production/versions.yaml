@@ -14,7 +14,7 @@ payments:
   imageTag: v29
 
 cluster-providers:
-  imageTag: v31
+  imageTag: v32
 
 internal-status-page:
   imageTag: v9
@@ -44,7 +44,7 @@ charts-manager:
   imageTag: v32
 
 context-manager:
-  imageTag: v22
+  imageTag: v23
 
 pipeline-manager:
   imageTag: v6
