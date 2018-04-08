@@ -141,7 +141,7 @@
       }
     }
   },
-  "codefresh-rook2": {
+  "codefresh": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
       "cluster": {
@@ -160,7 +160,7 @@
       "dindImage": "codefresh/dind:17.12-v9",
       "envVars": {
         "CLEAN_DOCKER": "true",
-        "CLEAN_PERIOD_BUILDS": "2",
+        "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
         "VOLUMES_RETAIN_PERIOD": "7200"
       },
@@ -224,7 +224,7 @@
       }
     }
   },
-  "codefresh": {
+  "codefresh-bak": {
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
@@ -373,7 +373,7 @@
       "dindImage": "codefresh/dind:17.12-v9",
       "envVars": {
         "CLEAN_DOCKER": "true",
-        "CLEAN_PERIOD_BUILDS": "2",
+        "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
         "VOLUMES_RETAIN_PERIOD": "7200"
       },
