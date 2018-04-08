@@ -4,14 +4,14 @@ version: '1.0'
 steps:
   prepare_env:
     title: prepare environment variables
-    image: codefresh/cf-env-creator:2.8.1
+    image: codefresh/cf-env-creator:2.8
     commands:
       # export HELM_HOME for other steps; init if empty
       - cf_export HELM_HOME=${HELM_HOME:-/codefresh/volume/.helm}
 
   init_helm:
     title: init helm client
-    image: codefresh/cf-env-creator:2.8.1
+    image: codefresh/cf-env-creator:2.8
     commands:
       - helm init --client-only
       - helm repo add chartmuseum-dev http://chartmuseum-dev.codefresh.io
@@ -19,7 +19,7 @@ steps:
   
   set_codefresh_repo:
     title: set codefresh chart repo to stable
-    image: codefresh/cf-env-creator:2.8.1
+    image: codefresh/cf-env-creator:2.8
     commands:
       - helm repo add codefresh http://chartmuseum.codefresh.io
       - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
@@ -30,7 +30,7 @@ steps:
 
   set_codefresh_dev_repo:
     title: set codefresh chart repo to develop
-    image: codefresh/cf-env-creator:2.8.1
+    image: codefresh/cf-env-creator:2.8
     commands:
       - helm repo add codefresh http://chartmuseum-dev.codefresh.io
       - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
