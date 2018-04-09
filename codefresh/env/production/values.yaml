@@ -304,6 +304,7 @@ salesforce-reporter:
 hermes:
   backup:
     env: production
+    enabled: true
 
 nats:
   replicaCount: 3

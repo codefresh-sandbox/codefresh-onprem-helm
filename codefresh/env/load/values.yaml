@@ -233,6 +233,7 @@ salesforce-reporter:
 
 hermes:
   backup:
+    enabled: true
     env: load
 
 global:
