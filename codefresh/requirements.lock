@@ -89,5 +89,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.1.1
-digest: sha256:10b2ae34ab3691787e7db29484180d785e879141202f0992d9a192ed5e334513
-generated: 2018-04-04T15:16:06.492217897+03:00
+digest: sha256:83e8e648841a6ef0ad65978f717c8ca11a03b625dda9dd02559de0d94ad54274
+generated: 2018-04-09T10:53:52.919178444+03:00

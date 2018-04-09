@@ -1,1 +1,1 @@
-FROM codefresh/cf-env-creator:2.8.1
+FROM codefresh/cf-env-creator:2.8

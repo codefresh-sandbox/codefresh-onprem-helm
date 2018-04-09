@@ -259,6 +259,7 @@ salesforce-reporter:
 
 hermes:
   backup:
+    enabled: true
     env: staging
 
 nats:
