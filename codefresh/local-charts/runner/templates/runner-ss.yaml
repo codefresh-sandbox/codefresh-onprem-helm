@@ -86,7 +86,7 @@ spec:
             mkdir /var/run/codefresh
             mkdir -p /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/
             cp /etc/ssl/cf/ca.pem /etc/docker/certs.d/${RUNTIME_LOCAL_REGISTRY_NAME}/ca.crt
-            dockerd
+            dockerd {{ if .Values.global.mtu }}--mtu {{ .Values.global.mtu }}{{ end }}
         volumeMounts:
         - mountPath: /etc/ssl/cf
           readOnly: true
