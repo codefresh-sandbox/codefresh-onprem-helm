@@ -4,7 +4,7 @@ version: '1.0'
 steps:
 
   skip_environment:
-    title: skip deploying to dynamic environment if not changed
+    title: skip deploying to dynamic environment if not changed and not manual build
     image: codefresh/cf-env-creator:2.8
     commands:
       - NAMESPACE_NAME=${NAMESPACE_NAME:-"${{CF_BRANCH}}"}
@@ -16,8 +16,8 @@ steps:
         elif [ $(bin/get-changed-env | grep dynamic -c) -eq 1 ]; then
           echo creating and deploying to dynamic ${NAMESPACE_NAME} SaaS environment ...
         else
-          echo no change in dynamic SaaS environmenti, skipping ...
-          cf_export SKIP=true
+          echo no change in dynamic SaaS environment, skipping, if not manual build...
+          if [ "${{CF_BUILD_TRIGGER}}" != "build" ]; then cf_export SKIP=true; fi
         fi"
 
   prepare_env:
