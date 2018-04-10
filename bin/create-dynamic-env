@@ -96,6 +96,11 @@ zone="${4:-us-central1-a}"
 
 [ -z "$namespaceName" ] && err "Please specify the namespace name!"
 
+# replace master with randomly generated name
+if [ "$namespaceName" == "master" ]; then
+  namespaceName=$(getRandomName)
+fi
+
 [[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]] && err "Please set your AWS credentials"
 
 activateServiceAccount "$clusterName" "$zone" "$projectName"

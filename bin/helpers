@@ -95,3 +95,9 @@ getChangedEnvironments() {
 	result=( $(echo "${result[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
 	echo "${result[@]}"
 }
+
+getRandomName() {
+	declare -a words=("astra" "abby" "book" "bad" "bold" "camp" "call" "crack" "doom" "dog" "drill" "elf" "enter" "fake" "full" "form" "fun" "girl" "good" "goblin" "grand" "groom" "goose" "king" "kind" "loop" "lame" "lamer" "little" "lost" "moon" "monk" "mark" "noon" "nord" "odd" "oven" "plain" "pirate" "pitty" "pool" "pasta" "pretty" "room" "rast" "rock" "sun" "toon" "ten" "tik" "tape" "wild" "ugly" "urgent" "who") 
+
+	echo ${words[$RANDOM % ${#words[@]}]}-${words[$RANDOM % ${#words[@]}]}
+}
