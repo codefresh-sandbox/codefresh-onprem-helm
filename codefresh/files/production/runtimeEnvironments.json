@@ -368,7 +368,7 @@
       },
       "storageClassName": "dind-rbd-pro-rook2-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v9",
       "envVars": {
@@ -415,7 +415,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:rsync-test-5206",
       "resources": {
         "requests": {
           "cpu": "60m",
