@@ -258,6 +258,8 @@ salesforce-reporter:
     HTTP_LOGGER_LEVEL: error
 
 hermes:
+  logLevel: debug
+  logJSON: false
   backup:
     enabled: true
     env: staging
