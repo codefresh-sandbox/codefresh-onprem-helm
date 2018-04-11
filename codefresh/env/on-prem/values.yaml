@@ -96,6 +96,12 @@ cfapi:
   env:
     ON_PREMISE: true
     LOGGER_LEVEL: debug
+    CONTEXT_MANAGER_URI: cf-context-manager
+    CONTEXT_MANAGER_PORT: 9008
+    CHARTS_MANAGER_URI: cf-charts-manager
+    CHARTS_MANAGER_PORT: 9009
+    PIPELINE_MANAGER_URI: cf-pipeline-manager
+    PIPELINE_MANAGER_PORT: 9010
   deploymentTemplateImages: |
     [
       {
