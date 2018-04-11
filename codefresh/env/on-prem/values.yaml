@@ -127,6 +127,16 @@ charts-manager:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/charts-manager
   imageTag: v1
+  
+context-manager:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/codefresh/context-manager
+  imageTag: v1
+  
+pipeline-manager:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/codefresh/pipeline-manager
+  imageTag: v1
 
 kube-integration:
   replicaCount: 1
