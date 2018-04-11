@@ -71,6 +71,7 @@ dependencies:
   repository: file://local-charts/charts-manager
   tags:
   - saas
+  - infra
 - name: mailer
   version: 0.0.2
   repository: file://local-charts/mailer
@@ -118,11 +119,13 @@ dependencies:
   repository: file://local-charts/context-manager
   tags:
   - saas
+  - infra
 - name: pipeline-manager
   version: 0.0.1
   repository: file://local-charts/pipeline-manager
   tags:
   - saas
+  - infra
 - name: cfapi
   version: 0.2.1
   repository: file://local-charts/cfapi
