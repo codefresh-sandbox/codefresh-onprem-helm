@@ -42,7 +42,7 @@ postgresql:
       memory: 128Mi
 
 mongodb:
-  image: bitnami/mongodb:3.2.5-0
+  image: bitnami/mongodb:3.4.6-r0
   mongodbRootPassword: XT9nmM8dZD
   resources:
     requests:
@@ -226,7 +226,7 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
-  mongodbImage: bitnami/mongodb:3.2.5-0
+  mongodbImage: bitnami/mongodb:3.4.6-r0
   mongodbRootPassword: XT9nmM8dZD
 
   # consul service
