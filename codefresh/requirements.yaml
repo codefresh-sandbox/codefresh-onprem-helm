@@ -127,7 +127,7 @@ dependencies:
   - saas
   - infra
 - name: cfapi
-  version: 0.2.1
+  version: ~0.2.1
   repository: file://local-charts/cfapi
   condition: cfapi.enabled
   tags:
