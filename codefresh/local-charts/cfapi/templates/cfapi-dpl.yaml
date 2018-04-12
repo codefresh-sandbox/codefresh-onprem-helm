@@ -51,6 +51,7 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        {{- if .Values.postStart }}
         lifecycle:
           postStart:
             exec:
@@ -59,6 +60,7 @@ spec:
                 - "-c"
                 - |
                   cat /etc/admin/hosts.added >> /etc/hosts
+        {{- end }}
         env:
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}

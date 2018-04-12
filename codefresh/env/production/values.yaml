@@ -44,6 +44,7 @@ getRuntimeEnvs: files/production/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
+  postStart: true
   replicaCount: 8
   internalRegistryProtocol: https
   providersData: |
