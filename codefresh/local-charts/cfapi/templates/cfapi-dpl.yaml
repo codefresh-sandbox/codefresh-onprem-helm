@@ -51,6 +51,7 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        {{- if .Values.postStart }}
         lifecycle:
           postStart:
             exec:
@@ -59,6 +60,7 @@ spec:
                 - "-c"
                 - |
                   cat /etc/admin/hosts.added >> /etc/hosts
+        {{- end }}
         env:
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}
@@ -204,7 +206,7 @@ spec:
           {{- if .Values.global.maintenanceMode }}
           value: {{ .Values.global.maintenancePort | quote }}
           {{- else }}
-          value: {{ .Values.port | quote }}
+          value: {{ .Values.targetPort | quote }}
           {{- end }}
         - name: POSTGRES_DATABASE
           value: {{ .Values.global.postgresDatabase }}
@@ -349,7 +351,7 @@ spec:
         {{- if .Values.global.maintenanceMode }}
         - containerPort: {{ .Values.global.maintenancePort }}
           {{- else }}
-        - containerPort: {{ .Values.port }}
+        - containerPort: {{ .Values.targetPort }}
         {{- end }}
           protocol: TCP
         - containerPort: {{ .Values.targetInternalPort }}
@@ -360,9 +362,9 @@ spec:
             {{- if .Values.global.maintenanceMode }}
             port: {{ .Values.global.maintenancePort }}
             {{- else }}
-            port: {{ .Values.port }}
+            port: {{ .Values.targetPort }}
             {{- end }}
-          periodSeconds: 5
+          periodSeconds: 20
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
