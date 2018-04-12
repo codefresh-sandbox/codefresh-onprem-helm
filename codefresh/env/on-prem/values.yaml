@@ -256,18 +256,19 @@ global:
   postgresDatabase: codefresh
 
   # k8s-beta
-  clusterProvidersService: cluster-providers
+  clusterProvidersService: cf-cluster-providers
   clusterProvidersPort: 9000
-  kubeIntegrationService: kube-integration
+  kubeIntegrationService: cf-kube-integration
   kubeIntegrationPort: 9000
-  accountsReferralsService: accounts-referrals
+  accountsReferralsService: cf-accounts-referrals
   accountsReferralsPort: 9000
-  chartsManagerService: charts-manager
+  chartsManagerService: cf-charts-manager
   chartsManagerPort: 9000
-  contextManagerService: context-manager
-  pipelineManagerService: pipeline-manager
+  contextManagerService: cf-context-manager
+  contextManagerPort: 9000
+  pipelineManagerService: cf-pipeline-manager
   pipelineManagerPort: 9000
-  onboardingStatusService: onboarding-status
+  onboardingStatusService: cf-onboarding-status
   onboardingStatusPort: 80
 
   internalServiceTolerations:
