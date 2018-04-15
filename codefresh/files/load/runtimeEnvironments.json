@@ -16,7 +16,7 @@
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config"
       },
-      "image": "codefresh/engine:rsync-test-5206",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -429,7 +429,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:rsync-test-5206",
+      "image": "codefresh/engine:39",
       "resources": {
         "requests": {
           "cpu": "60m",
