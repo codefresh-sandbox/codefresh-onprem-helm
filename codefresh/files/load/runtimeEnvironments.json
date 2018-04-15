@@ -197,7 +197,7 @@
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
+        "name": "cluster-dev-2.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
