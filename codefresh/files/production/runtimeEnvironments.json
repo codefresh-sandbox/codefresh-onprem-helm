@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -64,7 +64,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -157,7 +157,7 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v9",
+      "dindImage": "codefresh/dind:17.12-v10",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -202,7 +202,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -302,7 +302,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -415,7 +415,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -580,7 +580,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -694,7 +694,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -756,7 +756,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -882,7 +882,7 @@
           "codefresh/node-type": "worker"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -1124,7 +1124,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1207,7 +1207,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1290,7 +1290,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1373,7 +1373,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1456,7 +1456,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:41",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
