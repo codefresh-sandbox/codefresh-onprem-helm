@@ -127,7 +127,7 @@ dependencies:
   - saas
   - infra
 - name: cfapi
-  version: 0.2.1
+  version: ~0.2.1
   repository: file://local-charts/cfapi
   condition: cfapi.enabled
   tags:
@@ -141,7 +141,7 @@ dependencies:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.8
+  version: 1.0.9
   repository: http://chartmuseum.codefresh.io
   condition: onboarding-status.enabled
   tags:

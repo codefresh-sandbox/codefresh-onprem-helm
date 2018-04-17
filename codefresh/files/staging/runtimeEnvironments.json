@@ -12,14 +12,14 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
+        "name": "cluster-dev-2.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -77,7 +77,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -158,7 +158,7 @@
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
+        "name": "cluster-dev-2.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
@@ -206,21 +206,6 @@
           }
         }
       }
-    }
-  },
-  "codefresh-inc": {
-    "dockerDaemonScheduler": {
-      "type": "DindAsAService",
-      "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
-        "namespace": "default",
-        "kubeconfigFilePath": "/root/.kube/config",
-        "nodeSelector": {
-          "codefresh/node-type": "dind",
-          "codefresh/runtime-environment": "codefresh"
-        }
-      },
-      "clientCertPath": "/etc/ssl/cf/"
     }
   },
   "dind-ebs-pro": {
@@ -279,7 +264,7 @@
       "type": "DindPodPvc",
       "cluster": {
         "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
+        "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "dind",
@@ -288,12 +273,178 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v9",
+      "dindImage": "codefresh/dind:17.12-v10",
       "envVars": {
         "CLEAN_DOCKER": "true",
-        "CLEAN_PERIOD_BUILDS": "2",
+        "CLEAN_PERIOD_BUILDS": "3",
+        "IMAGE_RETAIN_PERIOD": "14400",
+        "VOLUMES_RETAIN_PERIOD": "14400"
+      },
+      "terminationGracePeriodSeconds": 300,
+      "notCheckServerCa": true,
+      "defaultDindResources": {
+        "requests": {
+          "cpu": "900m",
+          "memory": "1024Mi"
+        },
+        "limits": {
+          "cpu": "2500m",
+          "memory": "7168Mi"
+        }
+      },
+      "volumeMounts": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "mountPath": "/etc/ssl/cf",
+          "readOnly": false
+        }
+      },
+      "volumes": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "secret": {
+            "secretName": "cf-certs-dind"
+          }
+        }
+      }
+    },
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "name": "cluster-dev-2.cf-cd.com",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config",
+        "nodeSelector": {
+          "codefresh/node-type": "app"
+        }
+      },
+      "image": "codefresh/engine:42",
+      "resources": {
+        "requests": {
+          "cpu": "60m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "1000m",
+          "memory": "2048Mi"
+        }
+      },
+      "envVars": {
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
+      }
+    }
+  },
+  "dind-rbd-pro-rook1-xfs-norsync": {
+    "dockerDaemonScheduler": {
+      "type": "DindPodPvc",
+      "cluster": {
+        "name": "cluster-dev-2.cf-cd.com",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config",
+        "nodeSelector": {
+          "codefresh/node-type": "dind",
+          "codefresh/runtime-environment": "codefresh"
+        }
+      },
+      "storageClassName": "dind-rbd-pro-rook1-xfs",
+      "volumeSize": "40Gi",
+      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "clientCertPath": "/etc/ssl/cf/",
+      "dindImage": "codefresh/dind:17.12-v10",
+      "envVars": {
+        "CLEAN_DOCKER": "true",
+        "CLEAN_PERIOD_BUILDS": "3",
+        "IMAGE_RETAIN_PERIOD": "14400",
+        "VOLUMES_RETAIN_PERIOD": "14400"
+      },
+      "terminationGracePeriodSeconds": 300,
+      "notCheckServerCa": true,
+      "defaultDindResources": {
+        "requests": {
+          "cpu": "900m",
+          "memory": "1024Mi"
+        },
+        "limits": {
+          "cpu": "2500m",
+          "memory": "7168Mi"
+        }
+      },
+      "volumeMounts": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "mountPath": "/etc/ssl/cf",
+          "readOnly": false
+        }
+      },
+      "volumes": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "secret": {
+            "secretName": "cf-certs-dind"
+          }
+        }
+      }
+    },
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "name": "cluster-dev-2.cf-cd.com",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config",
+        "nodeSelector": {
+          "codefresh/node-type": "app"
+        }
+      },
+      "image": "codefresh/engine:42",
+      "resources": {
+        "requests": {
+          "cpu": "60m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "1000m",
+          "memory": "2048Mi"
+        }
+      },
+      "envVars": {
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
+      }
+    }
+  },  
+  "dind-rbd-pro-rook1-ext4": {
+    "dockerDaemonScheduler": {
+      "type": "DindPodPvc",
+      "cluster": {
+        "name": "cluster-dev-2.cf-cd.com",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config",
+        "nodeSelector": {
+          "codefresh/node-type": "dind",
+          "codefresh/runtime-environment": "codefresh"
+        }
+      },
+      "storageClassName": "dind-rbd-pro-rook1-ext4",
+      "volumeSize": "40Gi",
+      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "clientCertPath": "/etc/ssl/cf/",
+      "dindImage": "codefresh/dind:17.12-v10",
+      "envVars": {
+        "CLEAN_DOCKER": "true",
+        "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
         "VOLUMES_RETAIN_PERIOD": "7200"
       },
@@ -329,13 +480,13 @@
       "type": "KubernetesPod",
       "cluster": {
         "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
+        "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -357,25 +508,28 @@
       }
     }
   },
-  "dind-rbd-pro-ceph2-ext4": {
+  "dind-rbd-pro-rook1-ext4-norsync": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
       "cluster": {
         "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
+        "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "dind",
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-provisioner-ceph2-ext4",
-      "volumeSize": "30Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "storageClassName": "dind-rbd-pro-rook1-ext4",
+      "volumeSize": "40Gi",
+      "reuseVolumeSelector": "app_env,account_name,repo_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v9",
+      "dindImage": "codefresh/dind:17.12-v10",
       "envVars": {
-        "CLEAN_DOCKER": "true"
+        "CLEAN_DOCKER": "true",
+        "CLEAN_PERIOD_BUILDS": "3",
+        "IMAGE_RETAIN_PERIOD": "14400",
+        "VOLUMES_RETAIN_PERIOD": "7200"
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
@@ -409,93 +563,13 @@
       "type": "KubernetesPod",
       "cluster": {
         "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
+        "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39",
-      "resources": {
-        "requests": {
-          "cpu": "60m",
-          "memory": "100Mi"
-        },
-        "limits": {
-          "cpu": "1000m",
-          "memory": "2048Mi"
-        }
-      },
-      "envVars": {
-        "LOGGER_LEVEL": "debug",
-        "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
-      }
-    }
-  },
-  "dind-rbd-pro-ceph2-xfs": {
-    "dockerDaemonScheduler": {
-      "type": "DindPodPvc",
-      "cluster": {
-        "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
-        "kubeconfigFilePath": "/root/.kube/config",
-        "nodeSelector": {
-          "codefresh/node-type": "dind",
-          "codefresh/runtime-environment": "codefresh"
-        }
-      },
-      "storageClassName": "dind-rbd-provisioner-ceph2-xfs",
-      "volumeSize": "30Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
-      "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v9",
-      "envVars": {
-        "CLEAN_DOCKER": "true"
-      },
-      "terminationGracePeriodSeconds": 300,
-      "notCheckServerCa": true,
-      "defaultDindResources": {
-        "requests": {
-          "cpu": "900m",
-          "memory": "1024Mi"
-        },
-        "limits": {
-          "cpu": "2500m",
-          "memory": "7168Mi"
-        }
-      },
-      "volumeMounts": {
-        "cf-certs-dind": {
-          "name": "cf-certs-dind",
-          "mountPath": "/etc/ssl/cf",
-          "readOnly": false
-        }
-      },
-      "volumes": {
-        "cf-certs-dind": {
-          "name": "cf-certs-dind",
-          "secret": {
-            "secretName": "cf-certs-dind"
-          }
-        }
-      }
-    },
-    "runtimeScheduler": {
-      "type": "KubernetesPod",
-      "cluster": {
-        "name": "cluster-dev-2.cf-cd.com",
-        "namespace": "workflow",
-        "kubeconfigFilePath": "/root/.kube/config",
-        "nodeSelector": {
-          "codefresh/node-type": "app"
-        }
-      },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "60m",

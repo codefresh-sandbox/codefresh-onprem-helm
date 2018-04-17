@@ -4,7 +4,7 @@
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
+        "name": "cluster-dev-2.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
@@ -56,14 +56,14 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       "cluster": {
-        "name": "cluster-dev-1.cf-cd.com",
+        "name": "cluster-dev-2.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:39",
+      "image": "codefresh/engine:42",
       "resources": {
         "requests": {
           "cpu": "100m",
