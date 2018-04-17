@@ -116,13 +116,13 @@
         "internal-registry": {
           "name": "internal-registry",
           "secret": {
-            "secretName": "staging-internal-registry"
+            "secretName": "internal-registry"
           }
         },
         "additional-internal-registries": {
           "name": "additional-internal-registries",
           "secret": {
-            "secretName": "staging-internal-registry"
+            "secretName": "internal-registry"
           }
         },
         "resource-limitations": {
