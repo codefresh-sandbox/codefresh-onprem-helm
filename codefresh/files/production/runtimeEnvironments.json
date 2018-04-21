@@ -601,7 +601,8 @@
         "COMPOSE_IMAGE": "codefresh/cf-compose:v1.0-arm64",
         "KUBE_DEPLOY": "codefresh/cf-deploy-kubernetes:v1.0-arm64",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18-arm64",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-arm64"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-arm64",
+        "FS_OPS_IMAGE": "codefresh/fs-ops:arm64"
       },
       "volumeMounts": {
         "additional-internal-registries": {
