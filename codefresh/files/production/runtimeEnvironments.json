@@ -155,9 +155,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook2-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,runtime_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -368,9 +368,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook2-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -601,7 +601,8 @@
         "COMPOSE_IMAGE": "codefresh/cf-compose:v1.0-arm64",
         "KUBE_DEPLOY": "codefresh/cf-deploy-kubernetes:v1.0-arm64",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18-arm64",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-arm64"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-arm64",
+        "FS_OPS_IMAGE": "codefresh/fs-ops:arm64"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -1077,9 +1078,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -1160,9 +1161,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-ext4",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -1243,9 +1244,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook2-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -1326,9 +1327,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook2-ext4",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
@@ -1409,9 +1410,9 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,repo_name",
+      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v10",
+      "dindImage": "codefresh/dind:17.12-v11",
       "envVars": {
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "4",
