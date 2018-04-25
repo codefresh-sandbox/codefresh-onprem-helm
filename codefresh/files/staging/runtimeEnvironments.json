@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -37,7 +37,7 @@
         "NODE_ENV": "kubernetes",
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       },
@@ -77,7 +77,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -93,7 +93,7 @@
         "NODE_ENV": "kubernetes",
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       },
@@ -275,8 +275,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -320,7 +321,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -336,7 +337,7 @@
         "NODE_ENV": "kubernetes",
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       }
@@ -358,8 +359,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -403,7 +405,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -419,7 +421,7 @@
         "NODE_ENV": "kubernetes",
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v10",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3"
       }

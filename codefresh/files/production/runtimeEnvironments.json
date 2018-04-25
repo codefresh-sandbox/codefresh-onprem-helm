@@ -19,7 +19,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -64,7 +64,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -157,8 +157,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,runtime_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -202,7 +203,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -302,7 +303,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -370,12 +371,13 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
-        "VOLUMES_RETAIN_PERIOD": "7200"
+        "VOLUMES_RETAIN_PERIOD": "14400"
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
@@ -415,7 +417,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -580,7 +582,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -695,7 +697,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -757,7 +759,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -883,7 +885,7 @@
           "codefresh/node-type": "worker"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -1080,8 +1082,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -1125,7 +1128,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1163,8 +1166,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -1208,7 +1212,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1246,8 +1250,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -1291,7 +1296,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1329,8 +1334,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "3",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -1374,7 +1380,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1412,8 +1418,9 @@
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:17.12-v11",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
+        "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
         "CLEAN_PERIOD_BUILDS": "4",
         "IMAGE_RETAIN_PERIOD": "14400",
@@ -1457,7 +1464,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:47",
+      "image": "codefresh/engine:48",
       "resources": {
         "requests": {
           "cpu": "60m",
