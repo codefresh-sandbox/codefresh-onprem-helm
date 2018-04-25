@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: pipelines-manager-v6
+  imageTag: pipelines-manager-v7
 
 cfui:
   imageTag: pipelines-manager-v5
