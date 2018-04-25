@@ -303,6 +303,8 @@ salesforce-reporter:
     HTTP_LOGGER_LEVEL: error
 
 hermes:
+  logLevel: debug
+  logJSON: true
   backup:
     env: production
     enabled: true
