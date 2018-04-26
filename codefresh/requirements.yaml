@@ -164,7 +164,7 @@ dependencies:
   - registry
   - dockerhub
 - name: cronus
-  version: ~0.1.1-any
+  version: ~0.2.0-any
   repository: '@codefresh'
   condition: hermes.enabled
   tags:

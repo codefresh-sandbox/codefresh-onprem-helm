@@ -140,6 +140,8 @@ if [[ $RUNNING_ON_CF == 1 ]]; then
 	  msg "Fetching latest helm dependencies, according to requirements.yaml"
 	  helm dependency update codefresh
 	fi
+	# print charts
+	ls -al codefresh/charts
 fi
 msg "The following services are going to be deployed: "
 echo "@$"
