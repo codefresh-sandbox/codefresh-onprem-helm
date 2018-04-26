@@ -309,6 +309,14 @@ hermes:
     env: production
     enabled: true
 
+nomios:
+  logLevel: debug
+  logJSON: true
+
+cronus:
+  logLevel: debug
+  logJSON: true
+
 nats:
   replicaCount: 3
   affinity:
