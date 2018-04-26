@@ -45,4 +45,4 @@ context-manager:
   imageTag: v24
 
 pipeline-manager:
-  imageTag: v8
+  imageTag: v9
