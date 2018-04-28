@@ -320,6 +320,12 @@ spec:
         - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
           value: /etc/admin/deploymentTemplateImages.json
         {{- end }}
+        - name: HELM_REPO_MANAGER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.helmRepoManagerService }}"
+        - name: HELM_REPO_MANAGER_PORT
+          value: "{{ default "80" .Values.global.helmRepoManagerPort }}"
+        - name: HELM_REPO_MANAGER_PROTOCOL
+          value: "{{ default "http" .Values.global.helmRepoManagerProtocol }}"
         - name: HERMES_URI
           value: "{{ .Release.Name }}-{{ .Values.global.hermesService }}"
         - name: HERMES_PORT

@@ -264,6 +264,10 @@ hermes:
     enabled: true
     env: staging
 
+helm-repo-manager:
+  logLevel: debug
+  logJSON: false
+
 nats:
   replicaCount: 3
   affinity:

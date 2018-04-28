@@ -302,6 +302,10 @@ salesforce-reporter:
   env:
     HTTP_LOGGER_LEVEL: error
 
+helm-repo-manager:
+  logLevel: debug
+  logJSON: true
+
 hermes:
   logLevel: debug
   logJSON: true

@@ -172,6 +172,8 @@ builder:
 payments:
   stripeIgnoreAccountNotFoundErrors: "true"
 
+helm-repo-manager: {}
+
 hermes:
   backup:
     env: dynamic
