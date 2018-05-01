@@ -93,6 +93,7 @@ env:
   PROGRESS_BUILDLOGS_BUCKETNAME: ""
   PROVIDERS_JSON_PATH: /etc/admin/providers.json
   RUNTIME_ENVS_JSON_PATH: /etc/admin/runtimeEnvironments.json
+  HELM_INSTALL_PIPELINE_REPO_USE_HTTP: "false"
 
 # kubectlHelmImage the base image will be used as part of helm flows(install, delete, test etc.)
 kubectlHelmImage: codefresh/cfstep-helm
