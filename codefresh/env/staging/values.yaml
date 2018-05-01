@@ -267,6 +267,7 @@ hermes:
 helm-repo-manager:
   logLevel: debug
   logJSON: false
+
   chartmuseum:
     env:
       open:
@@ -274,8 +275,6 @@ helm-repo-manager:
         STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io-staging
         STORAGE_AMAZON_PREFIX:
         STORAGE_AMAZON_REGION: us-east-1
-        AWS_ACCESS_KEY_ID: "NOT_AN_ACCESS_ID"
-        AWS_SECRET_ACCESS_KEY: "NOT_A_SECRET"
         
 nats:
   replicaCount: 3
