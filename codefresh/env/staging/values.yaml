@@ -267,6 +267,7 @@ hermes:
 helm-repo-manager:
   logLevel: debug
   logJSON: false
+  RepoUrlPrefix: "cm://h-staging.cfcr.io"
 
   chartmuseum:
     env:

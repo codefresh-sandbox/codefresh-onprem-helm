@@ -148,7 +148,7 @@ dependencies:
   - saas
   - infra
 - name: helm-repo-manager
-  version: ~0.2.2-any
+  version: ~0.2.3-any
   repository: '@codefresh'
   condition: helm-repo-manager.enabled
   tags:

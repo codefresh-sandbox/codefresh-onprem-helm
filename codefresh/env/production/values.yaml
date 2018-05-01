@@ -305,6 +305,7 @@ salesforce-reporter:
 helm-repo-manager:
   logLevel: debug
   logJSON: true
+  RepoUrlPrefix: "cm://h.cfcr.io"
 
   chartmuseum:
     env:
