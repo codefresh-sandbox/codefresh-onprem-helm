@@ -306,6 +306,14 @@ helm-repo-manager:
   logLevel: debug
   logJSON: true
 
+  chartmuseum:
+    env:
+      open:
+        STORAGE: amazon
+        STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io
+        STORAGE_AMAZON_PREFIX:
+        STORAGE_AMAZON_REGION: us-east-1
+        
 hermes:
   logLevel: debug
   logJSON: true
