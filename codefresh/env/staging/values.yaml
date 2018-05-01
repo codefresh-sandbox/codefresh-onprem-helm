@@ -178,7 +178,7 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: ""
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
-    HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "/api/helm/repos"
+    NO_HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "true"
 
   affinity:
     nodeAffinity:
@@ -268,7 +268,7 @@ hermes:
 helm-repo-manager:
   logLevel: debug
   logJSON: false
-  RepoUrlPrefix: "cm://app-staging.codefresh.io/api/helm/repos"
+  RepoUrlPrefix: "cm://h-staging.cfcr.io"
 
   chartmuseum:
     image:
