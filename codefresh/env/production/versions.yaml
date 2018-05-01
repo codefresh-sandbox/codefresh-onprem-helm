@@ -35,7 +35,7 @@ workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v12
+  imageTag: v13
 
 tasker-kubernetes:
   imageTag: v16
