@@ -225,7 +225,7 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: "superfresh,superfresh_github,Superfresh"
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-production
-    #NO_HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "true" uncomment once moving to cfcr
+    NO_HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "true"
 
     # EVENT_REPORTING_URL: "https://app.codefresh.io/api/workflow/"
 
@@ -307,7 +307,7 @@ salesforce-reporter:
 helm-repo-manager:
   logLevel: debug
   logJSON: true
-  RepoUrlPrefix: "cm://g.codefresh.io/api/helm/repos" # replace with cm://h.cfcr.io
+  RepoUrlPrefix: "cm://h.cfcr.io"
 
   chartmuseum:
     image:
