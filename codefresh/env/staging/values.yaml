@@ -270,8 +270,11 @@ helm-repo-manager:
   RepoUrlPrefix: "cm://h-staging.cfcr.io"
 
   chartmuseum:
+    image:
+      tag: edge
     env:
       open:
+        MAX_STORAGE_OBJECTS: 100
         STORAGE: amazon
         STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io-staging
         STORAGE_AMAZON_PREFIX:
