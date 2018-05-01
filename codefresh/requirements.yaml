@@ -147,6 +147,13 @@ dependencies:
   tags:
   - saas
   - infra
+- name: helm-repo-manager
+  version: ~0.2.3-any
+  repository: '@codefresh'
+  condition: helm-repo-manager.enabled
+  tags:
+  - helm
+  - chartmuseum
 - name: hermes
   version: ~0.9.0-any
   repository: '@codefresh'

@@ -54,6 +54,10 @@ ingress:
   enabled: false
   domain: '*'
 
+# helm-repo-manager settings
+helm-repo-manager:
+  enabled: true
+
 # hermes settings
 hermes:
   enabled: true
@@ -168,6 +172,11 @@ global:
   hermesService: hermes
   hermesPort: 80
   hermesProtocol: "http"
+
+  # API Gateway: helm-repo-manager service
+  helmRepoManagerService: helm-repo-manager
+  helmRepoManagerPort: 80
+  helmRepoManagerProtocol: "http"
 
 
 cfui:

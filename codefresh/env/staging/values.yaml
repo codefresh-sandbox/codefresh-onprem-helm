@@ -264,6 +264,19 @@ hermes:
     enabled: true
     env: staging
 
+helm-repo-manager:
+  logLevel: debug
+  logJSON: false
+  RepoUrlPrefix: "cm://h-staging.cfcr.io"
+
+  chartmuseum:
+    env:
+      open:
+        STORAGE: amazon
+        STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io-staging
+        STORAGE_AMAZON_PREFIX:
+        STORAGE_AMAZON_REGION: us-east-1
+        
 nats:
   replicaCount: 3
   affinity:
