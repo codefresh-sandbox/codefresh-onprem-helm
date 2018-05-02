@@ -334,9 +334,9 @@ nomios:
 cronus:
   logLevel: debug
   logJSON: true
-#  backup:
-#    env: production
-#    enabled: true
+  backup:
+    env: production
+    enabled: true
 
 nats:
   replicaCount: 3
