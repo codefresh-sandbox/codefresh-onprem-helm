@@ -178,6 +178,7 @@ cfapi:
     ADMIN_FEATURES_DELETE_USER_WHITELIST: ""
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
+    NO_HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "true"
 
   affinity:
     nodeAffinity:
@@ -263,6 +264,22 @@ hermes:
   backup:
     enabled: true
     env: staging
+
+helm-repo-manager:
+  logLevel: debug
+  logJSON: false
+  RepoUrlPrefix: "cm://h-staging.cfcr.io"
+
+  chartmuseum:
+    image:
+      tag: edge
+    env:
+      open:
+        MAX_STORAGE_OBJECTS: 100
+        STORAGE: amazon
+        STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io-staging
+        STORAGE_AMAZON_PREFIX:
+        STORAGE_AMAZON_REGION: us-east-1
 
 nats:
   replicaCount: 3

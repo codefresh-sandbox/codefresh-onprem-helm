@@ -134,19 +134,26 @@ dependencies:
   - saas
   - infra
 - name: cfui
-  version: 1.1.104
+  version: 1.2.2
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.10
+  version: 1.0.13
   repository: http://chartmuseum.codefresh.io
   condition: onboarding-status.enabled
   tags:
   - saas
   - infra
+- name: helm-repo-manager
+  version: ~0.2.3-any
+  repository: '@codefresh'
+  condition: helm-repo-manager.enabled
+  tags:
+  - helm
+  - chartmuseum
 - name: hermes
   version: ~0.9.0-any
   repository: '@codefresh'
@@ -164,7 +171,7 @@ dependencies:
   - registry
   - dockerhub
 - name: cronus
-  version: ~0.1.1-any
+  version: ~0.2.0-any
   repository: '@codefresh'
   condition: hermes.enabled
   tags:
