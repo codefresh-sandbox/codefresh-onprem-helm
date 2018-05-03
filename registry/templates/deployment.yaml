@@ -24,7 +24,7 @@ spec:
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
-{{ toYaml (default .Values.global.tolerations .Values.tolerations | indent 8 }}
+{{ toYaml (default .Values.global.tolerations .Values.tolerations) | indent 8 }}
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}
