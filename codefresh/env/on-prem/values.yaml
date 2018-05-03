@@ -161,6 +161,13 @@ global:
   seedJobs: true
   certsJobs: true
 
+  ## Node labels and tolerations for pod assignment
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#taints-and-tolerations-beta-feature
+  nodeSelector:
+    provisioner: local-volume
+  tolerations: []
+
   #appUrl: app-url
   githubInternalToken: placeholder
   githubClientSecret: placeholder
