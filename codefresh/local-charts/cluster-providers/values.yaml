@@ -22,5 +22,4 @@ mongoCreateDbJobScript: files/mongoCreateDbJobScript
 mongoURI: ""
 
 # formatLogsToElk logs will be formatter as elk expect to read it
-formatLogsToElk: true
-
+formatLogsToElk: "true"
