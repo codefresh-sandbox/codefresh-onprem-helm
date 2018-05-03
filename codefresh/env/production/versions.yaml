@@ -23,7 +23,7 @@ kube-integration:
   imageTag: v62
 
 accounts-referrals:
-  imageTag: v14
+  imageTag: v15
 
 mailer:
   imageTag: v11
