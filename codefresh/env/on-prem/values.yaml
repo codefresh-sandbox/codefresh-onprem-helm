@@ -158,8 +158,9 @@ kube-integration:
 
 helm-repo-manager:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/helm-repo-manager
-  imageTag: 0.2.8
+  image:
+    repository: gcr.io/codefresh-enterprise/codefresh/helm-repo-manager
+    tag: 0.2.8
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
