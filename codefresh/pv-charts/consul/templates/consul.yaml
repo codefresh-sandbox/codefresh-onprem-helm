@@ -132,11 +132,11 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         component: "{{ .Release.Name }}-{{ .Values.Component }}"
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.global.nodeSelector }}
       nodeSelector:
 {{ toYaml (default .Values.global.nodeSelector .Values.nodeSelector) | indent 8 }}
       {{- end }}
-      {{- if .Values.tolerations }}
+      {{- if .Values.global.tolerations }}
       tolerations:
 {{ toYaml (default .Values.global.tolerations .Values.tolerations) | indent 8 }}
       {{- end }}
