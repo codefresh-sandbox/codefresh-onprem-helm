@@ -32,11 +32,15 @@ consul:
   DatacenterName: codefresh-onprem
   Replicas: 1
   Memory: 64Mi
+  nodeSelector:
+    provisioner: local-volume
 
 postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
   postgresPassword: eC9arYka4ZbH
+  nodeSelector:
+    provisioner: local-volume
   resources:
     requests:
       memory: 128Mi
@@ -44,12 +48,16 @@ postgresql:
 mongodb:
   image: bitnami/mongodb:3.4.6-r0
   mongodbRootPassword: XT9nmM8dZD
+  nodeSelector:
+    provisioner: local-volume
   resources:
     requests:
       memory: 64Mi
 
 redis:
   redisPassword: hoC9szf7NtrU
+  nodeSelector:
+    provisioner: local-volume
   resources:
     requests:
       memory: 64Mi
@@ -57,10 +65,14 @@ redis:
 rabbitmq:
   rabbitmqUsername: user
   rabbitmqPassword: cVz9ZdJKYm7u
+  nodeSelector:
+    provisioner: local-volume  
 
 registry:
   mainChart: codefresh
   storageSize: 4Gi
+  nodeSelector:
+    provisioner: local-volume
 
 builder:
   replicaCount: 1
@@ -166,13 +178,6 @@ global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   seedJobs: true
   certsJobs: true
-
-  ## Node labels and tolerations for pod assignment
-  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
-  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#taints-and-tolerations-beta-feature
-  nodeSelector:
-    provisioner: local-volume
-  tolerations: []
 
   #appUrl: app-url
   githubInternalToken: placeholder

@@ -18,13 +18,13 @@ spec:
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
-      {{- if .Values.global.nodeSelector }}
+      {{- if .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml (default .Values.global.nodeSelector .Values.nodeSelector) | indent 8 }}
+{{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end }}
-      {{- if .Values.global.tolerations }}
+      {{- if .Values.tolerations }}
       tolerations:
-{{ toYaml (default .Values.global.tolerations .Values.tolerations) | indent 8 }}
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}
