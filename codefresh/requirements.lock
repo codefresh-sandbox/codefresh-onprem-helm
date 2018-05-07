@@ -1,18 +1,18 @@
 dependencies:
 - name: consul
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/consul
   version: 1.1.2
 - name: mongodb
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/mongodb
   version: 0.4.12
 - name: postgresql
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/postgresql
   version: 0.7.1
 - name: redis
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/redis
   version: 0.8.0
 - name: rabbitmq
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/rabbitmq
   version: 0.6.15
 - name: nats
   repository: file://../nats
@@ -76,10 +76,10 @@ dependencies:
   version: 0.2.2
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 1.2.2
+  version: 1.2.3
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
-  version: 1.0.13
+  version: 1.0.24
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
   version: 0.2.3
@@ -91,6 +91,6 @@ dependencies:
   version: 0.4.14
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.3
-digest: sha256:1dffcb409eaccdbafb4fb0524b6bf05daab6ad989531b6aa8bdf76b2ff21b25a
-generated: 2018-05-02T10:16:27.217125575+03:00
+  version: 0.2.6
+digest: sha256:35ac8ab614b70d97bfeed6fa0af02c180c5349d5b89665dadc87f169089b1b2a
+generated: 2018-05-03T15:53:32.1455327+03:00

@@ -1,29 +1,29 @@
 dependencies:
 - name: consul
   version: 1.1.2
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/consul
   condition: consul.enabled
   tags:
   - infra
 - name: mongodb
   version: 0.4.12
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/mongodb
   condition: mongo.enabled
   tags:
   - infra
 - name: postgresql
   version: 0.7.1
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/postgresql
   tags:
   - infra
 - name: redis
   version: 0.8.0
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/redis
   tags:
   - infra
 - name: rabbitmq
   version: 0.6.15
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://pv-charts/rabbitmq
   tags:
   - infra
 - name: nats
