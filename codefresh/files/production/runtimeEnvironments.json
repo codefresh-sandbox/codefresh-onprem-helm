@@ -603,7 +603,7 @@
         "COMPOSE_IMAGE": "codefresh/cf-compose:v1.0-arm64",
         "KUBE_DEPLOY": "codefresh/cf-deploy-kubernetes:v1.0-arm64",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18-arm64",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4-arm64",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-arm64",
         "FS_OPS_IMAGE": "codefresh/fs-ops:arm64"
       },
       "volumeMounts": {
@@ -664,7 +664,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2-windows",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11-windows",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18-windows",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4-windows",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-windows",
         "COMPOSE_IMAGE": "codefresh/cf-compose:v1.0-windows",
         "KUBE_DEPLOY": "codefresh/cf-deploy-kubernetes:v1.0-windows"
       },
