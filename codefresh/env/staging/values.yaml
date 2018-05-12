@@ -272,7 +272,7 @@ helm-repo-manager:
 
   chartmuseum:
     image:
-      tag: edge
+      tag: v0.6.0
     env:
       open:
         MAX_STORAGE_OBJECTS: 100
