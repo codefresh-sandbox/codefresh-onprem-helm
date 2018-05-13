@@ -1,5 +1,5 @@
 {"default": {
-    "git pull": "/etc/ssl/cf/",
+    "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
       "cluster": {
