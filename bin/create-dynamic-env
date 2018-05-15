@@ -119,7 +119,7 @@ msg "Helm version"
 helm version
 
 msg "Fetching latest helm dependencies, acording to requirements.yaml"
-helm dependency update codefresh
+helm --debug dependency update codefresh
 
 customFlags=$(processCustomFlags)
 customVals=$(processCustomVals)
