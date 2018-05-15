@@ -47,4 +47,4 @@ context-manager:
   imageTag: v30
 
 pipeline-manager:
-  imageTag: v10
+  imageTag: v11
