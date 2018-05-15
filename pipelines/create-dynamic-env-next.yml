@@ -49,7 +49,7 @@ steps:
     title: set codefresh chart repo to stable
     image: codefresh/cf-env-creator:2.8
     commands:
-      - helm repo add codefresh http://chartmuseum-dev.codefresh.io
+      - if [ "${{CF_BRANCH}}" == "master" ]; then helm repo add codefresh http://chartmuseum.codefresh.io; else helm repo add codefresh http://chartmuseum-dev.codefresh.io; fi
       - if [ ! -z "$FORCE_HELM_REPO" ]; then helm repo add codefresh $FORCE_HELM_REPO; fi
     when:
       condition:

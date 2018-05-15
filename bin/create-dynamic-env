@@ -121,16 +121,11 @@ helm version
 dbg=""
 if [ "$DEBUG_CHART" == "true" ]; then
   msg "Helm repo list"
-  msg "=============="
   helm repo list
-  msg ""
   msg "Requirements.yaml"
-  msg "================="
   cat codefresh/requirements.yaml
   msg ""
   msg "Content of codefresh/charts"
-  msg "==========================="
-  ls -al codefresh/charts
   dbg="--debug"
 fi
 
