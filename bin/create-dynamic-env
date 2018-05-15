@@ -118,8 +118,24 @@ sleep 5
 msg "Helm version"
 helm version
 
+dbg=""
+if [ "$DEBUG_CHART" == "true" ]; then
+  msg "Helm repo list"
+  msg "=============="
+  helm repo list
+  msg ""
+  msg "Requirements.yaml"
+  msg "================="
+  cat codefresh/requirements.yaml
+  msg ""
+  msg "Content of codefresh/charts"
+  msg "==========================="
+  ls -al codefresh/charts
+  dbg="--debug"
+fi
+
 msg "Fetching latest helm dependencies, acording to requirements.yaml"
-helm --debug dependency update codefresh
+helm $dbg dependency update codefresh
 
 customFlags=$(processCustomFlags)
 customVals=$(processCustomVals)
