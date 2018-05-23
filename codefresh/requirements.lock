@@ -76,13 +76,13 @@ dependencies:
   version: 0.2.2
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 1.3.6
+  version: 1.4.4
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.0.47
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.4
+  version: 0.2.5
 - name: hermes
   repository: http://chartmuseum.codefresh.io
   version: 0.9.16
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.2.6
-digest: sha256:e3ba96f7b78c7481a4eb07b66694935a9e8f907ebc0ebd722904d4fdc2495c77
-generated: 2018-05-15T12:29:54.203832588+03:00
+digest: sha256:0171aaa94de7ccec7f42495d10eabf3e6e1c0e75be0e4827ec400795e1f470e6
+generated: 2018-05-23T07:02:19.932977-05:00
