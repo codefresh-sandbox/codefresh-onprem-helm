@@ -248,6 +248,34 @@
           "effect": "NoSchedule"
         }
       }
+    },
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "name": "cluster-study",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config"
+      },
+      "image": "codefresh/engine:48",
+      "resources": {
+        "requests": {
+          "cpu": "100m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "1000m",
+          "memory": "2048Mi"
+        }
+      },
+      "envVars": {
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+      }
     }
   },
   "codefresh-inc": {
