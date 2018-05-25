@@ -193,6 +193,63 @@
       }
     }
   },
+  "azure-test": {
+    "dockerDaemonScheduler": {
+      "type": "DindKubernetesPod",
+      "cluster": {
+        "name": "cluster-study",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config"
+      },
+      "clientCertPath": "/etc/ssl/cf/",
+      "dindImage": "codefresh/cf-dind:v7",
+      "connectByPodIp": true,
+      "defaultDindResources": {
+        "requests": {
+          "cpu": "390m",
+          "memory": "256Mi"
+        },
+        "limits": {
+          "cpu": "2500m",
+          "memory": "4096Mi"
+        }
+      },
+      "volumeMounts": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "mountPath": "/etc/ssl/cf",
+          "readOnly": true
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "mountPath": "/etc/docker/daemon.json",
+          "subPath": "daemon.json",
+          "readOnly": true
+        }
+      },
+      "volumes": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "secret": {
+            "secretName": "cf-certs-dind"
+          }
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "configMap": {
+            "name": "dind-config"
+          }
+        }
+      },
+      "tolerations": {
+        "dind": {
+          "key": "codefresh/dind",
+          "operator": "Exists",
+          "effect": "NoSchedule"
+        }
+      }
+    }
+  },
   "codefresh-inc": {
     "dockerDaemonScheduler": {
       "type": "DindKubernetesPod",
