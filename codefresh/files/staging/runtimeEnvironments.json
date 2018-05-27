@@ -468,7 +468,7 @@
         }
       ],
       "clientCertPath": "/etc/ssl/cf/",
-      "dindImage": "codefresh/dind:7.12-v12",
+      "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
         "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
