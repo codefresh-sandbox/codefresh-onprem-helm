@@ -1,52 +1,50 @@
 cfapi:
-  imageTag: staging
+  imageTag: v441
 
-# this is an example of which value you need to pass to manually overwrite the image
+# this is an example of which value you need to pass to manually overwrite the image	+cfui:
 # cfui:
-#   imageTag: staging
+#   imageTag: v454
+
 
 # this is an example of which value you need to pass to manually overwrite the image
 # onboarding-status:
-#   imageTag: staging
+#   imageTag: v1
 
 payments:
-  imageTag: staging
+  imageTag: v29
 
 cluster-providers:
-  imageTag: staging
+  imageTag: v35
 
 internal-status-page:
-  imageTag: staging
+  imageTag: v9
 
 kube-integration:
-  imageTag: staging
+  imageTag: v62
 
 accounts-referrals:
-  imageTag: staging
+  imageTag: v16
 
 mailer:
-  imageTag: staging
+  imageTag: v11
 
 segment-reporter:
-  imageTag: staging
+  imageTag: v24
 
 workflow-baseline-invoker:
-  imageTag: staging
+  imageTag: v5
 
 salesforce-reporter:
-  imageTag: master
-
-cfsign:
-  imageTag: master
+  imageTag: v14
 
 tasker-kubernetes:
-  imageTag: staging
+  imageTag: v23
 
 charts-manager:
-  imageTag: staging
+  imageTag: v36
 
 context-manager:
-  imageTag: staging
+  imageTag: v31
 
 pipeline-manager:
-  imageTag: staging
+  imageTag: v11
