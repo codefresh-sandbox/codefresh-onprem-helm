@@ -14,7 +14,7 @@ payments:
   imageTag: v29
 
 cfui:
-  imageTag: v1.4.9
+  imageTag: "1.4.9"
   
 cluster-providers:
   imageTag: v35
