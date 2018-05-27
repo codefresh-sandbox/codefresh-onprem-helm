@@ -13,6 +13,9 @@ cfapi:
 payments:
   imageTag: v29
 
+cfui:
+  imageTag: v1.4.9
+  
 cluster-providers:
   imageTag: v35
 
@@ -48,3 +51,6 @@ context-manager:
 
 pipeline-manager:
   imageTag: v11
+
+onboarding-status:
+  imageTag: "1.0.47"
