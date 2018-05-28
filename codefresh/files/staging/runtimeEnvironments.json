@@ -457,14 +457,14 @@
         {
           "name":"dind",
           "storageClassName": "dind-rbd-pro-rook1-xfs",
-          "volumeSize": "40Gi",
-          "reuseVolumeSelector": "app_env,account_name"
+          "volumeSize": "20Gi",
+          "reuseVolumeSelector": "app_env,codefresh_app,account_name"
         },
         {
           "name":"workspace",
           "storageClassName": "dind-rbd-pro-rook1-xfs",
-          "volumeSize": "0.5Gi",
-          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+          "volumeSize": "1Gi",
+          "reuseVolumeSelector": "app_env,codefresh_app,account_name,pipeline_id"
         }
       ],
       "clientCertPath": "/etc/ssl/cf/",
