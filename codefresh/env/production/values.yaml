@@ -311,7 +311,7 @@ helm-repo-manager:
 
   chartmuseum:
     image:
-      tag: v0.6.0
+      tag: v0.7.0
     env:
       open:
         MAX_STORAGE_OBJECTS: 50
@@ -319,6 +319,9 @@ helm-repo-manager:
         STORAGE_AMAZON_BUCKET: chartmuseum.codefresh.io
         STORAGE_AMAZON_PREFIX:
         STORAGE_AMAZON_REGION: us-east-1
+        CACHE: redis
+        CACHE_REDIS_ADDR: "production-store:6379"
+        CACHE_REDIS_DB: "1"
 
 hermes:
   logLevel: debug
