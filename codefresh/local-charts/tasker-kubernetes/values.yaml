@@ -2,7 +2,7 @@ imagePullPolicy: Always
 redeploy: false
 
 # Number of replicas
-replicaCount: 4
+replicaCount: 0
 
 image: r.cfcr.io/codefresh-inc/codefresh/tasker-kubernetes
 imageTag: master
