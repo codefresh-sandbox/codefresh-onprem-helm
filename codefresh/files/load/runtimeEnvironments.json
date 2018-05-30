@@ -537,11 +537,11 @@
       }
     }
   },
-  "dind-rbd-pro-rook1-ext4": {
+  "cluster-dev-3-rook1": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
       "cluster": {
-        "name": "cluster-dev-2.cf-cd.com",
+        "name": "cluster-dev-3.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
@@ -549,7 +549,7 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-ext4",
+      "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
       "reuseVolumeSelector": "app_env,account_name,pipeline_id",
       "clientCertPath": "/etc/ssl/cf/",
@@ -557,9 +557,9 @@
       "envVars": {
         "ENABLED_COLLECTORS": "^(diskstats|stat)$",
         "CLEAN_DOCKER": "true",
-        "CLEAN_PERIOD_BUILDS": "3",
+        "CLEAN_PERIOD_BUILDS": "4",
         "IMAGE_RETAIN_PERIOD": "14400",
-        "VOLUMES_RETAIN_PERIOD": "7200"
+        "VOLUMES_RETAIN_PERIOD": "14400"
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
@@ -592,7 +592,7 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       "cluster": {
-        "name": "cluster-dev-2.cf-cd.com",
+        "name": "cluster-dev-3.cf-cd.com",
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config",
         "nodeSelector": {
