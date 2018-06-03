@@ -352,9 +352,3 @@ tags:
   saas: true
   infra: false
   old-scheduler: false
-
-imageCredentials:
-  - registry: index.docker.io
-    username: leoncodefresh
-  - registry: r.cfcr.io
-    username: admin
