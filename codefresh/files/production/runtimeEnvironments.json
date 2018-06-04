@@ -1,4 +1,5 @@
-{"default": {
+{
+  "default": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
@@ -19,7 +20,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -64,7 +65,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -153,9 +154,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook2-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook2-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,runtime_env,account_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -203,7 +209,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -303,7 +309,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -367,9 +373,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook2-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook2-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -417,7 +428,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -451,9 +462,14 @@
           "codefresh/runtime-environment": "codefresh-shared"
         }
       },
-      "storageClassName": "dind-local-volume-provisioner",
-      "volumeSize": "15Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-local-volume-provisioner",
+          "volumeSize": "15Gi",
+          "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "envVars": {
@@ -512,9 +528,14 @@
           "codefresh/runtime-environment": "codefresh-paying"
         }
       },
-      "storageClassName": "dind-local-volume-provisioner",
-      "volumeSize": "15Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-local-volume-provisioner",
+          "volumeSize": "15Gi",
+          "reuseVolumeSelector": "app_env,runtime_env,account_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "envVars": {
@@ -561,7 +582,7 @@
       }
     }
   },
- "arm": {
+  "arm": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
@@ -582,7 +603,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -624,7 +645,7 @@
       }
     }
   },
- "windows-test-env": {
+  "windows-test-env": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
@@ -697,7 +718,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -759,7 +780,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -885,7 +906,7 @@
           "codefresh/node-type": "worker"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -960,9 +981,14 @@
           "codefresh/node-type": "dind"
         }
       },
-      "storageClassName": "dind-ebs-provisioner",
-      "volumeSize": "200Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-ebs-provisioner",
+          "volumeSize": "200Gi",
+          "reuseVolumeSelector": "app_env,runtime_env,account_name,repo_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "notCheckServerCa": true,
@@ -1017,9 +1043,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-local-volume-provisioner",
-      "volumeSize": "15Gi",
-      "reuseVolumeSelector": "app_env,runtime_env",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-local-volume-provisioner",
+          "volumeSize": "15Gi",
+          "reuseVolumeSelector": "app_env,runtime_env"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "envVars": {
@@ -1078,9 +1109,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook1-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -1128,7 +1164,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1162,9 +1198,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook2-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook2-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -1212,7 +1253,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1246,9 +1287,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook1-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -1296,7 +1342,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1330,9 +1376,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook1-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name,pipeline_id"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -1380,7 +1431,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1414,9 +1465,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook2-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,runtime_env,account_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook2-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,runtime_env,account_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -1464,7 +1520,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
