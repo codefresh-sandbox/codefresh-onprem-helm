@@ -23,8 +23,9 @@ spec:
       app: {{ template "fullname" . }}
   template:
     metadata:
-      {{- if .Values.redeploy }}
       annotations:
+        checksum-config: {{ .Files.Get (print .Values.getRuntimeEnvs ) | sha256sum }}
+      {{- if .Values.redeploy }}
         forceRedeployUniqId: {{ now | quote }}
       {{- end }}
       labels:
