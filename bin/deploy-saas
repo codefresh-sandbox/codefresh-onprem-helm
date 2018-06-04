@@ -60,10 +60,11 @@ activateServiceAccount() {
 
 waitForHelm() {
 	while true; do
-		status=$(kubectl get po -l app=helm -l name=tiller --show-all=false -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system)
+#		status=$(kubectl get po -l app=helm -l name=tiller -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system --field-selector status.phase=Running)
+        status=$(kubectl -nkube-system  get po -l app=helm -l name=tiller -o=go-template --template='{{  range $i, $v := .items }}{{ if eq $v.status.phase "Running" }}{{ $v.status.phase }}{{ end }}{{ end }}')
 
 		msg "Helm status = $status"
-		[ "$status" = "Running" ] && break
+		[ "$status" == "Running" ] && break
 
 		msg "Sleeping 3 seconds ..."
 		sleep 3
