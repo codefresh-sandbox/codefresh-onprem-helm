@@ -467,7 +467,7 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name,pipeline_id",
+      "reuseVolumeSelector": "app_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
