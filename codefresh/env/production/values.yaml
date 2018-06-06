@@ -38,7 +38,7 @@ rabbitmq:
 ingress:
   replicaCount: 4
   webTlsSecretName: "star.codefresh.io"
-  disableAccessLog: "true"
+ # disableAccessLog: "true"
 
 getRuntimeEnvs: files/production/runtimeEnvironments.json
 
