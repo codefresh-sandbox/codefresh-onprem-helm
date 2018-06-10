@@ -209,6 +209,86 @@
       }
     }
   },
+  "cluster-az-1": {
+    "dockerDaemonScheduler": {
+      "type": "DindKubernetesPod",
+      "cluster": {
+        "name": "cluster-az-1",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config"
+      },
+      "clientCertPath": "/etc/ssl/cf/",
+      "dindImage": "codefresh/cf-dind:v7",
+      "connectByPodIp": true,
+      "defaultDindResources": {
+        "requests": {
+          "cpu": "390m",
+          "memory": "256Mi"
+        },
+        "limits": {
+          "cpu": "2500m",
+          "memory": "2048Mi"
+        }
+      },
+      "volumeMounts": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "mountPath": "/etc/ssl/cf",
+          "readOnly": true
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "mountPath": "/etc/docker/daemon.json",
+          "subPath": "daemon.json",
+          "readOnly": true
+        }
+      },
+      "volumes": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "secret": {
+            "secretName": "cf-certs-dind"
+          }
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "configMap": {
+            "name": "dind-config"
+          }
+        }
+      }
+    },
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "name": "cluster-az-1",
+        "namespace": "default",
+        "kubeconfigFilePath": "/root/.kube/config"
+      },
+      "image": "codefresh/engine:52",
+      "resources": {
+        "requests": {
+          "cpu": "100m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "1000m",
+          "memory": "2048Mi"
+        }
+      },
+      "envVars": {
+        "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
+        "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+      }
+    }    
+  },  
   "dind-ebs-pro": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
