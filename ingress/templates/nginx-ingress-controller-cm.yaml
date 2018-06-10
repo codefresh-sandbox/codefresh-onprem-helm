@@ -11,6 +11,7 @@ metadata:
 data:
   disable-access-log: {{ default "false" .Values.disableAccessLog | quote }}
   enable-vts-status: "true"
+  client-body-buffer-size: "16k"
   log-format-escape-json: "true"
   log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
                              "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
