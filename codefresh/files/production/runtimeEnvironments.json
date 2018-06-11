@@ -154,7 +154,7 @@
         }
       },
       "storageClassName": "dind-rbd-pro-rook2-xfs",
-      "volumeSize": "40Gi",
+      "volumeSize": "15Gi",
       "reuseVolumeSelector": "app_env,runtime_env,account_name",
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
@@ -561,7 +561,7 @@
       }
     }
   },
- "arm": {
+  "arm": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
@@ -624,7 +624,7 @@
       }
     }
   },
- "windows-test-env": {
+  "windows-test-env": {
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
