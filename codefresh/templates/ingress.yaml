@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.org/redirect-to-https: "false"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-          more_set_headers "X-Request-ID: $req_id";
+          more_set_headers "X-Request-ID: $request_id";
   name: {{ template "fullname" . }}-ingress
   labels:
     app: {{ template "fullname" . }}
