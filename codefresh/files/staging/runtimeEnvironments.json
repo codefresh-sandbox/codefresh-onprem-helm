@@ -553,10 +553,7 @@
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
         "ENABLED_COLLECTORS": "^(diskstats|stat)$",
-        "CLEAN_DOCKER": "true",
-        "CLEAN_PERIOD_BUILDS": "3",
-        "IMAGE_RETAIN_PERIOD": "14400",
-        "VOLUMES_RETAIN_PERIOD": "14400"
+        "CLEAN_DOCKER": "true"
       },
       "terminationGracePeriodSeconds": 300,
       "notCheckServerCa": true,
