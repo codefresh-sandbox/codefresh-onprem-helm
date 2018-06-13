@@ -265,7 +265,7 @@
         "namespace": "default",
         "kubeconfigFilePath": "/root/.kube/config"
       },
-      "image": "codefresh/engine:52",
+      "image": "codefresh/engine:51",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -287,8 +287,8 @@
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
       }
-    }    
-  },  
+    }
+  },
   "dind-ebs-pro": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
@@ -296,9 +296,14 @@
         "name": "cluster-dev-1.cf-cd.com",
         "kubeconfigFilePath": "/root/.kube/config"
       },
-      "storageClassName": "dind-ebs-provisioner",
-      "volumeSize": "15Gi",
-      "reuseVolumeSelector": "app_env,runtime_env",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-ebs-provisioner",
+          "volumeSize": "15Gi",
+          "reuseVolumeSelector": "app_env,runtime_env"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.06-v8",
       "defaultDindResources": {
@@ -352,9 +357,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-xfs",
-      "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook1-xfs",
+          "volumeSize": "40Gi",
+          "reuseVolumeSelector": "app_env,account_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -436,9 +446,14 @@
           "codefresh/runtime-environment": "codefresh"
         }
       },
-      "storageClassName": "dind-rbd-pro-rook1-xfs",
-      "volumeSize": "20Gi",
-      "reuseVolumeSelector": "app_env,codefresh_app,account_name",
+      "pvcs": [
+        {
+          "name": "dind",
+          "storageClassName": "dind-rbd-pro-rook1-xfs",
+          "volumeSize": "20Gi",
+          "reuseVolumeSelector": "app_env,codefresh_app,account_name"
+        }
+      ],
       "clientCertPath": "/etc/ssl/cf/",
       "dindImage": "codefresh/dind:17.12-v12",
       "envVars": {
@@ -581,7 +596,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:extws",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
