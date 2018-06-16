@@ -1615,7 +1615,7 @@
           "codefresh/node-type": "stem"
         }
       },
-      "image": "codefresh/engine:48-windows",
+      "image": "codefresh/engine:52",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -1630,13 +1630,11 @@
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2-windows",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2-windows",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11-windows",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18-windows",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v3-windows",
-        "COMPOSE_IMAGE": "codefresh/cf-compose:windows",
-        "KUBE_DEPLOY": "codefresh/cf-deploy-kubernetes:v1.0-windows"
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
       },
       "volumeMounts": {
         "additional-internal-registries": {
