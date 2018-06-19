@@ -147,6 +147,13 @@ dependencies:
   tags:
   - saas
   - infra
+- name: runtime-environment-manager
+  version: 1.0.0-deployment-test
+  repository: http://chartmuseum-dev.codefresh.io
+  condition: runtime-environment-manager.enabled
+  tags:
+  - saas
+  - infra
 - name: helm-repo-manager
   version: ~0.2.5-any
   repository: '@codefresh'

@@ -192,6 +192,9 @@ context-manager:
 onboarding-status:
   mongoURI: "mongodb://mongo.default.svc:27017/onboarding-status"
 
+runtime-environment-manager:
+  mongoURI: "mongodb://mongo.default.svc:27017/runtime-environment-manager"
+
 pipeline-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/pipeline-manager"
 

@@ -168,6 +168,9 @@ global:
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
 
+  runtimeEnvironmentManagerService: runtime-environment-manager
+  runtimeEnvironmentManagerPort: 80
+
   # API Gateway: hermes trigger-manager service
   hermesService: hermes
   hermesPort: 80

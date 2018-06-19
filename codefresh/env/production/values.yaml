@@ -262,6 +262,9 @@ cfui:
 onboarding-status:
   replicaCount: 2
 
+runtime-environment-manager:
+  replicaCount: 2
+
 payments:
   replicaCount: 2
   env:

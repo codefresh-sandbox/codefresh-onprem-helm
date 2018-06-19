@@ -99,6 +99,12 @@ onboarding-status:
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
 
+runtime-environment-manager:
+  enabled: false
+  image: gcr.io/codefresh-enterprise/codefresh/runtime-environment-manager
+  dockercfg: placeholder
+  newrelicLicenseKey: invalid-key
+
 cfapi:
   github:
     apiPathPrefix: /api/v3
@@ -288,6 +294,8 @@ global:
   pipelineManagerPort: 9000
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
+  runtimeEnvironmentManagerService: runtime-environment-manager
+  runtimeEnvironmentManagerPort: 80
 
   internalServiceTolerations:
   - effect: NoSchedule

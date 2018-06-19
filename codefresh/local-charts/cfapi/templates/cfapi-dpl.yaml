@@ -317,6 +317,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.onboardingStatusService }}"
         - name: ONBOARDING_STATUS_PORT
           value: {{ .Values.global.onboardingStatusPort | quote }}
+        - name: RUNTIME_ENVIRONMENT_MANAGER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.runtimeEnvironmentManagerService }}"
+        - name: RUNTIME_ENVIRONMENT_MANAGER_PORT
+          value: {{ .Values.global.runtimeEnvironmentManagerPort | quote }}
         {{- if .Values.deploymentTemplateImages }}
         - name: DEPLOYMENT_TEMPLATE_IMAGES_JSON_PATH
           value: /etc/admin/deploymentTemplateImages.json

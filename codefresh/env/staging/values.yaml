@@ -210,6 +210,10 @@ onboarding-status:
   mongoURI: "mongodb://mongo.default.svc:27017/onboarding-status"
   replicaCount: 1
 
+runtime-environment-manager:
+  mongoURI: "mongodb://mongo.default.svc:27017/runtime-environment-manager"
+  replicaCount: 1
+
 payments:
   mongoURI: "mongodb://mongo.default.svc:27017/payments"
   stripeIgnoreAccountNotFoundErrors: "true"
