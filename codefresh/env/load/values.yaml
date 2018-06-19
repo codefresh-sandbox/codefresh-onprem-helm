@@ -178,6 +178,7 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-load
 
+
 cfui:
   webTLS:
     secretName: star.codefresh.io
