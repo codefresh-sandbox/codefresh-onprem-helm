@@ -11,6 +11,11 @@ metadata:
     version: {{ .Values.imageTag | quote }}
 spec:
   replicas: {{ default 1 .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
   selector:
     matchLabels:
       app: {{ template "fullname" . }}
@@ -107,14 +112,24 @@ spec:
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP
+
         readinessProbe:
           httpGet:
-            path: /api/ping
+            path: /api/ready
             port: {{ .Values.targetPort }}
-          periodSeconds: 5
-          timeoutSeconds: 5
+          periodSeconds: 1
           successThreshold: 1
-          failureThreshold: 5
+          failureThreshold: 3
+
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: {{ .Values.targetPort }}
+          periodSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+          initialDelaySeconds: 10
+
       {{- if .Values.global.addResolvConf }}
         volumeMounts:
         - mountPath: /etc/resolv.conf
