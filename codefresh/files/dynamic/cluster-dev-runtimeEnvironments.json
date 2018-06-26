@@ -63,7 +63,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:51",
+      "image": "codefresh/engine:53",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -154,7 +154,7 @@
       },
       "storageClassName": "dind-rbd-pro-rook1-xfs",
       "volumeSize": "40Gi",
-      "reuseVolumeSelector": "app_env,account_name",      
+      "reuseVolumeSelector": "app_env,account_name",
       "pvcs": [
         {
           "name": "dind",
@@ -213,7 +213,7 @@
           "codefresh/node-type": "app"
         }
       },
-      "image": "codefresh/engine:52",
+      "image": "codefresh/engine:53",
       "resources": {
         "requests": {
           "cpu": "60m",
@@ -234,5 +234,5 @@
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
       }
     }
-  }  
+  }
 }
