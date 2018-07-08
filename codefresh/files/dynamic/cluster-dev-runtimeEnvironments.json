@@ -140,6 +140,10 @@
       }
     }
   },
+  "defaultUserProvidedCluster": {
+    "dockerDaemonScheduler": {},
+    "runtimeScheduler": {}
+  },
   "dind-ws-rbd-pro-rook1-xfs": {
     "dockerDaemonScheduler": {
       "type": "DindPodPvc",
