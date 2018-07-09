@@ -44,7 +44,7 @@ charts-manager:
   imageTag: v37
 
 context-manager:
-  imageTag: v31
+  imageTag: v32
 
 pipeline-manager:
   imageTag: v29
