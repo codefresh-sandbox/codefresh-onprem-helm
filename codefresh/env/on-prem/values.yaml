@@ -178,7 +178,7 @@ helm-repo-manager:
   replicaCount: 1
   image:
     repository: gcr.io/codefresh-enterprise/codefresh/helm-repo-manager
-    tag: 0.2.8
+    tag: 0.2.18
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
