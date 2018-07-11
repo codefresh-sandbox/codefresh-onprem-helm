@@ -35,6 +35,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         ports:
         - containerPort: {{ .Values.port }}
           protocol: TCP
