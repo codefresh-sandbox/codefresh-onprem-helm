@@ -23,7 +23,7 @@ spec:
       - name: {{ template "fullname" . }}-certs
         image: {{ .Values.kubectlImage }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
-        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-runtime-certs ; /opt/codefresh/gen-runtime-certs"]
+        command: ["/bin/sh", "/opt/codefresh/gen-runtime-certs"]
         volumeMounts:
         - name: tools
           mountPath: "/opt/codefresh/gen-runtime-certs"
@@ -33,7 +33,7 @@ spec:
       - name: {{ template "fullname" . }}-tls
         image: {{ .Values.kubectlImage }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
-        command: ["/bin/sh", "-c", "chmod +x /opt/codefresh/gen-website-tls ; /opt/codefresh/gen-website-tls"]
+        command: ["/bin/sh", "/opt/codefresh/gen-website-tls"]
         volumeMounts:
         - name: tools
           mountPath: "/opt/codefresh/gen-website-tls"
