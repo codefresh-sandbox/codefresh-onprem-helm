@@ -44,7 +44,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        command: ["/bin/sh", "-c", "chmod +x /opt/dind/register && /opt/dind/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ .Values.global.appUrl }}"]
+        command: ["/bin/sh", "-c", "cp -L /opt/dind/register /usr/local/bin/ && chmod +x /usr/local/bin/register && /usr/local/bin/register ${POD_NAME} {{ template "fullname" . }}.{{ .Release.Namespace }}.svc {{ .Values.global.appUrl }}"]
         volumeMounts:
         - name: runner-config
           mountPath: /opt/dind/register
