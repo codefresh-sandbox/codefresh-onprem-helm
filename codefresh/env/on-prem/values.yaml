@@ -100,7 +100,7 @@ onboarding-status:
   newrelicLicenseKey: invalid-key
 
 runtime-environment-manager:
-  enabled: false
+  enabled: true
   image: gcr.io/codefresh-enterprise/codefresh/runtime-environment-manager
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
