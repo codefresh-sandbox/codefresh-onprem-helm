@@ -39,7 +39,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -83,7 +83,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {},
       "volumes": {}
@@ -227,7 +227,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -329,7 +329,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -446,7 +446,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -737,7 +737,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -799,7 +799,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -925,7 +925,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "tolerations": {
         "codefreshWorker": {
@@ -1182,7 +1182,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1271,7 +1271,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1360,7 +1360,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1449,7 +1449,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1538,7 +1538,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1634,7 +1634,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {
         "additional-internal-registries": {
@@ -1742,7 +1742,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   },
@@ -1834,7 +1834,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4"
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       }
     }
   }
