@@ -28,7 +28,7 @@
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v4",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
@@ -80,6 +80,89 @@
           "secret": {
             "secretName": "cf-codefresh-certs-client"
           }
+        }
+      }
+    }
+  },
+  "defaultUserProvidedCluster": {
+    "runtimeScheduler": {
+      "type": "KubernetesPod",
+      "cluster": {
+        "namespace": "default"
+      },
+      "image": "codefresh/engine:53",
+      "resources": {
+        "requests": {
+          "cpu": "100m",
+          "memory": "100Mi"
+        },
+        "limits": {
+          "cpu": "1000m",
+          "memory": "2048Mi"
+        }
+      },
+      "envVars": {
+        "LOGGER_LEVEL": "debug",
+        "NODE_ENV": "kubernetes",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
+      },
+      "volumeMounts": {},
+      "volumes": {}
+    },
+    "dockerDaemonScheduler": {
+      "type": "DindKubernetesPod",
+      "cluster": {
+        "namespace": "default"
+      },
+      "dindImage": "codefresh/cf-dind:v7",
+      "connectByPodIp": true,
+      "defaultDindResources": {
+        "requests": {
+          "cpu": "390m",
+          "memory": "256Mi"
+        },
+        "limits": {
+          "cpu": "2500m",
+          "memory": "4096Mi"
+        }
+      },
+      "envVars": {},
+      "volumeMounts": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "mountPath": "/etc/ssl/cf",
+          "readOnly": true
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "mountPath": "/etc/docker/daemon.json",
+          "subPath": "daemon.json",
+          "readOnly": true
+        }
+      },
+      "volumes": {
+        "cf-certs-dind": {
+          "name": "cf-certs-dind",
+          "secret": {
+            "secretName": "codefresh-certs-server"
+          }
+        },
+        "dind-config": {
+          "name": "dind-config",
+          "configMap": {
+            "name": "codefresh-dind-config"
+          }
+        }
+      },
+      "tolerations": {
+        "dind": {
+          "key": "codefresh/dind",
+          "operator": "Exists",
+          "effect": "NoSchedule"
         }
       }
     }
