@@ -296,6 +296,11 @@ global:
   onboardingStatusPort: 80
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
+  helmRepoManagerService: helm-repo-manager
+  hermesService: hermes
+  dindProviderService: dind-provider
+  dindProviderPort: 9000
+
 
   internalServiceTolerations:
   - effect: NoSchedule
