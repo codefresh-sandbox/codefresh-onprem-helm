@@ -100,6 +100,10 @@ spec:
           value: {{ template "name" . }}
         - name: FORMAT_LOGS_TO_ELK
           value: "{{ .Values.formatLogsToElk }}"
+        - name: API_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.cfapiService }}"
+        - name: API_PORT
+          value: {{ .Values.global.cfapiInternalPort | quote }}
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP
