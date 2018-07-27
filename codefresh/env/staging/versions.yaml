@@ -44,7 +44,7 @@ charts-manager:
   imageTag: v37
 
 context-manager:
-  imageTag: v41
+  imageTag: v42
 
 pipeline-manager:
   imageTag: add-repository-new-repo-selector
