@@ -121,6 +121,9 @@ metadata:
 spec:
   serviceName: "{{ template "consul.fullname" . }}"
   replicas: {{ default 3 .Values.Replicas }}
+  selector:
+    matchLabels:
+      component: "{{ .Release.Name }}-{{ .Values.Component }}"  
   updateStrategy:
     type: RollingUpdate
   template:

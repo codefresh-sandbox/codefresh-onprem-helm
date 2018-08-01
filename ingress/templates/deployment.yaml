@@ -16,6 +16,9 @@ spec:
   {{- if not .Values.ingressDeamonSet }}
   replicas:  {{ default 1 .Values.replicaCount }}
   {{- end }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}  
   template:
     metadata:
       labels:

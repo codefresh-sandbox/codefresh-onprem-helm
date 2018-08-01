@@ -12,6 +12,9 @@ metadata:
 spec:
   serviceName: {{ template "fullname" . }}
   replicas: {{ default 2 .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}  
   template:
     metadata:
       annotations:
