@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: add-repository-new-repo-selector
+  imageTag: v547
 
 # this is an example of which value you need to pass to manually overwrite the image	+cfui:
 # cfui:
@@ -29,13 +29,13 @@ mailer:
   imageTag: v11
 
 segment-reporter:
-  imageTag: v24
+  imageTag: v25
 
 workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v14
+  imageTag: v17
 
 tasker-kubernetes:
   imageTag: v23
@@ -44,10 +44,10 @@ charts-manager:
   imageTag: v37
 
 context-manager:
-  imageTag: v41
+  imageTag: v44
 
 pipeline-manager:
-  imageTag: add-repository-new-repo-selector
+  imageTag: v31
 
 cfsign:
   imageTag: v1
