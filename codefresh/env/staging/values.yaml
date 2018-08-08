@@ -232,6 +232,7 @@ cluster-providers:
 
 internal-status-page:
   imageTag: staging
+  enabled: false
 
 kube-integration:
   replicaCount: 1
