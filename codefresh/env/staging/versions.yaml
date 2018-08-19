@@ -1,8 +1,9 @@
 cfapi:
-  imageTag: aks-auth
+  imageTag: contexts
 
+#this is an example of which value you need to pass to manually overwrite the image	+cfui:
 cfui:
-  imageTag: aks-auth
+  imageTag: contexts
 
 
 # this is an example of which value you need to pass to manually overwrite the image
@@ -43,7 +44,7 @@ charts-manager:
   imageTag: v37
 
 context-manager:
-  imageTag: v44
+  imageTag: contexts
 
 pipeline-manager:
   imageTag: v31
