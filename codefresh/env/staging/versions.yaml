@@ -1,9 +1,9 @@
 cfapi:
-  imageTag: contexts
+  imageTag: staging
 
 #this is an example of which value you need to pass to manually overwrite the image	+cfui:
-cfui:
-  imageTag: contexts
+ cfui:
+   imageTag: staging
 
 
 # this is an example of which value you need to pass to manually overwrite the image
@@ -14,7 +14,7 @@ payments:
   imageTag: v29
 
 cluster-providers:
-  imageTag: aks-auth
+  imageTag: v39
 
 internal-status-page:
   imageTag: v9
@@ -44,7 +44,7 @@ charts-manager:
   imageTag: v37
 
 context-manager:
-  imageTag: contexts
+  imageTag: staging
 
 pipeline-manager:
   imageTag: v31
