@@ -14,7 +14,7 @@ payments:
   imageTag: v29
 
 cluster-providers:
-  imageTag: v40
+  imageTag: v39
 
 internal-status-page:
   imageTag: v9
