@@ -29,7 +29,7 @@ mailer:
   imageTag: v11
 
 segment-reporter:
-  imageTag: v25
+  imageTag: v26
 
 workflow-baseline-invoker:
   imageTag: v5
