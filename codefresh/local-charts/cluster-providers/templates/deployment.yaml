@@ -63,6 +63,30 @@ spec:
             secretKeyRef:
               name: {{ template "fullname" . }}
               key: client-secret
+
+        {{- if .Values.aksAuthClientId }}
+        - name: AKS_AUTH_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: aks-auth-client-id
+        - name: AKS_AUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: aks-auth-client-secret
+        - name: AKS_AUTH_COOKIE_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: aks-auth-cookie-encryption-key
+        - name: AKS_AUTH_COOKIE_ENCRYPTION_IV
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: aks-auth-cookie-encryption-iv
+        {{- end }}
+
         - name: MONGO_URI
           {{ if .Values.mongoURI }}
           valueFrom:
