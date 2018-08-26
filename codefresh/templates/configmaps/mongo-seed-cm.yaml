@@ -10,6 +10,15 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 data:
+  idps.json: |
+    {
+        "_id" : ObjectId("5b79a32e3b80d12608352f8e"),
+        "clientName" : "local",
+        "displayName" : "local",
+        "tokenSecret" : "q9MNUmE6assnoANmGZEjtrAa",
+        "clientType" : "localUserPassword",
+        "accounts" : []
+    }
   accounts.json: |
     {
         "_id" : ObjectId("59009117c102763beda7ce71"),
@@ -17,7 +26,6 @@ data:
         "createdAt" : ISODate("2017-04-26T12:22:48.001+0000"),
         "updatedAt" : ISODate("2017-04-26T12:27:13.720+0000"),
         "name" : "admin-cf",
-        "provider" : "stash",
         "runtimeEnvironment" : "codefresh",
         "canUsePrivateRepos" : true,
         "dedicatedInfrastructure" : false,
@@ -48,6 +56,7 @@ data:
         "admins" : [
             ObjectId("59009221c102763beda7cf04")
         ],
+        "localUserPasswordIDPEnabled": true,
         "__v" : NumberInt(0)
     }
   users.json: |
@@ -66,10 +75,9 @@ data:
                 ]
             }
         ],
-        "provider" : {
-            "name" : "stash",
-            "repoPermission" : "private"
-        },
+        "logins": [{
+            "idp": ObjectId("5b79a32e3b80d12608352f8e")
+        }],
         "status" : "new",
         "account" : [
             ObjectId("59009117c102763beda7ce71")

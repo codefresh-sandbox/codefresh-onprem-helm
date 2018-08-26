@@ -45,6 +45,9 @@ spec:
         - name: seed
           mountPath: "/etc/admin/users.json"
           subPath: "users.json"
+        - name: seed
+          mountPath: "/etc/admin/idps.json"
+          subPath: "idps.json"
       restartPolicy: OnFailure
       volumes:
       - name: seed

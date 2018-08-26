@@ -34,3 +34,9 @@ if [ $? == 0 ]; then
 else
   echo "Something went wrong !" && exit 1
 fi
+
+if [ $? == 0 ]; then
+  mongoimport --host ${MONGODB_ADDRESS} --db ${MONGODB_DATABASE} --username ${MONGODB_USER} --password ${MONGODB_PASSWORD} --collection users --type json --file /etc/admin/idps.json
+else
+  echo "Something went wrong !" && exit 1
+fi
