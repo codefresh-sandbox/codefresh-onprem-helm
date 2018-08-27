@@ -269,6 +269,16 @@ hermes:
   backup:
     enabled: true
     env: staging
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
+
+nomios:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
+
+cronus:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
 
 helm-repo-manager:
   logLevel: debug
