@@ -241,6 +241,16 @@ hermes:
   backup:
     enabled: true
     env: load
+  nodeSelector:
+    cloud.google.com/gke-nodepool: default-pool
+
+nomios:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: default-pool
+
+cronus:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: default-pool
 
 global:
   appProtocol: https
