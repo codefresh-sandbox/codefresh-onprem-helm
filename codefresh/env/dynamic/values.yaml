@@ -177,6 +177,16 @@ helm-repo-manager: {}
 hermes:
   backup:
     env: dynamic
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
+
+nomios:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
+
+cronus:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
 
 global:
   internalServiceTolerations:
