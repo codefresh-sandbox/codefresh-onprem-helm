@@ -336,16 +336,10 @@ hermes:
     cloud.google.com/gke-nodepool: main-pool
 
 nomios:
-  nodeSelector:
-    cloud.google.com/gke-nodepool: main-pool
-
-cronus:
-  nodeSelector:
-    cloud.google.com/gke-nodepool: main-pool
-
-nomios:
   logLevel: debug
   logJSON: true
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
 
 cronus:
   logLevel: debug
@@ -353,6 +347,8 @@ cronus:
   backup:
     env: production
     enabled: true
+  nodeSelector:
+    cloud.google.com/gke-nodepool: main-pool
 
 nats:
   replicaCount: 3
