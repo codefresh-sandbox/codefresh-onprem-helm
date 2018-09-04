@@ -1,12 +1,12 @@
 cfapi:
-  imageTag: runtime
+  imageTag: runtime_environment_new_model
 
 # this is an example of which value you need to pass to manually overwrite the image	+cfui:
 cfui:
-  imageTag: runtime
+  imageTag: runtime_environment_new_model
   
 runtime-environment-manager:
-  imageTag: runtime
+  imageTag: runtime_environment_new_model
 
 
 
@@ -51,7 +51,7 @@ context-manager:
   imageTag: v46
 
 pipeline-manager:
-  imageTag: runtime
+  imageTag: runtime_environment_new_model
 
 cfsign:
   imageTag: v1
