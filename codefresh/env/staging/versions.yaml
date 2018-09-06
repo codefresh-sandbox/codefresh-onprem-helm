@@ -6,7 +6,7 @@ cfui:
   imageTag: testandhelmpromotion
   
 runtime-environment-manager:
-  imageTag: runtime_environment_new_model
+  imageTag: 1.0.7
 
 
 
