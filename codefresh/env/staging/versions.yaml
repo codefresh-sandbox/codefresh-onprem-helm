@@ -51,7 +51,7 @@ context-manager:
   imageTag: v46
 
 pipeline-manager:
-  imageTag: runtime_environment_new_model
+  imageTag: v36
 
 cfsign:
   imageTag: v1
