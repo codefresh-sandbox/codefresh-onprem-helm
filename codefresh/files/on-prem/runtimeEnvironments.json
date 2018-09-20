@@ -17,16 +17,16 @@
         "inCluster": true,
         "namespace": "codefresh"
       },
-      "image": "codefresh/engine:61",
+      "image": "codefresh/engine:68",
       "envVars": {
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
@@ -90,7 +90,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:61",
+      "image": "codefresh/engine:68",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -104,9 +104,9 @@
       "envVars": {
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v2",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v2",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v11",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
@@ -118,7 +118,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "dindImage": "codefresh/dind:17.12-v12",
+      "dindImage": "codefresh/dind:18.06-v16",
       "connectByPodIp": true,
       "defaultDindResources": {
         "requests": {
