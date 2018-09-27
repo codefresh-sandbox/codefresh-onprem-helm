@@ -63,6 +63,10 @@ spec:
           value: {{ template "name" . }}
         - name: FORMAT_LOGS_TO_ELK
           value: "{{ .Values.formatLogsToElk }}"
+        - name: CLUSTER_PROVIDERS_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.clusterProvidersService }}"
+        - name: CLUSTER_PROVIDERS_PORT
+          value: {{ .Values.global.clusterProvidersPort | quote }}
         - name: CONTEXT_MANAGER_URI
           value: "{{ .Release.Name }}-{{ .Values.global.contextManagerService }}"
         - name: CONTEXT_MANAGER_PORT
