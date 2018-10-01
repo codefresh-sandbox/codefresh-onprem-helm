@@ -11,8 +11,18 @@ rules:
   - configmaps
   - secrets
   verbs:
+  - get
   - list
   - watch
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/log
+  verbs:
+  - get
+  - list
   - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
