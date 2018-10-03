@@ -7,9 +7,12 @@ rules:
 - apiGroups:
   - ""
   - "extensions"
+  - "apps"
+  - "batch"
   resources:
   - configmaps
   - secrets
+  - jobs
   verbs:
   - get
   - list
