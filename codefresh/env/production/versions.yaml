@@ -47,7 +47,7 @@ context-manager:
   imageTag: v47
 
 pipeline-manager:
-  imageTag: v39
+  imageTag: v40
 
 cfsign:
   imageTag: v1
