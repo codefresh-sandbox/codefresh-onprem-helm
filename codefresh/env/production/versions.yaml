@@ -20,7 +20,7 @@ internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v66
+  imageTag: v67
 
 accounts-referrals:
   imageTag: v16
