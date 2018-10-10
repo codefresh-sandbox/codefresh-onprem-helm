@@ -24,13 +24,13 @@ logglyToken: invalid-token
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
-webTLS:
-  secretName: star.codefresh.io
+#webTLS:
+#  secretName: star.codefresh.io
 
 ingress:
   enabled: true
   domain: '*'
-  webTlsSecretName: "star.codefresh.io"
+#  webTlsSecretName: "star.codefresh.io"
 
 consul:
   DatacenterName: codefresh-onprem
@@ -96,8 +96,8 @@ cfui:
   logglyToken: invalid-token
   segmentKey: invalid-key
   newrelicLicenseKey: invalid-key
-  webTLS:
-    secretName: star.codefresh.io  
+#  webTLS:
+#    secretName: star.codefresh.io  
 
 onboarding-status:
   enabled: false
