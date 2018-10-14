@@ -36,15 +36,14 @@ consul:
   DatacenterName: codefresh-onprem
   Replicas: 1
   Memory: 64Mi
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
+
 
 postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
   postgresPassword: eC9arYka4ZbH
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 128Mi
@@ -52,16 +51,14 @@ postgresql:
 mongodb:
   image: bitnami/mongodb:3.4.6-r0
   mongodbRootPassword: XT9nmM8dZD
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 64Mi
 
 redis:
   redisPassword: hoC9szf7NtrU
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 64Mi
@@ -69,14 +66,12 @@ redis:
 rabbitmq:
   rabbitmqUsername: user
   rabbitmqPassword: cVz9ZdJKYm7u
-  nodeSelector:
-    provisioner: local-volume  
+  nodeSelector: {} 
 
 registry:
   mainChart: codefresh
   storageSize: 4Gi
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
 
 builder:
   replicaCount: 1
