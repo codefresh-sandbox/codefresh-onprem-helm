@@ -17,16 +17,16 @@
         "inCluster": true,
         "namespace": "codefresh"
       },
-      "image": "codefresh/engine:68",
+      "image": "codefresh/engine:81",
       "envVars": {
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
@@ -90,7 +90,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:68",
+      "image": "codefresh/engine:81",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -104,9 +104,9 @@
       "envVars": {
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
