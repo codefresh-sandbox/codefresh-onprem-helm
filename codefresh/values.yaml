@@ -168,6 +168,9 @@ global:
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
 
+  cfanalyticService: onboarding-status
+  cfanalyticPort: 80
+
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
 
