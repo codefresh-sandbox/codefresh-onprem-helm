@@ -13,7 +13,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  {{- if .Values.controllerService.type }}
+  {{- if .Values.controllerService }}
   type: {{ default "LoadBalancer" .Values.controllerService.type | quote }}
   {{- end }}  
   {{- with .Values.global.maintenanceMode }}

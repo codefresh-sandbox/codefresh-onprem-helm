@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  {{- if .Values.service.type }}
+  {{- if .Values.service }}
   type: {{ default "ClusterIP" .Values.service.type | quote }}
   {{- end }}
   ports:
