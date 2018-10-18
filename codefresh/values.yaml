@@ -62,6 +62,10 @@ helm-repo-manager:
 hermes:
   enabled: true
 
+# cfanalytic settings
+cfanalytic:
+  enabled: true
+
 dindImage: docker:17.05-dind
 
 #=======================
