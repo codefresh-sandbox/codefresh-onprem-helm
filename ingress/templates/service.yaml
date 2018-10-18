@@ -13,7 +13,9 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
+  {{- if .Values.controllerService.type }}
   type: {{ default "LoadBalancer" .Values.controllerService.type | quote }}
+  {{- end }}  
   {{- with .Values.global.maintenanceMode }}
   externalTrafficPolicy: Local
   {{- end }}

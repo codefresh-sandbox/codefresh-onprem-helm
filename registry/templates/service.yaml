@@ -8,7 +8,9 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
+  {{- if .Values.service.type }}
   type: {{ default "ClusterIP" .Values.service.type | quote }}
+  {{- end }}
   ports:
   - name: {{ template "fullname" . }}
     port: {{ .Values.port }}

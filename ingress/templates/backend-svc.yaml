@@ -9,7 +9,9 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
     k8s-app: {{ template "fullname" . }}-http-backend
 spec:
+  {{- if .Values.service.type }}
   type: {{ default "ClusterIP" .Values.service.type | quote }}
+  {{- end }}
   ports:
   - port: {{ .Values.servicePort }}
     targetPort: {{ .Values.containerPort }}
