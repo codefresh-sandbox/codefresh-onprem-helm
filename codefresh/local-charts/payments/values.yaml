@@ -15,6 +15,10 @@ image: r.cfcr.io/codefresh-inc/codefresh/payments
 # image tag
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
 # exposed port
 port: 9000
 

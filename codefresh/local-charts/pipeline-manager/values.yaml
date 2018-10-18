@@ -7,6 +7,10 @@ redeploy: false
 image: r.cfcr.io/codefresh-inc/codefresh/pipeline-manager
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
 # Service port
 port: 9000
 

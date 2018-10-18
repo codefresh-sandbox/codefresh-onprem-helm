@@ -15,6 +15,10 @@ image: r.cfcr.io/codefresh-inc/codefresh/cf-api
 # image tag
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
 # port
 port: 80
 

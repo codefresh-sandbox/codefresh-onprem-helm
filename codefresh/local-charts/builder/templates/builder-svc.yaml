@@ -9,6 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
+  type: {{ default "ClusterIP" .Values.service.type | quote }}
   ports:
   - name: "dind-port"
     port: {{ .Values.containerPort }}

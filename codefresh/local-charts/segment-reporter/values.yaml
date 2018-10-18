@@ -7,6 +7,10 @@ replicaCount: 1
 image: r.cfcr.io/codefresh-inc/codefresh/segment-reporter
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
 # Service port
 port: 80
 

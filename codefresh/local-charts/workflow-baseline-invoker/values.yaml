@@ -7,6 +7,10 @@ replicaCount: 1
 image: codefresh/workflow-baseline-invoker
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
 # Service port
 port: 80
 

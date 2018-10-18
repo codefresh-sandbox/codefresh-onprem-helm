@@ -12,3 +12,7 @@ imagePullPolicy: IfNotPresent
 # dind container port (1300 - default)
 containerPort: 1300
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#service:
+#  type: ClusterIP
+
