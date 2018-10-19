@@ -140,6 +140,18 @@ onboarding-status:
     #ENC[AES256_GCM,data:YjBh427/q+LQ6U59ckTu/4i/QcqIZg20StDnbqlVIUbFwOXkatFeJS1XFI4zLJ8kP1hShnWgfUIn4hRVjgysu0k6AXXPNBUSVDSqIJr/7wG7yxqx1m6FT+ZsNIFWIwCy/DmNLxzz2Du4B2i95sVizu0psh8xtuYrbsApjtVi+Uo6qJOU4ro7ZYKKj051aDkhv4FCgJWC8XzuAOG8yj+RnmeNut1sQBbSknc+yI4+PCAtWWnNev4cf9WO8ud7ZIIoB6M3Lxj81u4yZw+Lh4s9lJnKLUQpAUFzGIrKYXGWAf1igfM8U0YyIIGfEBLNrkjXR5W9U1kPchaemWf7pzIyQxkR/60sIblzSe7NrqKFkoBeOGtU+DvmqtSfEqYTV7yr3Y5Zg/2LjKnerik+Lm0cVOVxYuNxNAPWLBe61dlEMUexjPtCT8mmHbn4fD1S/lhXf8EXD5xl4Q==,iv:hoE6PK0RvgZkH0mnvWBqqDVZk4lUT0z8QrUD14rca5w=,tag:q1leeBBNHtmEmtrgQp7mVQ==,type:comment]
     #ENC[AES256_GCM,data:TOYFFW9uuk12hbTM4NdwfHtS9i5MO+BRjBAPqfUP,iv:XRjNAhlRfuclWkxKx6NNtubaNQtbKgGucfGI4Uu+ly0=,tag:jpqg2E/gwBZwcjFTCj/9GA==,type:comment]
     #ENC[AES256_GCM,data:g0DeJPHQv3F1CRcar4nmx4TAE9Zl8qNMnZRV3YFfpNnPn0NA1KMDlXKtFrNhJm3BU4+WGMFnz5v2+elST2IFMRJYGRq+HMA5dx+KtkGseldg/QrNdvR7nA==,iv:02tswd5MOaufM3s8+a7yTy0Ny21/4NEalpkhianIZak=,tag:Yclgcn4QECV8g+ZerfqBBw==,type:comment]
+
+cfanalytic:
+    dockerconfigjson:
+        auths:
+            index.docker.io:
+                auth: ENC[AES256_GCM,data:EZ2s3yb+YxJV20vJTvOOi9B0NES2oel5FT9W6hN9M4Y=,iv:aAqro8+DNY7QjkKME0eQWX/gsA/DTkIyGJNkK4bsqlQ=,tag:irnr7/Fqdl9mCocfbtwF8Q==,type:str]
+            r.cfcr.io:
+                auth: ENC[AES256_GCM,data:qEXGo/yl9ImYwZHKW91hKjXLBYo88TPw8IXMDum84yVOukzIXUe/4wLO8dwQPtZDY0aJPg==,iv:SgmMSJWc+MC2Ekh+SGFDsZnY4k45lpPOeorwekRVP4E=,tag:SnQbD1+HLsaVp5bc4lnppQ==,type:str]
+    newrelicLicenseKey: ENC[AES256_GCM,data:Ic+ijZx5qUXHUulARLqQVfTXP9IJCSpElWfC553vMhgHTXw0tzw7Vg==,iv:+FXButv6uqDf4smqSyTZnTApuBn5ckgHs/NRUjM/2YU=,tag:B/9UAbTNH8MxNYKf6LEWxg==,type:str]
+    #ENC[AES256_GCM,data:QBHcu00pQBYYz02ZhLmI7r9a+UvOKLV09dWdd6YWVHNsIgIyVA0zDRWcCA2jTl9oN93Ib7dEar5kORh6jWmig4W+4E+jp5tnMBXkyeyEs4+Plz3OOr1ESx2xR+d72wTo+MXCaGsLc7i2OYqmRlxWg/VAWxOrrUB1YnNP3CcTIJadhinO+lmtBm+q92k96GYsnLEKNu2ev/XyAjj7sFYaD6gCovaGVPQUqDOxi7qwWLxJvAcCGhnbsXguXbYLziobgLxqAMveDPDJ9IX9b1KOaS9OK+LN+qw2TuZgAKadm17nHOJ3somUBDclAJmnWiMIUfjVaQJlxR8V1/1PT5ArOQ+WLhjEVyOcrTm65Sny1QWipGkrT7IocIoUKeZpYteFqr/L+b0zoSjw0os3UAMDm3DPx1+Ee38svZY+toq12tpwpiRwuphsZfnT2mVVc3GEs1AW3XlRMQ==,iv:xc2A5Sfp/vmNHT3wJ3DNodzKqdATlE8IT8VBhRc7x08=,tag:dZWSjj4RYZ6lLJlZfaSzMg==,type:comment]
+
+
 runtime-environment-manager:
     dockerconfigjson:
         auths:

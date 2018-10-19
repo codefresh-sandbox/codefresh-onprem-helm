@@ -193,6 +193,10 @@ context-manager:
 onboarding-status:
   mongoURI: "mongodb://mongo.default.svc:27017/onboarding-status"
 
+cfanalytic:
+  mongoURI: "`mongodb://mongo.default.svc:27017/${database}`"
+  replicaCount: 1
+
 runtime-environment-manager:
   mongoURI: "mongodb://mongo.default.svc:27017/runtime-environment-manager"
 
