@@ -8,10 +8,17 @@ rules:
   - ""
   - "extensions"
   - "apps"
-  - "batch"
   resources:
   - configmaps
   - secrets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+- apiGroups:
+  - "batch"
+  resources:
   - jobs
   verbs:
   - get
@@ -19,6 +26,7 @@ rules:
   - watch
   - create
   - update
+  - delete      
 - apiGroups:
   - ""
   resources:
