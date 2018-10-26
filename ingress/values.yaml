@@ -16,12 +16,10 @@ imagePullPolicy: IfNotPresent
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
 #backend service
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-controllerService:
-  type: LoadBalancer
+#controllerServiceType: LoadBalancer
 
 # ports
 livenessPort: 8080

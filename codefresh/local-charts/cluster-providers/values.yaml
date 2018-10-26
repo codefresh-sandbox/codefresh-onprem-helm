@@ -8,8 +8,7 @@ image: r.cfcr.io/codefresh-inc/codefresh/cluster-providers
 imageTag: master
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 
 # Service port
 port: 9000

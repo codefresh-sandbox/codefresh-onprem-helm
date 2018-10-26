@@ -7,5 +7,4 @@ port: 4999
 certVolumeSize: 3Gi
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP

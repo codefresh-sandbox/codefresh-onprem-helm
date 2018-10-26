@@ -15,8 +15,7 @@ imageTag: 2.6
 imagePullPolicy: IfNotPresent
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 
 # registry port
 port: 5000

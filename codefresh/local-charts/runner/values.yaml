@@ -11,8 +11,7 @@ imagePullPolicy: IfNotPresent
 redeploy: false
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 
 # dind container port (1300 - default)
 containerPort: 1300

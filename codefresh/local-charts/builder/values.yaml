@@ -13,6 +13,5 @@ imagePullPolicy: IfNotPresent
 containerPort: 1300
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 

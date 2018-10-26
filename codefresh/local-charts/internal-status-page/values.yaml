@@ -8,8 +8,7 @@ image: codefresh/cf-internal-status-page
 imageTag: master
 
 # Service type (ClusterIP, NodePort, LoadBalancer)
-#service:
-#  type: ClusterIP
+#serviceType: ClusterIP
 
 # Service port
 port: 9000

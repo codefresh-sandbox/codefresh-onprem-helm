@@ -19,78 +19,81 @@ dependencies:
   version: 0.1.1
 - name: builder
   repository: file://local-charts/builder
-  version: 0.1.3
+  version: 0.1.4
 - name: runner
   repository: file://local-charts/runner
-  version: 0.1.3
+  version: 0.1.4
 - name: registry
   repository: file://../registry
-  version: 0.1.0
+  version: 0.1.1
 - name: ingress
   repository: file://../ingress
-  version: 0.1.7
+  version: 0.1.8
 - name: cluster-providers
   repository: file://local-charts/cluster-providers
-  version: 0.0.2
+  version: 0.0.3
 - name: kube-integration
   repository: file://local-charts/kube-integration
-  version: 0.0.3
+  version: 0.0.4
 - name: accounts-referrals
   repository: file://local-charts/accounts-referrals
-  version: 0.0.2
+  version: 0.0.3
 - name: charts-manager
   repository: file://local-charts/charts-manager
-  version: 0.0.2
+  version: 0.0.3
 - name: mailer
   repository: file://local-charts/mailer
-  version: 0.0.2
+  version: 0.0.3
 - name: payments
   repository: file://local-charts/payments
-  version: 0.1.6
+  version: 0.1.7
 - name: cfsign
   repository: file://local-charts/cfsign
-  version: 0.3.1
+  version: 0.3.2
 - name: internal-status-page
   repository: file://local-charts/internal-status-page
-  version: 0.0.2
+  version: 0.0.3
 - name: segment-reporter
   repository: file://local-charts/segment-reporter
-  version: 0.0.3
+  version: 0.0.4
 - name: workflow-baseline-invoker
   repository: file://local-charts/workflow-baseline-invoker
-  version: 0.0.4
+  version: 0.0.5
 - name: salesforce-reporter
   repository: file://local-charts/salesforce-reporter
-  version: 0.1.2
+  version: 0.1.3
 - name: tasker-kubernetes
   repository: file://local-charts/tasker-kubernetes
   version: 0.0.2
 - name: context-manager
   repository: file://local-charts/context-manager
-  version: 0.0.1
+  version: 0.0.2
 - name: pipeline-manager
   repository: file://local-charts/pipeline-manager
-  version: 0.0.1
+  version: 0.0.2
 - name: cfapi
   repository: file://local-charts/cfapi
-  version: 0.2.2
+  version: 0.2.3
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 1.4.12
+  version: 2.4.49
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
-  version: 1.0.48
+  version: 1.0.53
+- name: runtime-environment-manager
+  repository: http://chartmuseum.codefresh.io
+  version: 1.0.7
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.5
+  version: 0.2.7
 - name: hermes
   repository: http://chartmuseum.codefresh.io
-  version: 0.9.16
+  version: 0.9.19
 - name: nomios
   repository: http://chartmuseum.codefresh.io
-  version: 0.4.14
+  version: 0.4.15
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.6
-digest: sha256:961af615deeeee0a8275298c854ddd519e78453744fefae51ee92a78aaa0bd42
-generated: 2018-06-04T09:35:29.902264584+03:00
+  version: 0.2.8
+digest: sha256:5fe4e71d1503ad8f1d6048d7f6bd0d0e2d91dda16e470aaaa57cb4354571c0fd
+generated: 2018-10-23T13:27:33.224670877+03:00
