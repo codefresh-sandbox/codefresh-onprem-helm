@@ -220,8 +220,8 @@ global:
   runnerService: runner
 
   # dind image with tag
-  # dindImage: docker:17.06-dind
-  dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
+  dindImage: docker:17.06-dind
+  #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
 
   # dind cpu requests
   dindCPU: 100m
