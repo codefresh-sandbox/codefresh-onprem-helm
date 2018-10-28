@@ -79,6 +79,10 @@ spec:
         {{- end }}
         - name: RUNTIME_LOCAL_REGISTRY_NAME
           value: {{ $registryService | quote }}
+        {{- if .Values.dockerCleanerCron }}
+        - name: DOCKER_CLEANER_CRON
+          value: {{ .Values.dockerCleanerCron | quote }}
+        {{- end }}
         command:
           - "/bin/sh"
           - "-c"
@@ -102,6 +106,10 @@ spec:
           subPath: resolv.conf
           readOnly: true
         {{- end }}
+        {{- if .Values.varLibDockerVolume }}
+        - mountPath: /var/lib/docker
+          name: varlibdocker
+        {{- end }}
       volumes:
       - name: cf-certs
         secret:
@@ -114,3 +122,14 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
+  {{- if .Values.varLibDockerVolume }}
+  volumeClaimTemplates:
+  - metadata:
+      name: varlibdocker
+    spec:
+      accessModes: [ {{ .Values.varLibDockerVolume.accessMode | quote }} ]
+      storageClassName: {{ .Values.varLibDockerVolume.storageClass | quote }}
+      resources:
+        requests:
+          storage: {{ .Values.varLibDockerVolume.storageSize }}
+  {{- end }}

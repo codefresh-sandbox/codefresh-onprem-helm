@@ -15,3 +15,12 @@ containerPort: 1300
 # Service type (ClusterIP, NodePort, LoadBalancer)
 #serviceType: ClusterIP
 
+#Values for Volume Claim Template
+varLibDockerVolume:
+  accessMode: ReadWriteOnce
+  storageClass: default
+  storageSize: 100Gi
+
+# run container cleaner within dind
+# dockerCleanerCron: 0 0 * * *
+
