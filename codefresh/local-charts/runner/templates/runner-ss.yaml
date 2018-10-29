@@ -108,7 +108,7 @@ spec:
           subPath: resolv.conf
           readOnly: true
         {{- end }}
-        {{- if .Values.varLibDockerVolume }}
+        {{- if or .Values.varLibDockerVolume .Values.pvcName }}
         - mountPath: /var/lib/docker
           name: varlibdocker
         {{- end }}        
@@ -124,6 +124,12 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
+      {{- if .Values.pvcName }}
+      - name: varlibdocker
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvcName }}
+      {{- end }}    
+  {{- if not .Values.pvcName }}
   {{- if .Values.varLibDockerVolume }}
   volumeClaimTemplates:
   - metadata:
@@ -134,4 +140,5 @@ spec:
       resources:
         requests:
           storage: {{ .Values.varLibDockerVolume.storageSize }}
+  {{- end }}
   {{- end }}

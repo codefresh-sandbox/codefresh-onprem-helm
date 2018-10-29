@@ -57,8 +57,12 @@ spec:
       volumes:
       - name: image-store
         persistentVolumeClaim:
+        {{- if .Values.pvcName }}
+          claimName: {{ .Values.pvcName }}
+        {{- else }}
           claimName: {{ template "fullname" . }}
+        {{- end }}
       - name: cf-certs
         secret:
           secretName: {{ .Release.Name }}-{{ .Values.mainChart }}-certs-client
-
+          

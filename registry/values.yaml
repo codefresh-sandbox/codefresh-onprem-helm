@@ -20,6 +20,9 @@ imagePullPolicy: IfNotPresent
 # registry port
 port: 5000
 
+## Use existing volume claim name
+# pvcName:
+
 # registry PVC storage size
 storageSize: 20Gi
 
