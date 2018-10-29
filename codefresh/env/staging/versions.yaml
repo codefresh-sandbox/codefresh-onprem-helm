@@ -9,7 +9,7 @@ runtime-environment-manager:
   imageTag: 1.0.7
 
 cfanalytic:
-  imageTag: 1.0.10
+  imageTag: 1.0.11
 
 # this is an example of which value you need to pass to manually overwrite the image
 # onboarding-status:
