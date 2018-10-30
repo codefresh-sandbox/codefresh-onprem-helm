@@ -283,6 +283,11 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: tls-client-key
+        - name: GCS_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "fullname" . }}
+              key: gcs-private-key
         - name: TLS_SIGN_URL
           value: "{{ $tlsSignService }}"
         - name: CLUSTER_PROVIDERS_URI

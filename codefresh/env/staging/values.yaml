@@ -179,6 +179,7 @@ cfapi:
     GOOGLE_KUBE_SERVICE_URI: "http://cf-google-auth"
     PROGRESS_BUILDLOGS_BUCKETNAME: progress-logs-staging
     NO_HELM_INSTALL_PIPELINE_REPO_CONTEXT_PATH: "true"
+    GCS_CLIENT_EMAIL: "gcs-17@local-codefresh.iam.gserviceaccount.com"
 
   affinity:
     nodeAffinity:
