@@ -1,0 +1,6 @@
+export APP_DNS=sec.codefresh.io
+export ENVIRONMENT=sec
+export CLUSTER_NAME=cf-sec
+export PROJECT_NAME=codefresh-sec
+export NAMESPACE=default
+export ZONE=us-central1-a
