@@ -10,8 +10,8 @@ cfapi:
 # onboarding-status:
 #   imageTag: v1
 
-cfanalytic:
-  imageTag: 1.0.14
+#cfanalytic:
+#  imageTag: 1.0.14
 
 payments:
   imageTag: v31
