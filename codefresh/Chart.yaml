@@ -11,6 +11,6 @@ icon: https://avatars1.githubusercontent.com/u/11412079?v=3
 sources:
 - https://github.com/codefresh-io/cf-helm
 maintainers:
-- name: Alexei Ledenev
-  email: alexei@codefresh.io
+- name: Codefresh Authors
+  email: dev@codefresh.io
 appVersion: 0.6
