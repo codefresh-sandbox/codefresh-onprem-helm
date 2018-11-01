@@ -51,3 +51,5 @@ pipeline-manager:
 
 cfsign:
   imageTag: v1
+
+engineImage: "codefresh/engine:86"
