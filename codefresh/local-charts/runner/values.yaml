@@ -22,8 +22,8 @@ containerPort: 1300
 #Values for Volume Claim Template
 varLibDockerVolume:
   accessMode: ReadWriteOnce
-  storageClass: default
   storageSize: 100Gi
+  # storageClass: default
 
 # run container cleaner within dind
 # dockerCleanerCron: 0 0 * * *

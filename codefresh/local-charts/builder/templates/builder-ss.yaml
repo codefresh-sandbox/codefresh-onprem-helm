@@ -138,7 +138,9 @@ spec:
       name: varlibdocker
     spec:
       accessModes: [ {{ .Values.varLibDockerVolume.accessMode | quote }} ]
+      {{- if .Values.varLibDockerVolume.storageClass }}
       storageClassName: {{ .Values.varLibDockerVolume.storageClass | quote }}
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.varLibDockerVolume.storageSize }}

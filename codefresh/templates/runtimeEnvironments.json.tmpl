@@ -20,6 +20,11 @@
       },
       "image": "codefresh/engine:85",
       "envVars": {
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        {{ $key | quote }}: {{ $value | quote }},
+        {{- end}}
+        {{- end}}
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
@@ -31,11 +36,6 @@
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
-        {{- if .Values.global.env }}
-        {{- range $key, $value := .Values.global.env }}
-        {{ $key | quote }}: {{ $value | quote }}
-        {{- end}}
-        {{- end}}
       },
       "volumeMounts": {
         "internal-registry": {
