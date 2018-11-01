@@ -1,9 +1,3 @@
-{{- $queueServer := printf "nats://%s-%s.%s.svc:%v" .Release.Name .Values.global.natsService .Release.Namespace .Values.global.natsPort }}
-{{- $dindImage := printf "%s" .Values.global.dindImage }}
-{{- $dindCPULimits := printf "%s" .Values.global.dindCPULimits }}
-{{- $dindMemoryLimits := printf "%s" .Values.global.dindMemoryLimits }}
-{{- $dindCPU := printf "%s" .Values.global.dindCPU }}
-{{- $dindMemory := printf "%s" .Values.global.dindMemory }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -17,43 +11,7 @@ metadata:
 data:
   runtimeEnvironments.json: |
 {{- if .Values.getRuntimeEnvs }}
-{{ .Files.Get (print .Values.getRuntimeEnvs) | indent 4 }}
-{{- else if .Values.runtimeEnvBlob }}
-{{ .Values.runtimeEnvBlob | indent 4 }}
+{{ include "runtime-environment-config" . | indent 4 }}
 {{- else }}
-    {
-        {{- range $i, $env := .Values.runtime_envs }}{{if $i}},{{end}}
-        "{{ $env.name }}": {
-            "cluster": {
-                "type": "{{ default "Kubernetes" $env.type }}",
-                "name": "{{ default "" $env.clusterName }}",
-                "inCluster": {{ default false $env.inCluster }},
-                "namespace": "{{ default "default" $env.namespace }}",
-                "nodeSelector": {"codefresh/node-type": "dind",
-                    "codefresh/runtime-environment": "{{ $env.selectorRuntimeEnv }}"}
-            },
-            "dindImage": "{{ default $dindImage $env.dindImage }}",
-            "connectByPodIp": {{ default "false" $env.connectByPodIp }},
-            "command": "{{ default "dockerd" $env.command }}",
-            "defaultDindResources": {
-                "limits": {
-                    "cpu": "{{ default $dindCPULimits $env.dindCPULimits}}",
-                    "memory": "{{ default $dindMemoryLimits $env.dindMemoryLimits }}"
-                },
-                "requests": {
-                    "cpu": "{{ default $dindCPU $env.dindCPU }}",
-                    "memory": "{{ default $dindMemory $env.dindMemory }}"
-                }
-            },
-            "queue": {
-                "workers": {{ default 50 $env.queueWorkers }},
-                "servers": ["{{ default $queueServer $env.queueServer }}"],
-                "tls": {
-                    {{- range $key, $value := $env.tls }}
-                    "{{ $key }}": "{{ $value }}"{{if (ne $key "key")}},{{end}}
-                    {{- end }}
-                }
-            }
-        }{{- end }}
-    }
+    {}
 {{- end }}

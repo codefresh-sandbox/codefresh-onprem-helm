@@ -1,3 +1,4 @@
+{{- define "runtime-environment-config" -}}
 {
   "default": {
     "environmentCertPath": "/etc/ssl/cf/",
@@ -30,6 +31,11 @@
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        {{ $key | quote }}: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
       },
       "volumeMounts": {
         "internal-registry": {
@@ -168,3 +174,4 @@
     }
   }
 }
+{{- end -}}

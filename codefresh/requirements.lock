@@ -25,7 +25,7 @@ dependencies:
   version: 0.1.4
 - name: registry
   repository: file://../registry
-  version: 0.1.1
+  version: 0.1.2
 - name: ingress
   repository: file://../ingress
   version: 0.1.8
@@ -76,24 +76,24 @@ dependencies:
   version: 0.2.3
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 2.4.49
+  version: 2.4.53
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.0.53
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.0.7
+  version: 1.0.9
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.7
+  version: 0.2.8
 - name: hermes
   repository: http://chartmuseum.codefresh.io
-  version: 0.9.19
+  version: 0.9.21
 - name: nomios
   repository: http://chartmuseum.codefresh.io
-  version: 0.4.15
+  version: 0.4.16
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.8
-digest: sha256:5fe4e71d1503ad8f1d6048d7f6bd0d0e2d91dda16e470aaaa57cb4354571c0fd
-generated: 2018-10-23T13:27:33.224670877+03:00
+  version: 0.2.9
+digest: sha256:2917d024b8789f4082cb48852a25f2e083f441d35ee3e14de78dcb5a3a6b907b
+generated: 2018-11-01T07:43:51.538096018+02:00

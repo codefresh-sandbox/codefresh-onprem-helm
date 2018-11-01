@@ -28,6 +28,10 @@ spec:
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
         - key: {{ .Values.tolerations.key | quote }}

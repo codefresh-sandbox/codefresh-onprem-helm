@@ -7,6 +7,7 @@ msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
 err() { echo -e "\e[31mERR ---> $1\e[0m" ; exit 1; }
 
 channel=${1:-dev}
+new_version=${2}
 
 version_bump() {
   old_version=$(grep version codefresh/Chart.yaml | awk -F ': ' '{print $2}')
@@ -18,8 +19,6 @@ version_bump() {
   minor=$((minor+1))
 
   increased_version=$(echo ${release}.${major}.${minor})
-
-  read -t30 -p "Enter new version (timeout 30 sec) [${increased_version}]: " new_version
 
   new_version=${new_version:-${increased_version}}
 
@@ -33,8 +32,8 @@ version_bump() {
 version_bump
 
 # save default values and .helmignore
-mv codefresh/values.yaml codefresh/values.yaml.bak
-mv codefresh/.helmignore codefresh/.helmignore.bak
+mv -v codefresh/values.yaml codefresh/values.yaml.bak
+mv -v codefresh/.helmignore codefresh/.helmignore.bak
 
 # copy on-prem values and helmignore instead default
 yamlreader codefresh/env/on-prem/values.yaml codefresh/env/production/versions.yaml > codefresh/values.yaml
@@ -46,13 +45,16 @@ helm dependency update --skip-refresh codefresh
 package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')
 
 # restore defaults
-mv codefresh/values.yaml.bak codefresh/values.yaml
-mv codefresh/.helmignore.bak codefresh/.helmignore
+mv -v codefresh/values.yaml.bak codefresh/values.yaml
+mv -v codefresh/.helmignore.bak codefresh/.helmignore
 
-rm -f index.yaml
+rm -fv index.yaml
 
 wget http://charts.codefresh.io/${channel}/index.yaml
-helm repo index . --merge index.yaml --url http://charts.codefresh.io/${channel}/
+if [[ $? == 0 && -f index.yaml ]]; then
+   MERGE_INDEX="--merge index.yaml"
+fi
+helm repo index . $MERGE_INDEX --url http://charts.codefresh.io/${channel}/
 
 aws s3 cp index.yaml s3://charts.codefresh.io/${channel}/
 aws s3 cp ${package} s3://charts.codefresh.io/${channel}/
