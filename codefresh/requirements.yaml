@@ -147,6 +147,13 @@ dependencies:
   tags:
   - saas
   - infra
+- name: cfanalytic
+  version: 1.0.14
+  repository: http://chartmuseum.codefresh.io
+  condition: cfanalytic.enabled
+  tags:
+  - saas
+  - infra
 - name: runtime-environment-manager
   version: 1.0.9
   repository: http://chartmuseum.codefresh.io

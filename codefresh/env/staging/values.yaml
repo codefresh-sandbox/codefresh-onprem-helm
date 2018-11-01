@@ -249,7 +249,7 @@ charts-manager:
 
 mailer:
   replicaCount: 1
-  active: ""
+  active: true
 
 segment-reporter:
 
