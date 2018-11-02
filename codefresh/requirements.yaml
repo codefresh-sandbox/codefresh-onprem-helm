@@ -148,7 +148,7 @@ dependencies:
   - saas
   - infra
 - name: cfanalytic
-  version: 1.0.21
+  version: 1.0.22
   repository: http://chartmuseum.codefresh.io
   condition: cfanalytic.enabled
   tags:
