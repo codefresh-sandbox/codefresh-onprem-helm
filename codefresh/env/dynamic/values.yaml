@@ -169,9 +169,6 @@ runner:
 builder:
   enabled: false
 
-cfanalytic:
-  enabled: false
-
 payments:
   stripeIgnoreAccountNotFoundErrors: "true"
 
