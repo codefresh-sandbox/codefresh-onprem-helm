@@ -26,4 +26,4 @@ varLibDockerVolume:
   # storageClass: default
 
 # run container cleaner within dind
-# dockerCleanerCron: 0 0 * * *
+dockerCleanerCron: "23 4 * * *" 
