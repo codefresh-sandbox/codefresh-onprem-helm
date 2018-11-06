@@ -35,6 +35,9 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      {{- if .Values.rbacEnable }}
+      serviceAccountName: {{ template "fullname" . }}
+      {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
         - key: {{ .Values.tolerations.key | quote }}
