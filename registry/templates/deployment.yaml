@@ -36,25 +36,36 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        {{- if not .Values.registryConfig }}
         - name: REGISTRY_HTTP_ADDR
           value: ":{{ .Values.port }}"
         - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
           value: /var/lib/registry
+        {{- end }}
         - name: REGISTRY_HTTP_TLS_CERTIFICATE
           value: /etc/ssl/cf/cert.pem
         - name: REGISTRY_HTTP_TLS_KEY
           value: /etc/ssl/cf/key.pem
         volumeMounts:
+        {{- if not .Values.registryConfig }}
         - name: image-store
           mountPath: /var/lib/registry
+        {{- end }}
         - name: cf-certs
           mountPath: /etc/ssl/cf
           readOnly: true
+        {{- if .Values.registryConfig }}
+        - name: registry-config
+          mountPath: /etc/docker/registry/config.yml
+          readOnly: true
+          subPath: config.yml
+        {{- end }}
         ports:
         - containerPort: {{ .Values.port }}
           name: registry
           protocol: TCP
       volumes:
+      {{- if not .Values.registryConfig }}
       - name: image-store
         persistentVolumeClaim:
         {{- if .Values.pvcName }}
@@ -62,7 +73,13 @@ spec:
         {{- else }}
           claimName: {{ template "fullname" . }}
         {{- end }}
+      {{- end }}
       - name: cf-certs
         secret:
           secretName: {{ .Release.Name }}-{{ .Values.mainChart }}-certs-client
+      {{- if .Values.registryConfig }}
+      - name: registry-config
+        configMap:
+          name: {{ template "fullname" . }}
+      {{- end }}
           
