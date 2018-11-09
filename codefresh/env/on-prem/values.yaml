@@ -70,7 +70,6 @@ rabbitmq:
 
 registry:
   mainChart: codefresh
-  storageSize: 4Gi
   nodeSelector: {}
 
 builder:
