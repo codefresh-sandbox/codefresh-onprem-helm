@@ -62,6 +62,10 @@ helm-repo-manager:
 hermes:
   enabled: true
 
+# cfanalytic settings
+cfanalytic:
+  enabled: true
+
 dindImage: docker:17.05-dind
 
 #=======================
@@ -167,6 +171,9 @@ global:
 
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
+
+  cfanalyticService: cfanalytic
+  cfanalyticPort: 80
 
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80

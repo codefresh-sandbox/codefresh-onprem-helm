@@ -321,6 +321,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.pipelineManagerService }}"
         - name: PIPELINE_MANAGER_PORT
           value: {{ .Values.global.pipelineManagerPort | quote }}
+        - name: ANALYTIC_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.cfanalyticService }}"
+        - name: ANALYTIC_PORT
+          value: {{ .Values.global.cfanalyticPort | quote }}
         - name: ONBOARDING_STATUS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.onboardingStatusService }}"
         - name: ONBOARDING_STATUS_PORT
