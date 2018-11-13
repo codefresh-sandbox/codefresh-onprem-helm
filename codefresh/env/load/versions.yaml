@@ -13,7 +13,7 @@ cfanalytic:
 #   imageTag: v1
 
 payments:
-  imageTag: v30
+  imageTag: v32
 
 cluster-providers:
   imageTag: v42

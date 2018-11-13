@@ -18,7 +18,7 @@
         "inCluster": true,
         "namespace": "codefresh"
       },
-      "image": "codefresh/engine:56",
+      "image": "codefresh/engine:master",
       "envVars": {
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
@@ -91,7 +91,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:56",
+      "image": "codefresh/engine:master",
       "resources": {
         "requests": {
           "cpu": "100m",
