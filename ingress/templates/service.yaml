@@ -1,3 +1,4 @@
+{{- if eq .Values.enabled true }}
 # Expose the ingress using a regular AWS ELB
 apiVersion: v1
 kind: Service
@@ -28,4 +29,5 @@ spec:
     targetPort: {{ .Values.controllerSecureContainerPort }}
   selector:
     k8s-app: nginx-ingress-controller
+{{- end }}
 

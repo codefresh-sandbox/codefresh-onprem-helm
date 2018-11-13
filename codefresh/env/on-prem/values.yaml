@@ -105,6 +105,9 @@ runtime-environment-manager:
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
 
+cfanalytic:
+  image: gcr.io/codefresh-enterprise/codefresh/cf-analytic
+
 cfapi:
   github:
     apiPathPrefix: /api/v3

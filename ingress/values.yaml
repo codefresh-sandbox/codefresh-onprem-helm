@@ -1,3 +1,6 @@
+## Enabling ingress controller
+enabled: true
+
 # number of replicas
 # by default 1
 # replicaCount: 1
