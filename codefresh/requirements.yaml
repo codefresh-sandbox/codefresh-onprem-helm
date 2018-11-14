@@ -177,7 +177,7 @@ dependencies:
   - trigger-manager
 - name: nomios
   version: ~0.4.0-any
-  repository: '@codefresh'
+  repository: '@codefresh-dev'
   condition: hermes.enabled
   tags:
   - trigger
