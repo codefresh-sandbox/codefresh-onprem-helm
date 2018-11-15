@@ -194,8 +194,8 @@ helm-repo-manager:
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
-  seedJobs: true
-  certsJobs: true
+  #seedJobs: true
+  #certsJobs: true
 
   #appUrl: app-url
   githubInternalToken: placeholder
