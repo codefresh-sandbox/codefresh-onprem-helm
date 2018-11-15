@@ -51,6 +51,10 @@ spec:
           value: {{ .Values.global.appProtocol | quote }}
         - name: API_URL
           value: {{ .Values.global.appUrl | quote }}
+        - name: INTERNAL_API_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.cfapiService }}"
+        - name: INTERNAL_API_PORT
+          value: "{{ .Values.global.cfapiInternalPort }}"
         - name: NODE_ENV
           value: kubernetes
         - name: GC_AUTH_CLIENT_ID
