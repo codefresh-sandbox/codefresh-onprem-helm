@@ -1,6 +1,10 @@
 {{- define "runtime-environment-config" -}}
-{
-  "default": {
+[
+  {
+    "metadata": {
+      "name": "system/default-plan"
+    },
+    "description": "System default template for plan",
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
@@ -33,7 +37,7 @@
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
@@ -88,10 +92,16 @@
           }
         }
       }
-    }
+    },
+    "isPublic": true,
+    "nonComplete": true
   },
-  "defaultUserProvidedCluster": {
-    "runtimeScheduler": {
+  {
+    "metadata": {
+      "name": "system/default/hybrid/k8"
+    },
+    "description": "Default hybrid system runtime environment for kubernetes",
+    "dockerDaemonScheduler" : {
       "type": "KubernetesPod",
       "cluster": {
         "namespace": "default"
@@ -113,13 +123,13 @@
         "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
         "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
         "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.18",
+        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
       "volumeMounts": {},
       "volumes": {}
     },
-    "dockerDaemonScheduler": {
+    "runtimeScheduler" : {
       "type": "DindKubernetesPod",
       "cluster": {
         "namespace": "default"
@@ -171,7 +181,84 @@
           "effect": "NoSchedule"
         }
       }
-    }
+    },
+    "isPublic": true,
+    "nonComplete": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/linux"
+    },
+    "description": "Linux runtime environment for free plan",
+    "runtimeScheduler": {
+      "internalInfra": true
+    },
+    "extends": [
+      "system/default-plan"
+    ],
+    "plan": "FREE",
+    "isDefault": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/hybrid/k8s"
+    },
+    "description": "hybrid k8s runtime environment for free plan",
+    "extends": [
+      "system/default/hybrid/k8"
+    ],
+    "plan": "FREE",
+    "nonComplete": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/linux"
+    },
+    "description": "Linux runtime environment for basic plan",
+    "runtimeScheduler": {
+      "internalInfra": true
+    },
+    "extends": [
+      "system/default-plan"
+    ],
+    "plan": "BASIC",
+    "isDefault": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/hybrid/k8s"
+    },
+    "description": "hybrid k8s runtime environment for basic plan",
+    "extends": [
+      "system/default/hybrid/k8"
+    ],
+    "plan": "BASIC",
+    "nonComplete": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/linux"
+    },
+    "description": "Linux runtime environment for basic plan",
+    "runtimeScheduler": {
+      "internalInfra": true
+    },
+    "extends": [
+      "system/default-plan"
+    ],
+    "plan": "PRO",
+    "isDefault": true
+  },
+  {
+    "metadata": {
+      "name": "system/plan/hybrid/k8s"
+    },
+    "description": "hybrid k8s runtime environment for pro plan",
+    "extends": [
+      "system/default/hybrid/k8"
+    ],
+    "plan": "PRO",
+    "nonComplete": true
   }
-}
+]
 {{- end -}}
