@@ -109,6 +109,10 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.cfapiService }}"
         - name: API_PORT
           value: {{ .Values.global.cfapiInternalPort | quote }}
+        - name: RUNTIME_ENVIRONMENT_MANAGER_URI
+          value: "{{ .Release.Name }}-{{ .Values.global.runtimeEnvironmentManagerService }}"
+        - name: RUNTIME_ENVIRONMENT_MANAGER_PORT
+          value: {{ .Values.global.runtimeEnvironmentManagerPort | quote }}
         ports:
         - containerPort: {{ .Values.targetPort }}
           protocol: TCP
