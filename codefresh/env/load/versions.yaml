@@ -1,9 +1,9 @@
 cfapi:
-  imageTag: v699
+  imageTag: change_internal_calls
 
 # this is an example of which value you need to pass to manually overwrite the image	+cfui:
-# cfui:
-#   imageTag: v454
+cfui:
+  imageTag: change_internal_calls
 
 
 # this is an example of which value you need to pass to manually overwrite the image
@@ -17,7 +17,7 @@ payments:
   imageTag: v32
 
 cluster-providers:
-  imageTag: v45
+  imageTag: change_internal_calls
 
 internal-status-page:
   imageTag: v9
@@ -50,7 +50,7 @@ context-manager:
   imageTag: v49
 
 pipeline-manager:
-  imageTag: v46
+  imageTag: change_internal_calls
 
 cfsign:
   imageTag: v1
