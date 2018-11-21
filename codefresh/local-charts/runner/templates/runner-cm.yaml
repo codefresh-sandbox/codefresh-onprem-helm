@@ -14,10 +14,8 @@ data:
   daemon.json: |
     {
       "hosts": [ "unix:///var/run/docker.sock",
-                 "unix:///var/run/codefresh/docker.sock",
                  "tcp://0.0.0.0:{{ .Values.containerPort }}"],
       "storage-driver": "overlay",
-      "storage-opts": ["overlay.override_kernel_check=1"],
       "tlsverify": true,
       "tls": true,
       "tlscacert": "/etc/ssl/cf/ca.pem",

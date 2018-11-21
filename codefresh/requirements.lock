@@ -76,24 +76,27 @@ dependencies:
   version: 0.2.3
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 2.4.59
+  version: 2.8.0
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.0.53
+- name: cfanalytic
+  repository: http://chartmuseum.codefresh.io
+  version: 1.0.37
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.0.9
+  version: 1.6.0
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
   version: 0.2.8
 - name: hermes
   repository: http://chartmuseum.codefresh.io
-  version: 0.9.21
+  version: 0.9.22
 - name: nomios
-  repository: http://chartmuseum.codefresh.io
-  version: 0.4.16
+  repository: http://chartmuseum-dev.codefresh.io
+  version: 0.4.18-SAAS-620
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.2.9
-digest: sha256:15d55404ea58039e4b65ed3d3867dc5e8cc82bbfa5f38de6c5900ea0cfae3a58
-generated: 2018-11-01T16:31:01.904714786+02:00
+  version: 0.2.12
+digest: sha256:953b944140166f693ebdfffb2be8954c4a24fbd6330c991b5d2d6d22b817527b
+generated: 2018-11-20T15:13:46.044596183+03:00
