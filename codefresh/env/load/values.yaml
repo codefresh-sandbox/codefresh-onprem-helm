@@ -1,4 +1,5 @@
 ---
+rbacEnable: true
 # records to /etc/hosts of the containers
 # hostsApp: default empty
 
@@ -34,6 +35,8 @@ builder:
   replicaCount: 1
 
 ingress:
+  enabled: true
+  rbacEnable: true
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
   # disableAccessLog: true
@@ -42,6 +45,7 @@ getRuntimeEnvs: files/load/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
+  rbacEnable: true
   replicaCount: 2
   internalRegistryProtocol: https
   providersData: |
