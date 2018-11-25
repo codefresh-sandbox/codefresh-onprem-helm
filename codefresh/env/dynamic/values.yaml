@@ -204,3 +204,6 @@ global:
   mongodbDatabase: codefresh
   mongodbUsername: cfuser
   mongodbImage: bitnami/mongodb:3.4.6-r0
+
+runtime-environment-manager:
+  mongoDbCreate: true
