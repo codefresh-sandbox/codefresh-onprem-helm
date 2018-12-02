@@ -155,7 +155,7 @@ dependencies:
   - saas
   - infra
 - name: runtime-environment-manager
-  version: 1.7.2
+  version: 1.7.3
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:
