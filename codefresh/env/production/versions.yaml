@@ -54,3 +54,4 @@ pipeline-manager:
 
 cfsign:
   imageTag: v1
+
