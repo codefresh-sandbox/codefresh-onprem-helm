@@ -2,14 +2,14 @@
 [
   {
     "metadata": {
-      "name": "system/default-plan"
+      "name": "system/default"
     },
     "description": "System default template for plan",
     "environmentCertPath": "/etc/ssl/cf/",
     "dockerDaemonScheduler": {
       "type": "ConsulNodes",
       "cluster": {
-        "name": "",
+        "name": "codefresh",
         "type": "builder",
         "returnRunnerIfNoBuilder": true
       },
@@ -93,15 +93,14 @@
         }
       }
     },
-    "isPublic": true,
-    "nonComplete": true
+    "isPublic": true
   },
   {
     "metadata": {
       "name": "system/default/hybrid/k8"
     },
     "description": "Default hybrid system runtime environment for kubernetes",
-    "dockerDaemonScheduler" : {
+    "dockerDaemonScheduler": {
       "type": "KubernetesPod",
       "cluster": {
         "namespace": "default"
@@ -129,7 +128,7 @@
       "volumeMounts": {},
       "volumes": {}
     },
-    "runtimeScheduler" : {
+    "runtimeScheduler": {
       "type": "DindKubernetesPod",
       "cluster": {
         "namespace": "default"
@@ -183,81 +182,6 @@
       }
     },
     "isPublic": true,
-    "nonComplete": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/linux"
-    },
-    "description": "Linux runtime environment for free plan",
-    "runtimeScheduler": {
-      "internalInfra": true
-    },
-    "extends": [
-      "system/default-plan"
-    ],
-    "plan": "FREE",
-    "isDefault": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/hybrid/k8s"
-    },
-    "description": "hybrid k8s runtime environment for free plan",
-    "extends": [
-      "system/default/hybrid/k8"
-    ],
-    "plan": "FREE",
-    "nonComplete": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/linux"
-    },
-    "description": "Linux runtime environment for basic plan",
-    "runtimeScheduler": {
-      "internalInfra": true
-    },
-    "extends": [
-      "system/default-plan"
-    ],
-    "plan": "BASIC",
-    "isDefault": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/hybrid/k8s"
-    },
-    "description": "hybrid k8s runtime environment for basic plan",
-    "extends": [
-      "system/default/hybrid/k8"
-    ],
-    "plan": "BASIC",
-    "nonComplete": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/linux"
-    },
-    "description": "Linux runtime environment for basic plan",
-    "runtimeScheduler": {
-      "internalInfra": true
-    },
-    "extends": [
-      "system/default-plan"
-    ],
-    "plan": "PRO",
-    "isDefault": true
-  },
-  {
-    "metadata": {
-      "name": "system/plan/hybrid/k8s"
-    },
-    "description": "hybrid k8s runtime environment for pro plan",
-    "extends": [
-      "system/default/hybrid/k8"
-    ],
-    "plan": "PRO",
     "nonComplete": true
   }
 ]
