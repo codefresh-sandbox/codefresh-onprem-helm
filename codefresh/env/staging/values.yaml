@@ -36,7 +36,6 @@ builder:
   replicaCount: 1
 
 ingress:
-  enabled: true
   rbacEnable: true    
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
