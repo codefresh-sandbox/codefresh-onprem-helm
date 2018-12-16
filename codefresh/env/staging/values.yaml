@@ -4,6 +4,8 @@
 
 firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
 
+rbacEnable: true
+
 hostsApp: |
   50.56.64.16   stash.ironsrc.com
 
@@ -34,6 +36,8 @@ builder:
   replicaCount: 1
 
 ingress:
+  enabled: true
+  rbacEnable: true    
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
 
@@ -41,6 +45,7 @@ getRuntimeEnvs: files/staging/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
+  rbacEnable: true  
   formatLogsToElk: false
   replicaCount: 2
   internalRegistryProtocol: https
