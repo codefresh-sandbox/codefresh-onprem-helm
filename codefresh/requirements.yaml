@@ -141,15 +141,15 @@ dependencies:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.53
-  repository: http://chartmuseum.codefresh.io
+  version: 1.0.54-saas-634-clusterip
+  repository: http://chartmuseum-dev.codefresh.io
   condition: onboarding-status.enabled
   tags:
   - saas
   - infra
 - name: cfanalytic
-  version: 1.0.47
-  repository: http://chartmuseum.codefresh.io
+  version: 1.0.48-saas-634-clusterip
+  repository: http://chartmuseum-dev.codefresh.io
   condition: cfanalytic.enabled
   tags:
   - saas
