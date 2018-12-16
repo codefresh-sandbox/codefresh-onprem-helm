@@ -35,6 +35,7 @@
       image: codefresh/cf-env-creator:2.8
       commands:
         - helm init --client-only
+        - helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
         - helm repo add chartmuseum-dev http://chartmuseum-dev.codefresh.io
         - helm repo add chartmuseum-stable http://chartmuseum.codefresh.io
       when:
