@@ -11,10 +11,10 @@ cfapi:
 #   imageTag: v1
 
 payments:
-  imageTag: v31
+  imageTag: v34
 
 cluster-providers:
-  imageTag: v47
+  imageTag: v50
 
 internal-status-page:
   imageTag: v9
@@ -38,16 +38,16 @@ salesforce-reporter:
   imageTag: v17
 
 tasker-kubernetes:
-  imageTag: v23
+  imageTag: v27
 
 charts-manager:
-  imageTag: v38
+  imageTag: v39
 
 context-manager:
   imageTag: v51
 
 pipeline-manager:
-  imageTag: v49
+  imageTag: v50
 
 cfsign:
   imageTag: v1
