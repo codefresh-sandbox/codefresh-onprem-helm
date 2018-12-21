@@ -15,6 +15,7 @@ firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
 hostsApp: |
   50.56.64.16   stash.ironsrc.com
+  54.191.77.211 rancher.ucoachapp.com
 
 webTLS:
   secretName: star.codefresh.io
