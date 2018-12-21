@@ -7,8 +7,6 @@ firebaseUrl: "https://codefresh-staging-75bd2.firebaseio.com/staging"
 hostsApp: |
   50.56.64.16   stash.ironsrc.com
 
-host
-
 webTLS:
   secretName: star.codefresh.io
   #key:
