@@ -33,6 +33,10 @@ spec:
       # This is needed to ensure a good quality of service.
       affinity:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
+      {{- if .Values.global.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.global.hostAliases | indent 8 }}
+      {{- end }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 10
