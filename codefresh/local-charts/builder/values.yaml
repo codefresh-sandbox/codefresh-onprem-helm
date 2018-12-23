@@ -12,3 +12,15 @@ imagePullPolicy: IfNotPresent
 # dind container port (1300 - default)
 containerPort: 1300
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#serviceType: ClusterIP
+
+#Values for Volume Claim Template
+varLibDockerVolume:
+  accessMode: ReadWriteOnce
+  storageSize: 100Gi
+  # storageClass: default
+
+# run container cleaner within dind
+dockerCleanerCron: "23 3 * * *"
+

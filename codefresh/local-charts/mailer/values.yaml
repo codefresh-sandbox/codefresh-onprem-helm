@@ -7,6 +7,9 @@ replicaCount: 1
 image: r.cfcr.io/codefresh-inc/codefresh/mailer
 imageTag: master
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#serviceType: ClusterIP
+
 # Service port
 port: 80
 

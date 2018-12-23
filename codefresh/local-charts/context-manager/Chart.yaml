@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Codefresh Context Manager
 name: context-manager
-version: 0.0.1
+version: 0.0.2
 keywords:
 - codefresh
 - context-manager

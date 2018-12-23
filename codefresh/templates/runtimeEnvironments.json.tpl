@@ -1,3 +1,4 @@
+{{- define "runtime-environment-config" -}}
 [
   {
     "metadata": {
@@ -21,16 +22,21 @@
         "inCluster": true,
         "namespace": "codefresh"
       },
-      "image": "codefresh/engine:98",
+      "image": "{{ .Values.engineImage }}",
       "envVars": {
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        {{ $key | quote }}: {{ $value | quote }},
+        {{- end}}
+        {{- end}}
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
@@ -99,7 +105,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "codefresh/engine:98",
+      "image": "{{ .Values.engineImage }}",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -113,9 +119,9 @@
       "envVars": {
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v3",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v3",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v12",
+        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
+        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
+        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
         "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
         "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
       },
@@ -179,3 +185,4 @@
     "nonComplete": true
   }
 ]
+{{- end -}}

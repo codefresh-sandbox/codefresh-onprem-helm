@@ -279,6 +279,12 @@ spec:
       - name: gossip-key
         secret:
           secretName: {{ template "consul.fullname" . }}-gossip-key
+      {{- if .Values.pvcName }}
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvcName }}
+      {{- end }}    
+  {{- if not .Values.pvcName }}        
   volumeClaimTemplates:
   - metadata:
       name: datadir
@@ -295,3 +301,4 @@ spec:
         requests:
           # upstream recommended max is 700M
           storage: "{{ .Values.Storage }}"
+  {{- end }}

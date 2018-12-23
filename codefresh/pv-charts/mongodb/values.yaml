@@ -24,6 +24,9 @@ image: bitnami/mongodb:3.4.6-r0
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
+## Use existing volume claim name
+# pvcName:
+## Provision new volume claim
 persistence:
   enabled: true
   ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
