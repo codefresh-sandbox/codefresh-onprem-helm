@@ -368,6 +368,14 @@ global:
     operator: Equal
     value: internal
 
+  hostAliases:
+  - ip: "50.56.64.16"
+    hostnames:
+    - "stash.ironsrc.com"
+  - ip: "54.191.77.211"
+    hostnames:
+    - "rancher.ucoachapp.com"
+
 tags:
   saas: true
   infra: false
