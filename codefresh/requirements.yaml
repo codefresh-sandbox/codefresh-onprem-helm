@@ -141,21 +141,21 @@ dependencies:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.54-saas-634-clusterip
-  repository: http://chartmuseum-dev.codefresh.io
+  version: 1.0.54
+  repository: http://chartmuseum.codefresh.io
   condition: onboarding-status.enabled
   tags:
   - saas
   - infra
 - name: cfanalytic
-  version: 1.0.48-saas-634-clusterip
-  repository: http://chartmuseum-dev.codefresh.io
+  version: 1.0.48
+  repository: http://chartmuseum.codefresh.io
   condition: cfanalytic.enabled
   tags:
   - saas
   - infra
 - name: runtime-environment-manager
-  version: 1.7.6
+  version: 1.7.9
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:
@@ -177,7 +177,7 @@ dependencies:
   - trigger-manager
 - name: nomios
   version: ~0.4.0-any
-  repository: '@codefresh-dev'
+  repository: '@codefresh'
   condition: hermes.enabled
   tags:
   - trigger
