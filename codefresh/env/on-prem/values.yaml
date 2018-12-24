@@ -24,23 +24,36 @@ logglyToken: invalid-token
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
+#webTLS:
+#  secretName: star.codefresh.io
+
 ingress:
   enabled: true
   domain: '*'
+#  webTlsSecretName: "star.codefresh.io"
+
+# ingress resource annotations:
+annotations:
+  kubernetes.io/ingress.class: nginx-codefresh
+  nginx.ingress.kubernetes.io/service-upstream: "true"
+  nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  nginx.org/redirect-to-https: "false"
+  nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "X-Request-ID: $request_id";
+        proxy_set_header X-Request-ID $request_id;
 
 consul:
   DatacenterName: codefresh-onprem
   Replicas: 1
   Memory: 64Mi
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
+
 
 postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
   postgresPassword: eC9arYka4ZbH
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 128Mi
@@ -48,16 +61,14 @@ postgresql:
 mongodb:
   image: bitnami/mongodb:3.4.6-r0
   mongodbRootPassword: XT9nmM8dZD
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 64Mi
 
 redis:
   redisPassword: hoC9szf7NtrU
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
   resources:
     requests:
       memory: 64Mi
@@ -65,14 +76,11 @@ redis:
 rabbitmq:
   rabbitmqUsername: user
   rabbitmqPassword: cVz9ZdJKYm7u
-  nodeSelector:
-    provisioner: local-volume  
+  nodeSelector: {} 
 
 registry:
   mainChart: codefresh
-  storageSize: 4Gi
-  nodeSelector:
-    provisioner: local-volume
+  nodeSelector: {}
 
 builder:
   replicaCount: 1
@@ -92,6 +100,8 @@ cfui:
   logglyToken: invalid-token
   segmentKey: invalid-key
   newrelicLicenseKey: invalid-key
+#  webTLS:
+#    secretName: star.codefresh.io  
 
 onboarding-status:
   enabled: false
@@ -104,6 +114,9 @@ runtime-environment-manager:
   image: gcr.io/codefresh-enterprise/codefresh/runtime-environment-manager
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
+
+cfanalytic:
+  image: gcr.io/codefresh-enterprise/codefresh/cf-analytic
 
 cfapi:
   github:
@@ -182,8 +195,8 @@ helm-repo-manager:
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
-  seedJobs: true
-  certsJobs: true
+  #seedJobs: true
+  #certsJobs: true
 
   #appUrl: app-url
   githubInternalToken: placeholder
@@ -219,7 +232,9 @@ global:
   runnerService: runner
 
   # dind image with tag
-  dindImage: docker:17.06-dind
+  #dindImage: docker:17.06-dind
+  dindImage: docker:18.09-dind
+  #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
 
   # dind cpu requests
   dindCPU: 100m

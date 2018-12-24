@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Codefresh API Engine
 name: workflow-baseline-invoker
-version: 0.0.4
+version: 0.0.5
 keywords:
 - codefresh
 - kubernetes

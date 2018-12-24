@@ -10,5 +10,20 @@
 imagePullPolicy: IfNotPresent
 redeploy: false
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#serviceType: ClusterIP
+
+## Use existing volume claim name
+#pvcName: {}
+
 # dind container port (1300 - default)
 containerPort: 1300
+
+#Values for Volume Claim Template
+varLibDockerVolume:
+  accessMode: ReadWriteOnce
+  storageSize: 100Gi
+  # storageClass: default
+
+# run container cleaner within dind
+dockerCleanerCron: "23 4 * * *" 

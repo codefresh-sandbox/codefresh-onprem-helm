@@ -36,76 +36,76 @@ dependencies:
 - name: builder
   repository: file://local-charts/builder
   condition: builder.enabled
-  version: 0.1.3
+  version: 0.1.4
   tags:
   - infra
 - name: runner
   repository: file://local-charts/runner
   condition: runner.enabled
-  version: 0.1.3
+  version: 0.1.4
   tags:
   - infra
 - name: registry
-  version: 0.1.0
+  version: 0.1.2
   repository: file://../registry
   condition: registry.enabled
   tags:
   - infra
 - name: ingress
-  version: 0.1.7
+  version: 0.1.8
   repository: file://../ingress
   condition: ingress.enabled
 - name: cluster-providers
-  version: 0.0.2
+  version: 0.0.3
   repository: file://local-charts/cluster-providers
 - name: kube-integration
-  version: 0.0.3
+  version: 0.0.4
   repository: file://local-charts/kube-integration
 - name: accounts-referrals
-  version: 0.0.2
+  version: 0.0.3
   repository: file://local-charts/accounts-referrals
   tags:
   - saas
 - name: charts-manager
-  version: 0.0.2
+  version: 0.0.3
   repository: file://local-charts/charts-manager
   tags:
   - saas
   - infra
 - name: mailer
-  version: 0.0.2
+  version: 0.0.3
   repository: file://local-charts/mailer
   tags:
   - saas
 - name: payments
-  version: 0.1.6
+  version: 0.1.7
   repository: file://local-charts/payments
   tags:
   - saas
 - name: cfsign
-  version: 0.3.1
+  version: 0.3.2
   repository: file://local-charts/cfsign
   condition: cfsign.enabled
   tags:
   - saas
 - name: internal-status-page
-  version: 0.0.2
+  version: 0.0.3
   repository: file://local-charts/internal-status-page
   condition: internal-status-page.enabled
   tags:
   - saas
 - name: segment-reporter
-  version: 0.0.3
+  version: 0.0.4
   repository: file://local-charts/segment-reporter
   tags:
   - saas
 - name: workflow-baseline-invoker
-  version: 0.0.4
+  version: 0.0.5
   repository: file://local-charts/workflow-baseline-invoker
   tags:
   - saas
 - name: salesforce-reporter
-  version: 0.1.2
+  version: 0.1.3
   repository: file://local-charts/salesforce-reporter
   tags:
   - saas
@@ -115,47 +115,47 @@ dependencies:
   tags:
   - saas
 - name: context-manager
-  version: 0.0.1
+  version: 0.0.2
   repository: file://local-charts/context-manager
   tags:
   - saas
   - infra
 - name: pipeline-manager
-  version: 0.0.1
+  version: 0.0.2
   repository: file://local-charts/pipeline-manager
   tags:
   - saas
   - infra
 - name: cfapi
-  version: ~0.2.1
+  version: ~0.2.3
   repository: file://local-charts/cfapi
   condition: cfapi.enabled
   tags:
   - saas
   - infra
 - name: cfui
-  version: 2.8.93
+  version: 2.8.94
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.53
+  version: 1.0.54
   repository: http://chartmuseum.codefresh.io
   condition: onboarding-status.enabled
   tags:
   - saas
   - infra
 - name: cfanalytic
-  version: 1.0.47
+  version: 1.0.48
   repository: http://chartmuseum.codefresh.io
   condition: cfanalytic.enabled
   tags:
   - saas
   - infra
 - name: runtime-environment-manager
-  version: 1.7.8
+  version: 1.7.9
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:

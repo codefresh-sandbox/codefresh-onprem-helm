@@ -1,3 +1,4 @@
+{{- if not .Values.pvcName }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -10,6 +11,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.storageClass }}
+  storageClassName: {{ .Values.storageClass | quote }}
+  {{- end }}    
   resources:
     requests:
       storage: {{ .Values.storageSize }}
+{{- end }}

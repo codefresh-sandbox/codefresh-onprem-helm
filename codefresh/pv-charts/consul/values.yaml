@@ -72,7 +72,8 @@ ui:
 ##
 uiService:
   enabled: true
-  type: "NodePort"
+#  type: "NodePort"
+  type: "ClusterIP" 
 
 ## Create an Ingress for the Web UI
 uiIngress:
@@ -85,3 +86,6 @@ uiIngress:
 test:
   image: lachlanevenson/k8s-kubectl
   imageTag: v1.4.8-bash
+
+## Use existing volume claim name
+#pvcName: {}
