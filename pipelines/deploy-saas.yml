@@ -13,3 +13,13 @@ steps:
       - helm repo add codefresh http://chartmuseum.codefresh.io
       - bash -c "bin/deploy-saas $DEPLOYED_SERVICES"
 
+  SendToSlack:
+    title: Sending message to slack
+    image: codefresh/slacknotifier
+    environment:
+      - SLACK_HOOK_URL=https://hooks.slack.com/services/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
+      - MODE=default-template
+    when:
+      branch:
+        only:
+          - master
