@@ -13,6 +13,8 @@ pipeline-manager:
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
+rbacEnable: true
+
 hostsApp: |
   50.56.64.16   stash.ironsrc.com
 
@@ -36,6 +38,7 @@ rabbitmq:
   #rabbitmqPassword:
 
 ingress:
+  rbacEnable: true
   replicaCount: 4
   webTlsSecretName: "star.codefresh.io"
  # disableAccessLog: "true"
@@ -44,6 +47,7 @@ getRuntimeEnvs: files/production/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
+  rbacEnable: true
   postStart: true
   replicaCount: 8
   internalRegistryProtocol: https
@@ -419,6 +423,14 @@ global:
     key: nodeType
     operator: Equal
     value: internal
+
+  hostAliases:
+  - ip: "50.56.64.16"
+    hostnames:
+    - "stash.ironsrc.com"
+  - ip: "54.191.77.211"
+    hostnames:
+    - "rancher.ucoachapp.com"
 
 tags:
   saas: true

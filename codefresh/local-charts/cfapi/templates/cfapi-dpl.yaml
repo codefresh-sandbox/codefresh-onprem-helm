@@ -35,6 +35,9 @@ spec:
         heritage: {{ .Release.Service  | quote }}
         version: {{ .Values.imageTag | quote }}
     spec:
+      {{- if .Values.rbacEnable }}
+      serviceAccountName: {{ template "fullname" . }}
+      {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
         - key: {{ .Values.tolerations.key | quote }}
@@ -44,6 +47,10 @@ spec:
       {{- end }}
       affinity:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
+      {{- if .Values.global.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.global.hostAliases | indent 8 }}
+      {{- end }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       terminationGracePeriodSeconds: 40
@@ -52,16 +59,6 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
-        {{- if .Values.postStart }}
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - "/bin/bash"
-                - "-c"
-                - |
-                  cat /etc/admin/hosts.added >> /etc/hosts
-        {{- end }}
         env:
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}
@@ -398,9 +395,6 @@ spec:
         - name: config
           mountPath: /etc/admin/users.json
           subPath: users.json
-        - mountPath: /etc/admin/hosts.added
-          name: etc-hosts
-          subPath: hosts-app
         - name: runtime-environments
           mountPath: /etc/admin/runtimeEnvironments.json
           subPath: runtimeEnvironments.json
@@ -443,9 +437,6 @@ spec:
       - name: config
         configMap:
           name: {{ template "fullname" . }}
-      - name: etc-hosts
-        configMap:
-          name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-etc-hosts"
       - name: runtime-environments
         configMap:
           name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-runtime-envs"

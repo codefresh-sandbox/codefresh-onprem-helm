@@ -14,11 +14,17 @@ imageTag: 2.6
 ##
 imagePullPolicy: IfNotPresent
 
+# Service type (ClusterIP, NodePort, LoadBalancer)
+#serviceType: ClusterIP
+
 # registry port
 port: 5000
 
+## Use existing volume claim name
+# pvcName:
+
 # registry PVC storage size
-storageSize: 20Gi
+storageSize: 100Gi
 
 mainChart: codefresh
 

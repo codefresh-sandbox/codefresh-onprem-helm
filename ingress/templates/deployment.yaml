@@ -1,3 +1,4 @@
+{{- if eq .Values.enabled true }}
 apiVersion: extensions/v1beta1
 {{- if .Values.ingressDeamonSet }}
 kind: DeamonSet
@@ -68,6 +69,7 @@ spec:
                 fieldPath: metadata.namespace
         args:
         - /nginx-ingress-controller
+        - --ingress-class=nginx-codefresh
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
         - --watch-namespace={{ .Release.Namespace }}
         {{- if .Values.webTlsSecretName }}
@@ -76,5 +78,9 @@ spec:
         - --default-ssl-certificate={{ .Release.Namespace }}/{{ template "fullname" . }}-star-selfsigned
         {{- end }}
         - --configmap=$(POD_NAMESPACE)/{{ template "fullname" . }}-controller
+      {{- if .Values.rbacEnable }}
+      serviceAccountName: ingress
+      {{- end }}
 
       #  - --annotations-prefix=nginx.ingress.kubernetes.io
+{{- end }}

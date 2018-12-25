@@ -1,3 +1,4 @@
+{{- if eq .Values.enabled true }}
 # Expose the ingress using a regular AWS ELB
 apiVersion: v1
 kind: Service
@@ -13,7 +14,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  type: LoadBalancer
+  type: {{ default "LoadBalancer" .Values.controllerServiceType | quote }}
   {{- with .Values.global.maintenanceMode }}
   externalTrafficPolicy: Local
   {{- end }}
@@ -28,4 +29,5 @@ spec:
     targetPort: {{ .Values.controllerSecureContainerPort }}
   selector:
     k8s-app: nginx-ingress-controller
+{{- end }}
 
