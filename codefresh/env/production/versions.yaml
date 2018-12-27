@@ -41,7 +41,7 @@ salesforce-reporter:
   imageTag: v17
 
 tasker-kubernetes:
-  imageTag: v31
+  imageTag: v32
 
 charts-manager:
   imageTag: v39
