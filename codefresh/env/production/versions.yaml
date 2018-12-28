@@ -32,7 +32,7 @@ mailer:
   imageTag: v12
 
 segment-reporter:
-  imageTag: v28
+  imageTag: v29
 
 workflow-baseline-invoker:
   imageTag: v5
@@ -41,7 +41,7 @@ salesforce-reporter:
   imageTag: v17
 
 tasker-kubernetes:
-  imageTag: v32
+  imageTag: v33
 
 charts-manager:
   imageTag: v39
