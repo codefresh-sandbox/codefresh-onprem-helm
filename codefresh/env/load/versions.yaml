@@ -50,7 +50,7 @@ context-manager:
   imageTag: v51
 
 pipeline-manager:
-  imageTag: SAAS-1024-API-project
+  imageTag: load
 
 cfsign:
   imageTag: v1
