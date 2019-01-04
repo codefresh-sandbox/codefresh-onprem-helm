@@ -3,7 +3,7 @@ cfapi:
 
 # this is an example of which value you  need to pass to manually overwrite the image	+cfui:
 cfui:
-  imageTag: 2.8.112
+  imageTag: saas-1274-triggers-tav-for-new-pipeline-view
 
 
 # this is an example of which value you need to pass to manually overwrite the image
