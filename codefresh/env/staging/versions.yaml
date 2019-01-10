@@ -52,4 +52,4 @@ pipeline-manager:
   imageTag: staging
 
 cfsign:
-  imageTag: v1
+  imageTag: v2
