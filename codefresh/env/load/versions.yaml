@@ -17,7 +17,7 @@ payments:
   imageTag: v34
 
 cluster-providers:
-  imageTag: v51
+  imageTag: v52
 
 internal-status-page:
   imageTag: v9
@@ -41,7 +41,7 @@ salesforce-reporter:
   imageTag: v17
 
 tasker-kubernetes:
-  imageTag: v33
+  imageTag: v35
 
 charts-manager:
   imageTag: v39
@@ -50,7 +50,7 @@ context-manager:
   imageTag: v51
 
 pipeline-manager:
-  imageTag: v51
+  imageTag: v52
 
 cfsign:
   imageTag: v2
