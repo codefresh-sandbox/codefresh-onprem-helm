@@ -76,6 +76,9 @@ hermes:
 cfanalytic:
   enabled: true
 
+cfk8smonitor:
+  enabled: true
+
 dindImage: docker:17.05-dind
 
 #=======================
