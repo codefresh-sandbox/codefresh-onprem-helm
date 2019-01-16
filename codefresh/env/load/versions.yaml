@@ -56,6 +56,6 @@ cfsign:
   imageTag: v1
 
 cfk8smonitor:
-  imageTag: 1.0.10-custom-models
+  imageTag: 1.0.11-custom-models
 
 engineImage: "codefresh/engine:106"
