@@ -114,6 +114,7 @@ dependencies:
   repository: file://local-charts/tasker-kubernetes
   tags:
   - saas
+  - infra
 - name: context-manager
   version: 0.0.2
   repository: file://local-charts/context-manager
