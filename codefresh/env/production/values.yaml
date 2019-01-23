@@ -319,7 +319,7 @@ helm-repo-manager:
 
   chartmuseum:
     image:
-      tag: v0.7.0
+      tag: v0.8.1
     env:
       open:
         MAX_STORAGE_OBJECTS: 50
@@ -428,9 +428,6 @@ global:
   - ip: "50.56.64.16"
     hostnames:
     - "stash.ironsrc.com"
-  - ip: "54.191.77.211"
-    hostnames:
-    - "rancher.ucoachapp.com"
 
 tags:
   saas: true
