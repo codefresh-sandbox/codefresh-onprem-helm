@@ -156,7 +156,7 @@ dependencies:
   - saas
   - infra
 - name: cfk8smonitor
-  version: 1.0.14-v1.0.14
+  version: 1.0.15-configurate-chart
   repository: http://chartmuseum-dev.codefresh.io
   condition: cfk8smonitor.enabled
   tags:
