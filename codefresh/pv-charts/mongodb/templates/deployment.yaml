@@ -69,12 +69,5 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
       - name: data
-      {{- if .Values.pvcName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
-      {{- else if eq .Values.persistence.enabled true }}
-        persistentVolumeClaim:
-          claimName: {{ template "fullname" . }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
+          claimName: {{ include "mongodb.pvcName" . }}

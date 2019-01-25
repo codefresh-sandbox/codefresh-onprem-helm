@@ -1,4 +1,7 @@
-{{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
+{{- if not (include "redis.existingPvc" . ) -}}
+
+{{- $storageClass :=  ( include "redis.storageClass" . ) -}}
+
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -9,11 +12,9 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
   annotations:
-  {{- if .Values.persistence.storageClass }}
-    volume.beta.kubernetes.io/storage-class: {{ .Values.persistence.storageClass | quote }}
-  {{- else }}
-    volume.alpha.kubernetes.io/storage-class: default
-  {{- end }}
+    {{- if $storageClass }}
+    volume.beta.kubernetes.io/storage-class: {{ $storageClass | quote }}
+    {{- end }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode | quote }}

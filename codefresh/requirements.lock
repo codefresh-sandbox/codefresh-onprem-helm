@@ -99,4 +99,4 @@ dependencies:
   repository: http://chartmuseum.codefresh.io
   version: 0.2.12
 digest: sha256:0beb6ed9dbcf75c83942a3ff8b26735ad7314696252dc3c4051af8a9218bc7b1
-generated: 2019-01-23T08:29:57.025732588+02:00
+generated: 2019-01-23T15:52:36.237021555+02:00

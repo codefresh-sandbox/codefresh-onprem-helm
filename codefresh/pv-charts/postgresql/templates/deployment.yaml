@@ -96,12 +96,7 @@ spec:
 {{- end }}
       volumes:
       - name: data
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "fullname" .) }}
-      {{- else }}
-        emptyDir: {}
-      {{- end }}
+          claimName: {{ include "postgresql.pvcName" . }}
       {{- if and .Values.metrics.enabled .Values.metrics.customMetrics }}
       - name: custom-metrics
         secret:
