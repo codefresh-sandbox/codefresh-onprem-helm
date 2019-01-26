@@ -25,7 +25,7 @@ commands:
   program: node
   env:
   - PORT={{ env.Getenv "API_PUBLIC_PORT" }}
-  - FORMAT_TO_ELK=false
+  - FORMAT_LOGS_TO_ELK=false
   args:
   - --inspect={{ GetAvailablePort }}
   - {{ .Values.program }}
