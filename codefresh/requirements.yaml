@@ -102,6 +102,7 @@ dependencies:
 - name: workflow-baseline-invoker
   version: 0.0.5
   repository: file://local-charts/workflow-baseline-invoker
+  condition: workflow-baseline-invoker.enabled
   tags:
   - saas
 - name: salesforce-reporter

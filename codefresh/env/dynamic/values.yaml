@@ -172,6 +172,9 @@ builder:
 cfanalytic:
   enabled: false
 
+internal-status-page:
+  enabled: false
+
 payments:
   stripeIgnoreAccountNotFoundErrors: "true"
 
