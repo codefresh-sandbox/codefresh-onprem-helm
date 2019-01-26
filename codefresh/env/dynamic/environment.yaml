@@ -1,0 +1,16 @@
+version: 0.0.1
+
+components:
+- name: cfapi
+  spec:
+    git:
+      owner: codefresh-io
+      repo: cf-helm
+      revision: master
+      path: codefresh/local-charts/cfapi/component.yaml.tmpl
+  values:
+    - git:
+      owner: codefresh-io
+      repo: cf-helm
+      revision: master
+      path: codefresh/local-charts/cfapi/values.yaml
