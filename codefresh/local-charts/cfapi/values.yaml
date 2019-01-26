@@ -106,3 +106,17 @@ formatLogsToElk: true
 
 # auth0LoginHost Auth0 Login host
 auth0LoginHost: codefresh-login.auth0.com
+
+
+
+
+####################
+# local develpment #
+####################
+
+# runtimeExecutable which runtime to use to run this
+runtimeExecutable: node
+# program the program that should be executed, relative to the executed working directory
+program: server/index.js
+# debug
+debug: true
