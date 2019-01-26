@@ -10,7 +10,7 @@ components:
       path: codefresh/local-charts/cfapi/component.yaml.tmpl
   values:
     - git:
-      owner: codefresh-io
-      repo: cf-helm
-      revision: master
-      path: codefresh/local-charts/cfapi/values.yaml
+        owner: codefresh-io
+        repo: cf-helm
+        revision: master
+        path: codefresh/local-charts/cfapi/values.yaml
