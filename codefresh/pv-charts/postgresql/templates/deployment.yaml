@@ -96,6 +96,7 @@ spec:
 {{- end }}
       volumes:
       - name: data
+        persistentVolumeClaim:
           claimName: {{ include "postgresql.pvcName" . }}
       {{- if and .Values.metrics.enabled .Values.metrics.customMetrics }}
       - name: custom-metrics

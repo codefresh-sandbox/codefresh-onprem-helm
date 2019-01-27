@@ -136,12 +136,13 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
-      {{- if .Values.pvcName }}
+{{- $existingPvc :=  ( include "builder.existingPvc" . ) -}}
+      {{- if $existingPvc }}
       - name: varlibdocker
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
+          claimName: {{ $existingPvc }}
       {{- end }}    
-  {{- if not .Values.pvcName }}    
+  {{- if not $existingPvc }}    
   {{- if .Values.varLibDockerVolume }}
   volumeClaimTemplates:
   - metadata:

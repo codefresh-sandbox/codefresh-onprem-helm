@@ -27,7 +27,7 @@ Calculates Existing pvc name
 Calculates pvcName
 */}}
 {{- define "rabbitmq.pvcName" -}}
-{{- $pvcName := include "rabbitmq.existingPvc" .  | default (include "fullname" . ) -}}
+{{- $pvcName := include "rabbitmq.existingPvc" .  | default (include "rabbitmq.fullname" . ) -}}
 {{- printf "%s" $pvcName -}}
 {{- end -}}
 
@@ -37,4 +37,9 @@ Calculates storage class name
 {{- define "rabbitmq.storageClass" -}}
 {{- $storageClass := coalesce .Values.storageClass .Values.StorageClass .Values.persistence.storageClass .Values.global.storageClass | default "" -}}
 {{- printf "%s" $storageClass -}}
+{{- end -}}
+
+{{- define "rabbitmq.storageSize" -}}
+{{- $storageSize := coalesce .Values.storageSize .Values.persistence.size -}}
+{{- printf "%s" $storageSize -}}
 {{- end -}}

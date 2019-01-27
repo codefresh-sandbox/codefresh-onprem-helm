@@ -38,3 +38,8 @@ Calculates storage class name
 {{- $storageClass := coalesce .Values.storageClass .Values.StorageClass .Values.persistence.storageClass .Values.global.storageClass | default "" -}}
 {{- printf "%s" $storageClass -}}
 {{- end -}}
+
+{{- define "redis.storageSize" -}}
+{{- $storageSize := coalesce .Values.storageSize .Values.persistence.size -}}
+{{- printf "%s" $storageSize -}}
+{{- end -}}

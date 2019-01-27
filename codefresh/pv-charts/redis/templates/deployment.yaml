@@ -81,9 +81,5 @@ spec:
 {{- end }}
       volumes:
       - name: redis-data
-      {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "fullname" .) }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
+          claimName: {{ include "redis.pvcName" . }}
