@@ -17,9 +17,8 @@ commands:
   - {{ .Merlin.kube.namespace }}
   - --expose
   - {{ $port }}:80
-  - --run
-  - zsh
-
+  - --run-shell
+ 
 - name: start
   description: Start nodejs application
   program: node
