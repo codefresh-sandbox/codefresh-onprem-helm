@@ -14,3 +14,16 @@ components:
         repo: cf-helm
         revision: master
         path: codefresh/local-charts/cfapi/values.yaml
+- name: context-manager
+  spec:
+    git:
+      owner: codefresh-io
+      repo: cf-helm
+      revision: master
+      path: codefresh/local-charts/context-manager/component.yaml.tmpl
+  values:
+    - git:
+        owner: codefresh-io
+        repo: cf-helm
+        revision: master
+        path: codefresh/local-charts/context-manager/values.yaml
