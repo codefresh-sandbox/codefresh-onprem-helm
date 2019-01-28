@@ -1,7 +1,5 @@
 # This file is in here to serve the local development using Merlin
 
-{{ $port := GetAvailablePort }}
-
 commands:
 
 - name: connect
@@ -19,8 +17,6 @@ commands:
   - {{ .Merlin.kube.context }}
   - --expose
   - {{ $port }}:{{ .Values.targetPort }}
-  - --expose
-  - {{ GetAvailablePort }}:{{ .Values.targetInternalPort }}
   {{ if .Values.telepresence.run }}
   - {{ .Values.telepresence.run }}
   {{ else }}
@@ -31,7 +27,6 @@ commands:
   description: Start nodejs application
   program: node
   env:
-  - PORT={{ env.Getenv "API_PUBLIC_PORT" }}
   - FORMAT_LOGS_TO_ELK=false
   args:
   - --inspect={{ GetAvailablePort }}

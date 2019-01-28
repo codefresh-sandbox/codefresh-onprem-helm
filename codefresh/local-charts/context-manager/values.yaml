@@ -23,15 +23,3 @@ mongoCreateDbJobScript: files/mongoCreateDbJobScript
 
 # formatLogsToElk logs will be formatter as elk expect to read it
 formatLogsToElk: true
-
-
-####################
-# local develpment #
-####################
-
-# runtimeExecutable which runtime to use to run this
-runtimeExecutable: node
-# program the program that should be executed, relative to the executed working directory
-program: server/index.js
-# debug
-debug: true

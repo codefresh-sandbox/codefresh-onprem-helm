@@ -7,12 +7,23 @@ commands:
   program: telepresence
   env:
   - KUBECONFIG={{ .Merlin.kube.path }}
+  - API_PUBLIC_PORT={{ $port }}
   args:
   - -s
   - {{ .Merlin.kube.namespace }}-{{ .Merlin.name }}
   - --namespace
   - {{ .Merlin.kube.namespace }}
+  - --context
+  - {{ .Merlin.kube.context }}
+  - --expose
+  - {{ $port }}:{{ .Values.targetPort }}
+  - --expose
+  - {{ GetAvailablePort }}:40000
+  {{ if .Values.telepresence.run }}
+  - {{ .Values.telepresence.run }}
+  {{ else }}
   - --run-shell
+  {{ end }}
  
 - name: start
   description: Start nodejs application
