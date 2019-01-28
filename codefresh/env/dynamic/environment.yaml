@@ -7,20 +7,26 @@ components:
       owner: codefresh-io
       repo: cf-helm
       revision: master
-      path: codefresh/env/dynamic/nodejs-local-values.yaml
+      path: codefresh/local-charts/cfapi/component.yaml.tmpl
   values:
-    - git: *git
+    - git: &nodejs-local-values
+        <<: *git
+        path: codefresh/env/dynamic/nodejs-local-values.yaml
     - git:
         <<: *git
         # need some extra values from cfapi values
         path: codefresh/local-charts/cfapi/values.yaml
 - name: context-manager
   spec:
-    git: *git
+    git: 
+     <<: *git
+     path: codefresh/local-charts/context-manager/component.yaml.tmpl
   values:
-    - git: *git
+    - git: *nodejs-local-values
 - name: pipeline-manager
   spec:
-    git: *git
+    git: 
+     <<: *git
+     path: codefresh/local-charts/pipeline-manager/component.yaml.tmpl
   values:
-    - git: *git
+    - git: *nodejs-local-values
