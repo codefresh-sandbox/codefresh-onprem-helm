@@ -52,7 +52,7 @@ cfapi:
 # internal ingress controller; disable by default
 ingress:
   enabled: false
-  domain: '*'
+#  domain: '*'
 
 # ingress resource annotations:
 annotations:
