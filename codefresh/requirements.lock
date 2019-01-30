@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.2.12-pv-refactor
-digest: sha256:df4b7b69ec6f8b916125b44e1907bbe996dc63f710e3941fd2f60d3d6135b816
-generated: 2019-01-30T11:14:35.3279685+02:00
+digest: sha256:f8568d994fbc1359465099157d4d89d9b305f4dd9560ad98533c167e68ac35d9
+generated: 2019-01-30T13:53:14.131570188+02:00
