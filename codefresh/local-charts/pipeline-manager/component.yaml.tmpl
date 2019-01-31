@@ -1,5 +1,7 @@
 # This file is in here to serve the local development using Merlin
 
+{{ $port := GetAvailablePort }}
+
 commands:
 
 - name: connect
@@ -7,7 +9,7 @@ commands:
   program: telepresence
   env:
   - KUBECONFIG={{ .Merlin.kube.path }}
-  - API_PUBLIC_PORT={{ $port }}
+  - SERVICE_AVAILABLE_PORT={{ $port }}
   args:
   - -s
   - {{ .Merlin.kube.namespace }}-{{ .Merlin.name }}
@@ -27,6 +29,7 @@ commands:
   description: Start nodejs application
   program: node
   env:
+  - PORT={{ env.Getenv "SERVICE_AVAILABLE_PORT" }}
   - FORMAT_LOGS_TO_ELK=false
   args:
   - --inspect={{ GetAvailablePort }}
