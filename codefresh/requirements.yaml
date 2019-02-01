@@ -88,6 +88,7 @@ dependencies:
   condition: cfsign.enabled
   tags:
   - saas
+  - infra
 - name: internal-status-page
   version: 0.0.3
   repository: file://local-charts/internal-status-page
