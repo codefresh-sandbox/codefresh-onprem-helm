@@ -67,5 +67,7 @@ spec:
           secretName: {{ template "fullname" . }}
         {{- end }}
       - name: certs-data
+        {{- if not .Values.global.onprem }}
         persistentVolumeClaim:
           claimName: {{ template "fullname" . }}
+        {{- end }}
