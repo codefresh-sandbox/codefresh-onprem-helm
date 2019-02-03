@@ -135,9 +135,10 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         component: "{{ .Release.Name }}-{{ .Values.Component }}"
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- $nodeSelector := coalesce .Values.nodeSelector .Values.global.storagePodNodeSelector }}
+      {{- if $nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml $nodeSelector | indent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
@@ -279,19 +280,23 @@ spec:
       - name: gossip-key
         secret:
           secretName: {{ template "consul.fullname" . }}-gossip-key
-      {{- if .Values.pvcName }}
+
+{{- $existingPvc :=  ( include "consul.existingPvc" . ) -}}
+{{- $storageClass :=  ( include "consul.storageClass" . ) -}}
+{{- $storageSize :=  ( include "consul.storageSize" . ) -}}
+
+      {{- if $existingPvc }}
       - name: datadir
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
+          claimName: {{ $existingPvc }}
       {{- end }}    
-  {{- if not .Values.pvcName }}        
+  {{- if not $existingPvc }}        
   volumeClaimTemplates:
   - metadata:
       name: datadir
       annotations:
-      {{- if .Values.StorageClass }}
-        volume.beta.kubernetes.io/storage-class: {{ .Values.StorageClass | quote }}
-      {{- else }}
+      # backword compatibility
+      {{- if not $storageClass }}
         volume.alpha.kubernetes.io/storage-class: default
       {{- end }}
     spec:
@@ -300,5 +305,8 @@ spec:
       resources:
         requests:
           # upstream recommended max is 700M
-          storage: "{{ .Values.Storage }}"
+          storage: "{{ $storageSize }}"
+      {{- if $storageClass }}
+      storageClassName: {{ $storageClass | quote }}
+      {{- end }}  
   {{- end }}

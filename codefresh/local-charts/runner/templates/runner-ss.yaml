@@ -28,9 +28,10 @@ spec:
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service | quote }}
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- $nodeSelector := coalesce .Values.nodeSelector .Values.global.storagePodNodeSelector }}
+      {{- if $nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml $nodeSelector | indent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
@@ -138,12 +139,13 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
-      {{- if .Values.pvcName }}
+{{- $existingPvc := ( include "runner.existingPvc" . ) -}}
+      {{- if $existingPvc }}
       - name: varlibdocker
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
+          claimName: {{ $existingPvc }}
       {{- end }}    
-  {{- if not .Values.pvcName }}
+  {{- if not $existingPvc }}
   {{- if .Values.varLibDockerVolume }}
   volumeClaimTemplates:
   - metadata:

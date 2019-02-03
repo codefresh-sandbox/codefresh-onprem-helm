@@ -25,6 +25,8 @@ port: 5000
 
 # registry PVC storage size
 storageSize: 100Gi
+persistence:
+  enabled: true
 
 mainChart: codefresh
 

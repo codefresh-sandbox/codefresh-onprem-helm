@@ -70,11 +70,7 @@ spec:
       {{- if not .Values.registryConfig }}
       - name: image-store
         persistentVolumeClaim:
-        {{- if .Values.pvcName }}
-          claimName: {{ .Values.pvcName }}
-        {{- else }}
-          claimName: {{ template "fullname" . }}
-        {{- end }}
+          claimName: {{ include "registry.pvcName" . }}
       {{- end }}
       - name: cf-certs
         secret:
