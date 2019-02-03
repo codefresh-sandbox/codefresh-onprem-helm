@@ -1,4 +1,8 @@
-{{- if not .Values.pvcName }}
+{{- if not ( include "registry.existingPvc" . ) -}}
+
+{{- $storageClass :=  ( include "registry.storageClass" . ) -}}
+{{- $storageSize :=  ( include "registry.storageSize" . ) -}}
+
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -11,10 +15,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  {{- if .Values.storageClass }}
-  storageClassName: {{ .Values.storageClass | quote }}
+  {{- if $storageClass }}
+  storageClassName: {{ $storageClass | quote }}
   {{- end }}    
   resources:
     requests:
-      storage: {{ .Values.storageSize }}
+      storage: {{ $storageSize }}
 {{- end }}

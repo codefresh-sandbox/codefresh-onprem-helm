@@ -19,7 +19,7 @@ metadata:
 spec:
   tls:
     - hosts:
-      - '{{ .Values.ingress.domain }}'
+      - '{{ .Values.ingress.domain | default .Values.global.appUrl }}'
       {{- if .Values.webTLS }}
       secretName: {{ template "fullname" . }}-{{ .Values.webTLS.secretName }}
       {{- else }}
@@ -29,7 +29,7 @@ spec:
     serviceName: {{ .Release.Name }}-cfui
     servicePort: {{ .Values.servicePort }}
   rules:
-  - host: {{ .Values.ingress.domain }}
+  - host: {{ .Values.ingress.domain | default .Values.global.appUrl }}
     http:
       paths:
       - path: /api/

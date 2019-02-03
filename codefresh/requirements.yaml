@@ -137,7 +137,7 @@ dependencies:
   - saas
   - infra
 - name: cfui
-  version: 2.8.166
+  version: 2.8.167
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
@@ -172,15 +172,15 @@ dependencies:
   - helm
   - chartmuseum
 - name: hermes
-  version: ~0.9.0-any
-  repository: '@codefresh'
+  version: ~0.9.25-any
+  repository: 'http://chartmuseum.codefresh.io'
   condition: hermes.enabled
   tags:
   - trigger
   - trigger-manager
 - name: nomios
   version: ~0.4.0-any
-  repository: '@codefresh'
+  repository: 'http://chartmuseum.codefresh.io'
   condition: hermes.enabled
   tags:
   - trigger
@@ -188,8 +188,8 @@ dependencies:
   - registry
   - dockerhub
 - name: cronus
-  version: ~0.2.0-any
-  repository: '@codefresh'
+  version: ~0.2.14-any
+  repository: 'http://chartmuseum.codefresh.io'
   condition: hermes.enabled
   tags:
   - trigger
