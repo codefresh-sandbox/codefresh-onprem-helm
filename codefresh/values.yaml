@@ -76,6 +76,9 @@ hermes:
 cfanalytic:
   enabled: true
 
+workflow-baseline-invoker:
+  enabled: false
+
 dindImage: docker:17.05-dind
 
 #=======================

@@ -88,6 +88,7 @@ dependencies:
   condition: cfsign.enabled
   tags:
   - saas
+  - infra
 - name: internal-status-page
   version: 0.0.3
   repository: file://local-charts/internal-status-page
@@ -102,6 +103,7 @@ dependencies:
 - name: workflow-baseline-invoker
   version: 0.0.5
   repository: file://local-charts/workflow-baseline-invoker
+  condition: workflow-baseline-invoker.enabled
   tags:
   - saas
 - name: salesforce-reporter
@@ -135,7 +137,7 @@ dependencies:
   - saas
   - infra
 - name: cfui
-  version: 2.8.148
+  version: 2.8.166
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
@@ -156,7 +158,7 @@ dependencies:
   - saas
   - infra
 - name: runtime-environment-manager
-  version: 1.7.15
+  version: 1.7.16
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:

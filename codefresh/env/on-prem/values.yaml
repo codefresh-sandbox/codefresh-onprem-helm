@@ -316,6 +316,7 @@ global:
   hermesService: hermes
   dindProviderService: dind-provider
   dindProviderPort: 9000
+  onprem: true
 
 
   internalServiceTolerations:
