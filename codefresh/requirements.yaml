@@ -171,8 +171,8 @@ dependencies:
   - chartmuseum
 - name: hermes
   #version: ~0.9.0-any
-  version: 0.9.24-pv-refactor
-  repository: 'http://chartmuseum-dev.codefresh.io'
+  version: ~0.9.25-any
+  repository: 'http://chartmuseum.codefresh.io'
   condition: hermes.enabled
   tags:
   - trigger
@@ -188,8 +188,8 @@ dependencies:
   - dockerhub
 - name: cronus
   # version: ~0.2.0-any
-  version: 0.2.12-pv-refactor
-  repository: 'http://chartmuseum-dev.codefresh.io'
+  version: ~0.2.14-any
+  repository: 'http://chartmuseum.codefresh.io'
   condition: hermes.enabled
   tags:
   - trigger

@@ -90,13 +90,13 @@ dependencies:
   repository: http://chartmuseum.codefresh.io
   version: 0.2.9
 - name: hermes
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.9.24-pv-refactor
+  repository: http://chartmuseum.codefresh.io
+  version: 0.9.25
 - name: nomios
   repository: http://chartmuseum.codefresh.io
   version: 0.4.19
 - name: cronus
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.2.12-pv-refactor
-digest: sha256:f8568d994fbc1359465099157d4d89d9b305f4dd9560ad98533c167e68ac35d9
-generated: 2019-01-30T13:53:14.131570188+02:00
+  repository: http://chartmuseum.codefresh.io
+  version: 0.2.14
+digest: sha256:63ffed9496e26116e89e41fa2f13d5b99f89a3d3ae55c4032cf05bef54ea89a0
+generated: 2019-02-03T13:26:54.637852271+02:00
