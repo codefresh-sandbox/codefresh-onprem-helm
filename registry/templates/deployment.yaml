@@ -42,10 +42,12 @@ spec:
         - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
           value: /var/lib/registry
         {{- end }}
+        {{- if not .Values.global.exposeRegistry }}
         - name: REGISTRY_HTTP_TLS_CERTIFICATE
           value: /etc/ssl/cf/cert.pem
         - name: REGISTRY_HTTP_TLS_KEY
           value: /etc/ssl/cf/key.pem
+        {{- end }}
         volumeMounts:
         {{- if not .Values.registryConfig }}
         - name: image-store
