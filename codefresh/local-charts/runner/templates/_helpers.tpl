@@ -14,3 +14,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Calculates Existing pvc name
+*/}}
+{{- define "runner.existingPvc" -}}
+{{- $existingPvc := coalesce .Values.existingPvc .Values.existingClaim .Values.pvcName | default "" -}}
+{{- printf "%s" $existingPvc -}}
+{{- end -}}

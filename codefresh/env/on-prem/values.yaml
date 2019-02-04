@@ -24,13 +24,15 @@ logglyToken: invalid-token
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
+rbacEnable: true
 #webTLS:
 #  secretName: star.codefresh.io
 
 ingress:
   enabled: true
-  domain: '*'
-#  webTlsSecretName: "star.codefresh.io"
+  rbacEnable: true
+#  domain: '*'
+  webTlsSecretName: "star.codefresh.io"
 
 # ingress resource annotations:
 annotations:
@@ -123,6 +125,7 @@ cfapi:
     apiPathPrefix: /api/v3
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
   expirationURL: https://codefresh.io/contact-sales
+  rbacEnable: true
   env:
     ON_PREMISE: true
     LOGGER_LEVEL: debug
@@ -313,6 +316,7 @@ global:
   hermesService: hermes
   dindProviderService: dind-provider
   dindProviderPort: 9000
+  onprem: true
 
 
   internalServiceTolerations:

@@ -11,7 +11,7 @@ operators:
     program: telepresence
     env:
     - KUBECONFIG={{ .Merlin.kube.path }}
-    - API_PUBLIC_PORT={{ $port }}
+    - SERVICE_AVAILABLE_PORT={{ $port }}
     args:
     - -s
     - {{ .Merlin.kube.namespace }}-cfapi
@@ -35,7 +35,7 @@ operators:
   spec:
     program: node
     env:
-    - PORT={{ env.Getenv "API_PUBLIC_PORT" }}
+    - PORT={{ env.Getenv "SERVICE_AVAILABLE_PORT" }}
     - FORMAT_LOGS_TO_ELK=false
     args:
     - --inspect={{ GetAvailablePort }}

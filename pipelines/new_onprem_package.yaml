@@ -1,0 +1,155 @@
+version: '1.0'
+stages:
+  - export tags
+  - push
+  - create package
+steps:
+  exportLatestTags:
+    type: parallel
+    stage: export tags
+    steps:  
+      cfapi:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export cfapi_tag=$(yq r codefresh/env/production/versions.yaml cfapi.imageTag)
+      cluster-providers:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export cluster-providers_tag=$(yq r codefresh/env/production/versions.yaml cluster-providers.imageTag)
+      kube-integration:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export kube-integration_tag=$(yq r codefresh/env/production/versions.yaml kube-integration.imageTag)
+      tasker-kubernetes:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export tasker-kubernetes_tag=$(yq r codefresh/env/production/versions.yaml tasker-kubernetes.imageTag)
+      charts-manager:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export charts-manager_tag=$(yq r codefresh/env/production/versions.yaml charts-manager.imageTag)
+      context-manager:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export context-manager_tag=$(yq r codefresh/env/production/versions.yaml context-manager.imageTag)
+      pipeline-manager:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export pipeline-manager_tag=$(yq r codefresh/env/production/versions.yaml pipeline-manager.imageTag)
+      cfsign:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export cfsign_tag=$(yq r codefresh/env/production/versions.yaml cfsign.imageTag)
+      cfui:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export cfui_tag=$(yq r codefresh/requirements.yaml dependencies[25].version)
+      cfanalytic:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export cfanalytic_tag=$(yq r codefresh/requirements.yaml dependencies[27].version)
+      runtime-environment-manager:
+        image: amircodefresh/go-yq
+        commands:
+          - cf_export runtime-environment-manager_tag=$(yq r codefresh/requirements.yaml dependencies[28].version)
+          
+  push:
+    type: parallel
+    stage: push
+    steps:
+      cfapi-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-api:${{cfapi_tag}}
+        tag: ${{cfapi_tag}}
+        image_name: codefresh/cf-api
+      cluster-providers-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cluster-providers:${{cluster-providers_tag}}
+        tag: ${{cluster-providers_tag}}
+        image_name: codefresh/cluster-providers
+      kube-integration-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/kube-integration:${{kube-integration_tag}}
+        tag: ${{kube-integration_tag}}
+        image_name: codefresh/kube-integration
+      tasker-kubernetes-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/tasker-kubernetes:${{tasker-kubernetes_tag}}
+        tag: ${{tasker-kubernetes_tag}}
+        image_name: codefresh/tasker-kubernetes
+      charts-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/charts-manager:${{charts-manager_tag}}
+        tag: ${{charts-manager_tag}}
+        image_name: codefresh/charts-manager
+      context-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/context-manager:${{context-manager_tag}}
+        tag: ${{context-manager_tag}}
+        image_name: codefresh/context-manager
+      pipeline-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/pipeline-manager:${{pipeline-manager_tag}}
+        tag: ${{pipeline-manager_tag}}
+        image_name: codefresh/pipeline-manager
+      cfsign-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-tls-sign:${{cfsign_tag}}
+        tag: ${{cfsign_tag}}
+        image_name: codefresh/cf-tls-sign
+      cfui-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-ui:${{cfui_tag}}
+        tag: ${{cfui_tag}}
+        image_name: codefresh/cf-ui
+      cfanalytic-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-analytic:${{cfanalytic_tag}}
+        tag: ${{cfanalytic_tag}}
+        image_name: codefresh/cf-analytic
+      runtime-environment-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/runtime-environment-manager:${{runtime-environment-manager_tag}}
+        tag: ${{runtime-environment-manager_tag}}
+        image_name: codefresh/runtime-environment-manager
+        
+  updateOnpremVersion:
+    image: amircodefresh/go-yq
+    stage: create package
+    commands:
+      - yq w -i codefresh/env/on-prem/versions.yaml cfapi.imageTag ${{cfapi_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cluster-providers.imageTag ${{cluster-providers_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml kube-integration.imageTag ${{kube-integration_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml tasker-kubernetes.imageTag ${{tasker-kubernetes_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml charts-manager.imageTag ${{charts-manager_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml context-manager.imageTag ${{context-manager_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml pipeline-manager.imageTag ${{pipeline-manager_tag}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cfsign.imageTag ${{cfsign_tag}}
+      - cat codefresh/env/on-prem/versions.yaml
+  
+  onpremPackage:
+    image: codefresh/helm-onprem-package
+    stage: create package
+    commands:
+      - export HELM_REPO_ACCESS_TOKEN=${{CF_API_KEY}}
+      - export HELM_REPO_AUTH_HEADER=x-access-token
+      - helm repo add codefresh-onprem-prod ${{CF_CTX_onprem_prod_URL}}
+      - helm repo add codefresh http://chartmuseum.codefresh.io
+      - helm repo update
+      - aws configure set aws_access_key_id ${{aws_access_key_id}}
+      - aws configure set aws_secret_access_key ${{aws_secret_access_key}}
+      - aws configure set default.region us-east-2
+      - export current_package_ver=$(helm search codefresh-onprem-prod|awk '{print$2}'|egrep -v "CHART|no available")
+      - export new_package_ver=$(/inc_ver.sh -p $current_package_ver)
+      - ./update_onprem.sh prod $new_package_ver

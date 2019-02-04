@@ -88,6 +88,7 @@ dependencies:
   condition: cfsign.enabled
   tags:
   - saas
+  - infra
 - name: internal-status-page
   version: 0.0.3
   repository: file://local-charts/internal-status-page
@@ -136,7 +137,7 @@ dependencies:
   - saas
   - infra
 - name: cfui
-  version: 2.8.157
+  version: 2.8.171
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
@@ -157,7 +158,7 @@ dependencies:
   - saas
   - infra
 - name: runtime-environment-manager
-  version: 1.7.15
+  version: 1.7.16
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:
@@ -171,15 +172,15 @@ dependencies:
   - helm
   - chartmuseum
 - name: hermes
-  version: ~0.9.0-any
-  repository: '@codefresh'
+  version: ~0.9.25-any
+  repository: http://chartmuseum.codefresh.io
   condition: hermes.enabled
   tags:
   - trigger
   - trigger-manager
 - name: nomios
   version: ~0.4.0-any
-  repository: '@codefresh'
+  repository: http://chartmuseum.codefresh.io
   condition: hermes.enabled
   tags:
   - trigger
@@ -187,8 +188,8 @@ dependencies:
   - registry
   - dockerhub
 - name: cronus
-  version: ~0.2.0-any
-  repository: '@codefresh'
+  version: ~0.2.14-any
+  repository: http://chartmuseum.codefresh.io
   condition: hermes.enabled
   tags:
   - trigger
