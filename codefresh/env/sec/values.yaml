@@ -299,6 +299,8 @@ hermes:
 nomios:
   logLevel: debug
   logJSON: true
+  ingress:
+    webTlsSecretName: "star.codefresh.io"
   # nodeSelector:
   #   cloud.google.com/gke-nodepool: main-pool
 
