@@ -1,6 +1,7 @@
 # This file is in here to serve the local development using Merlin
 
 {{ $port := GetAvailablePort }}
+{{ $internalPort := GetAvailablePort }}
 
 operators:
 
@@ -12,6 +13,7 @@ operators:
     env:
     - KUBECONFIG={{ .Merlin.kube.path }}
     - SERVICE_AVAILABLE_PORT={{ $port }}
+    - SERVICE_AVAILABLE_INTERNAL_PORT={{ $internalPort }}
     args:
     - -s
     - {{ .Merlin.kube.namespace }}-cfapi
@@ -22,7 +24,7 @@ operators:
     - --expose
     - {{ $port }}:{{ .Values.targetPort }}
     - --expose
-    - {{ GetAvailablePort }}:{{ .Values.targetInternalPort }}
+    - {{ $internalPort }}:{{ .Values.targetInternalPort }}
     {{ if .Values.telepresence.run }}
     - {{ .Values.telepresence.run }}
     {{ else }}
@@ -36,6 +38,7 @@ operators:
     program: node
     env:
     - PORT={{ env.Getenv "SERVICE_AVAILABLE_PORT" }}
+    - INTERNAL_SERVER_PORT={{ env.Getenv "SERVICE_AVAILABLE_INTERNAL_PORT" }}
     - FORMAT_LOGS_TO_ELK=false
     args:
     - --inspect={{ GetAvailablePort }}
