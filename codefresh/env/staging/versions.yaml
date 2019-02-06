@@ -52,7 +52,7 @@ context-manager:
   imageTag: v55
 
 pipeline-manager:
-  imageTag: saas-1270
+  imageTag: staging
 
 cfsign:
   imageTag: v2
