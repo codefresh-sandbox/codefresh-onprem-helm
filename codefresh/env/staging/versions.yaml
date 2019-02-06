@@ -49,7 +49,7 @@ charts-manager:
   imageTag: v39
 
 context-manager:
-  imageTag: v55
+  imageTag: v56
 
 pipeline-manager:
   imageTag: staging
