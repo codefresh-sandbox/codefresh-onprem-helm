@@ -32,7 +32,7 @@ ingress:
   enabled: true
   rbacEnable: true
 #  domain: '*'
-  webTlsSecretName: "star.codefresh.io"
+#  webTlsSecretName: "star.codefresh.io"
 
 # ingress resource annotations:
 annotations:

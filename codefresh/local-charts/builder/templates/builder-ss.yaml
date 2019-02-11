@@ -137,24 +137,25 @@ spec:
         configMap:
           name: {{ .Release.Name }}-{{ .Values.global.codefresh }}-resolvconf
       {{- end }}
-{{- $existingPvc :=  ( include "builder.existingPvc" . ) -}}
+{{- $existingPvc := ( include "builder.existingPvc" . ) -}}
       {{- if $existingPvc }}
       - name: varlibdocker
         persistentVolumeClaim:
           claimName: {{ $existingPvc }}
       {{- end }}    
-  {{- if not $existingPvc }}    
-  {{- if .Values.varLibDockerVolume }}
+  {{- if not $existingPvc }}
+{{- $storageClass := ( include "builder.storageClass" . ) }}
+{{- $storageSize := ( include "builder.storageSize" . ) }}
   volumeClaimTemplates:
   - metadata:
       name: varlibdocker
     spec:
       accessModes: [ {{ .Values.varLibDockerVolume.accessMode | quote }} ]
-      {{- if .Values.varLibDockerVolume.storageClass }}
-      storageClassName: {{ .Values.varLibDockerVolume.storageClass | quote }}
+      {{- if $storageClass }}
+      storageClassName: {{ $storageClass | quote }}
       {{- end }}
       resources:
         requests:
-          storage: {{ .Values.varLibDockerVolume.storageSize }}
+          storage: {{ $storageSize }}
   {{- end }}
-  {{- end }}
+  

@@ -94,7 +94,10 @@ rules:
     resources:
       - configmaps
     verbs:
-      - create    
+      - create
+      - get
+      - update
+      - delete 
   - apiGroups:
       - ""
     resources:

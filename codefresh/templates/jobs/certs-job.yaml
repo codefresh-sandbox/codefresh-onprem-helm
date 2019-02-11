@@ -18,6 +18,9 @@ spec:
         release: {{ .Release.Name | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
+      {{- if .Values.rbacEnable }}
+      serviceAccountName: {{ template "fullname" . }}-gencerts
+      {{- end }}
       containers:
       {{- if not .Values.global.clientCertsCA }}
       - name: {{ template "fullname" . }}-certs

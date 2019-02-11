@@ -146,17 +146,17 @@ spec:
           claimName: {{ $existingPvc }}
       {{- end }}    
   {{- if not $existingPvc }}
-  {{- if .Values.varLibDockerVolume }}
+{{- $storageClass := ( include "runner.storageClass" . ) }}
+{{- $storageSize := ( include "runner.storageSize" . ) }}
   volumeClaimTemplates:
   - metadata:
       name: varlibdocker
     spec:
       accessModes: [ {{ .Values.varLibDockerVolume.accessMode | quote }} ]
-      {{- if .Values.varLibDockerVolume.storageClass }}
-      storageClassName: {{ .Values.varLibDockerVolume.storageClass | quote }}
+      {{- if $storageClass }}
+      storageClassName: {{ $storageClass | quote }}
       {{- end }}
       resources:
         requests:
-          storage: {{ .Values.varLibDockerVolume.storageSize }}
-  {{- end }}
+          storage: {{ $storageSize }}
   {{- end }}
