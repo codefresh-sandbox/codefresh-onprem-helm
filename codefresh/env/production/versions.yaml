@@ -47,10 +47,10 @@ charts-manager:
   imageTag: v39
 
 context-manager:
-  imageTag: v56
+  imageTag: v57
 
 pipeline-manager:
-  imageTag: v69
+  imageTag: v70
 
 cfsign:
   imageTag: v2
