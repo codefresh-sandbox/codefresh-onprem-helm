@@ -50,7 +50,7 @@ context-manager:
   imageTag: v56
 
 pipeline-manager:
-  imageTag: v68
+  imageTag: v69
 
 cfsign:
   imageTag: v2
