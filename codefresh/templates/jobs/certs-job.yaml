@@ -19,7 +19,7 @@ spec:
         heritage: {{ .Release.Service  | quote }}
     spec:
       {{- if .Values.rbacEnable }}
-      serviceAccountName: {{ template "fullname" . }}-gencerts
+      serviceAccountName: cf-codefresh-gencerts
       {{- end }}
       containers:
       {{- if not .Values.global.clientCertsCA }}
