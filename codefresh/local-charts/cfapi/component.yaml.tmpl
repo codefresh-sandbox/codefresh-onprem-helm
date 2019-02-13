@@ -10,6 +10,7 @@ operators:
   description: Establish connection to cluster
   spec:
     program: telepresence
+    detached: true
     env:
     - KUBECONFIG={{ .Merlin.kube.path }}
     - SERVICE_AVAILABLE_PORT={{ $port }}
