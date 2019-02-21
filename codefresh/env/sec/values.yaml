@@ -4,11 +4,11 @@ tasker-kubernetes:
   imagePullPolicy: IfNotPresent
 
 context-manager:
-  replicaCount: 2
+  replicaCount: 1
   imagePullPolicy: IfNotPresent
 
 pipeline-manager:
-  replicaCount: 2
+  replicaCount: 1
   imagePullPolicy: IfNotPresent
 
 ##-sec- firebaseUrl copied from staging/dynamic
@@ -37,7 +37,7 @@ rabbitmq:
   #rabbitmqPassword:
 
 ingress:
-  replicaCount: 2
+  replicaCount: 1
   webTlsSecretName: "star.codefresh.io"
  # disableAccessLog: "true"
 
@@ -47,7 +47,7 @@ getRuntimeEnvs: files/production/runtimeEnvironments.json
 cfapi:
   formatLogsToElk: false
   postStart: true
-  replicaCount: 4
+  replicaCount: 1
   internalRegistryProtocol: https
   providersData: |
     {
@@ -212,37 +212,37 @@ cfapi:
           topologyKey: kubernetes.io/hostname
 
 cfui:
-  replicaCount: 2
+  replicaCount: 1
   webTLS:
     secretName: star.codefresh.io
   ##-sec- commented slackAppID
   #slackAppID: "4027524866.79900649782"
 
 onboarding-status:
-  replicaCount: 2
+  replicaCount: 1
 
 runtime-environment-manager:
-  replicaCount: 2
+  replicaCount: 1
 
 payments:
-  replicaCount: 2
+  replicaCount: 1
   env:
     HTTP_LOGGER_LEVEL: error
 
 cluster-providers:
-  replicaCount: 2
+  replicaCount: 1
 
 internal-status-page:
   enabled: false
 
 kube-integration:
-  replicaCount: 2
+  replicaCount: 1
 
 accounts-referrals:
-  replicaCount: 2
+  replicaCount: 1
 
 charts-manager:
-  replicaCount: 2
+  replicaCount: 1
 
 ##-sec- as on staging
 mailer:
@@ -269,6 +269,7 @@ salesforce-reporter:
 
 ##-sec- need to create buckets
 helm-repo-manager:
+  replicaCount: 1
   logLevel: debug
   logJSON: true
   RepoUrlPrefix: "cm://h-sec.cfcr.io"
@@ -314,7 +315,7 @@ cronus:
   #   cloud.google.com/gke-nodepool: main-pool
 
 nats:
-  replicaCount: 3
+  replicaCount: 1
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
