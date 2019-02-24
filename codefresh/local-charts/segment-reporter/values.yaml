@@ -19,3 +19,9 @@ targetPort: 9000
 blacklistUsers: ""
 eventbusInterval: 5
 
+####################
+# local develpment #
+####################
+
+# program the program that should be executed, relative to the executed working directory
+program: index.js
