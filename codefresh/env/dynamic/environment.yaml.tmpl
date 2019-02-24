@@ -83,8 +83,16 @@ components:
     - git: *nodejs-local-values
 - name: pipeline-manager
   spec:
-    git: 
+    git:
      <<: *git
      path: codefresh/local-charts/pipeline-manager/component.yaml.tmpl
+  values:
+    - git: *nodejs-local-values
+- name: runtime-environment-manager
+  spec:
+    git:
+     <<: *git
+     repo: runtime-environment-manager
+     path: runtime-environment-manager/component.yaml.tmpl
   values:
     - git: *nodejs-local-values
