@@ -1,20 +1,23 @@
 cfapi:
-  imageTag: v820
+  imageTag: sec
 
-# this is an example of which value you  need to pass to manually overwrite the image	+cfui:
-#cfui:
-#  imageTag: sec-4
+# this is an example of which value you need to pass to manually overwrite the image	+cfui:
+cfui:
+  imageTag: sec
 
 
 # this is an example of which value you need to pass to manually overwrite the image
 # onboarding-status:
 #   imageTag: v1
 
+#cfanalytic:
+#  imageTag: 1.0.14
+
 payments:
   imageTag: v34
 
 cluster-providers:
-  imageTag: v53
+  imageTag: v52
 
 internal-status-page:
   imageTag: v9
@@ -44,10 +47,10 @@ charts-manager:
   imageTag: v39
 
 context-manager:
-  imageTag: v57
+  imageTag: sec
 
 pipeline-manager:
-  imageTag: v72
+  imageTag: sec
 
 cfsign:
   imageTag: v2
