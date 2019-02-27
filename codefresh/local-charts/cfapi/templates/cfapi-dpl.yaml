@@ -319,10 +319,6 @@ spec:
           value: "{{ .Release.Name }}-{{ .Values.global.cfanalyticService }}"
         - name: ANALYTIC_PORT
           value: {{ .Values.global.cfanalyticPort | quote }}
-        - name: K8S_MONITOR_URI
-          value: "{{ .Release.Name }}-{{ .Values.global.cfk8smonitorService }}"
-        - name: K8S_MONITOR_PORT
-          value: {{ .Values.global.cfk8smonitorPort | quote }}
         - name: ONBOARDING_STATUS_URI
           value: "{{ .Release.Name }}-{{ .Values.global.onboardingStatusService }}"
         - name: ONBOARDING_STATUS_PORT
