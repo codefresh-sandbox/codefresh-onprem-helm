@@ -26,7 +26,9 @@ Resources: {}
  #   cpu: "500m"
  #   memory: "512Mi"
 ## Persistent volume size
-Storage: "1Gi"
+storageSize: "1Gi"
+persistence:
+  enable: true
 
 ## Needed for 0.8.0 and later IF all consul containers are spun up
 ## on the same machine. Without this they all generate the same

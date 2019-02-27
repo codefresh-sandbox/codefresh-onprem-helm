@@ -5,6 +5,11 @@ metadata:
     {{- range $key, $value := .Values.annotations }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
+    {{- if .Values.global.exposeRegistry }}
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    {{- end }}
   name: {{ template "fullname" . }}-ingress
   labels:
     app: {{ template "fullname" . }}
@@ -14,7 +19,7 @@ metadata:
 spec:
   tls:
     - hosts:
-      - '{{ .Values.ingress.domain }}'
+      - '{{ .Values.ingress.domain | default .Values.global.appUrl }}'
       {{- if .Values.webTLS }}
       secretName: {{ template "fullname" . }}-{{ .Values.webTLS.secretName }}
       {{- else }}
@@ -24,7 +29,8 @@ spec:
     serviceName: {{ .Release.Name }}-cfui
     servicePort: {{ .Values.servicePort }}
   rules:
-  - http:
+  - host: {{ .Values.ingress.domain | default .Values.global.appUrl }}
+    http:
       paths:
       - path: /api/
         backend:
@@ -34,3 +40,9 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-cfui
           servicePort: {{ .Values.servicePort }}
+      {{- if .Values.global.exposeRegistry }}
+      - path: /v2/
+        backend:
+          serviceName: {{ .Release.Name }}-registry
+          servicePort: 5000
+      {{- end }}

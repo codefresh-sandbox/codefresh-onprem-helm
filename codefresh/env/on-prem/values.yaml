@@ -24,12 +24,14 @@ logglyToken: invalid-token
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
+rbacEnable: true
 #webTLS:
 #  secretName: star.codefresh.io
 
 ingress:
   enabled: true
-  domain: '*'
+  rbacEnable: true
+#  domain: '*'
 #  webTlsSecretName: "star.codefresh.io"
 
 # ingress resource annotations:
@@ -122,8 +124,8 @@ cfapi:
   github:
     apiPathPrefix: /api/v3
   image: gcr.io/codefresh-enterprise/codefresh/cf-api
-  imageTag: v307
   expirationURL: https://codefresh.io/contact-sales
+  rbacEnable: true
   env:
     ON_PREMISE: true
     LOGGER_LEVEL: debug
@@ -152,12 +154,10 @@ cfapi:
 cluster-providers:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/cluster-providers
-  imageTag: v25
 
 charts-manager:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/charts-manager
-  imageTag: v1
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/charts-manager
     POSTGRES_HOST: cf-postgresql
@@ -168,7 +168,6 @@ charts-manager:
 context-manager:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/context-manager
-  imageTag: v1
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
@@ -177,7 +176,6 @@ context-manager:
 pipeline-manager:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/pipeline-manager
-  imageTag: v1
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/pipeline-manager
     INTERNAL_API_URI: http://cf-cfapi:9007
@@ -185,7 +183,10 @@ pipeline-manager:
 kube-integration:
   replicaCount: 1
   image: gcr.io/codefresh-enterprise/codefresh/kube-integration
-  imageTag: v49
+
+tasker-kubernetes:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/codefresh/tasker-kubernetes
 
 helm-repo-manager:
   replicaCount: 1
@@ -315,6 +316,7 @@ global:
   hermesService: hermes
   dindProviderService: dind-provider
   dindProviderPort: 9000
+  onprem: true
 
 
   internalServiceTolerations:

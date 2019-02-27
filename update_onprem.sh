@@ -39,8 +39,10 @@ mv -v codefresh/.helmignore codefresh/.helmignore.bak
 yamlreader codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
 cp codefresh/.helmignore.onprem codefresh/.helmignore
 
-echo "Exec helm dependency update --skip-refresh codefresh"
-helm dependency update --skip-refresh codefresh
+if [[ -z "${SKIP_HELM_UPDATE}" ]]; then
+  echo "Exec helm dependency update --skip-refresh codefresh"
+  helm dependency update --skip-refresh codefresh
+fi
 
 package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')
 

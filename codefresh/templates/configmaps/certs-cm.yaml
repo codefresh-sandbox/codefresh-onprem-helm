@@ -29,10 +29,12 @@ data:
     openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
 
     secretName={{ template "fullname" . }}-star-selfsigned
-    if ! kubectl get secret $secretName; then
-      kubectl create secret tls $secretName --cert=tls.crt --key=tls.key
-      kubectl label secret $secretName app={{ template "fullname" . }}
+    if kubectl get secret $secretName; then
+      kubectl delete secret $secretName
     fi
+    kubectl create secret tls $secretName --cert=tls.crt --key=tls.key
+    kubectl label secret $secretName app={{ template "fullname" . }}
+    
 {{- end }}
   gen-runtime-certs: |
     #!/bin/sh
@@ -81,6 +83,7 @@ data:
     if ! kubectl get secret $secretName; then
       kubectl create secret generic {{ template "fullname" . }}-certs-client \
         --from-file=$CA_PEM \
+        --from-file=$CA_KEY \
         --from-file=$CLIENT_KEY \
         --from-file=$CLIENT_CERT || err "Failed storing the generated certificates in Kubernetes!"
 

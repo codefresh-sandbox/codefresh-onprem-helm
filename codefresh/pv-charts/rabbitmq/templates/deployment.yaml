@@ -16,9 +16,10 @@ spec:
       labels:
         app: {{ template "rabbitmq.fullname" . }}
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- $nodeSelector := coalesce .Values.nodeSelector .Values.global.storagePodNodeSelector }}
+      {{- if $nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml $nodeSelector | indent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
@@ -87,9 +88,5 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
       - name: data
-      {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "rabbitmq.fullname" .) }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
+          claimName: {{ include "rabbitmq.pvcName" . }}

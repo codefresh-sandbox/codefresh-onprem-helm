@@ -34,11 +34,12 @@
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5",
+        "DOCKER_PUSHER_IMAGE": "{{ .Values.DOCKER_PUSHER_IMAGE }}",
+        "DOCKER_PULLER_IMAGE": "{{ .Values.DOCKER_PULLER_IMAGE }}",
+        "DOCKER_BUILDER_IMAGE": "{{ .Values.DOCKER_BUILDER_IMAGE }}",
+        "CONTAINER_LOGGER_IMAGE": "{{ .Values.CONTAINER_LOGGER_IMAGE }}",
+        "GIT_CLONE_IMAGE": "{{ .Values.GIT_CLONE_IMAGE }}",
+        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
@@ -119,11 +120,13 @@
       "envVars": {
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "codefresh/cf-docker-pusher:v4",
-        "DOCKER_PULLER_IMAGE": "codefresh/cf-docker-puller:v4",
-        "DOCKER_BUILDER_IMAGE": "codefresh/cf-docker-builder:v13",
-        "CONTAINER_LOGGER_IMAGE": "codefresh/cf-container-logger:0.0.19",
-        "GIT_CLONE_IMAGE": "codefresh/cf-git-cloner:v5"
+        "DOCKER_PUSHER_IMAGE": "{{ .Values.DOCKER_PUSHER_IMAGE }}",
+        "DOCKER_PULLER_IMAGE": "{{ .Values.DOCKER_PULLER_IMAGE }}",
+        "DOCKER_BUILDER_IMAGE": "{{ .Values.DOCKER_BUILDER_IMAGE }}",
+        "CONTAINER_LOGGER_IMAGE": "{{ .Values.CONTAINER_LOGGER_IMAGE }}",
+        "GIT_CLONE_IMAGE": "{{ .Values.GIT_CLONE_IMAGE }}",
+        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {},
       "volumes": {}

@@ -250,6 +250,8 @@ hermes:
     cloud.google.com/gke-nodepool: default-pool
 
 nomios:
+  ingress:
+    webTlsSecretName: "star.codefresh.io"
   nodeSelector:
     cloud.google.com/gke-nodepool: default-pool
 

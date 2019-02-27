@@ -135,9 +135,10 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         component: "{{ .Release.Name }}-{{ .Values.Component }}"
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- $nodeSelector := coalesce .Values.nodeSelector .Values.global.storagePodNodeSelector }}
+      {{- if $nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml $nodeSelector | indent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
@@ -230,7 +231,7 @@ spec:
           timeoutSeconds: 5
         command:
           - "/bin/sh"
-          - "-ec"
+          - "-c"
           - |
             IP=$(hostname -i)
 
@@ -240,18 +241,20 @@ spec:
               GOSSIP_KEY="-config-file /etc/consul/encrypt.json"
             fi
             {{- end }}
-
+            
+            set -o pipefail
+            PEERS=""
             for i in $(seq 0 $((${INITIAL_CLUSTER_SIZE} - 1))); do
                 while true; do
                     echo "Waiting for ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME} to come up"
-                    ping -W 1 -c 1 ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME}.${STATEFULSET_NAMESPACE}.svc > /dev/null && break
+                    PEER_IP=$(ping -W 1 -c 1 ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME}.${STATEFULSET_NAMESPACE}.svc | awk -F'[()]' '/PING/{print $2}')
+                    if [ $? == 0 ] && [ -n "${PEER_IP}" ]; then
+                      echo "addind peer $PEER_IP"
+                      PEERS="${PEERS}${PEERS:+ } -retry-join $PEER_IP"
+                      break
+                    fi
                     sleep 1s
                 done
-            done
-
-            PEERS=""
-            for i in $(seq 0 $((${INITIAL_CLUSTER_SIZE} - 1))); do
-                PEERS="${PEERS}${PEERS:+ } -retry-join $(ping -c 1 ${STATEFULSET_NAME}-${i}.${STATEFULSET_NAME}.${STATEFULSET_NAMESPACE}.svc | awk -F'[()]' '/PING/{print $2}')"
             done
 
             exec /bin/consul agent \
@@ -279,19 +282,23 @@ spec:
       - name: gossip-key
         secret:
           secretName: {{ template "consul.fullname" . }}-gossip-key
-      {{- if .Values.pvcName }}
+
+{{- $existingPvc :=  ( include "consul.existingPvc" . ) -}}
+{{- $storageClass :=  ( include "consul.storageClass" . ) -}}
+{{- $storageSize :=  ( include "consul.storageSize" . ) -}}
+
+      {{- if $existingPvc }}
       - name: datadir
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
+          claimName: {{ $existingPvc }}
       {{- end }}    
-  {{- if not .Values.pvcName }}        
+  {{- if not $existingPvc }}        
   volumeClaimTemplates:
   - metadata:
       name: datadir
       annotations:
-      {{- if .Values.StorageClass }}
-        volume.beta.kubernetes.io/storage-class: {{ .Values.StorageClass | quote }}
-      {{- else }}
+      # backword compatibility
+      {{- if not $storageClass }}
         volume.alpha.kubernetes.io/storage-class: default
       {{- end }}
     spec:
@@ -300,5 +307,8 @@ spec:
       resources:
         requests:
           # upstream recommended max is 700M
-          storage: "{{ .Values.Storage }}"
+          storage: "{{ $storageSize }}"
+      {{- if $storageClass }}
+      storageClassName: {{ $storageClass | quote }}
+      {{- end }}  
   {{- end }}

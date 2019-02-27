@@ -16,9 +16,10 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- $nodeSelector := coalesce .Values.nodeSelector .Values.global.storagePodNodeSelector }}
+      {{- if $nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml $nodeSelector | indent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations:
@@ -69,12 +70,5 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
       - name: data
-      {{- if .Values.pvcName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.pvcName }}
-      {{- else if eq .Values.persistence.enabled true }}
-        persistentVolumeClaim:
-          claimName: {{ template "fullname" . }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
+          claimName: {{ include "mongodb.pvcName" . }}
