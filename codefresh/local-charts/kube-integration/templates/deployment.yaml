@@ -59,14 +59,10 @@ spec:
         - name: NODE_ENV
           value: kubernetes
         - name: MONGO_URI
-          {{- if .Values.mongoURI }}
           valueFrom:
             secretKeyRef:
               name: {{ template "fullname" . }}
               key: mongo-uri
-          {{- else }}
-          value: "mongodb://{{ .Values.global.mongodbUsername }}:{{ .Values.global.mongodbPassword }}@{{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}/{{ .Values.global.clusterProvidersService }}"
-          {{- end }}
         - name: RABBIT_PASSWORD
           valueFrom:
             secretKeyRef:

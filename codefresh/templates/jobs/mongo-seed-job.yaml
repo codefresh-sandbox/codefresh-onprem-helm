@@ -23,10 +23,12 @@ spec:
         image: {{ .Values.global.mongodbImage }}
         imagePullPolicy: IfNotPresent
         env:
+          - name: MONGODB_ROOT_USER
+            value: {{ .Values.global.mongodbRootUser }}
           - name: MONGODB_ROOT_PASSWORD
-            value: {{ .Values.mongodb.mongodbRootPassword }}
-          - name: MONGODB_ADDRESS
-            value: {{ .Release.Name }}-{{ .Values.global.mongoService }}:{{ .Values.global.mongoPort }}
+            value: {{ .Values.global.mongodbRootPassword }}
+          - name: MONGODB_URI
+            value: {{ .Values.global.mongoURI}}
           - name: MONGODB_DATABASE
             value: {{ .Values.global.mongodbDatabase }}
           - name: MONGODB_USER
