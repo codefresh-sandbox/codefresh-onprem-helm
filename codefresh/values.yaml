@@ -79,9 +79,6 @@ cfanalytic:
 workflow-baseline-invoker:
   enabled: false
 
-cfk8smonitor:
-  enabled: true
-
 dindImage: docker:17.05-dind
 
 #=======================
@@ -190,9 +187,6 @@ global:
 
   cfanalyticService: cfanalytic
   cfanalyticPort: 80
-
-  cfk8smonitorService: cfk8smonitor
-  cfk8smonitorPort: 80
 
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
