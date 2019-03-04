@@ -157,13 +157,6 @@ dependencies:
   tags:
   - saas
   - infra
-- name: cfk8smonitor
-  version: 1.0.29
-  repository: http://chartmuseum.codefresh.io
-  condition: cfk8smonitor.enabled
-  tags:
-  - saas
-  - infra
 - name: runtime-environment-manager
   version: 1.7.19
   repository: http://chartmuseum.codefresh.io

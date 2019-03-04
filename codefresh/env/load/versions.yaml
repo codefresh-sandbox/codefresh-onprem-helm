@@ -55,7 +55,4 @@ pipeline-manager:
 cfsign:
   imageTag: v2
 
-cfk8smonitor:
-  imageTag: 1.0.10-custom-models
-
 engineImage: "codefresh/engine:106"
