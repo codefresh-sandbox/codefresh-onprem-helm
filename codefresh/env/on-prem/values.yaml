@@ -119,6 +119,7 @@ runtime-environment-manager:
 
 cfanalytic:
   image: gcr.io/codefresh-enterprise/codefresh/cf-analytic
+  enabled: false
 
 cfapi:
   github:
