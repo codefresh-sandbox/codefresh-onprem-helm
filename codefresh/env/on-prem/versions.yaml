@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v819
+  imageTag: v836
 payments:
   imageTag: v34
 cluster-providers:
@@ -19,19 +19,19 @@ workflow-baseline-invoker:
 salesforce-reporter:
   imageTag: v17
 tasker-kubernetes:
-  imageTag: v35
+  imageTag: v36
 charts-manager:
   imageTag: v39
 context-manager:
-  imageTag: v57
+  imageTag: v58
 pipeline-manager:
-  imageTag: v72
+  imageTag: v74
 cfsign:
   imageTag: v2
-engineImage: codefresh/engine:1.0.4
+engineImage: codefresh/engine:1.2.11
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:v4
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
 DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:v6
 DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:v13
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.19
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.27
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:v7
