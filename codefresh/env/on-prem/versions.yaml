@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v836
+  imageTag: v839
 payments:
   imageTag: v34
 cluster-providers:
@@ -28,10 +28,10 @@ pipeline-manager:
   imageTag: v74
 cfsign:
   imageTag: v2
-engineImage: codefresh/engine:1.2.11
+engineImage: codefresh/engine:1.2.13
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:v4
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
 DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:v6
 DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:v13
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.27
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.29
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:v7
