@@ -506,7 +506,7 @@ steps:
       - aws configure set aws_access_key_id ${{aws_access_key_id}}
       - aws configure set aws_secret_access_key ${{aws_secret_access_key}}
       - aws configure set default.region us-east-2
-      - export new_ver=$(cut -d "v" -f 2 <<< "${{ONPREM_VERSION}}")
+      - export new_ver=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
       - ./update_onprem.sh ${{channel}} $new_ver
 
   approval:
