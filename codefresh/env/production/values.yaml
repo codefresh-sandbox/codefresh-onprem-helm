@@ -431,13 +431,6 @@ global:
     hostnames:
     - "stash.ironsrc.com"
 
-  # logging solution data
-  runtimeRedisHost: redis-14712.c90.us-east-1-3.ec2.cloud.redislabs.com
-  runtimeRedisPassword: codefresh
-  runtimeRedisDb: 0
-  runtimeRedisPort: 14712
-  runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
-
 tags:
   saas: true
   infra: false
@@ -445,3 +438,13 @@ tags:
 
 # slackAppID production application id for slack integration
 slackAppID: "4027524866.79900649782"
+
+# logging solution data
+runtimeRedisHost: redis-14712.c90.us-east-1-3.ec2.cloud.redislabs.com
+runtimeRedisPassword: codefresh
+runtimeRedisDb: 0
+runtimeRedisPort: 14712
+runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
+
+nginx.org/websocket-services: "production-cfapi"
+# logging solution data
