@@ -383,6 +383,13 @@ global:
     operator: Equal
     value: internal
 
+  # logging solution data
+  runtimeRedisHost: redis-14712.c90.us-east-1-3.ec2.cloud.redislabs.com
+  runtimeRedisPassword: codefresh
+  runtimeRedisDb: 0
+  runtimeRedisPort: 14712
+  runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
+
 tags:
   saas: true
   infra: false
