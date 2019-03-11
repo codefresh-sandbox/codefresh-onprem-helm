@@ -17,7 +17,16 @@ steps:
       - rm -rf cf-api || true
       - git clone https://amir-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-api.git --branch=master cf-api
       - cd cf-api
-      - if [ $(git branch --all|grep ${{ONPREM_VERSION}}|wc -l) -gt 0 ]; then echo "Version ${{ONPREM_VERSION}} already exist, please submit a new version" && exit 1; else exit 0; fi
+      - if [ $(git branch --all|grep ${{ONPREM_VERSION}}|wc -l) -gt 0 ]; then echo "Version ${{ONPREM_VERSION}} already exist, please submit a new version or change UPDATE_EXISTING_VER to true" && exit 1; else exit 0; fi
+    when:
+      condition:
+        any:
+          verifyUpdateVersion: 'includes(lower("${{UPDATE_EXISTING_VER}}"), "false") == true'
+          
+  information:
+    image: alpine
+    commands:
+      - echo "The following onprem package version ${{ONPREM_VERSION}} will be built from branch ${{CF_BRANCH}} and will be pushed to ${{channel}} helm repo"
 
   main_clone:
     type: parallel
@@ -61,6 +70,8 @@ steps:
           - rm -rf cluster-providers || true
           - git clone https://amir-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cluster-providers.git --branch=${{CF_BRANCH}} cluster-providers
           - cd cluster-providers
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
       pipeline-manager-new-branch:
         title: pipeline-manager checkout onprem branch
         image: alpine/git
@@ -241,7 +252,6 @@ steps:
         curl --fail -X GET 'https://g.codefresh.io/api/admin/runtime-environments/system%2Froot?extend=false' -H 'Authorization: ${{CF_API_KEY}}' -H 'Content-Type: application/json' -H 'Postman-Token: aa0a6f3f-4d9d-441c-9abf-32eecf875a58' -H 'cache-control: no-cache' -d '{ "options": {}, "branch": "master", "variables": {}, "contexts": [] }' > engine.json
       - >-
         curl --fail -X GET 'https://g.codefresh.io/api/admin/runtime-environments/system%2Fdefault-plan?extend=false' -H 'Authorization: ${{CF_API_KEY}}' -H 'Content-Type: application/json' -H 'Postman-Token: aa0a6f3f-4d9d-441c-9abf-32eecf875a58' -H 'cache-control: no-cache' -d '{ "options": {}, "branch": "master", "variables": {}, "contexts": [] }' > runtime.json
-
   exportLatestTags:
     type: parallel
     stage: export tags
@@ -302,41 +312,35 @@ steps:
         commands:
           - cf_export runtime-environment-manager_tag=$(yq r codefresh/requirements.yaml dependencies[28].version)
       engine:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export engine_tmp=$(jq .runtimeScheduler.image engine.json)
-          - cf_export engine=$(echo $engine_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export engine_tmp=$(jq .runtimeScheduler.image engine.json) && cf_export engine=$(echo $engine_tmp | tr -d '"'); else cf_export engine=$(yq r codefresh/env/on-prem/versions.yaml engineImage); fi
       pusher:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export pusher_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PUSHER_IMAGE runtime.json)
-          - cf_export pusher=$(echo $pusher_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export pusher_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PUSHER_IMAGE runtime.json) && cf_export pusher=$(echo $pusher_tmp | tr -d '"'); else cf_export pusher=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE); fi
       puller:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export puller_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PULLER_IMAGE runtime.json)
-          - cf_export puller=$(echo $puller_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export puller_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PULLER_IMAGE runtime.json) && cf_export puller=$(echo $puller_tmp | tr -d '"'); else cf_export puller=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE); fi
       builder:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export builder_tmp=$(jq .runtimeScheduler.envVars.DOCKER_BUILDER_IMAGE runtime.json)
-          - cf_export builder=$(echo $builder_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export builder_tmp=$(jq .runtimeScheduler.envVars.DOCKER_BUILDER_IMAGE runtime.json) && cf_export builder=$(echo $builder_tmp | tr -d '"'); else cf_export builder=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE); fi
       logger:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export logger_tmp=$(jq .runtimeScheduler.envVars.CONTAINER_LOGGER_IMAGE runtime.json)
-          - cf_export logger=$(echo $logger_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export logger_tmp=$(jq .runtimeScheduler.envVars.CONTAINER_LOGGER_IMAGE runtime.json) && cf_export logger=$(echo $logger_tmp | tr -d '"'); else cf_export logger=$(yq r codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE); fi
       cloner:
-        image: stedolan/jq
+        image: amircodefresh/yq-jq
         working_directory: /codefresh/volume/cf-helm
         commands:
-          - export cloner_tmp=$(jq .runtimeScheduler.envVars.GIT_CLONE_IMAGE runtime.json)
-          - cf_export cloner=$(echo $cloner_tmp | tr -d '"')
+          - if [ ${{CF_BRANCH}} = "master" ]; then export cloner_tmp=$(jq .runtimeScheduler.envVars.GIT_CLONE_IMAGE runtime.json) && cf_export cloner=$(echo $cloner_tmp | tr -d '"'); else cf_export cloner=$(yq r codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE); fi
 
   push:
     type: parallel
