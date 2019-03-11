@@ -63,6 +63,9 @@ annotations:
   nginx.ingress.kubernetes.io/configuration-snippet: |
         more_set_headers "X-Request-ID: $request_id";
         proxy_set_header X-Request-ID $request_id;
+  nginx.ingress.kubernetes.io/affinity: "cookie"
+  nginx.ingress.kubernetes.io/session-cookie-name: "INGRESSCOOKIE"
+  ingress.kubernetes.io/session-cookie-hash: "sha1"
 
 # helm-repo-manager settings
 helm-repo-manager:
@@ -191,6 +194,9 @@ global:
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
 
+  broadcasterService: cf-broadcaster
+  broadcasterPort: 80
+
   # API Gateway: hermes trigger-manager service
   hermesService: hermes
   hermesPort: 80
@@ -205,3 +211,6 @@ global:
 cfui:
   enabled: true
   chartVersion: 0.0.1
+
+cf-broadcaster:
+  enabled: true

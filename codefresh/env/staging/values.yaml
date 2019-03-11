@@ -36,7 +36,7 @@ builder:
   replicaCount: 1
 
 ingress:
-  rbacEnable: true    
+  rbacEnable: true
   replicaCount: 2
   webTlsSecretName: "star.codefresh.io"
 
@@ -44,7 +44,7 @@ getRuntimeEnvs: files/staging/runtimeEnvironments.json
 
 # customize cfapi
 cfapi:
-  rbacEnable: true  
+  rbacEnable: true
   formatLogsToElk: false
   replicaCount: 2
   internalRegistryProtocol: https
@@ -379,3 +379,13 @@ tags:
   saas: true
   infra: false
   old-scheduler: false
+
+# logging solution data
+runtimeRedisHost: redis-14712.c90.us-east-1-3.ec2.cloud.redislabs.com
+runtimeRedisPassword: codefresh
+runtimeRedisDb: 0
+runtimeRedisPort: 14712
+runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
+
+nginx.org/websocket-services: "staging-cfapi"
+# logging solution data

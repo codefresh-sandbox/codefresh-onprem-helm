@@ -36,6 +36,10 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-cfapi
           servicePort: {{ .Values.servicePort }}
+      - path: /ws
+        backend:
+          serviceName: {{ .Release.Name }}-cfapi
+          servicePort: {{ .Values.servicePort }}
       - path: /
         backend:
           serviceName: {{ .Release.Name }}-cfui

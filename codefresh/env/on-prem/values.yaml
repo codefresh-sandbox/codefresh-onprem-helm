@@ -319,6 +319,8 @@ global:
   hermesService: hermes
   dindProviderService: dind-provider
   dindProviderPort: 9000
+  broadcasterService: cf-broadcaster
+  broadcasterPort: 80
   onprem: true
 
 
