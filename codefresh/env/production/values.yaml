@@ -267,6 +267,9 @@ cfui:
 onboarding-status:
   replicaCount: 2
 
+cf-broadcaster:
+  replicaCount: 2
+
 runtime-environment-manager:
   replicaCount: 2
 
