@@ -170,7 +170,6 @@ dependencies:
   condition: cf-broadcaster.enabled
   tags:
   - saas
-  - infra
 - name: helm-repo-manager
   version: ~0.2.5-any
   repository: '@codefresh'
