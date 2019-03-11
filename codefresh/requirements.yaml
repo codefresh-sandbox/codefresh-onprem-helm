@@ -165,7 +165,7 @@ dependencies:
   - saas
   - infra
 - name: cf-broadcaster
-  version: 1.0.10
+  version: 1.0.11
   repository: http://chartmuseum.codefresh.io
   condition: cf-broadcaster.enabled
   tags:
