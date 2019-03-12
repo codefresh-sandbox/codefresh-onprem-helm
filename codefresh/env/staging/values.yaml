@@ -376,10 +376,10 @@ global:
     - "stash.ironsrc.com"
 
   # logging solution data
-  runtimeRedisHost: redis-14712.c90.us-east-1-3.ec2.cloud.redislabs.com
-  runtimeRedisPassword: codefresh
+  runtimeRedisHost: redis-13603.c135.eu-central-1-1.ec2.cloud.redislabs.com
+  runtimeRedisPassword: tO1LNWgDNmNN9iJG8bCZ0r5w1vm6Ycw0
   runtimeRedisDb: 0
-  runtimeRedisPort: 14712
+  runtimeRedisPort: 13603
   runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
 
 tags:
