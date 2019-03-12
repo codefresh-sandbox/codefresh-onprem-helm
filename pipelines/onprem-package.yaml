@@ -22,7 +22,7 @@ steps:
       condition:
         any:
           verifyUpdateVersion: 'includes(lower("${{UPDATE_EXISTING_VER}}"), "false") == true'
-          
+
   information:
     image: alpine
     commands:
@@ -398,19 +398,19 @@ steps:
         type: push
         registry: codefresh-enterprise
         candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-ui:${{cfui_tag}}
-        tag: ${{ONPREM_VERSION}}
+        tag: ${{cfui_tag}}
         image_name: codefresh/cf-ui
       cfanalytic-push:
         type: push
         registry: codefresh-enterprise
         candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-analytic:${{cfanalytic_tag}}
-        tag: ${{ONPREM_VERSION}}
+        tag: ${{cfanalytic_tag}}
         image_name: codefresh/cf-analytic
       runtime-environment-manager-push:
         type: push
         registry: codefresh-enterprise
         candidate:  r.cfcr.io/codefresh-inc/codefresh/runtime-environment-manager:${{runtime-environment-manager_tag}}
-        tag: ${{ONPREM_VERSION}}
+        tag: ${{runtime-environment-manager_tag}}
         image_name: codefresh/runtime-environment-manager
       engine-push:
         type: push
@@ -487,9 +487,6 @@ steps:
       - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE ${{builder}}
       - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE ${{logger}}
       - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE ${{cloner}}
-      - yq w -i codefresh/requirements.yaml dependencies[25].version ${{ONPREM_VERSION}}
-      - yq w -i codefresh/requirements.yaml dependencies[27].version ${{ONPREM_VERSION}}
-      - yq w -i codefresh/requirements.yaml dependencies[28].version ${{ONPREM_VERSION}}
       - cat codefresh/requirements.yaml
       - cat codefresh/env/on-prem/versions.yaml
 
@@ -510,15 +507,15 @@ steps:
     stage: create package
     commands:
       - export HELM_REPO_ACCESS_TOKEN=${{CF_API_KEY}}
-      - export HELM_REPO_AUTH_HEADER=x-access-token
+      - export HELM_REPO_AUTH_HEADER=Authorization
       - helm repo add codefresh-onprem-${{channel}} http://charts.codefresh.io/${{channel}}
       - helm repo add codefresh http://chartmuseum.codefresh.io
       - helm repo update
       - aws configure set aws_access_key_id ${{aws_access_key_id}}
       - aws configure set aws_secret_access_key ${{aws_secret_access_key}}
       - aws configure set default.region us-east-2
-      - export new_ver=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
-      - ./update_onprem.sh ${{channel}} $new_ver
+      - export SEM_VER=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
+      - ./update_onprem.sh ${{channel}} $SEM_VER
 
   approval:
     stage: approval
