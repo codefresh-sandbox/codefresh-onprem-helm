@@ -1,13 +1,13 @@
 cfapi:
-  imageTag: v839
+  imageTag: cf-onprem-v1.0.53
 payments:
   imageTag: v34
 cluster-providers:
-  imageTag: v53
+  imageTag: cf-onprem-v1.0.53
 internal-status-page:
   imageTag: v9
 kube-integration:
-  imageTag: v67
+  imageTag: cf-onprem-v1.0.53
 accounts-referrals:
   imageTag: v16
 mailer:
@@ -19,19 +19,19 @@ workflow-baseline-invoker:
 salesforce-reporter:
   imageTag: v17
 tasker-kubernetes:
-  imageTag: v36
+  imageTag: cf-onprem-v1.0.53
 charts-manager:
-  imageTag: v39
+  imageTag: cf-onprem-v1.0.53
 context-manager:
-  imageTag: v58
+  imageTag: cf-onprem-v1.0.53
 pipeline-manager:
-  imageTag: v74
+  imageTag: cf-onprem-v1.0.53
 cfsign:
-  imageTag: v2
-engineImage: codefresh/engine:1.2.13
+  imageTag: cf-onprem-v1.0.53
+engineImage: codefresh/engine:1.2.15
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:v4
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
 DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:v6
 DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:v13
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.29
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.30
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:v7
