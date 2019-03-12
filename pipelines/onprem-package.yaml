@@ -527,4 +527,4 @@ steps:
     stage: approval
     image: codefresh/cli
     commands:
-      - codefresh run codefresh-io/cf-helm/onprem-publish-prod -b=${{CF_BRANCH}} -v APPROVED_BUILD=${{CF_BUILD_ID}}
+      - codefresh run codefresh-io/cf-helm/onprem-publish-prod -b=${{CF_BRANCH}} -v APPROVED_BUILD=${{CF_BUILD_ID}} -v SEM_VER=${{SEM_VER}}
