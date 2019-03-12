@@ -27,6 +27,7 @@ steps:
     image: alpine
     commands:
       - echo "The following onprem package version ${{ONPREM_VERSION}} will be built from branch ${{CF_BRANCH}} and will be pushed to ${{channel}} helm repo"
+      - cf_export SEM_VER=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
 
   main_clone:
     type: parallel
@@ -514,8 +515,7 @@ steps:
       - aws configure set aws_access_key_id ${{aws_access_key_id}}
       - aws configure set aws_secret_access_key ${{aws_secret_access_key}}
       - aws configure set default.region us-east-2
-      - export SEM_VER=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
-      - ./update_onprem.sh ${{channel}} $SEM_VER
+      - ./update_onprem.sh ${{channel}} ${{SEM_VER}}
 
   approval:
     stage: approval
