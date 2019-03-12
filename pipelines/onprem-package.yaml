@@ -487,6 +487,10 @@ steps:
       - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE ${{builder}}
       - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE ${{logger}}
       - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE ${{cloner}}
+      - yq w -i codefresh/requirements.yaml dependencies[25].version ${{ONPREM_VERSION}}
+      - yq w -i codefresh/requirements.yaml dependencies[27].version ${{ONPREM_VERSION}}
+      - yq w -i codefresh/requirements.yaml dependencies[28].version ${{ONPREM_VERSION}}
+      - cat codefresh/requirements.yaml
       - cat codefresh/env/on-prem/versions.yaml
 
   uploadVersions:
