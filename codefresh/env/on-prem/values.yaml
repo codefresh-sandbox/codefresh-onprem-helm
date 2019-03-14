@@ -322,6 +322,13 @@ global:
   broadcasterService: cf-broadcaster
   broadcasterPort: 80
   onprem: true
+  ### new logging solution
+  runtimeRedisHost: cf-redis
+  runtimeRedisPassword: hoC9szf7NtrU
+  runtimeRedisDb: "1"
+  runtimeRedisPort: "6379"
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
+  ### new logging solution
 
 
   internalServiceTolerations:
