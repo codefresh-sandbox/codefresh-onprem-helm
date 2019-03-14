@@ -130,6 +130,7 @@ cfapi:
   env:
     ON_PREMISE: true
     LOGGER_LEVEL: debug
+    RUNTIME_MONGO_DB: codefresh
   deploymentTemplateImages: |
     [
       {
@@ -327,7 +328,7 @@ global:
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/codefresh
   ### new logging solution
 
 
