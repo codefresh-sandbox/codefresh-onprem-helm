@@ -380,7 +380,7 @@ global:
   runtimeRedisPassword: tO1LNWgDNmNN9iJG8bCZ0r5w1vm6Ycw0
   runtimeRedisDb: 0
   runtimeRedisPort: 13603
-  runtimeMongoURI: mongodb+srv://codefresh:firebaseMustDie@cluster0-dnikm.gcp.mongodb.net/test?retryWrites=true
+  runtimeMongoURI: mongodb://app:apHeJ8NYO4tZ@ds147263-a0.gpv73.fleet.mlab.com:47263?ssl=true
 
 tags:
   saas: true
