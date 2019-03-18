@@ -13,6 +13,7 @@ cfui:
 #cfanalytic:
 #  imageTag: 1.0.14
 
+
 payments:
   imageTag: v34
 
@@ -23,7 +24,7 @@ internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v67
+  imageTag: v68
 
 accounts-referrals:
   imageTag: v16
@@ -32,16 +33,16 @@ mailer:
   imageTag: v12
 
 segment-reporter:
-  imageTag: v29
+  imageTag: v30
 
 workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v17
+  imageTag: v19
 
 tasker-kubernetes:
-  imageTag: v35
+  imageTag: v36
 
 charts-manager:
   imageTag: v39
