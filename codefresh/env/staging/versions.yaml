@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: v866
+  imageTag: loadcheck
 
 # cfui:
 #   imageTag: staging
