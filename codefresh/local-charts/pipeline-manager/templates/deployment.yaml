@@ -85,6 +85,15 @@ spec:
             secretKeyRef:
               name: {{ template "fullname" . }}
               key: safe-secret
+        {{- if .Values.stepsCatalogEnabled }}
+        - name: STEPS_CATALOG_ENABLED
+            value: "true"
+        - name: STEPS_CATALOG_GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}
+                key: steps-catalog-github-token
+        {{- end}}
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:

@@ -10,6 +10,7 @@ context-manager:
 pipeline-manager:
   replicaCount: 2
   imagePullPolicy: IfNotPresent
+  stepsCatalogEnabled: true
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
