@@ -104,6 +104,13 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
               key: newrelic-license-key
+        - name: REDIS_URL
+          value: {{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}"
+              key: redis-password
         - name: PORT
           value: "{{ .Values.global.pipelineManagerPort }}"
         - name: SERVICE_NAME
