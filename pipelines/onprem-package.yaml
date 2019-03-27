@@ -63,6 +63,16 @@ steps:
           - cd cf-ui
           - git checkout -b ${{ONPREM_VERSION}}
           - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-broadcaster-new-branch:
+        title: cf-broadcaster checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-broadcaster || true
+          - git clone https://amir-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-broadcaster.git --branch=${{CF_BRANCH}} cf-broadcaster
+          - cd cf-broadcaster
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
       cluster-providers-new-branch:
         title: cluster-providers checkout onprem branch
         image: alpine/git
@@ -302,6 +312,11 @@ steps:
         working_directory: /codefresh/volume/cf-helm
         commands:
           - cf_export cfui_tag=$(yq r codefresh/requirements.yaml dependencies[25].version)
+      cf-broadcaster:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cf-helm
+        commands:
+          - cf_export cfbroadcaster_tag=$(yq r codefresh/requirements.yaml dependencies[29].version)
       cfanalytic:
         image: amircodefresh/go-yq
         working_directory: /codefresh/volume/cf-helm
@@ -401,6 +416,12 @@ steps:
         candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-ui:${{cfui_tag}}
         tag: ${{cfui_tag}}
         image_name: codefresh/cf-ui
+      cfbroadcaster-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  r.cfcr.io/codefresh-inc/codefresh/cf-broadcaster:${{cfbroadcaster_tag}}
+        tag: ${{cfbroadcaster_tag}}
+        image_name: codefresh/cf-broadcaster
       cfanalytic-push:
         type: push
         registry: codefresh-enterprise
