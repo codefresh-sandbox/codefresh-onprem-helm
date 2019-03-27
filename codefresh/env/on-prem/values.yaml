@@ -196,6 +196,10 @@ helm-repo-manager:
     repository: gcr.io/codefresh-enterprise/codefresh/helm-repo-manager
     tag: 0.2.18
 
+cf-broadcaster:
+  replicaCount: 1
+  image: gcr.io/codefresh-enterprise/codefresh/cf-broadcaster
+
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   #seedJobs: true
