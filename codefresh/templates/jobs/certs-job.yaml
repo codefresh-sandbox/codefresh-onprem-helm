@@ -37,6 +37,15 @@ spec:
         image: {{ .Values.kubectlImage }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         command: ["/bin/sh", "/opt/codefresh/gen-website-tls"]
+        env:
+          - name: DUMMY
+            value: "1"
+          {{- if .Values.global.env }}
+          {{- range $key, $value := .Values.global.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end}}
+          {{- end}}
         volumeMounts:
         - name: tools
           mountPath: "/opt/codefresh/gen-website-tls"
