@@ -8,22 +8,32 @@ context-manager:
   imagePullPolicy: IfNotPresent
 
 pipeline-manager:
-  replicaCount: 2
+  replicaCount: 4
   imagePullPolicy: IfNotPresent
   stepsCatalogEnabled: true
   affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - production-cfapi
-                - production-pipeline-manager
-            topologyKey: kubernetes.io/hostname
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nodeType
+            operator: NotIn
+            values:
+            - internal
+            - worker
+            - elk
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - production-cfapi
+              - production-pipeline-manager
+          topologyKey: kubernetes.io/hostname
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
