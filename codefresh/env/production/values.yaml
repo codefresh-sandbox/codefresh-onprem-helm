@@ -11,6 +11,19 @@ pipeline-manager:
   replicaCount: 2
   imagePullPolicy: IfNotPresent
   stepsCatalogEnabled: true
+  affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - production-cfapi
+                - production-pipeline-manager
+            topologyKey: kubernetes.io/hostname
 
 firebaseUrl: "https://codefresh-production-backup.firebaseio.com/production"
 
@@ -257,6 +270,7 @@ cfapi:
               operator: In
               values:
               - production-cfapi
+              - production-pipeline-manager
           topologyKey: kubernetes.io/hostname
 
 cfui:
