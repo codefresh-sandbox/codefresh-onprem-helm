@@ -503,12 +503,12 @@ steps:
       - yq w -i codefresh/env/on-prem/versions.yaml context-manager.imageTag ${{ONPREM_VERSION}}
       - yq w -i codefresh/env/on-prem/versions.yaml pipeline-manager.imageTag ${{ONPREM_VERSION}}
       - yq w -i codefresh/env/on-prem/versions.yaml cfsign.imageTag ${{ONPREM_VERSION}}
-      - yq w -i codefresh/env/on-prem/versions.yaml engineImage "${{engine}}"
-      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE ${{pusher}}
-      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE ${{puller}}
+      - yq w -i codefresh/env/on-prem/versions.yaml engineImage "${{ONPREM_VERSION}}"
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE ${{ONPREM_VERSION}}
       - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE ${{builder}}
-      - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE ${{logger}}
-      - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE ${{cloner}}
+      - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE ${{ONPREM_VERSION}}
       - cat codefresh/requirements.yaml
       - cat codefresh/env/on-prem/versions.yaml
 
