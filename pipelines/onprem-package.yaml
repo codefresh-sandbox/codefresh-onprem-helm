@@ -39,7 +39,7 @@ steps:
         working_directory: /codefresh/volume
         commands:
           - rm -rf cf-helm || true
-          - git clone https://amir-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-helm.git --branch=${{CF_BRANCH}} cf-helm
+          - git clone https://amir-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-helm.git --branch=${{CF_BRANCH_temp}} cf-helm
           - cd cf-helm
           - git checkout -b ${{ONPREM_VERSION}}
           - git push --set-upstream origin ${{ONPREM_VERSION}}
@@ -503,12 +503,12 @@ steps:
       - yq w -i codefresh/env/on-prem/versions.yaml context-manager.imageTag ${{ONPREM_VERSION}}
       - yq w -i codefresh/env/on-prem/versions.yaml pipeline-manager.imageTag ${{ONPREM_VERSION}}
       - yq w -i codefresh/env/on-prem/versions.yaml cfsign.imageTag ${{ONPREM_VERSION}}
-      - yq w -i codefresh/env/on-prem/versions.yaml engineImage "${{ONPREM_VERSION}}"
-      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE ${{ONPREM_VERSION}}
-      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE ${{ONPREM_VERSION}}
-      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE ${{builder}}
-      - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE ${{ONPREM_VERSION}}
-      - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml engineImage "codefresh/engine:${{ONPREM_VERSION}}"
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE codefresh/cf-docker-tag-pusher:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE codefresh/cf-docker-puller:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE codefresh/cf-docker-builder:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE codefresh/cf-container-logger:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE codefresh/cf-git-cloner:${{ONPREM_VERSION}}
       - cat codefresh/requirements.yaml
       - cat codefresh/env/on-prem/versions.yaml
 
