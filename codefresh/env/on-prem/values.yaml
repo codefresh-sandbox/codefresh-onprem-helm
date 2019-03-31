@@ -8,7 +8,7 @@ dockercfg: placeholder
 servicePort: 80
 
 # image with kubectl that can work with our K8s version
-kubectlImage: lachlanevenson/k8s-kubectl:v1.9.9
+kubectlImage: gcr.io/savvy-badge-103912/guyonprem/generate-certs:latest
 
 slackAppID: "4027524866.65820083427"
 slackAppSecret: placeholder
