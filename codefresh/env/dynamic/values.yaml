@@ -210,3 +210,4 @@ global:
 
 runtime-environment-manager:
   mongoDbCreate: true
+  mongoURI: "mongodb://mongo.default.svc:27017/runtime-environment-manager"
