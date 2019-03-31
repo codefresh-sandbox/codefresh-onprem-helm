@@ -47,6 +47,12 @@ spec:
         image: alexeiled/curl:3.6
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
+        {{- if .Values.global.env }}
+        {{- range $key, $value := .Values.global.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end}}
+        {{- end}}
         - name: POD_NAME
           valueFrom:
             fieldRef:
