@@ -1,5 +1,5 @@
 cfapi:
-  imageTag: load
+  imageTag: v688
 
 this is an example of which value you need to pass to manually overwrite the image	+cfui:
 cfui:
@@ -48,10 +48,10 @@ charts-manager:
   imageTag: v39
 
 context-manager:
-  imageTag: load
+  imageTag: v60
 
 pipeline-manager:
-  imageTag: load
+  imageTag: v85
 
 cfsign:
   imageTag: v2
