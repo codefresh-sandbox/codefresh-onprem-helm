@@ -19,7 +19,7 @@ data:
 {{- if not .Values.webTLS }}
   gen-website-tls: |
     #!/bin/sh
-
+    
     which openssl || apk add --no-cache openssl
 
     openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
