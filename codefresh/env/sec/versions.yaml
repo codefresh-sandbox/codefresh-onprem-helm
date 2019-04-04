@@ -1,8 +1,8 @@
 cfapi:
-  imageTag: security
+  imageTag: secimprovment
 
-cfui:
-  imageTag: security
+# cfui:
+#   imageTag: staging
 
 
 # this is an example of which value you need to pass to manually overwrite the image
@@ -16,13 +16,13 @@ payments:
   imageTag: v34
 
 cluster-providers:
-  imageTag: v53
+  imageTag: secimprovements
 
 internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: v68
+  imageTag: secimprovements
 
 accounts-referrals:
   imageTag: v16
@@ -37,19 +37,37 @@ workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: security
+  imageTag: v19
 
 tasker-kubernetes:
-  imageTag: v36
+  imageTag: secimprovements
 
 charts-manager:
-  imageTag: v39
+  imageTag: secimprovements
 
 context-manager:
-  imageTag: v60
+  imageTag: secimprovements
 
 pipeline-manager:
-  imageTag: v78
+  imageTag: secimprovements
+
+cf-broadcaster:
+  imageTag: secimprovment
+
+hermes:
+  imageTag: secimprovements
+
+helm-repo-manager:
+  imageTag: secimprovements
+
+cronus:
+  imageTag: secimprovements
+
+nomios:
+  imageTag: secimprovements
+
+runtime-environment-manager:
+  imageTag: secimprovements
 
 cfsign:
   imageTag: v2
