@@ -267,7 +267,7 @@ global:
   rabbitService: rabbitmq
 
   # mongodb service
-  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
+  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
   mongoService: mongodb
   mongoPort: 27017
   mongodbDatabase: codefresh
