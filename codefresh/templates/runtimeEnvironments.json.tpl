@@ -18,6 +18,7 @@
     },
     "runtimeScheduler": {
       "type": "KubernetesPod",
+      "internalInfra": true,
       "cluster": {
         "inCluster": true,
         "namespace": "codefresh"
