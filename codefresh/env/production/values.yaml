@@ -414,7 +414,7 @@ nats:
 
 global:
   appProtocol: https
-  postgresDatabase: eventbus
+  postgresDatabase: eventbus-new
 #  queueServers: nats://queue.default.svc:4222
   consulHost: consul.default.svc
   rabbitmqHostname: rabbit.default.svc
