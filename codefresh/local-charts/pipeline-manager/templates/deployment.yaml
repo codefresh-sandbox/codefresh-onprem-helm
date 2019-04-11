@@ -138,20 +138,20 @@ spec:
           httpGet:
             path: /api/ready
             port: {{ .Values.targetPort }}
-          periodSeconds: 50
-          successThreshold: 50
-          failureThreshold: 50
-          timeoutSeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+          timeoutSeconds: 10
 
         livenessProbe:
           httpGet:
             path: /api/health
             port: {{ .Values.targetPort }}
           periodSeconds: 50
-          successThreshold: 50
-          failureThreshold: 50
-          initialDelaySeconds: 50
-          timeoutSeconds: 50
+          successThreshold: 1
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
 
       {{- if .Values.global.addResolvConf }}
         volumeMounts:
