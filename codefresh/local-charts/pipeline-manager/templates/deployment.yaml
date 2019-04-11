@@ -9,6 +9,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
     version: {{ .Values.imageTag | quote }}
+    test: value
 spec:
   replicas: {{ default 1 .Values.replicaCount }}
   strategy:
