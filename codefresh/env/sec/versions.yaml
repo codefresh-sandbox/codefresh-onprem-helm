@@ -1,8 +1,9 @@
 cfapi:
   imageTag: secimprovment
 
+# this is an example of which value you need to pass to manually overwrite the image	+cfui:
 # cfui:
-#   imageTag: staging
+#   imageTag: v454
 
 
 # this is an example of which value you need to pass to manually overwrite the image
@@ -16,13 +17,13 @@ payments:
   imageTag: v34
 
 cluster-providers:
-  imageTag: secimprovements
+  imageTag: v56
 
 internal-status-page:
   imageTag: v9
 
 kube-integration:
-  imageTag: secimprovements
+  imageTag: v68
 
 accounts-referrals:
   imageTag: v16
@@ -37,39 +38,40 @@ workflow-baseline-invoker:
   imageTag: v5
 
 salesforce-reporter:
-  imageTag: v19
+  imageTag: v22
 
 tasker-kubernetes:
-  imageTag: secimprovements
+  imageTag: v36
 
 charts-manager:
-  imageTag: secimprovements
+  imageTag: v39
 
 context-manager:
-  imageTag: secimprovements
+  imageTag: v60
 
 pipeline-manager:
-  imageTag: secimprovements
-
-cf-broadcaster:
-  imageTag: secimprovment
-
-hermes:
-  imageTag: secimprovements
-
-helm-repo-manager:
-  imageTag: secimprovements
-
-cronus:
-  imageTag: secimprovements
-
-nomios:
-  imageTag: secimprovements
-
-runtime-environment-manager:
-  imageTag: secimprovements
+  imageTag: v92
 
 cfsign:
   imageTag: v2
 
 engineImage: "codefresh/engine:104"
+
+
+#cf-broadcaster:
+#  imageTag: secimprovment
+#
+#hermes:
+#  imageTag: secimprovements
+#
+#helm-repo-manager:
+#  imageTag: secimprovements
+#
+#cronus:
+#  imageTag: secimprovements
+#
+#nomios:
+#  imageTag: secimprovements
+#
+#runtime-environment-manager:
+#  imageTag: secimprovements
