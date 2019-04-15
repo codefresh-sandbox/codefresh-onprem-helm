@@ -135,6 +135,8 @@ if [[ $RUNNING_ON_CF == 1 ]]; then
     helm version
 
     if [ "$USE_LOCK" == "true" ]; then
+      msg "Fetching latest helm dependencies, according to requirements.yaml"
+      helm dependency update codefresh
 	  msg "Fetching tested helm dependencies, according to requirements.lock"
 	  helm dependency build codefresh
 	else
