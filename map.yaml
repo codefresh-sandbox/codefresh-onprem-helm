@@ -1,0 +1,12 @@
+production:
+  cluster: cf-prod@codefresh-production
+  namespace: default
+staging:
+  cluster: cf-staging@codefresh-staging
+  namespace: default
+load:
+  cluster: cf-load@codefresh-load
+  namespace: default
+sec:
+  cluster: cf-sec@codefresh-staging
+  namespace: default
