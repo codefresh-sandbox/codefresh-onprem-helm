@@ -85,9 +85,10 @@ echo "Setting APP_DNS=$APP_DNS"
 
 echo "Available kubernetes contexts"
 kubectl config get-contexts
-KUBE_CONTEXT=$(echo $env | yq .cluster)
-NAMESPACE=$(echo $env | yq .namespace)
+KUBE_CONTEXT=$(echo $env | yq .cluster | sed s/\"//g )
+NAMESPACE=$(echo $env | yq .namespace | sed s/\"//g )
 USE_LOCK=$(echo $env | yq .useHelmLockFile)
+
 echo "Using context $KUBE_CONTEXT and namespace $NAMESPACE"
 kubectl config use-context $KUBE_CONTEXT
 
