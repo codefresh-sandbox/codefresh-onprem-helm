@@ -98,7 +98,6 @@ then
 else
   echo "Helm lock file will not be used to deploy"
 fi
-exit 0
 
 msg "Decrypting all secrets"
 ./sops.sh -d
