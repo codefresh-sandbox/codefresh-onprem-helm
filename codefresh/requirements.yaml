@@ -183,3 +183,9 @@ dependencies:
   - trigger
   - event-provider
   - cron
+- name: chartmuseum
+  version: ~1.3.1
+  repository: file://local-charts/chartmuseum
+  condition: chartmuseum.localHelmRepo
+  tags:
+  - infra
