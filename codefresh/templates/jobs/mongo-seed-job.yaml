@@ -18,9 +18,17 @@ spec:
         release: {{ .Release.Name  | quote }}
         heritage: {{ .Release.Service  | quote }}
     spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       containers:
       - name: {{ template "fullname" . }}-admincf
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
+        {{- else }}
         image: {{ .Values.global.mongodbImage }}
+        {{- end }}
         imagePullPolicy: IfNotPresent
         env:
           {{- if .Values.global.env }}
