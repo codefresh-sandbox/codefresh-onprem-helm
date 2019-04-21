@@ -97,7 +97,8 @@ runtime_envs:
     namespace: dinds
 
 cfui:
-  image: gcr.io/codefresh-enterprise/codefresh/cf-ui
+  image: codefresh/cf-ui
+  dockerRegistry: gcr.io/codefresh-enterprise/
   dockercfg: placeholder
   logglyToken: invalid-token
   segmentKey: invalid-key
@@ -113,18 +114,21 @@ onboarding-status:
 
 runtime-environment-manager:
   enabled: true
-  image: gcr.io/codefresh-enterprise/codefresh/runtime-environment-manager
+  dockerRegistry: gcr.io/codefresh-enterprise/
+  image: codefresh/runtime-environment-manager
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
 
 cfanalytic:
-  image: gcr.io/codefresh-enterprise/codefresh/cf-analytic
+  dockerRegistry: gcr.io/codefresh-enterprise/
+  image: codefresh/cf-analytic
   enabled: false
 
 cfapi:
   github:
     apiPathPrefix: /api/v3
-  image: gcr.io/codefresh-enterprise/codefresh/cf-api
+  image: codefresh/cf-api
+  dockerRegistry: gcr.io/codefresh-enterprise/
   expirationURL: https://codefresh.io/contact-sales
   rbacEnable: true
   env:
@@ -155,11 +159,18 @@ cfapi:
 
 cluster-providers:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/cluster-providers
+  image: codefresh/cluster-providers
+  dockerRegistry: gcr.io/codefresh-enterprise/
+  
+cfsign:
+  replicaCount: 1
+  image: codefresh/cf-tls-sign
+  dockerRegistry: gcr.io/codefresh-enterprise/
 
 charts-manager:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/charts-manager
+  image: codefresh/charts-manager
+  dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/charts-manager
     POSTGRES_HOST: cf-postgresql
@@ -169,7 +180,8 @@ charts-manager:
   
 context-manager:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/context-manager
+  image: codefresh/context-manager
+  dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
@@ -177,34 +189,47 @@ context-manager:
   
 pipeline-manager:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/pipeline-manager
+  image: codefresh/pipeline-manager
+  dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
     MONGO_URI: mongodb://cf-mongodb:27017/pipeline-manager
     INTERNAL_API_URI: http://cf-cfapi:9007
 
 kube-integration:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/kube-integration
+  image: codefresh/kube-integration
+  dockerRegistry: gcr.io/codefresh-enterprise/
 
 tasker-kubernetes:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/tasker-kubernetes
+  image: codefresh/tasker-kubernetes
+  dockerRegistry: gcr.io/codefresh-enterprise/
 
 helm-repo-manager:
   replicaCount: 1
+  dockerRegistry: gcr.io/codefresh-enterprise/
   image:
-    repository: gcr.io/codefresh-enterprise/codefresh/helm-repo-manager
+    repository: codefresh/helm-repo-manager
     tag: 0.2.18
 
 cf-broadcaster:
   replicaCount: 1
-  image: gcr.io/codefresh-enterprise/codefresh/cf-broadcaster
+  image: codefresh/cf-broadcaster
+  dockerRegistry: gcr.io/codefresh-enterprise/
+
+chartmuseum:
+  publicHelmRepo: false
+  localHelmRepo: true
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   #seedJobs: true
   #certsJobs: true
 
+  # when using custom registry, enable the following seetings to add imagePullSecret to all images and replace docker registry prefix with custom one (has to be with trailing /)
+  #privateRegistry: true
+  #dockerRegistry: containers-nexus-francisco.codefresh.io/
+  
   #appUrl: app-url
   githubInternalToken: placeholder
   githubClientSecret: placeholder
@@ -242,6 +267,9 @@ global:
   #dindImage: docker:17.06-dind
   dindImage: docker:18.09-dind
   #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
+  
+  # curl image
+  curlImage: codefresh/curl
 
   # dind cpu requests
   dindCPU: 100m
