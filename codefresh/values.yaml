@@ -207,6 +207,8 @@ global:
   helmRepoManagerPort: 80
   helmRepoManagerProtocol: "http"
 
+chartmuseum:
+  localHelmRepo: false
 
 cfui:
   enabled: true
