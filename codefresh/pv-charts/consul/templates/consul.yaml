@@ -171,9 +171,17 @@ spec:
                   values:
                   - "{{ .Release.Name }}-{{ .Values.Component }}"
       {{- end }}
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       containers:
       - name: "{{ template "consul.fullname" . }}"
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.Image }}:{{ .Values.ImageTag }}"
+        {{- else }}
         image: "{{ .Values.Image }}:{{ .Values.ImageTag }}"
+        {{- end }}
         imagePullPolicy: "{{ .Values.ImagePullPolicy }}"
         ports:
         - name: http
