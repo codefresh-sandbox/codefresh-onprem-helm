@@ -1,8 +1,9 @@
 {{- if .Values.rbacEnable }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
+kind: Role
 metadata:
   name: tools
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups:
   - ""
@@ -38,12 +39,12 @@ rules:
   - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: tools-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: tools
 subjects:
   - kind: ServiceAccount
