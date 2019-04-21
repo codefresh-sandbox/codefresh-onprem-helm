@@ -27,11 +27,19 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       affinity:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       containers:
-      - image: "{{ .Values.image }}:{{ .Values.imageTag }}"
-        name: {{ template "fullname" . }}
+      - name: {{ template "fullname" . }}
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}:{{ .Values.imageTag }}"
+        {{- else }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
