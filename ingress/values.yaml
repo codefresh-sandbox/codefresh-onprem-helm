@@ -6,7 +6,8 @@ enabled: true
 # replicaCount: 1
 
 # image name
-image: gcr.io/google_containers/defaultbackend
+image: google_containers/defaultbackend
+dockerRegistry: gcr.io/
 
 # image tag  
 imageTag: 1.3
