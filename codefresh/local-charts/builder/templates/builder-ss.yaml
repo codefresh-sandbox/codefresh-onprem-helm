@@ -40,9 +40,17 @@ spec:
           value: {{ .Values.tolerations.value | quote }}
           effect: {{ .Values.tolerations.effect | quote }}
       {{- end }}
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       initContainers:
       - name: register-builder-container
-        image: alexeiled/curl:3.6
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.curlImage }}"
+        {{- else }}
+        image: {{ .Values.global.curlImage | quote }}
+        {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
         - name: POD_NAME
@@ -56,8 +64,12 @@ spec:
           mountPath: /opt/dind/register
           subPath: register
       containers:
-      - image: {{ .Values.global.dindImage | quote }}
-        name:  {{ template "fullname" . }}
+      - name:  {{ template "fullname" . }}
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.dindImage }}"
+        {{- else }}
+        image: {{ .Values.global.dindImage | quote }}
+        {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         resources:
           limits:
