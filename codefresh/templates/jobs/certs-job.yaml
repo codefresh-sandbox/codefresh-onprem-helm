@@ -21,10 +21,18 @@ spec:
       {{- if .Values.rbacEnable }}
       serviceAccountName: cf-codefresh-gencerts
       {{- end }}
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       containers:
       {{- if not .Values.global.clientCertsCA }}
       - name: {{ template "fullname" . }}-certs
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.kubectlImage }}"
+        {{- else }}
         image: {{ .Values.kubectlImage }}
+        {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         command: ["/bin/sh", "/opt/codefresh/gen-runtime-certs"]
         env:
@@ -43,7 +51,11 @@ spec:
       {{- end }}
       {{- if not .Values.webTLS }}
       - name: {{ template "fullname" . }}-tls
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.kubectlImage }}"
+        {{- else }}
         image: {{ .Values.kubectlImage }}
+        {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         command: ["/bin/sh", "/opt/codefresh/gen-website-tls"]
         env:
