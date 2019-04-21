@@ -56,116 +56,97 @@ dependencies:
   repository: file://../ingress
   condition: ingress.enabled
 - name: cluster-providers
-  version: 0.0.3
-  repository: file://local-charts/cluster-providers
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
 - name: kube-integration
-  version: 0.0.4
-  repository: file://local-charts/kube-integration
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
 - name: accounts-referrals
-  version: 0.0.3
-  repository: file://local-charts/accounts-referrals
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
 - name: charts-manager
-  version: 0.0.3
-  repository: file://local-charts/charts-manager
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: mailer
-  version: 0.0.3
-  repository: file://local-charts/mailer
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
 - name: payments
-  version: 0.1.7
-  repository: file://local-charts/payments
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
 - name: cfsign
-  version: 0.3.2
-  repository: file://local-charts/cfsign
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   condition: cfsign.enabled
   tags:
   - saas
   - infra
-- name: internal-status-page
-  version: 0.0.3
-  repository: file://local-charts/internal-status-page
-  condition: internal-status-page.enabled
-  tags:
-  - saas
 - name: segment-reporter
-  version: 0.0.4
-  repository: file://local-charts/segment-reporter
-  tags:
-  - saas
-- name: workflow-baseline-invoker
-  version: 0.0.5
-  repository: file://local-charts/workflow-baseline-invoker
-  condition: workflow-baseline-invoker.enabled
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
 - name: salesforce-reporter
-  version: 0.1.3
-  repository: file://local-charts/salesforce-reporter
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
 - name: tasker-kubernetes
-  version: 0.0.2
-  repository: file://local-charts/tasker-kubernetes
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: context-manager
-  version: 0.0.2
-  repository: file://local-charts/context-manager
+  version: ^1.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: pipeline-manager
-  version: 0.0.2
-  repository: file://local-charts/pipeline-manager
+  version: ^2.0.x
+  repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: cfapi
-  version: ~0.2.3
-  repository: file://local-charts/cfapi
+  version: ^1.5.x
+  repository: http://chartmuseum.codefresh.io
   condition: cfapi.enabled
   tags:
   - saas
   - infra
 - name: cfui
-  version: 2.8.385
+  version: ^2.9.0
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
   - saas
   - infra
 - name: onboarding-status
-  version: 1.0.54
+  version: ^1.0.x
   repository: http://chartmuseum.codefresh.io
   condition: onboarding-status.enabled
   tags:
   - saas
   - infra
-- name: cfanalytic
-  version: 1.0.50
-  repository: http://chartmuseum.codefresh.io
-  condition: cfanalytic.enabled
-  tags:
-  - saas
-  - infra
 - name: runtime-environment-manager
-  version: 1.7.24
+  version: ^1.8.x
   repository: http://chartmuseum.codefresh.io
   condition: runtime-environment-manager.enabled
   tags:
   - saas
   - infra
 - name: cf-broadcaster
-  version: 1.0.26
+  version: ^1.0.x
   repository: http://chartmuseum.codefresh.io
   condition: cf-broadcaster.enabled
   tags:

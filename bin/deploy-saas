@@ -39,25 +39,6 @@ processCustomFlags() {
 	echo "$flags"
 }
 
-activateServiceAccount() {
-	local clusterName="$1"
-	local zone="$2"
-	local projectName="$3"
-
-	[[ -z "$GOOGLE_SERVICE_ACCOUNT" ]] && err "Please set the service-account env var!"
-
-	# To encrypt the service account file use: `cat service-account.json | base64 -w 0`
-	msg "Decrypting the GOOGLE_SERVICE_ACCOUNT env variable"
-	echo "$GOOGLE_SERVICE_ACCOUNT" | base64 -d > $KEY_FILE
-
-	msg "Logging in with the service account to google cloud and generating Kubernetes config"
-	gcloud config set container/cluster $clusterName
-	gcloud config set compute/zone $zone
-	gcloud config set project $projectName
-	gcloud auth activate-service-account --key-file $KEY_FILE
-	gcloud container clusters get-credentials $clusterName
-}
-
 waitForHelm() {
 	while true; do
 #		status=$(kubectl get po -l app=helm -l name=tiller -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system --field-selector status.phase=Running)
@@ -90,62 +71,59 @@ check kubectl
 
 [ "$1" == "-h" ] && usage
 
-[ -z "$ENVIRONMENT" ] && echo "Please set ENVIRONMENT, example: export ENVIRONMENT=staging" && exit 1;
-if [[ -n "$CF_REPO_NAME" && -n "$CF_REPO_OWNER" ]]; then
-  RUNNING_ON_CF=1
-  msg "Running on Codefresh Pipeline - pushing to kubernetes using cf-deploy-kubernetes.sh"
+
+env=$(yq --arg env "$ENVIRONMENT" -r '.environments[] | select(.name==$env)'  "map.yaml")
+if [ -z "$env" ]
+then
+  echo "Environment $ENVIRONMENT not exist in map.yaml"
+	exit 1
+fi
+
+echo "Found environment $ENVIRONMENT"
+APP_DNS=$(echo $env | yq .dns)
+echo "Setting APP_DNS=$APP_DNS"
+
+echo "Available kubernetes contexts"
+kubectl config get-contexts
+KUBE_CONTEXT=$(echo $env | yq .cluster | sed s/\"//g )
+NAMESPACE=$(echo $env | yq .namespace | sed s/\"//g )
+USE_LOCK=$(echo $env | yq .useHelmLockFile)
+
+echo "Using context $KUBE_CONTEXT and namespace $NAMESPACE"
+kubectl config use-context $KUBE_CONTEXT
+
+if [ "$USE_LOCK" == "true" ]
+then
+  echo "Helm lock file will be used to deploy"
 else
-  msg "Running Locally - do not sops and helm dependencies"
+  echo "Helm lock file will not be used to deploy"
 fi
 
+msg "Decrypting all secrets"
+./sops.sh -d
 
-ENV_FILE=codefresh/env/${ENVIRONMENT}/export-envs
-if [[ -f ${ENV_FILE} ]]; then
-  echo "Loading ${ENV_FILE} "
-  . ${ENV_FILE}
+msg "Init Helm"
+helm init --client-only
+
+msg "Waiting for Helm to be ready ..."
+waitForHelm
+
+sleep 3
+msg "Helm version"
+helm version
+
+if [ "$USE_LOCK" == "true" ]
+then
+	msg "Fetching latest helm dependencies, according to requirements.yaml"
+	helm dependency update codefresh
+	msg "Fetching tested helm dependencies, according to requirements.lock"
+	helm dependency build codefresh
+else
+	msg "Fetching latest helm dependencies, according to requirements.yaml"
+	helm dependency update codefresh
 fi
-
-[ -z "$APP_DNS" ] && echo "Please set APP_DNS, example: export APP_DNS=app-staging.codefresh.io" && exit 1;
-[ -z "$CLUSTER_NAME" ] && echo "Please set CLUSTER_NAME, example: export CLUSTER_NAME=cf-staging" && exit 1;
-[ -z "$PROJECT_NAME" ] && echo "Please set PROJECT_NAME, example: export PROJECT_NAME=savvy-badge-103912" && exit 1;
-
-
-if [ -z "$ZONE" ]; then
-  export ZONE=us-central1-a
-fi
-
-if [ -z "$NAMESPACE" ]; then
-  export NAMESPACE=default
-fi
-
-if [[ $RUNNING_ON_CF == 1 ]]; then
-    activateServiceAccount "$CLUSTER_NAME" "$ZONE" "$PROJECT_NAME"
-
-    msg "Decrypting all secrets"
-    ./sops.sh -d
-
-    msg "Init Helm"
-    helm init --client-only
-
-    msg "Waiting for Helm to be ready ..."
-    waitForHelm
-
-    sleep 3
-    msg "Helm version"
-    helm version
-
-    if [ "$USE_LOCK" == "true" ]; then
-      msg "Fetching latest helm dependencies, according to requirements.yaml"
-      helm dependency update codefresh
-	  msg "Fetching tested helm dependencies, according to requirements.lock"
-	  helm dependency build codefresh
-	else
-	  msg "Fetching latest helm dependencies, according to requirements.yaml"
-	  helm dependency update codefresh
-	fi
-	# print charts
-	ls -al codefresh/charts
-fi
+# print charts
+ls -al codefresh/charts
 msg "The following services are going to be deployed: "
 echo "@$"
 

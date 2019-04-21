@@ -50,7 +50,7 @@ context-manager:
   imageTag: v61
 
 pipeline-manager:
-  imageTag: pipeline-autobot
+  imageTag: repo-analyzer
 
 cfsign:
   imageTag: v2
