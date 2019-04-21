@@ -38,9 +38,17 @@ spec:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       hostNetwork: true
       terminationGracePeriodSeconds: 60
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
       containers:
-      - image: "{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
-        name: {{ template "fullname" . }}-controller
+      - name: {{ template "fullname" . }}-controller
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
+        {{- else }}
+        image: "{{ .Values.controllerRegistry }}{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /healthz
