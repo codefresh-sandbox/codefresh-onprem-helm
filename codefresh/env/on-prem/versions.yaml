@@ -1,5 +1,21 @@
+nomios:
+  image:
+    tag: security
+hermes:
+  image:
+    tag: security
+cronus:
+  image:
+    tag: security
 cfapi:
   imageTag: cf-onprem-v1.0.65
+runtime-environment-manager:
+  imageTag: security
+cf-broadcaster:
+  imageTag: security
+helm-repo-manager:
+  image:
+    tag: security
 payments:
   imageTag: v34
 cluster-providers:
