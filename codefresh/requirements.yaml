@@ -112,20 +112,20 @@ dependencies:
   - saas
   - infra
 - name: pipeline-manager
-  version: ^2.0.x
+  version: ^3.0.0
   repository: http://chartmuseum.codefresh.io
   tags:
   - saas
   - infra
 - name: cfapi
-  version: 2.0.1-add-image-pull-secret
-  repository: http://chartmuseum-dev.codefresh.io
+  version: ^2.0.0
+  repository: http://chartmuseum.codefresh.io
   condition: cfapi.enabled
   tags:
   - saas
   - infra
 - name: cfui
-  version: ^2.9.0
+  version: ^3.0.0
   repository: http://chartmuseum.codefresh.io
   condition: cfui.enabled
   tags:
