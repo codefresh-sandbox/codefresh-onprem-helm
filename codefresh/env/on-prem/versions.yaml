@@ -6,9 +6,6 @@ runtime-environment-manager:
   imageTag: security
 cf-broadcaster:
   imageTag: security
-helm-repo-manager:
-  image:
-    tag: security
 payments:
   imageTag: v34
 cluster-providers:
