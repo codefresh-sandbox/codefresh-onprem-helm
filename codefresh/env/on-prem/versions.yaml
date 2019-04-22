@@ -1,12 +1,3 @@
-nomios:
-  image:
-    tag: security
-hermes:
-  image:
-    tag: security
-cronus:
-  image:
-    tag: security
 cfapi:
   imageTag: cf-onprem-v1.0.65
 cfui:
