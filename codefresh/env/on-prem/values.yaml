@@ -227,8 +227,8 @@ global:
   #certsJobs: true
 
   # when using custom registry, enable the following seetings to add imagePullSecret to all images and replace docker registry prefix with custom one (has to be with trailing /)
-  privateRegistry: true
-  dockerRegistry: containers-nexus-francisco.codefresh.io/
+  #privateRegistry: true
+  #dockerRegistry: containers-nexus-francisco.codefresh.io/
   
   #appUrl: app-url
   githubInternalToken: placeholder
