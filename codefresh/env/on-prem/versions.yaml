@@ -9,6 +9,8 @@ cronus:
     tag: security
 cfapi:
   imageTag: cf-onprem-v1.0.65
+cfui:
+  imageTag: cf-onprem-v1.0.65
 runtime-environment-manager:
   imageTag: security
 cf-broadcaster:
