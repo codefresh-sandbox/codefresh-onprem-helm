@@ -172,7 +172,7 @@ charts-manager:
   image: codefresh/charts-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/charts-manager
+    MONGO_URI: mongodb://mongodb:27017/charts-manager
     POSTGRES_HOST: cf-postgresql
     EVENTBUS_URI: amqp://cf-rabbitmq
     CONTEXT_MANAGER_URI: cf-context-manager
@@ -183,7 +183,7 @@ context-manager:
   image: codefresh/context-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/context-manager
+    MONGO_URI: mongodb://mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
     POSTGRES_HOST: cf-postgresql
   
@@ -192,7 +192,7 @@ pipeline-manager:
   image: codefresh/pipeline-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/pipeline-manager
+    MONGO_URI: mongodb://mongodb:27017/pipeline-manager
     INTERNAL_API_URI: http://cf-cfapi:9007
 
 kube-integration:
@@ -360,7 +360,7 @@ global:
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/codefresh
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017/codefresh
   ### new logging solution
 
 
