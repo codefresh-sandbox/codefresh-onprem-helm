@@ -23,7 +23,7 @@
         "inCluster": true,
         "namespace": "codefresh"
       },
-      "image": "{{ .Values.engineImage }}",
+      "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
       "envVars": {
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}
@@ -35,12 +35,12 @@
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "{{ .Values.DOCKER_PUSHER_IMAGE }}",
-        "DOCKER_PULLER_IMAGE": "{{ .Values.DOCKER_PULLER_IMAGE }}",
-        "DOCKER_BUILDER_IMAGE": "{{ .Values.DOCKER_BUILDER_IMAGE }}",
-        "CONTAINER_LOGGER_IMAGE": "{{ .Values.CONTAINER_LOGGER_IMAGE }}",
-        "GIT_CLONE_IMAGE": "{{ .Values.GIT_CLONE_IMAGE }}",
-        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+        "DOCKER_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PUSHER_IMAGE }}",
+        "DOCKER_PULLER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PULLER_IMAGE }}",
+        "DOCKER_BUILDER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_BUILDER_IMAGE }}",
+        "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
+        "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
+        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
@@ -121,12 +121,12 @@
       "envVars": {
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "{{ .Values.DOCKER_PUSHER_IMAGE }}",
-        "DOCKER_PULLER_IMAGE": "{{ .Values.DOCKER_PULLER_IMAGE }}",
-        "DOCKER_BUILDER_IMAGE": "{{ .Values.DOCKER_BUILDER_IMAGE }}",
-        "CONTAINER_LOGGER_IMAGE": "{{ .Values.CONTAINER_LOGGER_IMAGE }}",
-        "GIT_CLONE_IMAGE": "{{ .Values.GIT_CLONE_IMAGE }}",
-        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+        "DOCKER_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PUSHER_IMAGE }}",
+        "DOCKER_PULLER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PULLER_IMAGE }}",
+        "DOCKER_BUILDER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_BUILDER_IMAGE }}",
+        "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
+        "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
+        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {},
