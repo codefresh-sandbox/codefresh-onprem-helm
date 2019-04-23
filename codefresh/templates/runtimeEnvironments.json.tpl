@@ -19,7 +19,7 @@
     "runtimeScheduler": {
       "type": "KubernetesPod",
       {{- if .Values.global.privateRegistry }}
-      "imagePullSecret": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry",
+      "imagePullSecrets": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry",
       {{- end }}
       "internalInfra": true,
       "cluster": {
