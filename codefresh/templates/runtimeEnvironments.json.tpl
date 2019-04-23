@@ -44,6 +44,9 @@
         "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
         "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
         "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+        {{- if .Values.global.privateRegistry }}
+        "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
+        {{- end }}
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
