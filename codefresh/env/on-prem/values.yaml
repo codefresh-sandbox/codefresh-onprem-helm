@@ -216,6 +216,8 @@ cf-broadcaster:
   replicaCount: 1
   image: codefresh/cf-broadcaster
   dockerRegistry: gcr.io/codefresh-enterprise/
+  env:
+    RUNTIME_MONGO_DB: codefresh
 
 chartmuseum:
   publicHelmRepo: false
