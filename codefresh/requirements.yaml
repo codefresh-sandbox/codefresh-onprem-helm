@@ -154,7 +154,7 @@ dependencies:
   - infra
 - name: helm-repo-manager
   version: ~0.3.0-any
-  repository: '@codefresh'
+  repository: http://chartmuseum.codefresh.io
   condition: helm-repo-manager.enabled
   tags:
   - helm
