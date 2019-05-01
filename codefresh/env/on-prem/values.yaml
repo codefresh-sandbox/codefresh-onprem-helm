@@ -96,6 +96,18 @@ runtime_envs:
     selectorRuntimeEnv: codefresh-inc
     namespace: dinds
 
+nomios:
+  image:
+    dockerRegistry: gcr.io/codefresh-enterprise/
+    
+cronus:
+  image:
+    dockerRegistry: gcr.io/codefresh-enterprise/
+    
+hermes:
+  image:
+    dockerRegistry: gcr.io/codefresh-enterprise/
+
 cfui:
   image: codefresh/cf-ui
   dockerRegistry: gcr.io/codefresh-enterprise/
