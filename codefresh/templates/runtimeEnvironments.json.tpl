@@ -35,7 +35,7 @@
         {{- end}}
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
         {{- if .Values.global.exposeRegistry }}
-        "RUNTIME_INTERNAL_REGISTRY_JSON": "''",
+        "RUNTIME_INTERNAL_REGISTRY_JSON": '',
         "CF_REGISTRY_DOMAIN": "{{ .Values.global.appUrl }}",
         "CF_REGISTRY_USER": "onprem",
         "CF_REGISTRY_TOKEN": "onprem",
