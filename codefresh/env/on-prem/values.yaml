@@ -219,10 +219,9 @@ tasker-kubernetes:
 
 helm-repo-manager:
   replicaCount: 1
-  dockerRegistry: gcr.io/codefresh-enterprise/
   image:
-    repository: codefresh/helm-repo-manager
-    tag: 0.2.18
+    name: codefresh/helm-repo-manager
+    dockerRegistry: gcr.io/codefresh-enterprise/
 
 cf-broadcaster:
   replicaCount: 1
