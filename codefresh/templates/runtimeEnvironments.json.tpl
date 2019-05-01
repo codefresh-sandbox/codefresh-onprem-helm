@@ -34,7 +34,14 @@
         {{- end}}
         {{- end}}
         "RESOURCE_LIMITATIONS_JSON": "/etc/admin/resource-limitations.json",
+        {{- if .Values.global.exposeRegistry }}
+        "RUNTIME_INTERNAL_REGISTRY_JSON": "''",
+        "CF_REGISTRY_DOMAIN": "{{ .Values.global.appUrl }}",
+        "CF_REGISTRY_USER": "onprem",
+        "CF_REGISTRY_TOKEN": "onprem",
+        {{- else }}
         "RUNTIME_INTERNAL_REGISTRY_JSON": "/etc/admin/internal-registry.json",
+        {{- end }}
         "RUNTIME_ADDITIONAL_INTERNAL_REGISTRIES_JSON": "/etc/admin/additional-internal-registries.json",
         "LOGGER_LEVEL": "debug",
         "NODE_ENV": "kubernetes",
