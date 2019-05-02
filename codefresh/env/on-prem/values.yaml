@@ -189,6 +189,7 @@ charts-manager:
     EVENTBUS_URI: amqp://cf-rabbitmq
     CONTEXT_MANAGER_URI: cf-context-manager
     API_URI: cf-cfapi
+    disablePublicRepos: true
   
 context-manager:
   replicaCount: 1
