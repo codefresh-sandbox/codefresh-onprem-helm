@@ -18,8 +18,9 @@
     },
     "runtimeScheduler": {
       "type": "KubernetesPod",
-      "workflowLimits":
+      "workflowLimits": {
         "MAXIMUM_ALLOWED_WORKFLOW_AGE_BEFORE_TERMINATION": "86400"
+      },
       {{- if .Values.global.privateRegistry }}
       "imagePullSecrets": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry",
       {{- end }}
