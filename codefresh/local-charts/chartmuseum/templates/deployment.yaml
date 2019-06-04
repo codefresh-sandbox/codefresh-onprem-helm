@@ -100,9 +100,8 @@ spec:
 
       volumes:
       - name: storage-volume
-      {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "chartmuseum.fullname" .) }}
+          claimName: {{ include "chartmuseum.pvcName" . }}
       {{- else }}
         emptyDir: {}
       {{- end -}}
