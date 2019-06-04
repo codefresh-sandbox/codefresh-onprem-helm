@@ -102,9 +102,6 @@ spec:
       - name: storage-volume
         persistentVolumeClaim:
           claimName: {{ include "chartmuseum.pvcName" . }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
       {{ if .Values.gcp.secret.enabled }}
       - name: {{ include "chartmuseum.fullname" . }}-gcp
         secret:
