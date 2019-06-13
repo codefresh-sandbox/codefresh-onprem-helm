@@ -145,6 +145,7 @@ cfapi:
   rbacEnable: true
   env:
     ON_PREMISE: true
+    AUDIT_AUTO_CREATE_DB: true
     LOGGER_LEVEL: debug
     RUNTIME_MONGO_DB: codefresh
   deploymentTemplateImages: |
