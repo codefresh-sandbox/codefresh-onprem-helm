@@ -42,7 +42,7 @@ registry:
 
 # use mongodb service name; should be same as mongo.nameOverride
 cfapi:
-  mongodbImage: bitnami/mongodb:3.4.6-r0
+  mongodbImage: bitnami/mongodb:3.6.13
   env:
     # set on-premise flag
     ON_PREMISE: true
