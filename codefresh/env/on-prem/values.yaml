@@ -115,6 +115,8 @@ cfui:
   logglyToken: invalid-token
   segmentKey: invalid-key
   newrelicLicenseKey: invalid-key
+  env:
+    ON_PREMISE: true
 #  webTLS:
 #    secretName: star.codefresh.io  
 
