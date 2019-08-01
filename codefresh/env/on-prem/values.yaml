@@ -61,7 +61,7 @@ postgresql:
       memory: 128Mi
 
 mongodb:
-  image: bitnami/mongodb:3.6.13
+  image: bitnami/mongodb:3.6.13-r0
   mongodbRootPassword: XT9nmM8dZD
   nodeSelector: {}
   resources:
