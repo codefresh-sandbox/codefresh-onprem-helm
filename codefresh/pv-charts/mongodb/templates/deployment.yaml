@@ -29,6 +29,8 @@ spec:
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       {{- end }}
+      securityContext:
+        runAsUser: 0
       containers:
       - name: {{ template "fullname" . }}
         {{- if .Values.global.privateRegistry }} 
