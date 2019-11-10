@@ -52,7 +52,8 @@ mv -v codefresh/.helmignore.bak codefresh/.helmignore
 
 rm -fv index.yaml
 
-wget http://charts.codefresh.io/${channel}/index.yaml
+#wget http://charts.codefresh.io/${channel}/index.yaml
+aws s3 cp s3://charts.codefresh.io/${channel}/index.yaml .
 if [[ $? == 0 && -f index.yaml ]]; then
    MERGE_INDEX="--merge index.yaml"
 fi
