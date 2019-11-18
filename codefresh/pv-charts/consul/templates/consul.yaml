@@ -144,8 +144,13 @@ spec:
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
+      {{- with .Values.securityContext }}
       securityContext:
-        fsGroup: 1000
+{{ toYaml . | indent 8}}
+      {{- end }}
       {{- if eq .Values.antiAffinity "hard" }}
       affinity:
         podAntiAffinity:

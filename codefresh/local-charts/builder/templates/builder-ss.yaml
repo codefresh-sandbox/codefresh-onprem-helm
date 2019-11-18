@@ -90,7 +90,7 @@ spec:
           value: {{ $value | quote }}
         {{- end}}
         {{- end}}
-        {{- with .Values.global.tlsRejectUnauthorize }}
+        {{- with .Values.global.tlsRejectUnauthorized }}
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
         {{- end }}

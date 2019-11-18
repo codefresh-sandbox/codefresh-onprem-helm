@@ -172,6 +172,21 @@ cfapi:
       }
     ]
 
+cfapi-buildmanager:
+  replicaCount: 0
+cfapi-cacheevictmanager: 
+  replicaCount: 0
+cfapi-downloadlogmanager:
+  replicaCount: 0
+cfapi-endpoints:
+  replicaCount: 0
+cfapi-eventsmanagersubscriptions:
+  replicaCount: 0
+cfapi-terminators:
+  replicaCount: 0
+k8s-monitor:
+  replicaCount: 0
+
 cluster-providers:
   replicaCount: 1
   image: codefresh/cluster-providers

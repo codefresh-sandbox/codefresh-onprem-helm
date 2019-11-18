@@ -1,52 +1,52 @@
-nomios:
-  imageTag: cf-onprem-v1.0.85
-hermes:
-  imageTag: cf-onprem-v1.0.85
-cronus:
-  imageTag: cf-onprem-v1.0.85
-helm-repo-manager:
-  imageTag: cf-onprem-v1.0.85
-cfapi:
-  imageTag: cf-onprem-v1.0.85
-cfui:
-  imageTag: cf-onprem-v1.0.85
-runtime-environment-manager:
-  imageTag: cf-onprem-v1.0.85
-cf-broadcaster:
-  imageTag: cf-onprem-v1.0.85
-payments:
-  imageTag: v34
-cluster-providers:
-  imageTag: cf-onprem-v1.0.85
-internal-status-page:
-  imageTag: v9
-kube-integration:
-  imageTag: cf-onprem-v1.0.85
-accounts-referrals:
-  imageTag: v16
-mailer:
-  imageTag: v12
-segment-reporter:
-  imageTag: v29
-workflow-baseline-invoker:
-  imageTag: v5
-salesforce-reporter:
-  imageTag: v17
-tasker-kubernetes:
-  imageTag: cf-onprem-v1.0.85
-charts-manager:
-  imageTag: cf-onprem-v1.0.85
-context-manager:
-  imageTag: cf-onprem-v1.0.85
-pipeline-manager:
-  imageTag: cf-onprem-v1.0.85
-cfsign:
-  imageTag: cf-onprem-v1.0.85
-engineImage: codefresh/engine:cf-onprem-v1.0.85
-DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:cf-onprem-v1.0.85
-DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
-DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:cf-onprem-v1.0.85
-DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:cf-onprem-v1.0.85
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:cf-onprem-v1.0.85
-GIT_CLONE_IMAGE: codefresh/cf-git-cloner:cf-onprem-v1.0.85
+nomios: 
+  imageTag: cf-onprem-v1.0.86 
+hermes: 
+  imageTag: cf-onprem-v1.0.86 
+cronus: 
+  imageTag: cf-onprem-v1.0.86 
+helm-repo-manager: 
+  imageTag: cf-onprem-v1.0.86 
+cfapi: 
+  imageTag: cf-onprem-v1.0.86 
+cfui: 
+  imageTag: cf-onprem-v1.0.86 
+runtime-environment-manager: 
+  imageTag: cf-onprem-v1.0.86 
+cf-broadcaster: 
+  imageTag: cf-onprem-v1.0.86 
+payments: 
+  imageTag: v34 
+cluster-providers: 
+  imageTag: cf-onprem-v1.0.86 
+internal-status-page: 
+  imageTag: v9 
+kube-integration: 
+  imageTag: cf-onprem-v1.0.86 
+accounts-referrals: 
+  imageTag: v16 
+mailer: 
+  imageTag: v12 
+segment-reporter: 
+  imageTag: v29 
+workflow-baseline-invoker: 
+  imageTag: v5 
+salesforce-reporter: 
+  imageTag: v17 
+tasker-kubernetes: 
+  imageTag: cf-onprem-v1.0.86 
+charts-manager: 
+  imageTag: cf-onprem-v1.0.86 
+context-manager: 
+  imageTag: cf-onprem-v1.0.86 
+pipeline-manager: 
+  imageTag: cf-onprem-v1.0.86 
+cfsign: 
+  imageTag: cf-onprem-v1.0.86 
+engineImage: codefresh/engine:cf-onprem-v1.0.86 
+DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:cf-onprem-v1.0.86 
+DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2 
+DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:cf-onprem-v1.0.86 
+DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:cf-onprem-v1.0.86 
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:cf-onprem-v1.0.86 
+GIT_CLONE_IMAGE: codefresh/cf-git-cloner:cf-onprem-v1.0.86 
 FS_OPS_IMAGE: codefresh/fs-ops:latest

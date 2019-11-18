@@ -49,3 +49,6 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#taints-and-tolerations-beta-feature
 nodeSelector: {}
 tolerations: []
+
+securityContext:
+  runAsUser: 0
