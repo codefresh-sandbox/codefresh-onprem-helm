@@ -31,58 +31,58 @@ dependencies:
   version: 0.1.8
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io
-  version: 1.3.0
+  version: 1.4.2
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.0
+  version: 1.11.0
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io
-  version: 1.2.0
+  version: 1.4.2
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.3
+  version: 1.4.1
 - name: mailer
   repository: http://chartmuseum.codefresh.io
-  version: 1.9.0
+  version: 1.13.3
 - name: payments
   repository: http://chartmuseum.codefresh.io
-  version: 1.14.0
+  version: 1.18.11
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
   version: 1.1.2
 - name: segment-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.2
+  version: 1.3.4
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.12
+  version: 1.2.4
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.3
+  version: 1.4.0
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.4.0
+  version: 2.1.7
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.49.3
+  version: 3.55.4
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 6.205.2
+  version: 13.15.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 4.196.7
+  version: 11.9.11
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.2
+  version: 1.4.1
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.7.0
+  version: 3.13.4
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io
   version: 1.2.0
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io
-  version: 0.5.1
+  version: 0.6.0
 - name: hermes
   repository: http://chartmuseum.codefresh.io
   version: 0.16.7
@@ -95,5 +95,5 @@ dependencies:
 - name: chartmuseum
   repository: file://local-charts/chartmuseum
   version: 1.3.1
-digest: sha256:eaf0fb7da9d18b25c865b78d31ebb03a67702997e8b16eaebc792ea80562dbeb
-generated: "2019-11-03T09:58:09.27281733+02:00"
+digest: sha256:d4c56b9aa24fef45f5daf81a7681fea9ff666a8b738c9bfc3f82978c421c55f2
+generated: "2020-01-09T07:10:22.602539367+02:00"

@@ -132,7 +132,9 @@ runtime-environment-manager:
   image: codefresh/runtime-environment-manager
   dockercfg: placeholder
   newrelicLicenseKey: invalid-key
-
+  env:
+    ON_PREMISE: true
+    
 cfanalytic:
   dockerRegistry: gcr.io/codefresh-enterprise/
   image: codefresh/cf-analytic
