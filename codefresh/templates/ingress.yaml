@@ -1,3 +1,4 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -50,3 +51,4 @@ spec:
           serviceName: {{ .Release.Name }}-registry
           servicePort: 5000
       {{- end }}
+{{- end }}

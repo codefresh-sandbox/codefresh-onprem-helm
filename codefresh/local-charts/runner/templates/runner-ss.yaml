@@ -40,6 +40,9 @@ spec:
           value: {{ .Values.tolerations.value | quote }}
           effect: {{ .Values.tolerations.effect | quote }}
       {{- end }}
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
       {{- if .Values.global.privateRegistry }}
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
