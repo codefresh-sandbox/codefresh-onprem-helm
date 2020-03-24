@@ -1,27 +1,27 @@
 nomios: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 hermes: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 cronus: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 helm-repo-manager: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 cfapi: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 cfui: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 runtime-environment-manager: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 cf-broadcaster: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 payments: 
   imageTag: v34 
 cluster-providers: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 internal-status-page: 
   imageTag: v9 
 kube-integration: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 accounts-referrals: 
   imageTag: v16 
 mailer: 
@@ -33,20 +33,20 @@ workflow-baseline-invoker:
 salesforce-reporter: 
   imageTag: v17 
 tasker-kubernetes: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 charts-manager: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 context-manager: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 pipeline-manager: 
-  imageTag: cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
 cfsign: 
-  imageTag: cf-onprem-v1.0.90 
-engineImage: codefresh/engine:cf-onprem-v1.0.90 
-DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:cf-onprem-v1.0.90 
+  imageTag: cf-onprem-v1.0.95 
+engineImage: codefresh/engine:1.88.12
+DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.1
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2 
-DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:cf-onprem-v1.0.90 
-DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:cf-onprem-v1.0.90 
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:cf-onprem-v1.0.90 
-GIT_CLONE_IMAGE: codefresh/cf-git-cloner:cf-onprem-v1.0.90 
-FS_OPS_IMAGE: codefresh/fs-ops:latest
+DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:8.0.1
+DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.11
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:0.0.36
+GIT_CLONE_IMAGE: codefresh/cf-git-cloner:9.1.0
+FS_OPS_IMAGE: codefresh/fs-ops:1.1.0

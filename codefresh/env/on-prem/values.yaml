@@ -101,6 +101,8 @@ nomios:
     dockerRegistry: gcr.io/codefresh-enterprise/
     
 cronus:
+  event:
+    action: "s"
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
     
@@ -191,6 +193,9 @@ k8s-monitor:
 
 cluster-providers:
   replicaCount: 1
+  gcAuthClientID: ""
+  gcAuthClientSecret: ""
+  safeSecret: ""
   image: codefresh/cluster-providers
   dockerRegistry: gcr.io/codefresh-enterprise/
   
@@ -212,6 +217,7 @@ charts-manager:
   disablePublicRepos: true
   
 context-manager:
+  safeSecret: ""
   replicaCount: 1
   image: codefresh/context-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
@@ -222,6 +228,8 @@ context-manager:
   
 pipeline-manager:
   replicaCount: 1
+  safeSecret: ""
+  stepsCatalogGithubToken: ""
   image: codefresh/pipeline-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
@@ -304,7 +312,9 @@ global:
 
   # cfapi service name
   cfapiService: cfapi
-
+  cfcrDomain: ""
+  gceProject: ""
+  launchDarklySdkKey: "dummy-key"
   # cfapi internal service port
   cfapiInternalPort: 3000
 
