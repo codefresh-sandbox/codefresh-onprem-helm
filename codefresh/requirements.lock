@@ -30,67 +30,67 @@ dependencies:
   repository: file://../ingress
   version: 0.1.8
 - name: cluster-providers
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.5.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.5.1
 - name: kube-integration
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.15.9-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.15.13
 - name: accounts-referrals
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.5.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.5.1
 - name: charts-manager
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.5.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.5.1
 - name: mailer
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.14.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.14.1
 - name: payments
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 2.2.3-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 2.2.3
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
   version: 1.1.2
 - name: segment-reporter
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.3.8-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.3.8
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
   version: 1.8.0
 - name: tasker-kubernetes
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.8.12-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.8.18
 - name: context-manager
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 2.3.2-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 2.3.2
 - name: pipeline-manager
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 3.66.4-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 3.66.9
 - name: cfapi
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 15.23.6-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 15.28.8
 - name: cfui
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 12.8.11-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 12.10.7
 - name: onboarding-status
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.5.3-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.5.3
 - name: runtime-environment-manager
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 3.15.2-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 3.15.2
 - name: cf-broadcaster
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 1.3.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 1.3.1
 - name: helm-repo-manager
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.7.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 0.7.1
 - name: hermes
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.17.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 0.17.1
 - name: nomios
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.8.1-saas-6376-seccontextfix
+  repository: http://chartmuseum.codefresh.io
+  version: 0.8.1
 - name: cronus
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.5.1-saas-6376-seccontextfix
-digest: sha256:b32ac8c4e41da5f32e4bc339f06e1e6b42c89a079bc79fcf19cafc8480540522
-generated: "2020-03-23T13:51:35.191476404+02:00"
+  repository: http://chartmuseum.codefresh.io
+  version: 0.5.1
+digest: sha256:b8b6be976277e8ba705793ca80ae821be5a277227586566c8fcd42150a59ab85
+generated: "2020-03-27T00:49:13.389178387+02:00"

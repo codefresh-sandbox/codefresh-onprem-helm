@@ -41,7 +41,7 @@ cp codefresh/.helmignore.onprem codefresh/.helmignore
 
 if [[ -z "${SKIP_HELM_UPDATE}" ]]; then
   echo "Exec helm dependency update --skip-refresh codefresh"
-  helm dependency update --skip-refresh codefresh
+  helm dependency update --skip-refresh --debug codefresh
 fi
 
 package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')

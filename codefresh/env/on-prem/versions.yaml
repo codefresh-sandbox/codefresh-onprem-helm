@@ -1,27 +1,27 @@
 nomios: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 hermes: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 cronus: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 helm-repo-manager: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 cfapi: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 cfui: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 runtime-environment-manager: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 cf-broadcaster: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 payments: 
   imageTag: v34 
 cluster-providers: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 internal-status-page: 
   imageTag: v9 
 kube-integration: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 accounts-referrals: 
   imageTag: v16 
 mailer: 
@@ -33,15 +33,15 @@ workflow-baseline-invoker:
 salesforce-reporter: 
   imageTag: v17 
 tasker-kubernetes: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 charts-manager: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 context-manager: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 pipeline-manager: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 cfsign: 
-  imageTag: cf-onprem-v1.0.95 
+  imageTag: cf-onprem-v1.0.96 
 engineImage: codefresh/engine:1.88.12
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.1
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2 
