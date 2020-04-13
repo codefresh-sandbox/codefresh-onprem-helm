@@ -43,10 +43,10 @@ pipeline-manager:
 cfsign: 
   imageTag: cf-onprem-v1.0.97 
 engineImage: codefresh/engine:1.99.0
-DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.1
+DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:cf-onprem-v1.0.97
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2 
-DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:8.0.1
-DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.11
+DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:cf-onprem-v1.0.97
+DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:cf-onprem-v1.0.97
 CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:cf-onprem-v1.0.97
-GIT_CLONE_IMAGE: codefresh/cf-git-cloner:9.2.0
+GIT_CLONE_IMAGE: codefresh/cf-git-cloner:cf-onprem-v1.0.97
 FS_OPS_IMAGE: codefresh/fs-ops:1.1.0
