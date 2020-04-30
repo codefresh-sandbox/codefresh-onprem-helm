@@ -1,0 +1,36 @@
+{{- if .Values.global.runValidator -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-validator"
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-failed,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 120
+  backoffLimit: 1
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      serviceAccountName: {{ .Values.global.operatorServiceAccount }}
+      restartPolicy: Never
+      containers:
+      - name: pre-install-validator
+        image: {{ .Values.global.validatorImage | quote }}
+        env:
+         - name: NAMESPACE
+           value: {{ .Release.Namespace }}
+         - name: RESOURCE_KIND
+           value: {{ .Values.global.customResouceKindName }}
+{{- end -}}

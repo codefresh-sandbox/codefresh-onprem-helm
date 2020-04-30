@@ -22,7 +22,7 @@ rabbitmqUsername: user
 ## Erlang cookie to determine whether different nodes are allowed to communicate with each other
 ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
 ##
-# rabbitmqErlangCookie:
+rabbitmqErlangCookie: Y0NCdTZlOUdheFR1cEU2NHpaOFJNM3ViUHZxNTR1OVo=
 
 ## Node port
 ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
