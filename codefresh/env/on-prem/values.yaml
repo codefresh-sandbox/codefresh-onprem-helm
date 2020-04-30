@@ -109,6 +109,8 @@ cronus:
 hermes:
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
+  redis:
+    redisPassword: kj57kfwjeg
 
 cfui:
   image: codefresh/cf-ui
