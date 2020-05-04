@@ -42,7 +42,7 @@ pipeline-manager:
   imageTag: cf-onprem-v1.0.99 
 cfsign: 
   imageTag: cf-onprem-v1.0.99 
-engineImage: codefresh/engine:1.107.0
+engineImage: codefresh/engine:1.105.0
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:cf-onprem-v1.0.99
 DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2 
 DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:cf-onprem-v1.0.99
