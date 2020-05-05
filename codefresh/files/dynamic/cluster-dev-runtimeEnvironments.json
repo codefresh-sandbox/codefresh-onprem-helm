@@ -68,6 +68,11 @@
         }
       },
       "image": "codefresh/engine:master",
+      "command": [
+        "yarn",
+        "run",
+        "start"
+      ],
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -156,7 +161,12 @@
       "cluster" : {
         "namespace" : "default"
       },
-      "image" : "codefresh/engine:98",
+      "image" : "codefresh/engine:master",
+      "command": [
+        "yarn",
+        "run",
+        "start"
+      ],
       "resources" : {
         "requests" : {
           "cpu" : "100m",
@@ -322,6 +332,11 @@
         }
       },
       "image": "codefresh/engine:master",
+      "command": [
+        "yarn",
+        "run",
+        "start"
+      ],
       "resources": {
         "requests": {
           "cpu": "60m",
