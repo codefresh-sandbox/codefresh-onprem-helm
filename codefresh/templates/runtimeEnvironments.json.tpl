@@ -30,6 +30,11 @@
         "namespace": "codefresh"
       },
       "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
+      "command": [
+        "yarn",
+        "run",
+        "start"
+      ]
       "envVars": {
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}
