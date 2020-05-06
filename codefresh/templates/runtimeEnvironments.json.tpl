@@ -34,7 +34,7 @@
         "yarn",
         "run",
         "start"
-      ]
+      ],
       "envVars": {
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}
