@@ -34,8 +34,18 @@ Calculates storage class name
 {{/*
 Calculates storage size
 */}}
-
 {{- define "runner.storageSize" -}}
 {{- $storageSize := coalesce .Values.storageSize .Values.varLibDockerVolume.storageSize .Values.varLibDockerVolume.size -}}
 {{- printf "%s" $storageSize -}}
 {{- end -}}
+
+{{/*
+Make consulHost connection URL
+*/}}
+{{- define "makeConsulService" }}
+	{{- if .Values.global.consulHost }}
+	{{- printf "http://%s:%v" .Values.global.consulHost .Values.global.consulHttpPort -}}
+	{{- else }}
+	{{- printf "http://%s-%s.%s.svc:%v" .Release.Name .Values.global.consulService .Release.Namespace .Values.global.consulHttpPort }}
+	{{- end }}
+{{- end }}
