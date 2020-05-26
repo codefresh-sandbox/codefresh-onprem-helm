@@ -5,71 +5,61 @@ metadata:
   name: ingress
   namespace: {{ .Release.Namespace }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: ingress
-  namespace: {{ .Release.Namespace }}
-rules:
-  - apiGroups:
-      - ''
-    resources:
-      - configmaps
-      - endpoints
-      - nodes
-      - pods
-      - secrets
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - ''
-    resources:
-      - nodes
-    verbs:
-      - get
-  - apiGroups:
-      - ''
-    resources:
-      - services
-    verbs:
-      - get
-      - list
-      - update
-      - watch
-  - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - ''
-    resources:
-      - events
-    verbs:
-      - create
-      - patch
-  - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
-    resources:
-      - ingresses/status
-    verbs:
-      - update
-  - apiGroups:
-      - networking.k8s.io   # k8s 1.14+
-    resources:
-      - ingressclasses
-    verbs:
-      - get
-      - list
-      - watch
-
----
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: ingress
+# rules:
+#   - apiGroups:
+#       - ""
+#       - "extensions"
+#     resources:
+#       - configmaps
+#       - secrets
+#       - endpoints
+#       - ingresses
+#       - nodes
+#       - pods
+#     verbs:
+#       - list
+#       - watch
+#   - apiGroups:
+#       - ""
+#     resources:
+#       - nodes
+#     verbs:
+#       - get
+#   - apiGroups:
+#       - ""
+#     resources:
+#       - services
+#     verbs:
+#       - list
+#       - watch
+#       - get
+#       - update
+#   - apiGroups:
+#       - "extensions"
+#     resources:
+#       - ingresses
+#     verbs:
+#       - get
+#       - list
+#       - watch
+#   - apiGroups:
+#       - ""
+#     resources:
+#       - events
+#     verbs:
+#       - create
+#       - patch
+#   - apiGroups:
+#       - "extensions"
+#     resources:
+#       - ingresses/status
+#     verbs:
+#       - update
+# ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -153,17 +143,16 @@ subjects:
     name: ingress
     namespace: {{ .Release.Namespace }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: ingress-binding
-  namespace: {{ .Release.Namespace }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: ingress
-subjects:
-  - kind: ServiceAccount
-    name: ingress
-    namespace: {{ .Release.Namespace }}
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: ingress-binding
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: ingress
+# subjects:
+#   - kind: ServiceAccount
+#     name: ingress
+#     namespace: {{ .Release.Namespace }}
 {{ end }}
