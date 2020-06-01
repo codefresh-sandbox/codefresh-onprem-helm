@@ -1,0 +1,646 @@
+version: '1.0'
+
+stages:
+  - clone and checkout
+  - export tags
+  - push
+  - create package
+  - approval
+
+steps:
+
+  validate_release:
+    title: validate onprem version release
+    image: alpine/git
+    working_directory: /codefresh/volume
+    commands:
+      - rm -rf cf-api || true
+      - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-api.git --branch=master cf-api
+      - cd cf-api
+      - if [ $(git branch --all|grep ${{ONPREM_VERSION}}|wc -l) -gt 0 ]; then echo "Version ${{ONPREM_VERSION}} already exist, please submit a new version or change UPDATE_EXISTING_VER to true" && exit 1; else exit 0; fi
+    when:
+      condition:
+        any:
+          verifyUpdateVersion: 'includes(lower("${{UPDATE_EXISTING_VER}}"), "false") == true'
+
+  information:
+    image: alpine
+    commands:
+      - echo "The following onprem package version ${{ONPREM_VERSION}} will be built from branch ${{CF_BRANCH}} and will be pushed to ${{channel}} helm repo"
+      - cf_export SEM_VER=$(echo ${{ONPREM_VERSION}} | cut -d "v" -f 2)
+
+  main_clone:
+    type: parallel
+    stage: clone and checkout
+    steps:
+      cf-helm:
+        title: cf-helm clone
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-helm || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-helm.git --branch=${{CF_HELM_BRANCH}} cf-helm
+          - cd cf-helm
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-api-new-branch:
+        title: cf-api checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-api || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-api.git --branch=${{CF_BRANCH}} cf-api
+          - cd cf-api
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-ui-new-branch:
+        title: cf-ui checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-ui || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-ui.git --branch=${{CF_BRANCH}} cf-ui
+          - cd cf-ui
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-broadcaster-new-branch:
+        title: cf-broadcaster checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-broadcaster || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-broadcaster.git --branch=${{CF_BRANCH}} cf-broadcaster
+          - cd cf-broadcaster
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cluster-providers-new-branch:
+        title: cluster-providers checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cluster-providers || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cluster-providers.git --branch=${{CF_BRANCH}} cluster-providers
+          - cd cluster-providers
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      pipeline-manager-new-branch:
+        title: pipeline-manager checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf pipeline-manager || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/pipeline-manager.git --branch=${{CF_BRANCH}} pipeline-manager
+          - cd pipeline-manager
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      kube-integration-new-branch:
+        title: kube-integration checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf kube-integration || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/kube-integration.git --branch=${{CF_BRANCH}} kube-integration
+          - cd kube-integration
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      tasker-kubernetes-new-branch:
+        title: tasker-kubernetes checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf tasker-kubernetes || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/tasker-kubernetes.git --branch=${{CF_BRANCH}} tasker-kubernetes
+          - cd tasker-kubernetes
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      charts-manager-new-branch:
+        title: charts-manager checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf charts-manager || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/charts-manager.git --branch=${{CF_BRANCH}} charts-manager
+          - cd charts-manager
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      context-manager-new-branch:
+        title: context-manager checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf context-manager || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/context-manager.git --branch=${{CF_BRANCH}} context-manager
+          - cd context-manager
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      nomios-new-branch:
+        title: nomios checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf nomios || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/nomios.git --branch=${{CF_BRANCH}} nomios
+          - cd nomios
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      hermes-new-branch:
+        title: hermes checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf hermes || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/hermes.git --branch=${{CF_BRANCH}} hermes
+          - cd hermes
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cronus-new-branch:
+        title: cronus checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cronus || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cronus.git --branch=${{CF_BRANCH}} cronus
+          - cd cronus
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      helm-repo-manager-new-branch:
+        title: helm-repo-manager checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf helm-repo-manager || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/helm-repo-manager.git --branch=${{CF_BRANCH}} helm-repo-manager
+          - cd helm-repo-manager
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-tls-sign-new-branch:
+        title: cf-tls-sign checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf cf-tls-sign || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-tls-sign.git --branch=${{CF_BRANCH}} cf-tls-sign
+          - cd cf-tls-sign
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      runtime-environment-manager-new-branch:
+        title: runtime-environment-manager checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        commands:
+          - rm -rf runtime-environment-manager || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/runtime-environment-manager.git --branch=${{CF_BRANCH}} runtime-environment-manager
+          - cd runtime-environment-manager
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      engine-new-branch:
+        title: engine checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf engine || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/engine.git --branch=${{CF_BRANCH}} engine
+          - cd engine
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-docker-pusher-new-branch:
+        title: cf-docker-pusher checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-docker-pusher || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-docker-pusher.git --branch=${{CF_BRANCH}} cf-docker-pusher
+          - cd cf-docker-pusher
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-docker-puller-new-branch:
+        title: cf-docker-puller checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-docker-puller || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-docker-puller.git --branch=${{CF_BRANCH}} cf-docker-puller
+          - cd cf-docker-puller
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-docker-builder-new-branch:
+        title: cf-docker-builder checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-docker-builder || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-docker-builder.git --branch=${{CF_BRANCH}} cf-docker-builder
+          - cd cf-docker-builder
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-container-logger-new-branch:
+        title: cf-container-logger checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-container-logger || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-container-logger.git --branch=${{CF_BRANCH}} cf-container-logger
+          - cd cf-container-logger
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-git-cloner-new-branch:
+        title: cf-git-cloner checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-git-cloner || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-git-cloner.git --branch=${{CF_BRANCH}} cf-git-cloner
+          - cd cf-git-cloner
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cli-new-branch:
+        title: cli checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cli || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cli.git --branch=${{CF_BRANCH}} cli
+          - cd cli
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cf-docker-test-reporting-new-branch:
+        title: cf-docker-test-reporting checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cf-docker-test-reporting || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-io/cf-docker-test-reporting.git --branch=${{CF_BRANCH}} cf-docker-test-reporting
+          - cd cf-docker-test-reporting
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+      cfstep-helm-new-branch:
+        title: cfstep-helm checkout onprem branch
+        image: alpine/git
+        working_directory: /codefresh/volume
+        fail_fast: false
+        commands:
+          - rm -rf cfstep-helm || true
+          - git clone https://guysalton-codefresh:${{GITHUB_TOKEN}}@github.com/codefresh-contrib/cfstep-helm.git --branch=${{CF_BRANCH}} cfstep-helm
+          - cd cfstep-helm
+          - git checkout -b ${{ONPREM_VERSION}}
+          - git push --set-upstream origin ${{ONPREM_VERSION}}
+
+  getRuntimeImagesVersion:
+    image: appropriate/curl
+    stage: export tags
+    working_directory: /codefresh/volume/cf-helm
+    fail_fast: false
+    commands:
+      - >-
+        curl --fail -X GET 'https://g.codefresh.io/api/admin/runtime-environments/system%2Froot?extend=false' -H 'Authorization: ${{CF_API_KEY}}' -H 'Content-Type: application/json' -H 'Postman-Token: aa0a6f3f-4d9d-441c-9abf-32eecf875a58' -H 'cache-control: no-cache' -d '{ "options": {}, "branch": "master", "variables": {}, "contexts": [] }' > engine.json
+      - >-
+        curl --fail -X GET 'https://g.codefresh.io/api/admin/runtime-environments/system%2Fdefault-plan?extend=false' -H 'Authorization: ${{CF_API_KEY}}' -H 'Content-Type: application/json' -H 'Postman-Token: aa0a6f3f-4d9d-441c-9abf-32eecf875a58' -H 'cache-control: no-cache' -d '{ "options": {}, "branch": "master", "variables": {}, "contexts": [] }' > runtime.json
+  exportLatestTags:
+    type: parallel
+    stage: export tags
+    steps:
+      cfapi:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cf-api
+        commands:
+          - cf_export cfapi_tag=$(yq r service.yaml version)
+      cluster-providers:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cluster-providers
+        commands:
+          - cf_export cluster-providers_tag=$(yq r service.yaml version)
+      kube-integration:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/kube-integration
+        commands:
+          - cf_export kube-integration_tag=$(yq r service.yaml version)
+      tasker-kubernetes:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/tasker-kubernetes
+        commands:
+          - cf_export tasker-kubernetes_tag=$(yq r service.yaml version)
+      charts-manager:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/charts-manager
+        commands:
+          - cf_export charts-manager_tag=$(yq r service.yaml version)
+      context-manager:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/context-manager
+        commands:
+          - cf_export context-manager_tag=$(yq r service.yaml version)
+      pipeline-manager:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/pipeline-manager
+        commands:
+          - cf_export pipeline-manager_tag=$(yq r service.yaml version)
+      cfsign:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cf-tls-sign
+        commands:
+          - cf_export cfsign_tag=$(yq r service.yaml version)
+      cfui:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cf-ui
+        commands:
+          - cf_export cfui_tag=$(yq r service.yaml version)
+      cf-broadcaster:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cf-broadcaster
+        commands:
+          - cf_export cfbroadcaster_tag=$(yq r service.yaml version)
+      nomios:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/nomios
+        commands:
+          - cf_export nomios_tag=$(yq r service.yaml version)
+      hermes:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/hermes
+        commands:
+          - cf_export hermes_tag=$(yq r service.yaml version)
+      cronus:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/cronus
+        commands:
+          - cf_export cronus_tag=$(yq r service.yaml version)
+      helm-repo-manager:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/helm-repo-manager
+        commands:
+          - cf_export helm-repo-manager_tag=$(yq r service.yaml version)
+      runtime-environment-manager:
+        image: amircodefresh/go-yq
+        working_directory: /codefresh/volume/runtime-environment-manager
+        commands:
+          - cf_export runtime-environment-manager_tag=$(yq r service.yaml version)
+      engine:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export engine_tmp=$(jq .runtimeScheduler.image engine.json) && cf_export engine=$(echo $engine_tmp | tr -d '"'); else cf_export engine=$(yq r codefresh/env/on-prem/versions.yaml engineImage); fi
+      pusher:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export pusher_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PUSHER_IMAGE runtime.json) && cf_export pusher=$(echo $pusher_tmp | tr -d '"'); else cf_export pusher=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE); fi
+      puller:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export puller_tmp=$(jq .runtimeScheduler.envVars.DOCKER_PULLER_IMAGE runtime.json) && cf_export puller=$(echo $puller_tmp | tr -d '"'); else cf_export puller=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE); fi
+      builder:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export builder_tmp=$(jq .runtimeScheduler.envVars.DOCKER_BUILDER_IMAGE runtime.json) && cf_export builder=$(echo $builder_tmp | tr -d '"'); else cf_export builder=$(yq r codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE); fi
+      logger:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export logger_tmp=$(jq .runtimeScheduler.envVars.CONTAINER_LOGGER_IMAGE runtime.json) && cf_export logger=$(echo $logger_tmp | tr -d '"'); else cf_export logger=$(yq r codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE); fi
+      cloner:
+        image: amircodefresh/yq-jq
+        working_directory: /codefresh/volume/cf-helm
+        fail_fast: false
+        commands:
+          - if [ ${{CF_BRANCH}} = "master" ]; then export cloner_tmp=$(jq .runtimeScheduler.envVars.GIT_CLONE_IMAGE runtime.json) && cf_export cloner=$(echo $cloner_tmp | tr -d '"'); else cf_export cloner=$(yq r codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE); fi
+
+  push:
+    type: parallel
+    stage: push
+    steps:
+      cfapi-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cf-api:${{cfapi_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cf-api
+      cluster-providers-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cluster-providers:${{cluster-providers_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cluster-providers
+      kube-integration-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/kube-integration:${{kube-integration_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/kube-integration
+      tasker-kubernetes-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/tasker-kubernetes:${{tasker-kubernetes_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/tasker-kubernetes
+      charts-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/charts-manager:${{charts-manager_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/charts-manager
+      context-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/context-manager:${{context-manager_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/context-manager
+      pipeline-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/pipeline-manager:${{pipeline-manager_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/pipeline-manager
+      cfsign-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cf-tls-sign:${{cfsign_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cf-tls-sign
+      cfui-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cf-ui:${{cfui_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cf-ui
+      cfbroadcaster-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cf-broadcaster:${{cfbroadcaster_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cf-broadcaster
+      nomios-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/nomios:${{nomios_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/nomios
+      hermes-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/hermes:${{hermes_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/hermes
+      cronus-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/cronus:${{cronus_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cronus
+      helm-repo-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/helm-repo-manager:${{helm-repo-manager_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/helm-repo-manager
+      runtime-environment-manager-push:
+        type: push
+        registry: codefresh-enterprise
+        candidate:  gcr.io/codefresh-inc/codefresh/runtime-environment-manager:${{runtime-environment-manager_tag}}
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/runtime-environment-manager
+      engine-push:
+        type: push
+        registry: dockerhub
+        candidate:  ${{engine}}
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/engine
+      pusher-push:
+        type: push
+        registry: dockerhub
+        candidate:  ${{pusher}}
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/cf-docker-pusher
+      puller-push:
+        type: push
+        registry: dockerhub
+        candidate:  ${{puller}}
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/cf-docker-puller
+      builder-push:
+        type: push
+        registry: dockerhub
+        candidate:  ${{builder}}
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/cf-docker-builder
+#       logger-push:
+#         type: push
+#         registry: dockerhub
+#         candidate:  ${{logger}}
+#         tag: ${{ONPREM_VERSION}}
+#         fail_fast: false
+#         image_name: codefresh/cf-container-logger
+      cloner-push:
+        type: push
+        registry: dockerhub
+        candidate:  ${{cloner}}
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/cf-git-cloner
+      cli-push:
+        type: push
+        registry: dockerhub
+        candidate:  codefresh/cli
+        tag: ${{ONPREM_VERSION}}
+        fail_fast: false
+        image_name: codefresh/cli
+      cf-docker-test-reporting-push:
+        type: push
+        registry: dockerhub
+        candidate:  codefresh/cf-docker-test-reporting
+        fail_fast: false
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cf-docker-test-reporting
+      cfstep-helm-push:
+        type: push
+        registry: dockerhub
+        candidate:  codefresh/cfstep-helm
+        fail_fast: false
+        tag: ${{ONPREM_VERSION}}
+        image_name: codefresh/cfstep-helm
+
+
+  updateOnpremVersion:
+    image: amircodefresh/go-yq
+    stage: create package
+    working_directory: /codefresh/volume/cf-helm
+    commands:
+      - yq w -i codefresh/env/on-prem/versions.yaml nomios.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml hermes.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cronus.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml helm-repo-manager.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cfapi.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cfui.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml runtime-environment-manager.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cf-broadcaster.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cluster-providers.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml kube-integration.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml tasker-kubernetes.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml charts-manager.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml context-manager.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml pipeline-manager.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml cfsign.imageTag ${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml engineImage "codefresh/engine:${{ONPREM_VERSION}}"
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PUSHER_IMAGE codefresh/cf-docker-pusher:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_PULLER_IMAGE codefresh/cf-docker-puller:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml DOCKER_BUILDER_IMAGE codefresh/cf-docker-builder:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml CONTAINER_LOGGER_IMAGE codefresh/cf-container-logger:${{ONPREM_VERSION}}
+      - yq w -i codefresh/env/on-prem/versions.yaml GIT_CLONE_IMAGE codefresh/cf-git-cloner:${{ONPREM_VERSION}}
+      - cat codefresh/requirements.yaml
+      - cat codefresh/env/on-prem/versions.yaml
+
+  uploadVersions:
+   image: codefresh/cf-docker-test-reporting
+   working_directory: /codefresh/volume/cf-helm
+   stage: create package
+   environment:
+     - REPORT_INDEX_FILE=versions.yaml
+     - REPORT_DIR=codefresh/env/on-prem
+     - CF_STORAGE_INTEGRATION=amazon
+     - BUCKET_NAME=onprem-versions
+     - REPORT_LOGGING_LEVEL=debug
+
+  onpremPackage:
+    image: codefresh/helm-onprem-package
+    working_directory: /codefresh/volume/cf-helm
+    stage: create package
+    commands:
+      - export HELM_REPO_ACCESS_TOKEN=${{CF_API_KEY}}
+      - export HELM_REPO_AUTH_HEADER=Authorization
+      - helm repo add codefresh-onprem-${{channel}} http://charts.codefresh.io/${{channel}}
+      - helm repo add codefresh http://chartmuseum.codefresh.io
+      - helm repo update
+      - aws configure set aws_access_key_id ${{aws_access_key_id}}
+      - aws configure set aws_secret_access_key ${{aws_secret_access_key}}
+      - aws configure set default.region us-east-2
+      - ./update_onprem.sh ${{channel}} ${{SEM_VER}}
+
+  approval:
+    stage: approval
+    type: pending-approval
+    title: Approve publish onprem release to prod repo
+    description: Approve publish onprem release to prod repo
+
+  publishProd:
+    stage: approval
+    image: codefresh/cli
+    commands:
+      - codefresh run codefresh-io/cf-helm/onprem-publish-prod -b=${{ONPREM_VERSION}} -v APPROVED_BUILD=${{CF_BUILD_ID}} -v SEM_VER=${{SEM_VER}}
