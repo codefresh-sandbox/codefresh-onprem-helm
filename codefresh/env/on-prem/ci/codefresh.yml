@@ -1,0 +1,120 @@
+version: '1.0'
+
+stages:
+  - clone
+  - prepare
+  - create package
+  - test
+  - git_tag
+
+steps:
+  main_clone:
+    stage: clone
+    type: git-clone
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    git: ${{GIT_CONTEXT}}
+    revision: ${{CF_BRANCH}}
+
+  validate_and_export_version:
+    description: "Runs a few validation checks"
+    image: codefreshio/ci-helpers
+    stage: prepare
+    shell: bash
+    commands:
+      - source ./codefresh/env/on-prem/ci/validate.sh
+      - cf_export ONPREM_VERSION
+
+  update_runtime_images_versions:
+    description: "Gets the latest runtime images versions from prod RE configs"
+    image: codefreshio/ci-helpers
+    stage: prepare
+    shell: bash
+    commands:
+      - |-
+        set -eu
+        
+        codefresh get sys-re system/default-plan --extend -o json > runtime.json
+
+        RUNTIME_IMAGES=(
+            ENGINE_IMAGE
+            CONTAINER_LOGGER_IMAGE
+            DOCKER_PUSHER_IMAGE
+            DOCKER_PULLER_IMAGE
+            DOCKER_BUILDER_IMAGE
+            GIT_CLONE_IMAGE
+            COMPOSE_IMAGE
+            KUBE_DEPLOY
+            FS_OPS_IMAGE
+        )
+
+        for k in ${RUNTIME_IMAGES}; do
+            if [[ "$k" == "ENGINE_IMAGE" ]]; then
+                image="$(jq -er .runtimeScheduler.image runtime.json)"
+                yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
+            else
+                image="$(jq -er .runtimeScheduler.envVars.$k runtime.json)"
+                yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
+            fi
+        done
+        
+        echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
+        yq m codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
+  
+  build_chart:
+    description: "Builds a sem-versioned Helm package. Adds a feature branch tag to the chart version, when built from non-master"
+    image: alpine/helm:3.2.1
+    stage: create package
+    commands:
+      - |-
+        set -u
+        
+        if [[ "${CF_BRANCH}" != "${ONPREM_MASTER_BRANCH}" ]]; then
+           ONPREM_VERSION="${ONPREM_VERSION}-${CF_BRANCH}"
+        fi
+        
+        cf_export ONPREM_VERSION
+
+        helm repo add codefresh http://chartmuseum.codefresh.io
+        helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
+        helm dependency build --debug codefresh
+        cf_export PACKAGE=$(echo $(helm package codefresh -d ${{CF_VOLUME_PATH}}/cf_chart --version $ONPREM_VERSION) | awk -F ': ' '{print $2}')
+      
+  push_chart:
+    description: "Pushes the build chart to one of the onprem Helm repos"
+    image: codefresh/helm-onprem-package
+    stage: create package
+    working_directory: ${{CF_VOLUME_PATH}}/cf_chart
+    commands:
+      - if [[ "${CF_BRANCH}" == "${ONPREM_MASTER_BRANCH}" ]]; then export CHANNEL=${CHANNEL:-prod}; else export CHANNEL=${CHANNEL:-dev}; fi
+      - cf_export CHANNEL
+      - echo -e "\e[33mPushing onprem chart of version \"${ONPREM_VERSION}\" to onprem \"${CHANNEL}\" repo\n\e[0m"
+      - aws s3 cp s3://charts.codefresh.io/${CHANNEL}/index.yaml .
+      - helm repo index . --merge index.yaml --url http://charts.codefresh.io/${CHANNEL}/
+      - aws s3 cp index.yaml s3://charts.codefresh.io/${CHANNEL}/
+      - aws s3 cp ${PACKAGE} s3://charts.codefresh.io/${CHANNEL}/
+        
+  run_tests:
+    description: "Runs integration tests for the created release"
+    stage: test
+    image: codefreshio/onprem-tester:0.1.1
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - export CHART_PATH=${{PACKAGE}}
+      - ./test-cases/install_pure_helm.sh
+    when:
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+                
+  create_git_tag:
+    image: codefreshio/ci-helpers
+    stage: git_tag
+    commands:
+      - |-
+        source /get-token/get-gh-token.sh
+        curl --fail -X POST -d "{\"ref\": \"refs/tags/onprem-${ONPREM_VERSION}\", \"sha\": \"${CF_REVISION}\"}" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${CF_REPO_OWNER}/${CF_REPO_NAME}/git/refs
+    when:
+      branch:
+        only: [ "${{ONPREM_MASTER_BRANCH}}" ]
