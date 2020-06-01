@@ -89,6 +89,7 @@ builder:
 
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 mongoSeedJobScript: files/on-prem/mongoSeedJobScript
+postgresSeedJobScript: files/on-prem/postgresSeedScript
 
 runtime_envs:
   - name: codefresh-inc

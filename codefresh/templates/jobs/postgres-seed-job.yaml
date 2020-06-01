@@ -1,0 +1,56 @@
+{{- if and .Values.global.seedJobs .Values.global.postgresSeedJob }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-seed-postgres
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 0
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-seed-postgres
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      restartPolicy: Never
+      containers:
+      - name: {{ template "fullname" . }}-seed-postgres
+        {{- if .Values.global.privateRegistry }} 
+        image: {{ .Values.global.dockerRegistry }}{{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:11.7.0-debian-10-r99" }}
+        {{- else }}
+        image: {{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:11.7.0-debian-10-r99" }}
+        {{- end }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_HOST
+            value: {{ required "postgresHost value is required" .Values.global.postgresHostname }}
+          - name: POSTGRES_PORT
+            value: {{ .Values.global.postgresPort | quote | default "5432" }}
+          - name: POSTGRES_DATABASE
+            value: {{ .Values.global.postgresDatabase | default "codefresh" }}        
+          - name: POSTGRES_SEED_USER
+            value: {{ .Values.global.postgresSeedJob.user | default .Values.global.postgresUser }}
+          - name: POSTGRES_SEED_PASSWORD
+            value: {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword }}
+          - name: POSTGRES_USER
+            value: {{ required "postgresUser value is required" .Values.global.postgresUser }}
+          - name: POSTGRES_PASSWORD
+            value: {{ required "postgresPassword value is required" .Values.global.postgresPassword }}
+        command:
+          - "/bin/bash"
+          - "-exc"
+          - |
+{{ .Files.Get (print .Values.postgresSeedJobScript ) | indent 12  }}
+{{- end }}
