@@ -163,15 +163,15 @@ dependencies:
     - saas
     - infra
   - name: helm-repo-manager
-    version: ^0.7.0
-    repository: http://chartmuseum.codefresh.io
+    version: "0.7.5-saas-6676-k16fix-1"
+    repository: http://chartmuseum-dev.codefresh.io
     condition: helm-repo-manager.enabled
     tags:
     - helm
     - chartmuseum
   - name: hermes
-    version: ^0.17.0
-    repository: http://chartmuseum.codefresh.io
+    version: "0.17.8-saas-6676-k16fix"
+    repository: http://chartmuseum-dev.codefresh.io
     condition: hermes.enabled
     tags:
     - trigger

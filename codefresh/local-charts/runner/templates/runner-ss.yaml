@@ -1,6 +1,6 @@
 {{- $registryService := printf "%s-%s.%s.svc:%v" .Release.Name .Values.global.registryService .Release.Namespace .Values.global.registryPort }}
 
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "fullname" . }}
