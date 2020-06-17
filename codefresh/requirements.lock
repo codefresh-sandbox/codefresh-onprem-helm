@@ -67,10 +67,10 @@ dependencies:
   version: 3.70.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 15.83.02
+  version: 15.83.03
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.46.12
+  version: 12.46.13
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.6
-digest: sha256:40b075dbb2b855713596e3fc8ea5e7ffa3e5b72bf17e0203a462c516b27d427e
-generated: "2020-06-16T16:50:05.780811185+03:00"
+digest: sha256:2b672d696e95bf5f02872dc5dc0c352a68bec843efbc243bf9ac61c64419ddb1
+generated: "2020-06-17T14:11:04.681278507+03:00"

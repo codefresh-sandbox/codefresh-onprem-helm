@@ -70,11 +70,13 @@ new_version="$(semver-cli inc patch $(yq r codefresh/Chart.yaml version))"
 if [ ${CI} == 'true' ]; then
     configGitCiBot
     prepareGit
+    chartVersionBump
     gitCommitAndPush
     githubPR
 else
     checkGitWorkdir
     prepareGit
+    chartVersionBump
     updateDependencies
     gitCommitAndPush
     msg "Please open a PR from ${pr_branch} to ${ONPREM_MASTER_BRANCH}"
