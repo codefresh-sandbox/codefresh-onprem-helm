@@ -1,65 +1,81 @@
 #!/usr/bin/env bash
 
-#release.major.minor
+set -ue
+
+DEBUG=${DEBUG:-false}
+
+if [ ${DEBUG} == "true" ]; then
+    set -x
+fi
 
 msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
+err() { echo -e "\e[31mERR ---> $1\e[0m" ; return 1; }
 
-err() { echo -e "\e[31mERR ---> $1\e[0m" ; exit 1; }
+ONPREM_MASTER_BRANCH=${ONPREM_MASTER_BRANCH:-onprem-alignment}
+REPO_OWNER=${REPO_OWNER:-codefresh-io}
+REPO_NAME=${REPO_NAME:-cf-helm}
 
-channel=${1:-dev}
-new_version=${2}
+GIT_ORIGIN_NAME=${GIT_ORIGIN_NAME:-origin}
+CI=${CI:-false}
 
-version_bump() {
-  old_version=$(grep version codefresh/Chart.yaml | awk -F ': ' '{print $2}')
-
-  release=$(echo ${old_version} | awk -F '.' '{print $1}')
-  major=$(echo ${old_version} | awk -F '.' '{print $2}')
-  minor=$(echo ${old_version} | awk -F '.' '{print $3}')
-
-  minor=$((minor+1))
-
-  increased_version=$(echo ${release}.${major}.${minor})
-
-  new_version=${new_version:-${increased_version}}
-
-  sed -i"" -e "s/^version.*/version: ${new_version}/" codefresh/Chart.yaml
-
-  git commit -m "CF Helm Onprem updated to ${new_version} " codefresh/Chart.yaml
-
-  msg "Codefresh Helm Chart will be updated to ${new_version}"
+checkGitWorkdir() {
+    if [ -z "$(git status --untracked-files=no --porcelain)" ]; then 
+        msg "Git working directory is clean, continuing..."
+    else 
+        err "Git working is not clean, stopping. The script should be run on a clean git working directory"
+    fi
 }
 
-version_bump
+chartVersionBump() {
+    yq w -i codefresh/Chart.yaml version "${new_version}" 
+    msg "Codefresh Helm Chart will be updated to ${new_version}"
+}
 
-# save default values and .helmignore
-mv -v codefresh/values.yaml codefresh/values.yaml.bak
-mv -v codefresh/.helmignore codefresh/.helmignore.bak
+updateDependencies() {
+    echo "Exec helm dependency update --skip-refresh codefresh"
+    helm dependency update --skip-refresh --debug codefresh
+}
 
-# copy on-prem values and helmignore instead default
-yamlreader codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
-cp codefresh/.helmignore.onprem codefresh/.helmignore
+prepareGit() {
+    git clean -dfx
+    pr_branch="onprem-update-${new_version}"
 
-if [[ -z "${SKIP_HELM_UPDATE}" ]]; then
-  echo "Exec helm dependency update --skip-refresh codefresh"
-  helm dependency update --skip-refresh --debug codefresh
+    git fetch ${GIT_ORIGIN_NAME}
+    git checkout -B ${pr_branch} ${GIT_ORIGIN_NAME}/${ONPREM_MASTER_BRANCH}
+}
+
+configGitCiBot() {
+    git config --global user.email ${CI_BOT_EMAIL}
+    git config --global user.name ${CI_BOT_NAME}
+    git remote set-url origin https://${CI_BOT_NAME}:${GITHUB_TOKEN}@github.com/${CI_BOT_NAME}/cf-helm.git
+}
+
+gitCommitAndPush() {
+    msg "Committing requirements.lock, Chart.yaml and pushing to the ${pr_branch} branch..."
+
+    git add codefresh/requirements.lock codefresh/Chart.yaml
+    git commit -m "Update onprem to ${new_version}"
+    git push ${GIT_ORIGIN_NAME} ${pr_branch}
+}
+
+githubPR() {
+    msg "Opening a PR named \"onprem-update-${new_version}\" on Github..."
+
+    curl --fail -X POST -d "{\"title\": \"onprem-update-${new_version}\",\"body\": \"onprem-update-${new_version}\",\"head\": \"${pr_branch}\",\"base\": \"${ONPREM_MASTER_BRANCH}\"}" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls"
+    msg "PR \"onprem-update-${new_version}\" has been successfully created"
+}
+
+new_version="$(semver-cli inc patch $(yq r codefresh/Chart.yaml version))"
+
+if [ ${CI} == 'true' ]; then
+    configGitCiBot
+    prepareGit
+    gitCommitAndPush
+    githubPR
+else
+    checkGitWorkdir
+    prepareGit
+    updateDependencies
+    gitCommitAndPush
+    msg "Please open a PR from ${pr_branch} to ${ONPREM_MASTER_BRANCH}"
 fi
-
-package=$(echo $(helm package codefresh) | awk -F ': ' '{print $2}')
-
-# restore defaults
-mv -v codefresh/values.yaml.bak codefresh/values.yaml
-mv -v codefresh/.helmignore.bak codefresh/.helmignore
-
-rm -fv index.yaml
-
-#wget http://charts.codefresh.io/${channel}/index.yaml
-aws s3 cp s3://charts.codefresh.io/${channel}/index.yaml .
-if [[ $? == 0 && -f index.yaml ]]; then
-   MERGE_INDEX="--merge index.yaml"
-fi
-helm repo index . $MERGE_INDEX --url http://charts.codefresh.io/${channel}/
-
-aws s3 cp index.yaml s3://charts.codefresh.io/${channel}/
-aws s3 cp ${package} s3://charts.codefresh.io/${channel}/
-
-msg "Codefresh Onprem updated to ${new_version}"

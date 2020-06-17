@@ -59,9 +59,9 @@
         "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
         "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
         "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
-        {{- if .Values.global.privateRegistry }}
         "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
-        {{- end }}
+        "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
+        "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
@@ -128,7 +128,7 @@
       "cluster": {
         "namespace": "default"
       },
-      "image": "{{ .Values.engineImage }}",
+      "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
       "resources": {
         "requests": {
           "cpu": "100m",
@@ -148,6 +148,9 @@
         "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
         "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
         "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+        "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
+        "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
+        "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {},
