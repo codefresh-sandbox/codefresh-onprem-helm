@@ -47,7 +47,7 @@ prepareGit() {
 configGitCiBot() {
     git config --global user.email ${CI_BOT_EMAIL}
     git config --global user.name ${CI_BOT_NAME}
-    git remote set-url origin https://${CI_BOT_NAME}:${GITHUB_TOKEN}@github.com/${CI_BOT_NAME}/cf-helm.git
+    git remote set-url origin https://${CI_BOT_NAME}:${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git
 }
 
 gitCommitAndPush() {
