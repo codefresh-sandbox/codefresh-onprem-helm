@@ -50,7 +50,7 @@ steps:
         for k in ${RUNTIME_IMAGES}; do
             if [[ "$k" == "ENGINE_IMAGE" ]]; then
                 image="$(jq -er .runtimeScheduler.image runtime.json)"
-                yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
+                yq w -i codefresh/env/on-prem/versions.yaml engineImage ${image}
             else
                 image="$(jq -er .runtimeScheduler.envVars.$k runtime.json)"
                 yq w -i codefresh/env/on-prem/versions.yaml $k ${image}

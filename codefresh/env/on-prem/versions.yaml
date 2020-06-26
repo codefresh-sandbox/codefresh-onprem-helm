@@ -1,4 +1,4 @@
-ENGINE_IMAGE: codefresh/engine:1.114.4
+engineImage: codefresh/engine:1.115.0
 CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.2
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.1
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.1
