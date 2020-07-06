@@ -1,5 +1,5 @@
 version: '1.0'
-
+mode: parallel
 stages:
   - clone
   - prepare
@@ -23,16 +23,26 @@ steps:
     commands:
       - source ./codefresh/env/on-prem/ci/validate.sh
       - cf_export ONPREM_VERSION
+    when:
+      steps:
+      - name: main_clone
+        on:
+        - success
 
   update_runtime_images_versions:
     description: "Gets the latest runtime images versions from prod RE configs"
     image: codefreshio/ci-helpers
     stage: prepare
     shell: bash
+    when:
+      steps:
+      - name: main_clone
+        on:
+        - success
     commands:
       - |-
         set -eu
-        
+
         codefresh get sys-re system/default-plan --extend -o json > runtime.json
 
         RUNTIME_IMAGES=(
@@ -56,29 +66,37 @@ steps:
                 yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
             fi
         done
-        
+
         echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
         yq m codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
-  
+
   build_chart:
     description: "Builds a sem-versioned Helm package. Adds a feature branch tag to the chart version, when built from non-master"
     image: alpine/helm:3.2.1
     stage: create package
+    when:
+      steps:
+      - name: validate_and_export_version
+        on:
+        - success
+      - name: update_runtime_images_versions
+        on:
+        - success
     commands:
       - |-
         set -u
-        
+
         if [[ "${CF_BRANCH}" != "${ONPREM_MASTER_BRANCH}" ]]; then
            ONPREM_VERSION="${ONPREM_VERSION}-${CF_BRANCH}"
         fi
-        
+
         cf_export ONPREM_VERSION
 
         helm repo add codefresh http://chartmuseum.codefresh.io
         helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
         helm dependency build --debug codefresh
         cf_export PACKAGE=$(echo $(helm package codefresh -d ${{CF_VOLUME_PATH}}/cf_chart --version $ONPREM_VERSION) | awk -F ': ' '{print $2}')
-      
+
   push_chart:
     description: "Pushes the build chart to one of the onprem Helm repos"
     image: codefresh/helm-onprem-package
@@ -92,22 +110,97 @@ steps:
       - helm repo index . --merge index.yaml --url http://charts.codefresh.io/${CHANNEL}/
       - aws s3 cp index.yaml s3://charts.codefresh.io/${CHANNEL}/
       - aws s3 cp ${PACKAGE} s3://charts.codefresh.io/${CHANNEL}/
-        
-  run_tests:
-    description: "Runs integration tests for the created release"
+    when:
+      steps:
+      - name: build_chart
+        on:
+        - success
+
+  prepare_test_cluster:
     stage: test
-    image: codefreshio/onprem-tester:0.1.1
+    description: "Prepares a GKE cluster, installs the built chart on it and seeds the data for E2E tests"
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.2
+    shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
       - export CHART_PATH=${{PACKAGE}}
-      - ./test-cases/install_pure_helm.sh
+      - source ./test-cases/install_pure_helm.sh
+      - cf_export CF_APP_HOST CLUSTER_NAME
     when:
+      steps:
+        - name: build_chart
+          on:
+          - success
       branch:
         ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
       condition:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
-                
+
+  export_cfapi_ver:
+    stage: test
+    description: "Gets the cfapi version of the current onprem release for E2E tests"
+    image: codefreshio/ci-helpers
+    commands:
+      - cf_export CF_API_VERSION=$(yq r codefresh/requirements.lock 'dependencies(name==cfapi).version')
+    when:
+      steps:
+        - name: validate_and_export_version
+          on:
+          - success
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+          skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'
+
+  api_clone:
+    type: git-clone
+    stage: test
+    repo: codefresh-io/cf-api
+    revision: "${{CF_API_VERSION}}"
+    git: "${{GIT_CONTEXT}}"
+    when:
+      steps:
+      - name: export_cfapi_ver
+        on:
+        - success
+
+
+  e2e_api_test:
+    stage: test
+    description: Runs API E2E Tests
+    shell: bash
+    working_directory: /app
+    retry:
+      maxAttempts: 2
+    image: codefresh/cf-api-testing
+    commands:
+      - set -eu
+      - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+      - yarn cli test --user-token ${{E2E_API_KEY}} --api-url https://${CF_APP_HOST} --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests
+    when:
+      steps:
+      - name: api_clone
+        on:
+        - success
+      - name: prepare_test_cluster
+        on:
+        - success
+
+  delete_test_cluster:
+    stage: test
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.2
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - ./delete-cluster.sh $CLUSTER_NAME
+    when:
+      condition:
+        any:
+          e2eFinished: steps.e2e_api_test.result == "success"
+          skipE2ETests: '"${{SKIP_E2E_TESTS}}" == "true" && steps.prepare_test_cluster.result == "success"'
+
   create_git_tag:
     image: codefreshio/ci-helpers
     stage: git_tag
