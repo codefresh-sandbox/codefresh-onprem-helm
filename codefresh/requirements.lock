@@ -55,22 +55,22 @@ dependencies:
   version: 1.8.1
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.1
+  version: 1.8.2
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
   version: 1.9.17
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.9.5
+  version: 2.9.7
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.72.3
+  version: 3.73.3
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 15.93.10
+  version: 15.95.3
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.56.3
+  version: 12.62.0
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
@@ -91,6 +91,6 @@ dependencies:
   version: 0.8.5
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.5.6
-digest: sha256:dba2d6cb54f48036dd9b3c7628214bbe6883ecbb2a53abe29a6c29b06e3aaffc
-generated: "2020-07-10T10:20:24.872544527Z"
+  version: 0.5.7
+digest: sha256:a5ff71c401aff6b83213024a3e258ccc55b50f9521c8748a784f1fd933d77792
+generated: "2020-07-14T15:31:31.628238228Z"
