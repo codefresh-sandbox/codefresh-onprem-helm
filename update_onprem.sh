@@ -31,6 +31,36 @@ chartVersionBump() {
     msg "Codefresh Helm Chart will be updated to ${new_version}"
 }
 
+updateRuntimeImages() {
+    runtimeJson=$(mktemp)
+    codefresh get sys-re system/default-plan --extend -o json > $runtimeJson
+
+        RUNTIME_IMAGES=(
+            ENGINE_IMAGE
+            CONTAINER_LOGGER_IMAGE
+            DOCKER_PUSHER_IMAGE
+            DOCKER_PULLER_IMAGE
+            DOCKER_BUILDER_IMAGE
+            GIT_CLONE_IMAGE
+            COMPOSE_IMAGE
+            KUBE_DEPLOY
+            FS_OPS_IMAGE
+        )
+
+        for k in ${RUNTIME_IMAGES}; do
+            if [[ "$k" == "ENGINE_IMAGE" ]]; then
+                image="$(jq -er .runtimeScheduler.image $runtimeJson)"
+                yq w -i codefresh/env/on-prem/versions.yaml engineImage ${image}
+            else
+                image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
+                yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
+            fi
+        done
+
+        msg "The list of updated runtime images:\n"
+        echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
+}
+
 updateDependencies() {
     echo "Exec helm dependency update --skip-refresh codefresh"
     helm dependency update --skip-refresh --debug codefresh
@@ -53,7 +83,7 @@ configGitCiBot() {
 gitCommitAndPush() {
     msg "Committing requirements.lock, Chart.yaml and pushing to the ${pr_branch} branch..."
 
-    git add codefresh/requirements.lock codefresh/Chart.yaml
+    git add codefresh/requirements.lock codefresh/Chart.yaml codefresh/env/on-prem/versions.yaml
     git commit -m "Update onprem to ${new_version}"
     git push ${GIT_ORIGIN_NAME} ${pr_branch}
 }
@@ -71,12 +101,14 @@ if [ ${CI} == 'true' ]; then
     configGitCiBot
     prepareGit
     chartVersionBump
+    updateRuntimeImages
     gitCommitAndPush
     githubPR
 else
     checkGitWorkdir
     prepareGit
     chartVersionBump
+    updateRuntimeImages
     updateDependencies
     gitCommitAndPush
     msg "Please open a PR from ${pr_branch} to ${ONPREM_MASTER_BRANCH}"

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -eux
+
+DEFAULT_RE_NAMES=(
+    system/default/hybrid/k8
+    system/default
+)
+
+function updateRESpec {
+    mongo "$MONGO_URI_RE_MANAGER" --eval "db.getCollection('runtime-environment').update(
+            {'metadata.name': '$1'},
+            { \$set: {
+                \"runtimeScheduler.image\": \"$ENGINE_IMAGE\",
+                \"runtimeScheduler.envVars.DOCKER_PUSHER_IMAGE\": \"$DOCKER_PUSHER_IMAGE\",
+                \"runtimeScheduler.envVars.DOCKER_PULLER_IMAGE\": \"$DOCKER_PULLER_IMAGE\",
+                \"runtimeScheduler.envVars.DOCKER_BUILDER_IMAGE\": \"$DOCKER_BUILDER_IMAGE\",
+                \"runtimeScheduler.envVars.CONTAINER_LOGGER_IMAGE\": \"$CONTAINER_LOGGER_IMAGE\",
+                \"runtimeScheduler.envVars.GIT_CLONE_IMAGE\": \"$GIT_CLONE_IMAGE\",
+                \"runtimeScheduler.envVars.DOCKER_TAG_PUSHER_IMAGE\": \"$DOCKER_TAG_PUSHER_IMAGE\",
+                \"runtimeScheduler.envVars.FS_OPS_IMAGE\": \"$FS_OPS_IMAGE\",
+                \"runtimeScheduler.envVars.COMPOSE_IMAGE\": \"$COMPOSE_IMAGE\",
+                \"runtimeScheduler.envVars.KUBE_DEPLOY\": \"$KUBE_DEPLOY\"
+                }
+            }
+        )"
+}
+
+for re in ${DEFAULT_RE_NAMES[@]}; do
+    echo "Updating the runtime $re"
+    updateRESpec $re
+done
