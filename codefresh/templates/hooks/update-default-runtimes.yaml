@@ -1,0 +1,72 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-update-default-re
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-update-default-re
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      - name: {{ template "fullname" . }}-update-default-re
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
+        {{- else }}
+        image: {{ .Values.global.mongodbImage }}
+        {{- end }}
+        imagePullPolicy: IfNotPresent
+        env:
+          {{- if .Values.global.env }}
+          {{- range $key, $value := .Values.global.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end}}
+          {{- end}}
+          - name: MONGO_URI_RE_MANAGER
+            value: {{ include "calculateMongoURI" (dict "dbName" "runtime-environment-manager" "mongoURI" .Values.global.mongoURI) }}
+          - name: ENGINE_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}
+          - name: DOCKER_PUSHER_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PUSHER_IMAGE }}
+          - name: DOCKER_PULLER_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PULLER_IMAGE }}
+          - name: DOCKER_BUILDER_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_BUILDER_IMAGE }}
+          - name: CONTAINER_LOGGER_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}
+          - name: GIT_CLONE_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}
+          - name: DOCKER_TAG_PUSHER_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}
+          - name: FS_OPS_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}
+          - name: COMPOSE_IMAGE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}
+          - name: KUBE_DEPLOY
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}
+          - name: TEMPLATE_ENGINE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+{{ .Files.Get (print .Values.updateDefREImgScript ) | indent 12  }}
+      restartPolicy: Never
+

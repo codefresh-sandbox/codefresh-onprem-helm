@@ -1,4 +1,4 @@
-engineImage: codefresh/engine:1.115.0
+engineImage: codefresh/engine:1.122.1
 CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.2
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.1
 DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.1
@@ -8,3 +8,4 @@ DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.11
 COMPOSE_IMAGE: codefresh/compose:1.25.0-1.1.1
 KUBE_DEPLOY: codefresh/cf-deploy-kubernetes:16.1.0
 FS_OPS_IMAGE: codefresh/fs-ops:1.1.0
+TEMPLATE_ENGINE: codefresh/pikolo:latest

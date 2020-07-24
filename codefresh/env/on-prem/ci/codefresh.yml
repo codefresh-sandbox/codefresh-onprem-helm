@@ -29,8 +29,8 @@ steps:
         on:
         - success
 
-  update_runtime_images_versions:
-    description: "Gets the latest runtime images versions from prod RE configs"
+  prepare_values_file:
+    description: "Prepares the chart main values file"
     image: codefreshio/ci-helpers
     stage: prepare
     shell: bash
@@ -41,32 +41,8 @@ steps:
         - success
     commands:
       - |-
-        set -eu
-
-        codefresh get sys-re system/default-plan --extend -o json > runtime.json
-
-        RUNTIME_IMAGES=(
-            ENGINE_IMAGE
-            CONTAINER_LOGGER_IMAGE
-            DOCKER_PUSHER_IMAGE
-            DOCKER_PULLER_IMAGE
-            DOCKER_BUILDER_IMAGE
-            GIT_CLONE_IMAGE
-            COMPOSE_IMAGE
-            KUBE_DEPLOY
-            FS_OPS_IMAGE
-        )
-
-        for k in ${RUNTIME_IMAGES}; do
-            if [[ "$k" == "ENGINE_IMAGE" ]]; then
-                image="$(jq -er .runtimeScheduler.image runtime.json)"
-                yq w -i codefresh/env/on-prem/versions.yaml engineImage ${image}
-            else
-                image="$(jq -er .runtimeScheduler.envVars.$k runtime.json)"
-                yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
-            fi
-        done
-
+        set -e
+        
         echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
         yq m codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
 
@@ -79,7 +55,7 @@ steps:
       - name: validate_and_export_version
         on:
         - success
-      - name: update_runtime_images_versions
+      - name: prepare_values_file
         on:
         - success
     commands:
@@ -211,3 +187,7 @@ steps:
     when:
       branch:
         only: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      steps:
+      - name: push_chart
+        on:
+        - success
