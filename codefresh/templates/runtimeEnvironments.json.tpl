@@ -119,98 +119,154 @@
     "isPublic": true
   },
   {
-    "metadata": {
-      "name": "system/default/hybrid/k8"
-    },
-    "description": "Default hybrid system runtime environment for kubernetes",
-    "dockerDaemonScheduler": {
-      "type": "KubernetesPod",
-      "cluster": {
-        "namespace": "default"
+      "metadata": {
+          "name": "system/default/hybrid/k8s",
+          "agent": false
       },
-      "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
-      "resources": {
-        "requests": {
-          "cpu": "100m",
-          "memory": "100Mi"
-        },
-        "limits": {
-          "cpu": "1000m",
-          "memory": "2048Mi"
-        }
+      "description": "System hybrid runtime environment for kubernetes",
+      "runtimeScheduler": {
+          "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
+          "command": [
+              "npm",
+              "run",
+              "start"
+          ],
+          "envVars": {
+              "CONTAINER_LOGGER_SHOW_PROGRESS": "true",
+              "CONTAINER_LOGGER_EXEC_TIMEOUT": "1800000",
+              "LOGGER_LEVEL": "debug",
+              "NODE_ENV": "kubernetes",
+              "METRICS_CODEFRESH_ENABLED": "true",
+              "DOCKER_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PUSHER_IMAGE }}",
+              "DOCKER_PULLER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PULLER_IMAGE }}",
+              "DOCKER_BUILDER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_BUILDER_IMAGE }}",
+              "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
+              "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
+              "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
+              "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
+              "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
+              "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
+              "NO_EXT_MONITOR": "true",
+              "DISABLE_WORKSPACE_CACHE": "true",
+              "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+          },
+          "workflowLimits": {
+              "MAXIMUM_ALLOWED_WORKFLOW_AGE_BEFORE_TERMINATION": 86400,
+              "SHOULD_CLEAN_PVCS": false,
+              "SHOULD_KEEP_PVC_FOR_PENDING_APPROVAL": false,
+              "TIME_INACTIVE_UNTIL_TERMINATION": 2700,
+              "MAXIMUM_ELECTED_STATE_AGE_ALLOWED": 900
+          },
+          "type": "KubernetesPod",
+          "cluster": {
+              "namespace": "default"
+          },
+          "resources": {
+              "requests": {
+                  "cpu": "100m",
+                  "memory": "100Mi"
+              },
+              "limits": {
+                  "cpu": "1000m",
+                  "memory": "2048Mi"
+              }
+          },
+          "volumeMounts": {},
+          "volumes": {}
       },
-      "envVars": {
-        "LOGGER_LEVEL": "debug",
-        "NODE_ENV": "kubernetes",
-        "DOCKER_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PUSHER_IMAGE }}",
-        "DOCKER_PULLER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_PULLER_IMAGE }}",
-        "DOCKER_BUILDER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_BUILDER_IMAGE }}",
-        "CONTAINER_LOGGER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.CONTAINER_LOGGER_IMAGE }}",
-        "GIT_CLONE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.GIT_CLONE_IMAGE }}",
-        "DOCKER_TAG_PUSHER_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.DOCKER_TAG_PUSHER_IMAGE }}",
-        "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
-        "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
-        "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
-      },
-      "volumeMounts": {},
-      "volumes": {}
-    },
-    "runtimeScheduler": {
-      "type": "DindKubernetesPod",
-      "cluster": {
-        "namespace": "default"
-      },
-      "dindImage": "codefresh/dind:18.06-v16",
-      "connectByPodIp": true,
-      "defaultDindResources": {
-        "requests": {
-          "cpu": "390m",
-          "memory": "256Mi"
-        },
-        "limits": {
-          "cpu": "2500m",
-          "memory": "4096Mi"
-        }
-      },
-      "envVars": {},
-      "volumeMounts": {
-        "cf-certs-dind": {
-          "name": "cf-certs-dind",
-          "mountPath": "/etc/ssl/cf",
-          "readOnly": true
-        },
-        "dind-config": {
-          "name": "dind-config",
-          "mountPath": "/etc/docker/daemon.json",
-          "subPath": "daemon.json",
-          "readOnly": true
-        }
-      },
-      "volumes": {
-        "cf-certs-dind": {
-          "name": "cf-certs-dind",
-          "secret": {
-            "secretName": "codefresh-certs-server"
+      "dockerDaemonScheduler": {
+          "internalInfra": false,
+          "userAccess": true,
+          "type": "DindKubernetesPod",
+          "cluster": {
+              "namespace": "default"
+          },
+          "dindImage": "codefresh/dind:18.09-v17",
+          "defaultDindResources": {
+              "requests": {
+                  "cpu": "390m",
+                  "memory": "255Mi"
+              },
+              "limits": {
+                  "cpu": "2500m",
+                  "memory": "4096Mi"
+              }
+          },
+          "envVars": {
+              "CLEAN_DOCKER": "true",
+              "CLEAN_PERIOD_BUILDS": "5",
+              "IMAGE_RETAIN_PERIOD": "14400",
+              "VOLUMES_RETAIN_PERIOD": "14400"
+          },
+          "volumeMounts": {
+              "codefresh-certs-server": {
+                  "name": "codefresh-certs-server",
+                  "mountPath": "/etc/ssl/cf",
+                  "readOnly": true
+              },
+              "dind-config": {
+                  "name": "dind-config",
+                  "mountPath": "/etc/docker/daemon.json",
+                  "subPath": "daemon.json",
+                  "readOnly": true
+              }
+          },
+          "volumes": {
+              "codefresh-certs-server": {
+                  "name": "codefresh-certs-server",
+                  "secret": {
+                      "secretName": "codefresh-certs-server"
+                  }
+              },
+              "dind-config": {
+                  "name": "dind-config",
+                  "configMap": {
+                      "name": "codefresh-dind-config"
+                  }
+              }
+          },
+          "pvcs": {
+              "dind": {
+                  "name": "dind",
+                  "volumeSize": "15Gi",
+                  "reuseVolumeSelector": "codefresh-app,io.codefresh.accountName",
+                  "storageClassName": ""
+              }
+          },
+          "tolerations": {
+              "dind": {
+                  "key": "codefresh/dind",
+                  "operator": "Exists",
+                  "effect": "NoSchedule"
+              }
           }
-        },
-        "dind-config": {
-          "name": "dind-config",
-          "configMap": {
-            "name": "codefresh-dind-config"
-          }
-        }
       },
-      "tolerations": {
-        "dind": {
-          "key": "codefresh/dind",
-          "operator": "Exists",
-          "effect": "NoSchedule"
-        }
-      }
-    },
-    "isPublic": true,
-    "nonComplete": true
+      "isPublic": true,
+      "nonComplete": true
+  },
+  {
+      "metadata": {
+          "name": "system/default/hybrid/k8s_low_limits",
+          "agent": false
+      },
+      "description": "Runtime that has lower dind values for newly created runtimes",
+      "extends": [
+          "system/default/hybrid/k8s"
+      ],
+      "dockerDaemonScheduler": {
+          "defaultDindResources": {
+              "requests": {
+                  "cpu": "400m",
+                  "memory": "800Mi"
+              },
+              "limits": {
+                  "cpu": "400m",
+                  "memory": "800Mi"
+              }
+          }
+      },
+      "isPublic": true,
+      "nonComplete": false
   }
 ]
 {{- end -}}

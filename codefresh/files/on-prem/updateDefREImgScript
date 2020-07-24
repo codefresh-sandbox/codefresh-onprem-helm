@@ -3,7 +3,7 @@
 set -eux
 
 DEFAULT_RE_NAMES=(
-    system/default/hybrid/k8
+    system/default/hybrid/k8s
     system/default
 )
 
