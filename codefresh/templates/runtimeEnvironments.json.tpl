@@ -62,6 +62,7 @@
         "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
         "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
         "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
+        "TEMPLATE_ENGINE": "{{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       },
       "volumeMounts": {
@@ -146,6 +147,7 @@
               "FS_OPS_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.FS_OPS_IMAGE }}",
               "COMPOSE_IMAGE": "{{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}",
               "KUBE_DEPLOY": "{{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}",
+              "TEMPLATE_ENGINE": "{{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}",
               "NO_EXT_MONITOR": "true",
               "DISABLE_WORKSPACE_CACHE": "true",
               "NODE_TLS_REJECT_UNAUTHORIZED": "0"

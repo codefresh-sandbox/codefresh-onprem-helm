@@ -61,6 +61,8 @@ spec:
             value: {{ .Values.global.dockerRegistry }}{{ .Values.COMPOSE_IMAGE }}
           - name: KUBE_DEPLOY
             value: {{ .Values.global.dockerRegistry }}{{ .Values.KUBE_DEPLOY }}
+          - name: TEMPLATE_ENGINE
+            value: {{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}
         command:
           - "/bin/bash"
           - "-c"

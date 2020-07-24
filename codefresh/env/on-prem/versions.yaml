@@ -8,3 +8,4 @@ DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.11
 COMPOSE_IMAGE: codefresh/compose:1.25.0-1.1.1
 KUBE_DEPLOY: codefresh/cf-deploy-kubernetes:16.1.0
 FS_OPS_IMAGE: codefresh/fs-ops:1.1.0
+TEMPLATE_ENGINE: codefresh/pikolo:latest
