@@ -4,7 +4,9 @@ stages:
   - clone
   - prepare
   - create package
+  - create test infra
   - test
+  - delete test infra
   - git_tag
 
 steps:
@@ -92,19 +94,70 @@ steps:
         on:
         - success
 
-  prepare_test_cluster:
+  prepare_test_clusters:
+    stage: create test infra
+    description: "Prepares a GKE cluster for the tests"
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:saas-8166
+    shell: bash
+    working_directory: IMAGE_WORK_DIR
+    matrix:
+      environment:
+        - [TEST_CASE_ID=01]
+        - [TEST_CASE_ID=02]
+    commands:
+      - source ./prepare_test_cluster.sh
+    when:
+      steps:
+        - name: validate_and_export_version
+          on:
+          - success
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+
+  helm_install:
     stage: test
-    description: "Prepares a GKE cluster, installs the built chart on it and seeds the data for E2E tests"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.2
+    description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:saas-8166
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
-      - export CHART_PATH=${{PACKAGE}}
+      - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/install_pure_helm.sh
+    when:
+      steps:
+        - name: build_chart
+          on:
+          - success
+        - name: prepare_test_clusters
+          on:
+          - success
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+
+  helm_upgrade:
+    stage: test
+    description: |-
+      Verifies if the latest onprem release can be successfully upgraded
+      with the chart built from the current branch. Seeds the data for the E2E tests
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:saas-8166
+    shell: bash
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - export LOCAL_CHART_PATH=${{PACKAGE}}
+      - source ./test-cases/upgrade_pure_helm.sh
       - cf_export CF_APP_HOST CLUSTER_NAME
     when:
       steps:
         - name: build_chart
+          on:
+          - success
+        - name: prepare_test_clusters
           on:
           - success
       branch:
@@ -161,21 +214,28 @@ steps:
       - name: api_clone
         on:
         - success
-      - name: prepare_test_cluster
+      - name: helm_install
+        on:
+        - success
+      - name: helm_upgrade
         on:
         - success
 
   delete_test_cluster:
-    stage: test
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.2
+    stage: delete test infra
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:saas-8166
     working_directory: IMAGE_WORK_DIR
+    matrix:
+      environment:
+        - [TEST_CASE_ID=01]
+        - [TEST_CASE_ID=02]
     commands:
-      - ./delete-cluster.sh $CLUSTER_NAME
+      - ./delete-cluster.sh
     when:
       condition:
         any:
           e2eFinished: steps.e2e_api_test.result == "success"
-          skipE2ETests: '"${{SKIP_E2E_TESTS}}" == "true" && steps.prepare_test_cluster.result == "success"'
+          skipE2ETests: '"${{SKIP_E2E_TESTS}}" == "true" && steps.prepare_test_clusters.result == "success"'
 
   create_git_tag:
     image: codefreshio/ci-helpers
