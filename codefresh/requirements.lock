@@ -46,7 +46,7 @@ dependencies:
   version: 1.14.3
 - name: payments
   repository: http://chartmuseum.codefresh.io
-  version: 2.3.9
+  version: 2.3.10
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
   version: 1.1.2
@@ -64,13 +64,13 @@ dependencies:
   version: 2.9.7
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.76.0
+  version: 3.76.2
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 15.96.10
+  version: 16.101.4
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.81.2
+  version: 12.84.0
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:8923f80ce5cdd6bc4ab67aca91cbf82ccbd67f0624794aa7cf612d28b3701732
-generated: "2020-07-29T06:40:12.905588464Z"
+digest: sha256:d9d12193a208ea6d62023dee4b093e9e67a87d1ba37e99d49bdd8fdb9c775e54
+generated: "2020-07-30T22:34:47.586605975+03:00"
