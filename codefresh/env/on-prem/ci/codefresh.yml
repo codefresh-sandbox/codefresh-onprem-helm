@@ -4,6 +4,7 @@ stages:
   - clone
   - prepare
   - create package
+  - security report
   - create test infra
   - test
   - delete test infra
@@ -91,6 +92,21 @@ steps:
     when:
       steps:
       - name: build_chart
+        on:
+        - success
+
+  security_scan_report:
+    image: codefresh/cli
+    description: Scans all onprem images and sends a report to S3
+    fail_fast: false
+    stage: security report
+    commands:
+      - codefresh run --variable CHANNEL=${CHANNEL} --variable ONPREM_VERSION=${ONPREM_VERSION} onprem-security-report
+    when:
+      branch:
+        only: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      steps:
+      - name: push_chart
         on:
         - success
 
@@ -195,7 +211,6 @@ steps:
       - name: export_cfapi_ver
         on:
         - success
-
 
   e2e_api_test:
     stage: test
