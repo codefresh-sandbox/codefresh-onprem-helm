@@ -46,31 +46,31 @@ dependencies:
   version: 1.14.3
 - name: payments
   repository: http://chartmuseum.codefresh.io
-  version: 2.3.11
+  version: 2.3.12
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
   version: 1.1.2
 - name: segment-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.1
+  version: 1.8.2
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.5
+  version: 1.8.6
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
   version: 1.9.17
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.9.8
+  version: 2.11.0
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.80.6
+  version: 3.83.0
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 16.105.8
+  version: 16.109.2
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.94.0
+  version: 12.100.0
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:af1e47ac62daacb00acc565365b4d0df2dc2038453aa2244034ffd43549f14ae
-generated: "2020-08-07T07:46:37.601559638Z"
+digest: sha256:07f8ddc5cf1bae22f7f343fd7c58e084e2929006535e7cc479cc07db66ba9bd6
+generated: "2020-08-12T17:30:36.910367132Z"
