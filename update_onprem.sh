@@ -85,14 +85,22 @@ gitCommitAndPush() {
 
     git add codefresh/requirements.lock codefresh/Chart.yaml codefresh/env/on-prem/versions.yaml
     git commit -m "Update onprem to ${new_version}"
-    git push ${GIT_ORIGIN_NAME} ${pr_branch}
+    git push ${GIT_ORIGIN_NAME} ${pr_branch} -f
 }
 
 githubPR() {
     msg "Opening a PR named \"onprem-update-${new_version}\" on Github..."
 
-    curl --fail -X POST -d "{\"title\": \"onprem-update-${new_version}\",\"body\": \"onprem-update-${new_version}\",\"head\": \"${pr_branch}\",\"base\": \"${ONPREM_MASTER_BRANCH}\"}" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls"
-    msg "PR \"onprem-update-${new_version}\" has been successfully created"
+    if [[ ! existingPR ]]; then
+        curl --fail -X POST -d "{\"title\": \"onprem-update-${new_version}\",\"body\": \"onprem-update-${new_version}\",\"head\": \"${pr_branch}\",\"base\": \"${ONPREM_MASTER_BRANCH}\"}" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls"
+        msg "PR \"onprem-update-${new_version}\" has been successfully created"
+    else
+        msg "No need to create the PR - it already exists"
+    fi
+}
+
+existingPR() {
+   curl --fail -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls?state=open&base=${ONPREM_MASTER_BRANCH}&head=${REPO_OWNER}:${pr_branch}" | grep "\"title\": \"onprem-update-${new_version}\""
 }
 
 new_version="$(semver-cli inc patch $(yq r codefresh/Chart.yaml version))"

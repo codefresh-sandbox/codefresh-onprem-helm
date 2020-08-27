@@ -101,7 +101,7 @@ steps:
     fail_fast: false
     stage: security report
     commands:
-      - codefresh run --variable CHANNEL=${CHANNEL} --variable ONPREM_VERSION=${ONPREM_VERSION} onprem-security-report
+      - codefresh run --variable CHANNEL=${CHANNEL} --variable ONPREM_VERSION=${ONPREM_VERSION} on-prem/onprem-security-report
     when:
       branch:
         only: [ "${{ONPREM_MASTER_BRANCH}}" ]

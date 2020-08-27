@@ -27,7 +27,7 @@
       "internalInfra": true,
       "cluster": {
         "inCluster": true,
-        "namespace": "codefresh"
+        "namespace": "{{ .Release.Namespace }}"
       },
       "image": "{{ .Values.global.dockerRegistry }}{{ .Values.engineImage }}",
       "command": [
@@ -161,7 +161,7 @@
           },
           "type": "KubernetesPod",
           "cluster": {
-              "namespace": "default"
+              "namespace": "{{ .Release.Namespace }}"
           },
           "resources": {
               "requests": {
@@ -181,7 +181,7 @@
           "userAccess": true,
           "type": "DindKubernetesPod",
           "cluster": {
-              "namespace": "default"
+              "namespace": "{{ .Release.Namespace }}"
           },
           "dindImage": "codefresh/dind:18.09-v17",
           "defaultDindResources": {
