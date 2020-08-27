@@ -91,7 +91,7 @@ gitCommitAndPush() {
 githubPR() {
     msg "Opening a PR named \"onprem-update-${new_version}\" on Github..."
 
-    if [[ ! existingPR ]]; then
+    if ! existingPR; then
         curl --fail -X POST -d "{\"title\": \"onprem-update-${new_version}\",\"body\": \"onprem-update-${new_version}\",\"head\": \"${pr_branch}\",\"base\": \"${ONPREM_MASTER_BRANCH}\"}" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls"
         msg "PR \"onprem-update-${new_version}\" has been successfully created"
     else
@@ -100,7 +100,7 @@ githubPR() {
 }
 
 existingPR() {
-   curl --fail -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls?state=open&base=${ONPREM_MASTER_BRANCH}&head=${REPO_OWNER}:${pr_branch}" | grep "\"title\": \"onprem-update-${new_version}\""
+   curl -s --fail -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/pulls?state=open&base=${ONPREM_MASTER_BRANCH}&head=${REPO_OWNER}:${pr_branch}" | grep "\"title\": \"onprem-update-${new_version}\""
 }
 
 new_version="$(semver-cli inc patch $(yq r codefresh/Chart.yaml version))"
