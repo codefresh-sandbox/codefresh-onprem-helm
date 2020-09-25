@@ -46,7 +46,7 @@ dependencies:
   version: 1.14.3
 - name: payments
   repository: http://chartmuseum.codefresh.io
-  version: 2.3.12
+  version: 2.3.13
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
   version: 1.1.2
@@ -61,25 +61,25 @@ dependencies:
   version: 1.9.17
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.13.4
+  version: 2.14.0
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.90.6
+  version: 3.90.8
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 16.122.4
+  version: 16.124.11
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.111.17
+  version: 12.115.2
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.17.10
+  version: 3.17.11
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io
-  version: 1.4.2
+  version: 1.4.5
 - name: helm-repo-manager
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.7.5-saas-6676-k16fix-1
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:d74c1bcdc191e740f9cabe6138db8639257262268c5eca5a708b12fac1bcaff1
-generated: "2020-09-17T12:10:36.356403539Z"
+digest: sha256:a87ce4083d049a9563b4435da1980ac0ba167635db281a51544e6f0f3d30d89b
+generated: "2020-09-25T11:55:39.337806436Z"
