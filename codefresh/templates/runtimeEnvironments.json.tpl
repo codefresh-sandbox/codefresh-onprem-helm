@@ -150,7 +150,8 @@
               "TEMPLATE_ENGINE": "{{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}",
               "NO_EXT_MONITOR": "true",
               "DISABLE_WORKSPACE_CACHE": "true",
-              "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+              "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+              "RETRY_HTTP_COUNT": "15"
           },
           "workflowLimits": {
               "MAXIMUM_ALLOWED_WORKFLOW_AGE_BEFORE_TERMINATION": 86400,
@@ -183,7 +184,7 @@
           "cluster": {
               "namespace": "{{ .Release.Namespace }}"
           },
-          "dindImage": "codefresh/dind:18.09-v17",
+          "dindImage": "codefresh/dind:18.09.5-1.24.2",
           "defaultDindResources": {
               "requests": {
                   "cpu": "390m",
@@ -200,6 +201,7 @@
               "IMAGE_RETAIN_PERIOD": "14400",
               "VOLUMES_RETAIN_PERIOD": "14400"
           },
+          "terminationGracePeriodSeconds": 300,
           "volumeMounts": {
               "codefresh-certs-server": {
                   "name": "codefresh-certs-server",
