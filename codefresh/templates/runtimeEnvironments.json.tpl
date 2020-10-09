@@ -150,7 +150,8 @@
               "TEMPLATE_ENGINE": "{{ .Values.global.dockerRegistry }}{{ .Values.TEMPLATE_ENGINE }}",
               "NO_EXT_MONITOR": "true",
               "DISABLE_WORKSPACE_CACHE": "true",
-              "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+              "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+              "RETRY_HTTP_COUNT": "15"
           },
           "workflowLimits": {
               "MAXIMUM_ALLOWED_WORKFLOW_AGE_BEFORE_TERMINATION": 86400,
