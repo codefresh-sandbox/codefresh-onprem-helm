@@ -200,6 +200,7 @@
               "IMAGE_RETAIN_PERIOD": "14400",
               "VOLUMES_RETAIN_PERIOD": "14400"
           },
+          "terminationGracePeriodSeconds": 300,
           "volumeMounts": {
               "codefresh-certs-server": {
                   "name": "codefresh-certs-server",
