@@ -184,7 +184,7 @@
           "cluster": {
               "namespace": "{{ .Release.Namespace }}"
           },
-          "dindImage": "codefresh/dind:18.09-v17",
+          "dindImage": "codefresh/dind:18.09.5-1.24.2",
           "defaultDindResources": {
               "requests": {
                   "cpu": "390m",
