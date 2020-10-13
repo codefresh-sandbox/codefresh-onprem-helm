@@ -28,58 +28,58 @@ dependencies:
   version: 0.1.2
 - name: ingress
   repository: file://../ingress
-  version: 0.1.8
+  version: 0.1.9
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.10
+  version: ^1.0.x
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io
-  version: 1.17.5
+  version: ^1.0.x
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.13
+  version: ^1.0.x
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.5
+  version: ^1.0.x
 - name: mailer
   repository: http://chartmuseum.codefresh.io
-  version: 1.14.3
+  version: ^1.0.x
 - name: payments
   repository: http://chartmuseum.codefresh.io
-  version: 2.3.14
+  version: ^2.0.x
 - name: cfsign
   repository: http://chartmuseum.codefresh.io
-  version: 1.1.2
+  version: ^1.0.x
 - name: segment-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.4
+  version: ^1.0.x
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.8.6
+  version: ^1.0.x
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
-  version: 1.9.17
+  version: ^1.0.x
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.14.1
+  version: ^2.0.x
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.90.12
+  version: ^3.0.0
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 16.130.0
+  version: ^16.0.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 12.122.5
+  version: ^12.0.0
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.8
+  version: ^1.0.x
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.17.11
+  version: ^3.0.x
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io
-  version: 1.4.9
+  version: ^1.0.x
 - name: helm-repo-manager
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.7.5-saas-6676-k16fix-1
@@ -88,9 +88,9 @@ dependencies:
   version: 0.17.8-saas-6676-k16fix
 - name: nomios
   repository: http://chartmuseum.codefresh.io
-  version: 0.8.5
+  version: ^0.8.x
 - name: cronus
   repository: http://chartmuseum.codefresh.io
-  version: 0.5.7
-digest: sha256:6038c4a037584192981cac7bd912cbc74641a6a5f0b049b5df07926a0a5e28d5
-generated: "2020-10-09T12:00:26.936552775+03:00"
+  version: ^0.5.0
+digest: sha256:14a67491ba6c5b3ab302ebf803600a9bea8c50f01da0f964f56506220b4d48f7
+generated: "2020-10-13T10:31:04.892751695+03:00"
