@@ -22,6 +22,9 @@ spec:
       app: {{ template "fullname" . }}  
   template:
     metadata:
+      annotations:
+        prometheus.io/port: "{{ .Values.controllerProbePort }}"
+        prometheus.io/scrape: "true"
       labels:
         app: {{ template "fullname" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -37,6 +40,7 @@ spec:
       affinity:
 {{ toYaml (default .Values.global.appServiceAffinity .Values.affinity) | indent 8 }}
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       terminationGracePeriodSeconds: 60
       {{- if .Values.global.privateRegistry }}
       imagePullSecrets:
@@ -66,6 +70,8 @@ spec:
           hostPort: {{ .Values.controllerHostPost }}
         - containerPort: {{ .Values.controllerSecureContainerPort }}
           hostPort: {{ .Values.controllerSecureHostPort }}
+        - containerPort: {{ .Values.controllerProbePort }}
+          hostPort: {{ .Values.controllerProbePort }}
         env:
           - name: POD_NAME
             valueFrom:
