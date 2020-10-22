@@ -170,8 +170,8 @@ dependencies:
     - helm
     - chartmuseum
   - name: hermes
-    version: "0.17.8-saas-6676-k16fix"
-    repository: http://chartmuseum-dev.codefresh.io
+    version: "^0.17.x"
+    repository: http://chartmuseum.codefresh.io
     condition: hermes.enabled
     tags:
     - trigger

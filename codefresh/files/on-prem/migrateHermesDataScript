@@ -1,0 +1,94 @@
+#! /bin/bash
+
+# This script is intended to perform migration of data
+# from cf-store redis instance to cf-redis during onprem upgrade.
+# Relates to CR-705
+
+set -euo pipefail
+
+msg() { echo "--> INFO $1"; }
+
+err() {
+    echo "--> ERR $1"
+    exit 1
+}
+
+BACKUP_FILENAME=hermes.backup
+
+SOURCE_REDIS_URI="redis://${SOURCE_REDIS_PASSWORD}@${SOURCE_REDIS_HOST}:${SOURCE_REDIS_PORT}/${SOURCE_REDIS_DB}"
+TARGET_REDIS_URI="redis://${TARGET_REDIS_PASSWORD}@${TARGET_REDIS_HOST}:${TARGET_REDIS_PORT}/${TARGET_REDIS_DB}"
+
+function migrationNeeded() {
+    if [[ ${TARGET_REDIS_HOST} == ${SOURCE_REDIS_HOST} ]]; then
+        msg "Hermes is already configured to use the same redis host"
+        return 1
+    fi
+    if ! $(nc -vz ${SOURCE_REDIS_HOST} ${SOURCE_REDIS_PORT} &>/dev/null); then
+        msg "Hermes store is not available, assuming migration has already been performed"
+        return 1
+    fi
+    if ! targetDbIsEmpty; then
+        err "Target DB is not empty: you are targeting an existing irrelevant DB"
+    fi
+
+    return 0
+}
+
+function targetDbIsEmpty() {
+    if [[ -z $(redis-cli -u ${TARGET_REDIS_URI} --scan --no-auth-warning) ]]; then
+        return 0
+    fi
+    return 1
+}
+
+# moves keys from one db to another of the same redis instance
+function copyAllDbKeys() {
+    IFS=""
+    keys=$(redis-cli \
+        -u ${SOURCE_REDIS_URI} \
+        --raw \
+        --no-auth-warning KEYS '*')
+
+    IFS=$'\n'
+    for key in $keys; do
+        redis-cli -u ${SOURCE_REDIS_URI} --raw --no-auth-warning DUMP "$key" | head -c -1 | redis-cli \
+            -x \
+            -a ${SOURCE_REDIS_PASSWORD} \
+            -h ${SOURCE_REDIS_HOST} \
+            -n ${TARGET_REDIS_DB} \
+            --no-auth-warning RESTORE "$key" 0
+    done
+    unset IFS
+    msg "Keys have been copied successfully"
+}
+
+function backup() {
+    msg "Copying keys from the database ${SOURCE_REDIS_DB} to ${TARGET_REDIS_DB} prior to making an RDB dump ..."
+    copyAllDbKeys
+    msg "Creating a hermes-store backup file '$BACKUP_FILENAME'..."
+    redis-cli \
+        -u ${SOURCE_REDIS_URI} \
+        --rdb ${BACKUP_FILENAME} \
+        --no-auth-warning
+}
+
+function restore() {
+    msg "Restoring hermes-store data from ${SOURCE_REDIS_URI} to ${TARGET_REDIS_URI} ..."
+    rdb --c protocol ./${BACKUP_FILENAME} -n ${TARGET_REDIS_DB} | redis-cli \
+        -u ${TARGET_REDIS_URI} \
+        --pipe \
+        --no-auth-warning
+}
+
+function migrate() {
+    backup
+    restore
+    msg "Hermes data has been successfuly migrated"
+}
+
+if migrationNeeded; then
+    msg "Migration is needed, migrating..."
+    migrate
+else
+    msg "Migration is not needed, exiting..."
+fi

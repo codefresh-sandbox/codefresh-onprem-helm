@@ -1,0 +1,63 @@
+{{- if not .Values.hermes.redis.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-migrate-hermes-store
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-migrate-hermes-store
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      - name: {{ template "fullname" . }}-migrate-hermes-store
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}codefresh/hermes-store-backup:0.2.0"
+        {{- else }}
+        image: "codefresh/hermes-store-backup:0.2.0"
+        {{- end }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: SOURCE_REDIS_HOST
+            value: "{{ .Release.Name }}-{{ .Values.hermes.redis.nameOverride }}"
+          - name: SOURCE_REDIS_PORT
+            value: "{{ .Values.hermes.redis.port }}"
+          - name: SOURCE_REDIS_DB
+            value: "0"
+          - name: SOURCE_REDIS_PASSWORD
+            value: {{ .Values.hermes.redis.redisPassword | quote }}
+          - name: TARGET_REDIS_HOST
+            value: {{ default (printf "%s-%s" $.Release.Name $.Values.global.redisService) $.Values.global.redisUrl }}
+          - name: TARGET_REDIS_PORT
+            value: {{ default 6379 $.Values.redis.port | quote }}
+          - name: TARGET_REDIS_DB
+            value: {{ .Values.hermes.redis.db | quote }}
+          - name: TARGET_REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ $.Release.Name }}-{{ $.Values.global.codefresh }}"
+                key: redis-password
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+{{ .Files.Get (print .Values.migrateHermesDataScript) | indent 12 }}
+      restartPolicy: Never
+{{- end }}

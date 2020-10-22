@@ -64,7 +64,7 @@ dependencies:
   version: 2.14.5
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.90.16
+  version: 3.92.1
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
   version: 16.131.8
@@ -84,13 +84,13 @@ dependencies:
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.7.5-saas-6676-k16fix-1
 - name: hermes
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 0.17.8-saas-6676-k16fix
+  repository: http://chartmuseum.codefresh.io
+  version: 0.17.12
 - name: nomios
   repository: http://chartmuseum.codefresh.io
   version: 0.8.5
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:c44bee81235c6416554e1f2d77457d2b4b58e5112be7568b873adb0331fd044f
-generated: "2020-10-22T12:56:27.064777197+03:00"
+digest: sha256:7a51c417320fbf87493eada66e8374c9f1e941ad191324dc2c9e3e27722964d5
+generated: "2020-10-22T14:51:48.947469122+03:00"

@@ -91,6 +91,7 @@ getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 mongoSeedJobScript: files/on-prem/mongoSeedJobScript
 postgresSeedJobScript: files/on-prem/postgresSeedScript
 updateDefREImgScript: files/on-prem/updateDefREImgScript
+migrateHermesDataScript: files/on-prem/migrateHermesDataScript
 
 runtime_envs:
   - name: codefresh-inc
@@ -112,7 +113,9 @@ hermes:
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
   redis:
+    enabled: false # deprecation of a separate redis for hermes (CR-705)
     redisPassword: kj57kfwjeg
+    db: 15
 
 cfui:
   image: codefresh/cf-ui
