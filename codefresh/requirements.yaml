@@ -121,7 +121,7 @@ dependencies:
     - saas
     - infra
   - name: cfapi
-    version: ^16.0.0
+    version: ^17.0.0
     repository: http://chartmuseum.codefresh.io
     condition: cfapi.enabled
     tags:
