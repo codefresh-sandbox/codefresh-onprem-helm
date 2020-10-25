@@ -64,10 +64,10 @@ dependencies:
   version: 2.14.6
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.93.0
+  version: 3.94.0
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 16.131.8
+  version: 17.9.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io
   version: 13.133.2
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:49051b1992d56f55a83b49892ef7b04571171951bfc856487daaf9269094ae84
-generated: "2020-10-25T22:25:40.736971947+02:00"
+digest: sha256:7b66eb038246e7b703a0b4acd34ab19196e6cdac01360de6eed3e6e5614f39ef
+generated: "2020-10-26T00:25:38.331423386+02:00"
