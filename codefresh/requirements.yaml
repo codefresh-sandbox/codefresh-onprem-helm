@@ -128,7 +128,7 @@ dependencies:
     - saas
     - infra
   - name: cfui
-    version: ^12.0.0
+    version: ^13.0.0
     repository: http://chartmuseum.codefresh.io
     condition: cfui.enabled
     tags:
