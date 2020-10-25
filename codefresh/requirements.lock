@@ -34,7 +34,7 @@ dependencies:
   version: 1.5.10
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io
-  version: 1.17.6
+  version: 1.17.7
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io
   version: 1.5.13
@@ -58,13 +58,13 @@ dependencies:
   version: 1.8.6
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
-  version: 1.9.17
+  version: 1.9.18
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.14.5
+  version: 2.14.6
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.92.1
+  version: 3.93.0
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
   version: 16.131.8
@@ -79,7 +79,7 @@ dependencies:
   version: 3.18.2
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io
-  version: 1.4.9
+  version: 1.4.10
 - name: helm-repo-manager
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.7.5-saas-6676-k16fix-1
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:7a51c417320fbf87493eada66e8374c9f1e941ad191324dc2c9e3e27722964d5
-generated: "2020-10-22T14:51:48.947469122+03:00"
+digest: sha256:d1b859a3c957cbfd1aa8949b50f65e08ee7e38b254d930c7a37e1559cdb21ad1
+generated: "2020-10-25T19:50:27.595775712+02:00"
