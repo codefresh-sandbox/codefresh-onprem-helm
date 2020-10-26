@@ -38,6 +38,7 @@ function generate_report() {
         bitnami/redis:3.2.9-r2
         dduportal/bats:0.4.0
         quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1
+        quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.27.1
     )
 
     ! rm ${SCAN_REPORT_FILE} 2>/dev/null
