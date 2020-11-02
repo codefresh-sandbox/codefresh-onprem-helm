@@ -40,7 +40,7 @@ dependencies:
   version: 1.5.13
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.5
+  version: 1.5.6
 - name: mailer
   repository: http://chartmuseum.codefresh.io
   version: 1.14.3
@@ -64,13 +64,13 @@ dependencies:
   version: 2.14.6
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.94.0
+  version: 3.95.3
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 17.9.0
+  version: 17.21.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 13.133.2
+  version: 13.135.18
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.5.8
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:7b66eb038246e7b703a0b4acd34ab19196e6cdac01360de6eed3e6e5614f39ef
-generated: "2020-10-26T00:25:38.331423386+02:00"
+digest: sha256:5ebd3cb3f6e2c0ae77d26acaa6ecd077b65bdca134eda8eec6f3002be402f1f6
+generated: "2020-11-02T09:03:21.235010273Z"
