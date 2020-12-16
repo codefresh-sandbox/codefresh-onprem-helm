@@ -121,8 +121,9 @@ dependencies:
     - saas
     - infra
   - name: cfapi
-    version: ^17.0.0
-    repository: http://chartmuseum.codefresh.io
+    #version: ^17.0.0
+    version: 17.43.3-cr-2042-openshift
+    repository: http://chartmuseum-dev.codefresh.io
     condition: cfapi.enabled
     tags:
     - saas

@@ -18,8 +18,8 @@ Replicas: 3
 Image: "consul"
 ImageTag: "1.0.0"
 ImagePullPolicy: "Always"
-securityContext:
-  fsGroup: 1000
+securityContext: {}
+#  fsGroup: 1000
 Resources: {}
  # requests:
  #   cpu: "100m"
