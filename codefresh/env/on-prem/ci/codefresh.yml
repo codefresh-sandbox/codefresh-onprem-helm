@@ -247,10 +247,20 @@ steps:
     commands:
       - ./delete-cluster.sh
     when:
-      condition:
-        any:
-          e2eFinished: steps.e2e_api_test.result == "success"
-          skipE2ETests: '"${{SKIP_E2E_TESTS}}" == "true" && steps.prepare_test_clusters.result == "success"'
+      steps:
+        - name: helm_install
+          on:
+          - success
+          - failure
+        - name: helm_upgrade
+          on:
+          - success
+          - failure
+        - name: e2e_api_test
+          on:
+          - success
+          - skipped
+          - failure
 
   create_git_tag:
     image: codefreshio/ci-helpers

@@ -64,7 +64,6 @@ dependencies:
   version: 2.15.5
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.107.2
 - name: cfapi
   repository: http://chartmuseum-dev.codefresh.io
   version: 17.43.3-cr-2042-openshift

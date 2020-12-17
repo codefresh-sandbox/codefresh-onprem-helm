@@ -1,4 +1,4 @@
-#engineImage: codefresh/engine:1.131.1
+#engineImage: codefresh/engine:1.131.2
 engineImage: codefresh/engine:CR-2042-openshift
 CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.2
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.1
