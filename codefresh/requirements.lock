@@ -40,7 +40,7 @@ dependencies:
   version: 1.6.0
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io
-  version: 1.6.0
+  version: 1.7.0
 - name: mailer
   repository: http://chartmuseum.codefresh.io
   version: 1.15.0
@@ -55,31 +55,31 @@ dependencies:
   version: 1.10.1
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io
-  version: 1.10.0
+  version: 1.11.0
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io
   version: 1.10.0
 - name: context-manager
   repository: http://chartmuseum.codefresh.io
-  version: 2.15.5
+  version: 2.15.6
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
   version: 3.107.2
 - name: cfapi
-  repository: http://chartmuseum-dev.codefresh.io
-  version: 17.43.3-cr-2042-openshift
+  repository: http://chartmuseum.codefresh.io
+  version: 17.54.1
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 13.170.2
+  version: 13.178.10
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.6.0
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.19.1
+  version: 3.19.2
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io
-  version: 1.5.0
+  version: 1.5.1
 - name: helm-repo-manager
   repository: http://chartmuseum-dev.codefresh.io
   version: 0.7.5-saas-6676-k16fix-1
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:579b09d9e0270db1e121a062d748e2c29361c1801fb2dfd2f0676f0e25c3c6bf
-generated: "2020-12-17T18:20:52.02249062+02:00"
+digest: sha256:fa52e0f3b44f971f762e372464ddf19e3e2b39ea8621e36e6d40c8536fd10e49
+generated: "2020-12-22T16:54:40.97785977+02:00"
