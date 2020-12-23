@@ -25,6 +25,7 @@ firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
 rbacEnable: true
+rbacCreate: true
 #webTLS:
 #  secretName: star.codefresh.io
 
