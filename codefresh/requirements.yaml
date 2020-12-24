@@ -55,8 +55,8 @@ dependencies:
     tags:
       - infra
   - name: ingress
-    version: 0.1.9
-    repository: file://../ingress
+    version: 0.1.10
+    repository: 'file://../ingress'
     condition: ingress.enabled
   - name: cluster-providers
     version: ^1.0.x
@@ -134,7 +134,7 @@ dependencies:
     tags:
     - saas
     - infra
-# - name: k8s-monitor
+# - name: k8s-monitor 
 #   version: ^4.0.0
 #   repository: http://chartmuseum.codefresh.io
 #   condition: cfui.enabled

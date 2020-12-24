@@ -28,7 +28,7 @@ dependencies:
   version: 0.1.2
 - name: ingress
   repository: file://../ingress
-  version: 0.1.9
+  version: 0.1.10
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io
   version: 1.6.0
@@ -64,13 +64,13 @@ dependencies:
   version: 2.15.6
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io
-  version: 3.107.2
+  version: 3.108.0
 - name: cfapi
   repository: http://chartmuseum.codefresh.io
-  version: 17.54.1
+  version: 17.56.4
 - name: cfui
   repository: http://chartmuseum.codefresh.io
-  version: 13.178.10
+  version: 13.178.16
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io
   version: 1.6.0
@@ -92,5 +92,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io
   version: 0.5.7
-digest: sha256:fa52e0f3b44f971f762e372464ddf19e3e2b39ea8621e36e6d40c8536fd10e49
-generated: "2020-12-22T16:54:40.97785977+02:00"
+digest: sha256:2f3794802dc4ca2c459edb3db1423ed2a659031d9eeba1c478e0250538b15d2a
+generated: "2020-12-24T09:41:02.053834+02:00"
