@@ -163,21 +163,21 @@ dependencies:
     - saas
     - infra
   - name: helm-repo-manager
-    version: "0.7.5-saas-6676-k16fix-1"
-    repository: http://chartmuseum-dev.codefresh.io
+    version: "^0.x.x"
+    repository: http://chartmuseum.codefresh.io
     condition: helm-repo-manager.enabled
     tags:
     - helm
     - chartmuseum
   - name: hermes
-    version: "^0.17.x"
+    version: "^0.x.x"
     repository: http://chartmuseum.codefresh.io
     condition: hermes.enabled
     tags:
     - trigger
     - trigger-manager
   - name: nomios
-    version: ^0.8.x
+    version: ^0.x.x
     repository: http://chartmuseum.codefresh.io
     condition: hermes.enabled
     tags:
@@ -186,7 +186,7 @@ dependencies:
     - registry
     - dockerhub
   - name: cronus
-    version: ^0.5.0
+    version: ^0.x.x
     repository: http://chartmuseum.codefresh.io
     condition: hermes.enabled
     tags:
