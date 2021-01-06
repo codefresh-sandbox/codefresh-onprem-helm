@@ -11,6 +11,7 @@ function updateRESpec {
     mongo "$MONGO_URI_RE_MANAGER" --eval "db.getCollection('runtime-environment').update(
             {'metadata.name': '$1'},
             { \$set: {
+                \"dockerDaemonScheduler.dindImage\": \"$DIND_IMAGE\",
                 \"runtimeScheduler.image\": \"$ENGINE_IMAGE\",
                 \"runtimeScheduler.envVars.DOCKER_PUSHER_IMAGE\": \"$DOCKER_PUSHER_IMAGE\",
                 \"runtimeScheduler.envVars.DOCKER_PULLER_IMAGE\": \"$DOCKER_PULLER_IMAGE\",
@@ -21,7 +22,8 @@ function updateRESpec {
                 \"runtimeScheduler.envVars.FS_OPS_IMAGE\": \"$FS_OPS_IMAGE\",
                 \"runtimeScheduler.envVars.COMPOSE_IMAGE\": \"$COMPOSE_IMAGE\",
                 \"runtimeScheduler.envVars.KUBE_DEPLOY\": \"$KUBE_DEPLOY\",
-                \"runtimeScheduler.envVars.TEMPLATE_ENGINE\": \"$TEMPLATE_ENGINE\"
+                \"runtimeScheduler.envVars.TEMPLATE_ENGINE\": \"$TEMPLATE_ENGINE\",
+                \"runtimeScheduler.envVars.PIPELINE_DEBUGGER_IMAGE\": \"$PIPELINE_DEBUGGER_IMAGE\",
                 }
             }
         )"

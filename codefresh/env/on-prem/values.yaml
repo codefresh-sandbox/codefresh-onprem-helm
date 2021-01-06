@@ -8,7 +8,7 @@ dockercfg: placeholder
 servicePort: 80
 
 # image with kubectl that can work with our K8s version
-kubectlImage: codefresh/generate-certs:latest
+kubectlImage: quay.io/codefresh/generate-certs:1.0.0
 
 slackAppID: "4027524866.65820083427"
 slackAppSecret: placeholder
@@ -338,7 +338,7 @@ global:
   #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
   
   # curl image
-  curlImage: codefresh/curl
+  curlImage: quay.io/codefresh/curl:1.0.0
 
   # dind cpu requests
   dindCPU: 100m
@@ -370,7 +370,7 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
-  mongodbImage: bitnami/mongodb:4.0.3
+  mongodbImage: bitnami/mongodb:3.6.13-r0
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
 

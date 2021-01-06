@@ -23,3 +23,12 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
     {{- printf "%s/%s" .mongoURI .dbName | quote -}}
   {{- end -}}
 {{- end -}}
+
+{{- define "buildImageName" -}}
+  {{- if .registry -}}
+    {{- $imageName :=  (trimPrefix "quay.io/" .imageFullName) -}}
+    {{- printf "%s%s" .registry $imageName -}}
+  {{- else -}}
+    {{- printf "%s" .imageFullName -}}
+  {{- end -}}
+{{- end -}}

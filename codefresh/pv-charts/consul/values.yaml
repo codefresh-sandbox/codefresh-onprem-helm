@@ -88,8 +88,8 @@ uiIngress:
 
 ## test container details
 test:
-  image: lachlanevenson/k8s-kubectl
-  imageTag: v1.4.8-bash
+  image: quay.io/codefresh/kube-helm
+  imageTag: 3.0.3
 
 ## Use existing volume claim name
 #pvcName: {}

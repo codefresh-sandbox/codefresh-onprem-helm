@@ -37,6 +37,7 @@ updateRuntimeImages() {
 
         RUNTIME_IMAGES=(
             ENGINE_IMAGE
+            DIND_IMAGE
             CONTAINER_LOGGER_IMAGE
             DOCKER_PUSHER_IMAGE
             DOCKER_PULLER_IMAGE
@@ -45,12 +46,17 @@ updateRuntimeImages() {
             COMPOSE_IMAGE
             KUBE_DEPLOY
             FS_OPS_IMAGE
+            TEMPLATE_ENGINE
+            PIPELINE_DEBUGGER_IMAGE
         )
 
-        for k in ${RUNTIME_IMAGES}; do
+        for k in ${RUNTIME_IMAGES[@]}; do
             if [[ "$k" == "ENGINE_IMAGE" ]]; then
                 image="$(jq -er .runtimeScheduler.image $runtimeJson)"
-                yq w -i codefresh/env/on-prem/versions.yaml engineImage ${image}
+                yq w -i codefresh/env/on-prem/versions.yaml ENGINE_IMAGE ${image}
+            elif [[ "$k" == "DIND_IMAGE" ]]; then
+                image="$(jq -er .dockerDaemonScheduler.dindImage $runtimeJson)"
+                yq w -i codefresh/env/on-prem/versions.yaml DIND_IMAGE ${image}
             else
                 image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
                 yq w -i codefresh/env/on-prem/versions.yaml $k ${image}
