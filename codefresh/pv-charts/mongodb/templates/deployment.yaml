@@ -8,6 +8,8 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: {{ template "fullname" . }}
@@ -38,10 +40,12 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}
+        {{- $image := (split ":" .Values.image)._0 -}}
+        {{- $tag := default (split ":" .Values.image)._1 .Values.version -}}
         {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ $image }}:{{ $tag }}"
         {{- else }}
-        image: "{{ .Values.image }}"
+        image: "{{ $image }}:{{ $tag }}"
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:

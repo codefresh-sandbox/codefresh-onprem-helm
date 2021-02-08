@@ -64,6 +64,9 @@ postgresql:
 mongodb:
   image: bitnami/mongodb:3.6.13-r0
   mongodbRootPassword: XT9nmM8dZD
+  version: "3.6.13-r0"
+  migration:
+    setFeatureCompat: "3.6"
   nodeSelector: {}
   resources:
     requests:
@@ -93,6 +96,7 @@ mongoSeedJobScript: files/on-prem/mongoSeedJobScript
 postgresSeedJobScript: files/on-prem/postgresSeedScript
 updateDefREImgScript: files/on-prem/updateDefREImgScript
 migrateHermesDataScript: files/on-prem/migrateHermesDataScript
+setMdbCompatVerScript: files/on-prem/setMdbCompatVerScript
 
 runtime_envs:
   - name: codefresh-inc

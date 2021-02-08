@@ -1,0 +1,49 @@
+{{- if semverCompare ">3.6" (default (split ":" .Values.mongodb.image)._1 .Values.mongodb.version) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-set-mdb-compat-ver
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-set-mdb-compat-ver
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- if .Values.global.privateRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      - name: {{ template "fullname" . }}-set-mdb-compat-ver
+        {{- if .Values.global.privateRegistry }} 
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
+        {{- else }}
+        image: {{ .Values.global.mongodbImage }}
+        {{- end }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MONGO_SERVICE
+            value: {{ .Values.global.mongoService }}
+          - name: MONGODB_ROOT_PASSWORD
+            value: {{ .Values.mongodb.mongodbRootPassword }}
+          - name: MONGO_COMPAT_VERSION
+            value: "{{ .Values.mongodb.setFeatureCompat }}"
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+{{ .Files.Get (print .Values.setMdbCompatVerScript ) | indent 12  }}
+      restartPolicy: Never
+{{- end }}
