@@ -1,0 +1,68 @@
+{{- if .Values.postgresql.cleanJob.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-clean-postgres
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+spec:
+  schedule: "{{- .Values.postgresql.cleanJob.schedule | default "0 0 * * *" }}"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          name: {{ .Release.Name }}-clean-postgres
+          labels:
+            app: {{ template "fullname" . }}
+            chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+            release: {{ .Release.Name  | quote }}
+            heritage: {{ .Release.Service  | quote }}
+        spec:
+          {{- if .Values.global.privateRegistry }}
+          imagePullSecrets:
+            - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+          {{- end }}
+          restartPolicy: Never
+          containers:
+          - name: {{ .Release.Name }}-clean-postgres
+            {{- if .Values.global.privateRegistry }} 
+            image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.cleanJob.image | default "postgres:9.6" }}
+            {{- else }}
+            image: {{ .Values.postgresql.cleanJob.image | default "postgres:9.6" }}
+            {{- end }}
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: PGHOST
+                value: {{ default (printf "%s-%s" $.Release.Name $.Values.global.postgresService) $.Values.global.postgresHostname | quote }}
+              - name: PGPORT
+                value: {{ .Values.global.postgresPort | default "5432" | quote }}
+              - name: PGDATABASE
+                value: {{ .Values.global.postgresDatabase | default "codefresh" }}        
+              - name: PGUSER
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ $.Release.Name }}-{{ $.Values.global.codefresh }}"
+                    key: postgres-user
+              - name: PGPASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ $.Release.Name }}-{{ $.Values.global.codefresh }}"
+                    key: postgres-password
+              - name: EVENT_STORE_TABLE
+                value: {{ .Values.postgresql.cleanJob.eventStoreTable | default "eventstore.events" }}
+              - name: EVENTS_TO_KEEP
+                value: {{ .Values.postgresql.cleanJob.keptEventsNumber | default "100000" | quote }}
+              - name: DEL_CHUNK_SIZE
+                value: {{ .Values.postgresql.cleanJob.deletionChunkSize | default "1000" | quote }}
+            command:
+              - "/bin/bash"
+              - "-c"
+              - |
+{{ .Files.Get (print .Values.postgresCleanJobScript ) | indent 16  }}
+{{- end }}
