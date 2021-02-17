@@ -37,13 +37,13 @@ spec:
           - name: POSTGRES_HOST
             value: {{ required "postgresHost value is required" .Values.global.postgresHostname }}
           - name: POSTGRES_PORT
-            value: {{ .Values.global.postgresPort | quote | default "5432" }}
+            value: {{ .Values.global.postgresPort | default "5432" | quote }}
           - name: POSTGRES_DATABASE
             value: {{ .Values.global.postgresDatabase | default "codefresh" }}        
           - name: POSTGRES_SEED_USER
             value: {{ .Values.global.postgresSeedJob.user | default .Values.global.postgresUser }}
           - name: POSTGRES_SEED_PASSWORD
-            value: {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword }}
+            value: {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword | quote }}
           - name: POSTGRES_USER
             value: {{ required "postgresUser value is required" .Values.global.postgresUser }}
           - name: POSTGRES_PASSWORD
