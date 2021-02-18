@@ -8,10 +8,8 @@ steps:
     revision: ${{ONPREM_MASTER_BRANCH}}
 
   update_deps:
-    image: alpine/helm:3.2.1
+    image: alpine/helm:3.5.2
     commands:
-      - helm repo add codefresh http://chartmuseum.codefresh.io
-      - helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
       - helm dependency update --skip-refresh --debug codefresh
 
   update_onprem:

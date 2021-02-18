@@ -51,7 +51,7 @@ steps:
 
   build_chart:
     description: "Builds a sem-versioned Helm package. Adds a feature branch tag to the chart version, when built from non-master"
-    image: alpine/helm:3.2.1
+    image: alpine/helm:3.5.2
     stage: create package
     when:
       steps:
@@ -71,8 +71,9 @@ steps:
 
         cf_export ONPREM_VERSION
 
-        helm repo add codefresh http://chartmuseum.codefresh.io
-        helm repo add codefresh-dev http://chartmuseum-dev.codefresh.io
+        # the line below is a workaround for CR-2459 and https://github.com/helm/helm/issues/8036
+        ./codefresh/env/on-prem/ci/add_helm_repos.sh
+
         helm dependency build --debug codefresh
         cf_export PACKAGE=$(echo $(helm package codefresh -d ${{CF_VOLUME_PATH}}/cf_chart --version $ONPREM_VERSION) | awk -F ': ' '{print $2}')
 

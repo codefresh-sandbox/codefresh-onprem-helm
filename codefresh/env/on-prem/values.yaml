@@ -56,6 +56,8 @@ postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
   postgresPassword: eC9arYka4ZbH
+  cleanJob:
+    enabled: true
   nodeSelector: {}
   resources:
     requests:
@@ -94,6 +96,7 @@ builder:
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 mongoSeedJobScript: files/on-prem/mongoSeedJobScript
 postgresSeedJobScript: files/on-prem/postgresSeedScript
+postgresCleanJobScript: files/on-prem/postgresCleanJobScript
 updateDefREImgScript: files/on-prem/updateDefREImgScript
 migrateHermesDataScript: files/on-prem/migrateHermesDataScript
 setMdbCompatVerScript: files/on-prem/setMdbCompatVerScript
