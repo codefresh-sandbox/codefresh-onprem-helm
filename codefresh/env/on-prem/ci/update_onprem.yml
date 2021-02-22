@@ -10,7 +10,7 @@ steps:
   update_deps:
     image: alpine/helm:3.5.2
     commands:
-      - helm dependency update --skip-refresh --debug codefresh
+      - helm dependency update --debug codefresh
 
   update_onprem:
     image: codefreshio/ci-helpers
