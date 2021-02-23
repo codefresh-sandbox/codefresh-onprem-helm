@@ -18,10 +18,10 @@ steps:
     working_directory: ${{clone}}
     commands:
       - apk add bash
-      - ./get-img-list.sh ${CHANNEL} ${ONPREM_VERSION} > ${{IMG_LIST_FILE}}
+      - ./get-img-list.sh --repo ${CHANNEL} --version ${ONPREM_VERSION} > ${{IMG_LIST_FILE}}
       - cat ${{IMG_LIST_FILE}}
     stage: get_img_list
-  
+
   get_github_token:
     stage: generate_and_send_report
     image: codefresh/cli
@@ -36,7 +36,7 @@ steps:
     stage: generate_and_send_report
     commands:
       - ./generate_scan_report.sh
-      
+
   upload_report_to_S3:
     image: mesosphere/aws-cli
     stage: generate_and_send_report
