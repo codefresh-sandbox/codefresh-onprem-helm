@@ -45,7 +45,7 @@ function vacuum() {
 
 function delNFirstRows() {
     local rows_number=$1
-    local cmd="DELETE FROM ${EVENT_STORE_TABLE} COMMIT WHERE id IN (SELECT id FROM ${EVENT_STORE_TABLE} LIMIT ${rows_number})"
+    local cmd="DELETE FROM ${EVENT_STORE_TABLE} COMMIT WHERE id IN (SELECT id FROM ${EVENT_STORE_TABLE} ORDER BY id LIMIT ${rows_number})"
     _psql -c "${cmd}"
 
 }
