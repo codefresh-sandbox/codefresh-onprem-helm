@@ -45,7 +45,7 @@ steps:
     commands:
       - |-
         set -e
-        
+
         echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
         yq m codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
 
@@ -224,6 +224,7 @@ steps:
     commands:
       - set -eu
       - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
       - yarn cli test --user-token ${{E2E_API_KEY}} --api-url https://${CF_APP_HOST} --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests
     when:
       steps:
