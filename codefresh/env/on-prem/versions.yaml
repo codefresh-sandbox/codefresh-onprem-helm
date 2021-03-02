@@ -1,4 +1,4 @@
-ENGINE_IMAGE: quay.io/codefresh/engine:1.133.7
+ENGINE_IMAGE: quay.io/codefresh/engine:1.134.2
 DIND_IMAGE: quay.io/codefresh/dind:18.09.5-1.24.5
 CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.4.4
 GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.0.4
