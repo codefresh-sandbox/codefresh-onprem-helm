@@ -84,7 +84,7 @@ redis:
 rabbitmq:
   rabbitmqUsername: user
   rabbitmqPassword: cVz9ZdJKYm7u
-  nodeSelector: {} 
+  nodeSelector: {}
 
 registry:
   mainChart: codefresh
@@ -110,13 +110,13 @@ runtime_envs:
 nomios:
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
-    
+
 cronus:
   event:
     action: "s"
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
-    
+
 hermes:
   image:
     dockerRegistry: gcr.io/codefresh-enterprise/
@@ -135,7 +135,7 @@ cfui:
   env:
     ON_PREMISE: true
 #  webTLS:
-#    secretName: star.codefresh.io  
+#    secretName: star.codefresh.io
 
 onboarding-status:
   enabled: false
@@ -151,7 +151,7 @@ runtime-environment-manager:
   newrelicLicenseKey: invalid-key
   env:
     ON_PREMISE: true
-    
+
 cfanalytic:
   dockerRegistry: gcr.io/codefresh-enterprise/
   image: codefresh/cf-analytic
@@ -193,7 +193,7 @@ cfapi:
 
 cfapi-buildmanager:
   replicaCount: 0
-cfapi-cacheevictmanager: 
+cfapi-cacheevictmanager:
   replicaCount: 0
 cfapi-downloadlogmanager:
   replicaCount: 0
@@ -213,7 +213,7 @@ cluster-providers:
   safeSecret: ""
   image: codefresh/cluster-providers
   dockerRegistry: gcr.io/codefresh-enterprise/
-  
+
 cfsign:
   replicaCount: 1
   image: codefresh/cf-tls-sign
@@ -230,7 +230,7 @@ charts-manager:
     CONTEXT_MANAGER_URI: cf-context-manager
     API_URI: cf-cfapi
   disablePublicRepos: true
-  
+
 context-manager:
   safeSecret: ""
   replicaCount: 1
@@ -240,7 +240,7 @@ context-manager:
     MONGO_URI: mongodb://mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
     POSTGRES_HOST: cf-postgresql
-  
+
 pipeline-manager:
   replicaCount: 1
   safeSecret: ""
@@ -303,7 +303,8 @@ global:
   # when using custom registry, enable the following seetings to add imagePullSecret to all images and replace docker registry prefix with custom one (has to be with trailing /)
   #privateRegistry: true
   #dockerRegistry: containers-nexus-francisco.codefresh.io/
-  
+
+  stepsCatalogOnPremise: "1"
   #appUrl: app-url
   githubInternalToken: placeholder
   githubClientSecret: placeholder
@@ -343,7 +344,7 @@ global:
   #dindImage: docker:17.06-dind
   dindImage: docker:18.09-dind
   #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
-  
+
   # curl image
   curlImage: quay.io/codefresh/curl:1.0.0
 

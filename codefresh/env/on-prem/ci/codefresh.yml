@@ -134,6 +134,44 @@ steps:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
 
+  extract_chrome_vers:
+    title: Extract chrome versions
+    stage: create test infra
+    type: parallel
+    steps:
+      latest_chrome_version_step:
+        title: Get latest chrome version
+        type: freestyle
+        image: alpine
+        commands:
+          - >
+            apk update
+
+            apk add jq curl
+
+            result=$(curl -sk http://omahaproxy.appspot.com/all.json)
+
+            export LATEST_CHROME_VERSION=$(echo $result | jq -c '.[] | select(.os == "linux") | .versions[] | select(.channel == "stable") | .version' | cut -d'"' -f 2)
+
+            cf_export STABLE_MAJOR_VERSION=$(echo "$LATEST_CHROME_VERSION" | cut -d'.' -f1)
+
+            echo $LATEST_CHROME_VERSION
+
+            cf_export LATEST_CHROME_VERSION
+      image_chrome_version_step:
+        title: Get chrome version inside an e2e image
+        type: freestyle
+        image: codefresh/ui-e2e-image
+        commands:
+          - >
+            export CURRENT_CHROME_VERSION=$(google-chrome --product-version)
+
+            cf_export LOCAL_MAJOR_VERSION=$(echo "$CURRENT_CHROME_VERSION" | cut -d'.' -f1)
+
+            echo $CURRENT_CHROME_VERSION
+
+            cf_export CURRENT_CHROME_VERSION
+
   helm_install:
     stage: test
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
@@ -183,12 +221,13 @@ steps:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
 
-  export_cfapi_ver:
+  export_cf_projs_ver:
     stage: test
     description: "Gets the cfapi version of the current onprem release for E2E tests"
     image: codefreshio/ci-helpers
     commands:
       - cf_export CF_API_VERSION=$(yq r codefresh/requirements.lock 'dependencies(name==cfapi).version')
+      - cf_export CF_UI_VERSION=$(yq r codefresh/requirements.lock 'dependencies(name==cfui).version')
     when:
       steps:
         - name: validate_and_export_version
@@ -209,9 +248,21 @@ steps:
     git: "${{GIT_CONTEXT}}"
     when:
       steps:
-      - name: export_cfapi_ver
+      - name: export_cf_projs_ver
         on:
         - success
+
+  ui_clone:
+    type: git-clone
+    stage: test
+    repo: codefresh-io/cf-ui
+    revision: "${{CF_UI_VERSION}}"
+    git: "${{GIT_CONTEXT}}"
+    when:
+      steps:
+        - name: export_cf_projs_ver
+          on:
+            - success
 
   e2e_api_test:
     stage: test
@@ -237,6 +288,45 @@ steps:
       - name: helm_upgrade
         on:
         - success
+
+  e2e_ui_test:
+    title: Running UI E2E Tests
+    type: freestyle
+    stage: test
+    fail_fast: true
+    arguments:
+      image: codefresh/ui-e2e-image
+      working_directory: '${{ui_clone}}'
+      environment:
+        - ENVIROMENT=${{ENVIRONMENT}}
+        - BASE_URL=https://${{CF_APP_HOST}}
+        - SLACK_URI=${{UI_E2E_SLACK}}
+        - TEST_USER=${{UI_USER_NAME}}
+        - TEST_PASSWORD=${{UI_USER_PWD}}
+        - TEST_PUBLIC_PIPELINE_ID=${{PUBLIC_PIPELINE_ID}}
+        - AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}}
+        - AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+    commands:
+      - set -eu
+      - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}} BASE_URL=https://${{CF_APP_HOST}}
+      - export ON_PREM=yes
+      - yarn install
+      - yarn e2e
+    when:
+      steps:
+        - name: ui_clone
+          on:
+            - success
+        - name: helm_install
+          on:
+            - success
+        - name: helm_upgrade
+          on:
+            - success
+        - name: extract_chrome_vers
+          on:
+            - success
 
   delete_test_cluster:
     stage: delete test infra
