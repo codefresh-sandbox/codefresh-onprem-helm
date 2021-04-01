@@ -134,7 +134,7 @@ dependencies:
     tags:
     - saas
     - infra
-# - name: k8s-monitor 
+# - name: k8s-monitor
 #   version: ^4.0.0
 #   repository: http://chartmuseum.codefresh.io
 #   condition: cfui.enabled
