@@ -339,13 +339,8 @@ steps:
         MESSAGE: "E2E has failed in the build ${{CF_BUILD_URL}}"
     when:
       steps:
-        - name: e2e_ui_test
-          on:
-            - success
-            - failure
         - name: e2e_api_test
           on:
-            - success
             - failure
 
   delete_test_cluster:
