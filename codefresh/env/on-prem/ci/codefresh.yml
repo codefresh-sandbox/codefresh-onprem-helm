@@ -332,7 +332,7 @@ steps:
 
   failed_e2e_notifications:
     stage: notifications
-    title: Reporting to Slack in the case of E2E failures
+    title: E2E failures notification
     type: slack-message-sender
     arguments:
         WEBHOOK_URL: ${{UI_E2E_SLACK}}
