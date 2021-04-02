@@ -9,6 +9,7 @@ stages:
   - test
   - delete test infra
   - git_tag
+  - notifications
 
 steps:
   main_clone:
@@ -265,6 +266,7 @@ steps:
             - success
 
   e2e_api_test:
+    title: Running API E2E Tests
     stage: test
     description: Runs API E2E Tests
     shell: bash
@@ -325,6 +327,22 @@ steps:
           on:
             - success
         - name: extract_chrome_vers
+          on:
+            - success
+
+  failed_e2e_notifications:
+    stage: notifications
+    title: Reporting to Slack in the case of E2E failures
+    type: slack-message-sender
+      arguments:
+        WEBHOOK_URL: ${{UI_E2E_SLACK}}
+        MESSAGE: "E2E has failed in the build ${{CF_BUILD_URL}}"
+    when:
+      steps:
+        - name: e2e_ui_test
+          on:
+            - success
+        - name: e2e_api_test
           on:
             - success
 
