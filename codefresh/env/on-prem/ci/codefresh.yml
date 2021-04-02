@@ -334,7 +334,7 @@ steps:
     stage: notifications
     title: Reporting to Slack in the case of E2E failures
     type: slack-message-sender
-      arguments:
+    arguments:
         WEBHOOK_URL: ${{UI_E2E_SLACK}}
         MESSAGE: "E2E has failed in the build ${{CF_BUILD_URL}}"
     when:
