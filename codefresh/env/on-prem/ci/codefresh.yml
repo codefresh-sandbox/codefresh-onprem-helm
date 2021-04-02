@@ -371,6 +371,12 @@ steps:
           - success
           - skipped
           - failure
+        - name: e2e_ui_test
+            on:
+              - success
+              - skipped
+              - failure
+
 
   create_git_tag:
     image: codefreshio/ci-helpers
