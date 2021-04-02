@@ -374,10 +374,10 @@ steps:
           - skipped
           - failure
         - name: e2e_ui_test
-            on:
-              - success
-              - skipped
-              - failure
+          on:
+            - success
+            - skipped
+            - failure
 
 
   create_git_tag:
