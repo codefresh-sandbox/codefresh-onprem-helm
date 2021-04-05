@@ -1,4 +1,27 @@
 {{- if and .Values.global.seedJobs .Values.global.postgresSeedJob }}
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  labels:
+    app: {{ template "fullname" . }}
+  name: {{ template "fullname" . }}-postgres-creds
+data:
+  user: |-
+    {{ required "postgresUser value is required" .Values.global.postgresUser | b64enc }}
+  password: |-
+    {{ required "postgresPassword value is required" .Values.global.postgresPassword | b64enc }}
+  seedJobUser: |-
+    {{ .Values.global.postgresSeedJob.user | default .Values.global.postgresUser | b64enc }}
+  seedJobPassword: |-
+    {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword | b64enc }}
+  database: |-
+    {{ .Values.global.postgresDatabase | default "codefresh" | b64enc }}
+  host: |-
+    {{ required "postgresHost value is required" .Values.global.postgresHostname | b64enc }}
+  port: |-
+    {{ .Values.global.postgresPort | default "5432" | toString | b64enc }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -35,19 +58,40 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
           - name: POSTGRES_HOST
-            value: {{ required "postgresHost value is required" .Values.global.postgresHostname }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: host
           - name: POSTGRES_PORT
-            value: {{ .Values.global.postgresPort | default "5432" | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: port
           - name: POSTGRES_DATABASE
-            value: {{ .Values.global.postgresDatabase | default "codefresh" }}        
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: database
           - name: POSTGRES_SEED_USER
-            value: {{ .Values.global.postgresSeedJob.user | default .Values.global.postgresUser }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: seedJobUser
           - name: POSTGRES_SEED_PASSWORD
-            value: {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: seedJobPassword
           - name: POSTGRES_USER
-            value: {{ required "postgresUser value is required" .Values.global.postgresUser }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: user
           - name: POSTGRES_PASSWORD
-            value: {{ required "postgresPassword value is required" .Values.global.postgresPassword }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}-postgres-creds
+                key: password
         command:
           - "/bin/bash"
           - "-exc"
