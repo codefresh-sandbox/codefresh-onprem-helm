@@ -51,11 +51,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       initContainers:
       - name: register-runner-container
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.curlImage }}"
-        {{- else }}
-        image: {{ .Values.global.curlImage | quote }}
-        {{- end }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.global.curlImage) }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
         {{- if .Values.global.env }}
@@ -76,11 +72,7 @@ spec:
           subPath: register
       containers:
       - name: {{ template "fullname" . }}
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.dindImage }}"
-        {{- else }}
-        image: {{ .Values.global.dindImage | quote }}
-        {{- end }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.global.dindImage) }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         resources:
           limits:

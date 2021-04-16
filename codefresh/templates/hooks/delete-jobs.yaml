@@ -27,7 +27,7 @@ spec:
 
       containers:
       - name: post-install-delete-job
-        image: {{ .Values.kubectlImage | quote }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
         volumeMounts:
         - name: kubectl
           mountPath: /kubectl
@@ -36,7 +36,7 @@ spec:
         - -c
         - "kubectl delete job --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
       - name: post-install-delete-secret
-        image: {{ .Values.kubectlImage | quote }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
         volumeMounts:
         - name: kubectl
           mountPath: /kubectl
@@ -45,7 +45,7 @@ spec:
         - -c
         - "kubectl delete secret --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
       - name: post-install-delete-cm
-        image: {{ .Values.kubectlImage | quote }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
         volumeMounts:
         - name: kubectl
           mountPath: /kubectl
@@ -54,7 +54,7 @@ spec:
         - -c
         - "kubectl delete cm --namespace {{ .Release.Namespace }} -l app={{ template "fullname" . }}"
       - name: post-install-delete-pvc
-        image: {{ .Values.kubectlImage | quote }}
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
         volumeMounts:
         - name: kubectl
           mountPath: /kubectl
