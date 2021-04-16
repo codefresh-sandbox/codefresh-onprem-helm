@@ -37,4 +37,13 @@ fi
 
 waitForMongoDB
 
-mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${MONGODB_DATABASE}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})"
+set +e
+result=$(mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${MONGODB_DATABASE}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" 2>&1)
+
+if [[ "$?" != "0" ]]; then
+        if [[ $(echo $result | grep -i 'already exists') ]]; then
+                echo "User already exists, skipping"
+                exit 0
+        fi
+        exit 1
+fi

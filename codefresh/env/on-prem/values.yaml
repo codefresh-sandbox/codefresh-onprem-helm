@@ -204,7 +204,9 @@ cfapi-eventsmanagersubscriptions:
 cfapi-terminators:
   replicaCount: 0
 k8s-monitor:
+  enabled: true
   replicaCount: 0
+  dockerRegistry: gcr.io/codefresh-enterprise/
 
 cluster-providers:
   replicaCount: 1
@@ -431,6 +433,7 @@ global:
   dindProviderPort: 9000
   broadcasterService: cf-broadcaster
   broadcasterPort: 80
+  cfk8smonitorService: kubernetes-monitor
   onprem: true
   ### new logging solution
   runtimeRedisHost: cf-redis

@@ -46,7 +46,7 @@ dependencies:
   version: 1.15.2
 - name: payments
   repository: http://chartmuseum.codefresh.io/payments
-  version: 2.5.3
+  version: 2.6.0
 - name: cfsign
   repository: http://chartmuseum.codefresh.io/cfsign
   version: 1.1.3
@@ -55,7 +55,7 @@ dependencies:
   version: 1.12.0
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.13.4
+  version: 1.13.6
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
   version: 1.12.1
@@ -64,13 +64,16 @@ dependencies:
   version: 2.16.16
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.113.2
+  version: 3.113.4
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.31.11
+  version: 21.32.4
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.31.2
+  version: 14.33.3
+- name: k8s-monitor
+  repository: http://chartmuseum.codefresh.io/k8s-monitor
+  version: 4.8.5
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io/onboarding-status
   version: 1.6.5
@@ -92,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.2
-digest: sha256:203b4b2987ac38aad85b7b257bdd358697d3d70012641968fa65fd61762cd7cf
-generated: "2021-04-07T08:25:47.238300984Z"
+digest: sha256:7d8c1113f41fc1ac77ec8b752a74db8aa891d0d40f80acf70fec2869b07bc1b4
+generated: "2021-04-16T09:43:20.57314136+03:00"
