@@ -334,16 +334,15 @@ steps:
             - yarn cli test --user-token ${{ACCOUNT_API_E2E_TOKEN}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel
       when:
         steps:
-          - name: api_clone
-            on:
-            - success
-          - name: helm_install
-            on:
-            - success
-          - name: helm_upgrade
-            on:
-            - success
-
+        - name: api_clone
+          on:
+          - success
+        - name: helm_install
+          on:
+          - success
+        - name: helm_upgrade
+          on:
+          - success
 
   e2e_ui_test:
     title: Running UI E2E Tests
