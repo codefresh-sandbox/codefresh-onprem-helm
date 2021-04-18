@@ -303,11 +303,17 @@ steps:
         working_directory: /app
         fail_fast: true
         image: codefresh/cf-api-testing
-        commands:
-          - set -eu
-          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
-          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-          - yarn cli test --user-token ${{ACCOUNT_API_E2E_TOKEN}} --report html --api-url ${{API_URL}} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential
+        arguments:
+          environment:
+            - NODE_TLS_REJECT_UNAUTHORIZED=0
+            - HOST=${{E2E_K8S_HOST}}
+            - CLIENT_CA=${{E2E_K8S_CLIENT_CA}}
+            - TOKEN=${{E2E_K8S_TOKEN}}
+            - AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}}
+            - AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          commands:
+            - set -eu
+            - yarn cli test --user-token ${{ACCOUNT_API_E2E_TOKEN}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential
       parallel_e2e_api_test:
         title: Parallel Running API E2E Tests
         type: freestyle
@@ -315,22 +321,28 @@ steps:
         working_directory: /app
         fail_fast: true
         image: codefresh/cf-api-testing
-        commands:
-          - set -eu
-          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
-          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-          - yarn cli test --user-token ${{ACCOUNT_API_E2E_TOKEN}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel
-  when:
-    steps:
-    - name: api_clone
-      on:
-      - success
-    - name: helm_install
-      on:
-      - success
-    - name: helm_upgrade
-      on:
-      - success
+        arguments:
+          environment:
+            - NODE_TLS_REJECT_UNAUTHORIZED=0
+            - HOST=${{E2E_K8S_HOST}}
+            - CLIENT_CA=${{E2E_K8S_CLIENT_CA}}
+            - TOKEN=${{E2E_K8S_TOKEN}}
+            - AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}}
+            - AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          commands:
+            - set -eu
+            - yarn cli test --user-token ${{ACCOUNT_API_E2E_TOKEN}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel
+      when:
+        steps:
+          - name: api_clone
+            on:
+              - success
+          - name: helm_install
+            on:
+              - success
+          - name: helm_upgrade
+            on:
+              - success
 
 
   e2e_ui_test:
