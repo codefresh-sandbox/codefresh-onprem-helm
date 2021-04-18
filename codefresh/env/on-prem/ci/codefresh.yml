@@ -336,13 +336,13 @@ steps:
         steps:
           - name: api_clone
             on:
-              - success
+            - success
           - name: helm_install
             on:
-              - success
+            - success
           - name: helm_upgrade
             on:
-              - success
+            - success
 
 
   e2e_ui_test:
