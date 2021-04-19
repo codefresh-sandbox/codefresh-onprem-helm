@@ -265,32 +265,6 @@ steps:
           on:
             - success
 
-#  e2e_api_test:
-#    title: Running API E2E Tests
-#    stage: test
-#    description: Runs API E2E Tests
-#    shell: bash
-#    working_directory: /app
-#    retry:
-#      maxAttempts: 2
-#    image: codefresh/cf-api-testing
-#    commands:
-#      - set -eu
-#      - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
-#      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-#      - yarn cli test --user-token ${{E2E_API_KEY}} --api-url https://${CF_APP_HOST} --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests
-#    when:
-#      steps:
-#      - name: api_clone
-#        on:
-#        - success
-#      - name: helm_install
-#        on:
-#        - success
-#      - name: helm_upgrade
-#        on:
-#        - success
-
   e2e_api_test:
     title: Running API E2E Tests
     stage: test
@@ -385,36 +359,36 @@ steps:
           on:
             - failure
 
-  delete_test_cluster:
-    stage: delete test infra
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.3
-    working_directory: IMAGE_WORK_DIR
-    matrix:
-      environment:
-        - [TEST_CASE_ID=01]
-        - [TEST_CASE_ID=02]
-    commands:
-      - ./delete-cluster.sh
-    when:
-      steps:
-        - name: helm_install
-          on:
-          - success
-          - failure
-        - name: helm_upgrade
-          on:
-          - success
-          - failure
-        - name: e2e_api_test
-          on:
-          - success
-          - skipped
-          - failure
-        - name: e2e_ui_test
-          on:
-            - success
-            - skipped
-            - failure
+#  delete_test_cluster:
+#    stage: delete test infra
+#    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.3
+#    working_directory: IMAGE_WORK_DIR
+#    matrix:
+#      environment:
+#        - [TEST_CASE_ID=01]
+#        - [TEST_CASE_ID=02]
+#    commands:
+#      - ./delete-cluster.sh
+#    when:
+#      steps:
+#        - name: helm_install
+#          on:
+#          - success
+#          - failure
+#        - name: helm_upgrade
+#          on:
+#          - success
+#          - failure
+#        - name: e2e_api_test
+#          on:
+#          - success
+#          - skipped
+#          - failure
+#        - name: e2e_ui_test
+#          on:
+#            - success
+#            - skipped
+#            - failure
 
 
   create_git_tag:
