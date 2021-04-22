@@ -433,7 +433,7 @@ global:
   dindProviderPort: 9000
   broadcasterService: cf-broadcaster
   broadcasterPort: 80
-  cfk8smonitorService: kubernetes-monitor
+  cfk8smonitorService: k8s-monitor
   onprem: true
   ### new logging solution
   runtimeRedisHost: cf-redis
