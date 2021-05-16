@@ -382,13 +382,9 @@ steps:
         - name: e2e_api_test
           on:
           - success
-          - skipped
-          - failure
         - name: e2e_ui_test
           on:
             - success
-            - skipped
-            - failure
 
 
   create_git_tag:
