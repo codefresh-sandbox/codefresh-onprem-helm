@@ -64,13 +64,13 @@ dependencies:
   version: 2.16.19
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.115.2
+  version: 3.115.4
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.50.4
+  version: 21.52.1
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.36.7
+  version: 14.36.9
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.6
@@ -85,7 +85,7 @@ dependencies:
   version: 1.6.2
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.7.11
+  version: 0.7.12
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.13
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.2
-digest: sha256:3c46d86baedbcc716c6810312dcbb6080cdf8456a8ad249b3be740fdc2e81aa3
-generated: "2021-05-16T11:47:16.966336+03:00"
+digest: sha256:232afaa61286dfcf293e4db3654fa6334776ba02e90ff4f4fff305241548dc28
+generated: "2021-05-18T12:04:02.408131+03:00"
