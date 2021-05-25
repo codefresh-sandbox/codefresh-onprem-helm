@@ -332,7 +332,6 @@ global:
   cfapiService: cfapi
   cfcrDomain: ""
   gceProject: ""
-  launchDarklySdkKey: "dummy-key"
   # cfapi internal service port
   cfapiInternalPort: 3000
 
