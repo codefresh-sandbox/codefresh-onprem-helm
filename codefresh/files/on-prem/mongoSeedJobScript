@@ -36,7 +36,9 @@ fi
 
 waitForMongoDB
 
-mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${MONGODB_DATABASE}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
+for db in ${MONGODB_DATABASE} "archive"; do
+    mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${db}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
+done
 
 if [ $? == 0 ]; then
     mongoimport --uri ${MONGODB_URI} --collection accounts --type json --file /etc/admin/accounts.json
