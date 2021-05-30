@@ -70,7 +70,7 @@ dependencies:
   version: 21.52.16
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.38.1
+  version: 14.38.5
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.6
