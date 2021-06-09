@@ -31,7 +31,7 @@
       },
       "image": "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.ENGINE_IMAGE) }}",
       "command": [
-        "yarn",
+        "npm",
         "run",
         "start"
       ],
