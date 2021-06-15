@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 waitForMongoDB() {
-        while true; do
-                status=$(mongo ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" | tail -n1)
+    while true; do
+        status=$(mongo ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
 
-                echo "MongoDB status = $status"
-                [ "$status" == '{ "ok" : 1 }' ] && break
+        echo -e "MongoDB status:\n$status"
+        if $(echo $status | grep '"ok" : 1' -q); then
+            break
+        fi
 
-                echo "Sleeping 10 seconds ..."
-                sleep 10
-
-        done
+        echo "Sleeping 10 seconds ..."
+        sleep 10
+    done
 }
 
 parseMongoURI() {
