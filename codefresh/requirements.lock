@@ -31,7 +31,7 @@ dependencies:
   version: 0.1.10
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.9.9
+  version: 1.9.10
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
   version: 1.23.5
@@ -46,7 +46,7 @@ dependencies:
   version: 1.15.2
 - name: payments
   repository: http://chartmuseum.codefresh.io/payments
-  version: 2.8.2
+  version: 2.9.0
 - name: cfsign
   repository: http://chartmuseum.codefresh.io/cfsign
   version: 1.1.3
@@ -55,22 +55,22 @@ dependencies:
   version: 1.12.0
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.13.7
+  version: 1.13.8
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
   version: 1.12.2
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
-  version: 2.17.0
+  version: 2.17.2
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.116.0
+  version: 3.117.1
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.56.0
+  version: 21.62.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.40.0
+  version: 14.40.5
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.6
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.2
-digest: sha256:5cc236674db3295b907199e048fe22db0a39550b54ba727e6b1ab3177aeb2c26
-generated: "2021-06-08T22:52:05.148972125Z"
+digest: sha256:968e811c39738ae71f36194fe4bc7757a37e3e214832da8d68d8ed3998d254c2
+generated: "2021-06-16T11:20:34.382004+03:00"
