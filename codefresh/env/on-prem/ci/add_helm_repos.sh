@@ -14,6 +14,7 @@ repos="
     tasker-kubernetes
     context-manager
     pipeline-manager
+    gitops-dashboard-manager
     cfapi
     cfui
     onboarding-status
