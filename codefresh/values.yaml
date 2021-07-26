@@ -104,7 +104,7 @@ cfui:
   env:
     ON_PREMISE: true
 #  webTLS:
-#    secretName: star.codefresh.io  
+#    secretName: star.codefresh.io
 
 onboarding-status:
   enabled: false
@@ -347,6 +347,8 @@ global:
   contextManagerPort: 9000
   pipelineManagerService: pipeline-manager
   pipelineManagerPort: 9000
+  gitopsDashboardManagerService: gitops-dashboard-manager
+  gitopsDashboardManagerPort: 9000
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
   runtimeEnvironmentManagerService: runtime-environment-manager
