@@ -432,6 +432,8 @@ global:
   contextManagerPort: 9000
   pipelineManagerService: pipeline-manager
   pipelineManagerPort: 9000
+  gitopsDashboardManagerService: pipeline-manager
+  gitopsDashboardManagerPort: 9000
   onboardingStatusService: onboarding-status
   onboardingStatusPort: 80
   runtimeEnvironmentManagerService: runtime-environment-manager
