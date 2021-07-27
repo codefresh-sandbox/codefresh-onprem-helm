@@ -34,7 +34,7 @@ dependencies:
   version: 1.9.12
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.23.5
+  version: 1.23.6
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io/accounts-referrals
   version: 1.6.2
@@ -46,10 +46,10 @@ dependencies:
   version: 1.15.2
 - name: payments
   repository: http://chartmuseum.codefresh.io/payments
-  version: 2.11.0
+  version: 2.12.0
 - name: cfsign
   repository: http://chartmuseum.codefresh.io/cfsign
-  version: 1.1.3
+  version: 1.2.0
 - name: segment-reporter
   repository: http://chartmuseum.codefresh.io/segment-reporter
   version: 1.12.0
@@ -64,13 +64,16 @@ dependencies:
   version: 2.17.5
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.118.3
+  version: 3.118.8
+- name: gitops-dashboard-manager
+  repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
+  version: 1.6.10
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.76.0
+  version: 21.94.6
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.51.11
+  version: 14.57.6
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.6
@@ -79,7 +82,7 @@ dependencies:
   version: 1.6.6
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.20.11
+  version: 3.20.14
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
   version: 1.6.3
@@ -95,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.2
-digest: sha256:5dc67c718997a018dcf433d5e38b7ded07cfe762b786748dafd7cd0501bc4de5
-generated: "2021-07-12T14:08:35.480533136Z"
+digest: sha256:22e204e7db3e1028fb09e0f39a8ba20bfc0442c61c8dfb66bf3ad0c238b5122c
+generated: "2021-07-27T18:17:16.326661771Z"
