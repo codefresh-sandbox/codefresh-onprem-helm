@@ -122,10 +122,10 @@ dependencies:
     - infra
   - name: gitops-dashboard-manager
     version: "*"
-    repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
+    repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
     tags:
-      - saas
-      - infra
+    - saas
+    - infra
   - name: cfapi
     version: "*"
     repository: http://chartmuseum.codefresh.io/cfapi
