@@ -5,7 +5,7 @@ GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.0.5
 DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.3
 DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.2.0
 DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.2
-DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.12
+DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.13
 COMPOSE_IMAGE: quay.io/codefresh/compose:1.2.1
 KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.4
 FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.1.1
