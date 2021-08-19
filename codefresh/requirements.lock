@@ -31,7 +31,7 @@ dependencies:
   version: 0.1.10
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.9.14
+  version: 1.9.15
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
   version: 1.23.6
@@ -64,16 +64,16 @@ dependencies:
   version: 2.17.5
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.118.8
+  version: 3.118.11
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
   version: 1.6.10
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.96.3
+  version: 21.99.3
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.58.2
+  version: 14.59.1
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.6
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.2
-digest: sha256:7487b544c8555ad73dd15e619eddd374517ef8b07db87e9d3adf00fc09a723fc
-generated: "2021-08-02T09:15:09.475155633Z"
+digest: sha256:ef18e3c53f5ed1b08290ccc9e92b82ef337ba16e0af78fe2b5b5d3ac79d76293
+generated: "2021-08-19T14:20:07.338406762Z"
