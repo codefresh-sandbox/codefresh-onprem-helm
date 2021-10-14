@@ -293,7 +293,31 @@ steps:
           - set -eu
           - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
           - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag !onprem_bug
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag !abac !onprem_bug
+      parallel_e2e_api_abac_test:
+        title: Parallel Running API E2E ABAC Tests
+        type: freestyle
+        stage: test
+        working_directory: /app
+        fail_fast: true
+        image: codefresh/cf-api-testing
+        commands:
+          - set -eu
+          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag abac !apac-assign !onprem_bug
+      parallel_e2e_api_abac_assign_test:
+        title: Parallel Running API E2E ABAC assign Tests
+        type: freestyle
+        stage: test
+        working_directory: /app
+        fail_fast: true
+        image: codefresh/cf-api-testing
+        commands:
+          - set -eu
+          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag abac apac-assign !onprem_bug
     when:
       steps:
         - name: api_clone
