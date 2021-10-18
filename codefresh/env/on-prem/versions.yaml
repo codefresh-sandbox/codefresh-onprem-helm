@@ -1,7 +1,7 @@
-ENGINE_IMAGE: quay.io/codefresh/engine:1.140.1
+ENGINE_IMAGE: quay.io/codefresh/engine:1.142.5
 DIND_IMAGE: quay.io/codefresh/dind:20.10.7-1.25.0
 CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.4.8
-GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.0.5
+GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.0.7
 DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.3
 DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.2.0
 DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.2
