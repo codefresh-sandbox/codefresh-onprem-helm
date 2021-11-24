@@ -52,7 +52,7 @@ steps:
 
   build_chart:
     description: "Builds a sem-versioned Helm package. Adds a feature branch tag to the chart version, when built from non-master"
-    image: alpine/helm:3.5.2
+    image: alpine/helm:3.5.4
     stage: create package
     when:
       steps:
