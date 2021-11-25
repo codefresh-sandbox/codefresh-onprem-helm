@@ -81,14 +81,17 @@ runtime_envs:
     namespace: dinds
 nomios:
   image:
+    name: codefresh/nomios
     dockerRegistry: gcr.io/codefresh-enterprise/
 cronus:
   event:
     action: "s"
   image:
+    name: codefresh/cronus
     dockerRegistry: gcr.io/codefresh-enterprise/
 hermes:
   image:
+    name: codefresh/hermes
     dockerRegistry: gcr.io/codefresh-enterprise/
   redis:
     enabled: false # deprecation of a separate redis for hermes (CR-705)
@@ -169,6 +172,7 @@ cfapi-eventsmanagersubscriptions:
 cfapi-terminators:
   replicaCount: 0
 k8s-monitor:
+  image: codefresh/cf-k8s-monitor
   replicaCount: 0
 cluster-providers:
   replicaCount: 1
