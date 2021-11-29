@@ -261,7 +261,6 @@ gitops-dashboard-manager:
     LOGGER_LEVEL: "info"
     EVENTBUS_IGNORE_CREATE_SCHEMA: true
     INTERNAL_API_URI: http://cf-cfapi:9007
-    MONGO_URI: mongodb://mongodb:27017/pipeline-manager
 
 kube-integration:
   replicaCount: 1
