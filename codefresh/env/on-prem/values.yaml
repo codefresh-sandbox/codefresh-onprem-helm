@@ -109,16 +109,19 @@ runtime_envs:
 
 nomios:
   image:
+    name: codefresh/nomios
     dockerRegistry: gcr.io/codefresh-enterprise/
 
 cronus:
   event:
     action: "s"
   image:
+    name: codefresh/cronus
     dockerRegistry: gcr.io/codefresh-enterprise/
 
 hermes:
   image:
+    name: codefresh/hermes
     dockerRegistry: gcr.io/codefresh-enterprise/
   redis:
     enabled: false # deprecation of a separate redis for hermes (CR-705)
@@ -204,6 +207,7 @@ cfapi-eventsmanagersubscriptions:
 cfapi-terminators:
   replicaCount: 0
 k8s-monitor:
+  image: codefresh/cf-k8s-monitor
   enabled: true
   replicaCount: 0
   dockerRegistry: gcr.io/codefresh-enterprise/
@@ -464,7 +468,16 @@ tags:
   saas: false
   infra: true
   old-scheduler: false
-
+engineImage: codefresh/engine:1.131.6
+CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.4
+GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.2
+DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.3-os
+DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
+DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:8.0.2
+DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.12
+COMPOSE_IMAGE: codefresh/compose:1.25.0-1.1.1
+KUBE_DEPLOY: codefresh/cf-deploy-kubernetes:16.1.4
+FS_OPS_IMAGE: codefresh/fs-ops:1.1.1
+TEMPLATE_ENGINE: codefresh/pikolo:latest
 
 # versions:
-
