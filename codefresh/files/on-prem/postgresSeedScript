@@ -3,6 +3,7 @@
 set -xeuo pipefail
 
 POSTGRES_DATABASE="${POSTGRES_DATABASE:-codefresh}"
+POSTGRES_PORT="${POSTGRES_PORT:-5432}"
 
 # To create a separate non-privileged user the for Codefresh,
 # which has access only to the relevant databases, it is needed to specify 
@@ -16,6 +17,7 @@ POSTGRES_SEED_PASSWORD="${POSTGRES_SEED_PASSWORD:-$POSTGRES_PASSWORD}"
 function createDB() {
     psql \
         --host ${POSTGRES_HOST} \
+        --port ${POSTGRES_PORT} \
         -U ${POSTGRES_SEED_USER} \
         -c \
         "create database ${POSTGRES_DATABASE}"
@@ -25,6 +27,7 @@ function createUser() {
     echo "Creating a separate non-privileged user for Codefresh"
     psql \
         --host ${POSTGRES_HOST} \
+        --port ${POSTGRES_PORT} \
         -U ${POSTGRES_SEED_USER} \
         -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}'"
 }
@@ -32,6 +35,7 @@ function createUser() {
 function grantPrivileges() {
     psql \
         --host ${POSTGRES_HOST} \
+        --port ${POSTGRES_PORT} \
         -U ${POSTGRES_SEED_USER} \
         -c "GRANT ALL ON DATABASE ${POSTGRES_DATABASE} TO ${POSTGRES_USER}"
 }
