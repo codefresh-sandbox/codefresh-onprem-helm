@@ -61,7 +61,7 @@ dependencies:
   version: 1.16.1
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
-  version: 2.20.8
+  version: 2.20.9
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
   version: 3.119.23
@@ -70,10 +70,10 @@ dependencies:
   version: 1.7.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.136.4
+  version: 21.136.6
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.68.2
+  version: 14.68.3
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.11
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:819de35d4f9e1371e522a53d02e5ac2bac78b87c2e7b390f4f24db748838ac65
-generated: "2021-12-29T11:10:26.497366269+03:00"
+digest: sha256:f27fd2276e93e1223aa505a023e107244a5ee47e63901ee02052c410828444f2
+generated: "2021-12-29T20:13:46.991908121+03:00"
