@@ -31,64 +31,64 @@ dependencies:
   version: 0.1.10
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.9.21
+  version: 1.10.3
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.23.9
+  version: 1.25.1
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io/accounts-referrals
   version: 1.6.2
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io/charts-manager
-  version: 1.9.0
+  version: 1.9.2
 - name: mailer
   repository: http://chartmuseum.codefresh.io/mailer
-  version: 1.15.6
+  version: 1.17.2
 - name: payments
   repository: http://chartmuseum.codefresh.io/payments
-  version: 2.15.0
+  version: 2.18.0
 - name: cfsign
   repository: http://chartmuseum.codefresh.io/cfsign
   version: 1.3.0
 - name: segment-reporter
   repository: http://chartmuseum.codefresh.io/segment-reporter
-  version: 1.14.0
+  version: 1.15.1
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.18.0
+  version: 1.19.1
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
   version: 1.16.1
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
-  version: 2.20.4
+  version: 2.20.8
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.118.19
+  version: 3.119.23
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.7
+  version: 1.7.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.122.11
+  version: 21.136.4
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.62.9
+  version: 14.68.2
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.8.9
+  version: 4.8.11
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io/onboarding-status
-  version: 1.6.8
+  version: 1.6.11
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.20.20
+  version: 3.20.22
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.9.0
+  version: 1.10.3
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.7.15
+  version: 0.8.0
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.14
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:056692ba12d0e0f8ec5699b4235cf85db185553a1b1e3615618b148b8b617b9d
-generated: "2021-11-28T03:01:36.693802013Z"
+digest: sha256:819de35d4f9e1371e522a53d02e5ac2bac78b87c2e7b390f4f24db748838ac65
+generated: "2021-12-29T11:10:26.497366269+03:00"
