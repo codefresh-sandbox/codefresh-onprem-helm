@@ -70,10 +70,10 @@ dependencies:
   version: 1.7.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.142.0
+  version: 21.142.2
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.2
+  version: 14.69.3
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.11
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:7c7e985289537f3675923fe5c30fba089811ea80cab380a8522cc4207b3fb9aa
-generated: "2022-01-20T18:34:23.646773125+03:00"
+digest: sha256:c727b85a2e8fa9cded60aaaa4934972dc8fbf9e9a9ef81360e09fbc819c652a1
+generated: "2022-01-24T19:02:43.104820711+03:00"
