@@ -1,4 +1,4 @@
-{{- if and .Values.global.seedJobs .Values.global.postgresSeedJob }}
+{{- if .Values.global.postgresSeedJob }}
 apiVersion: v1
 kind: Secret
 type: Opaque
