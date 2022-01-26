@@ -70,7 +70,7 @@ dependencies:
   version: 1.7.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.142.3
+  version: 21.142.5
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.3
@@ -82,7 +82,7 @@ dependencies:
   version: 1.6.11
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.20.23
+  version: 3.20.24
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
   version: 1.10.3
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:5e26ee211c21da7f4d4bc0d017af7db3d51c9849555fca5711a11e89d427c614
-generated: "2022-01-25T11:25:53.772040676+03:00"
+digest: sha256:65e43adede930aee5dcab9e6e035f0c987d2d738e2fc07d324bd90f774d2fa53
+generated: "2022-01-26T12:33:17.799471187+03:00"
