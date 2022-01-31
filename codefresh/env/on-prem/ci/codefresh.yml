@@ -48,7 +48,7 @@ steps:
         set -e
 
         echo -e "\e[33m$(cat codefresh/env/on-prem/versions.yaml)\e[0m"
-        yq m codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
+        yq m -x codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
 
   build_chart:
     description: "Builds a sem-versioned Helm package. Adds a feature branch tag to the chart version, when built from non-master"
