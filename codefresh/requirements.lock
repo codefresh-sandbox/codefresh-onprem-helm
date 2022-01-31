@@ -34,7 +34,7 @@ dependencies:
   version: 1.10.3
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.1
+  version: 1.25.3
 - name: accounts-referrals
   repository: http://chartmuseum.codefresh.io/accounts-referrals
   version: 1.6.2
@@ -73,7 +73,7 @@ dependencies:
   version: 21.142.5
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.3
+  version: 14.69.5
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.11
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:65e43adede930aee5dcab9e6e035f0c987d2d738e2fc07d324bd90f774d2fa53
-generated: "2022-01-26T12:33:17.799471187+03:00"
+digest: sha256:009179f51de2f3d80a0b5aa2b95f31b55b869c81854f5c4c2a446f99f8d77914
+generated: "2022-01-28T03:02:03.39768044Z"
