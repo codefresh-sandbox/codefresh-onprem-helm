@@ -454,7 +454,8 @@ global:
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017/codefresh
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017
+  runtimeMongoDb: codefresh
   ### new logging solution
 
 

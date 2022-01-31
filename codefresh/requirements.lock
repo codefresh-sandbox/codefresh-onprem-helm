@@ -55,10 +55,10 @@ dependencies:
   version: 1.15.1
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.21.0
+  version: 1.22.0
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.16.1
+  version: 1.17.0
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
   version: 2.20.11
@@ -70,7 +70,7 @@ dependencies:
   version: 1.7.11
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.142.5
+  version: 21.142.7
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.5
@@ -98,5 +98,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:009179f51de2f3d80a0b5aa2b95f31b55b869c81854f5c4c2a446f99f8d77914
-generated: "2022-01-28T03:02:03.39768044Z"
+digest: sha256:37f9a0d6fe421bfcfe1c5f54330ba4a98cf791ce90474806715d0ca157a38f40
+generated: "2022-01-31T15:37:08.370852646+03:00"
