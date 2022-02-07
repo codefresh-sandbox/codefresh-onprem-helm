@@ -8,7 +8,11 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
   annotations:
+    {{- if $.Values.global.mongoTLS }} # run hook after mongodb-tls secret is created
+    "helm.sh/hook": post-upgrade
+    {{- else }}
     "helm.sh/hook": pre-upgrade
+    {{- end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   template:
@@ -72,5 +76,17 @@ spec:
           - "-c"
           - |
 {{ .Files.Get (print .Values.updateDefREImgScript ) | indent 12  }}
+        volumeMounts:
+        {{- if $.Values.global.mongoTLS }} 
+        - mountPath: /etc/ssl/mongodb/
+          name: mongodb-tls
+          readOnly: true
+        {{- end }} 
+      volumes:
+      {{- if $.Values.global.mongoTLS }}    
+      - name: mongodb-tls
+        secret:
+          secretName: {{ $.Release.Name }}-{{ $.Values.global.codefresh }}-mongodb-tls
+      {{- end }}
       restartPolicy: Never
 

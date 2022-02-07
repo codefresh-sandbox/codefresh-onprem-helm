@@ -64,11 +64,6 @@ dependencies:
   - name: kube-integration
     version: "*"
     repository: http://chartmuseum.codefresh.io/kube-integration
-  - name: accounts-referrals
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/accounts-referrals
-    tags:
-    - saas
   - name: charts-manager
     version: "*"
     repository: http://chartmuseum.codefresh.io/charts-manager
