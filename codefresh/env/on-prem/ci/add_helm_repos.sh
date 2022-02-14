@@ -4,7 +4,6 @@
 repos="
     cluster-providers
     kube-integration
-    accounts-referrals
     charts-manager
     mailer
     payments

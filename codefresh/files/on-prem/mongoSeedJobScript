@@ -27,6 +27,10 @@ parseMongoURI() {
     MONGODB_ROOT_URI="$proto${MONGODB_ROOT_USER}:${MONGODB_ROOT_PASSWORD}@$hostport/admin$parameters"
 }
 
+getMongoVersion() {
+    MONOGDB_VERSION=$(mongo ${MONGODB_ROOT_URI} --eval "db.version()" 2>&1 | tail -n1)
+}
+
 parseMongoURI $MONGODB_URI
 
 if [[ -z "${MONGODB_ROOT_USER}" || -z "${MONGODB_ROOT_PASSWORD}" || -z "${MONGODB_URI}" || -z "${MONGODB_DATABASE}" || -z "${MONGODB_USER}" || -z "${MONGODB_PASSWORD}" ]]; then
@@ -36,24 +40,38 @@ fi
 
 waitForMongoDB
 
+getMongoVersion
+
 for db in ${MONGODB_DATABASE} "archive"; do
     mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${db}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
 done
 
 if [ $? == 0 ]; then
-    mongoimport --uri ${MONGODB_URI} --collection accounts --type json --file /etc/admin/accounts.json
+    if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
+        mongoimport --uri ${MONGODB_URI} --collection accounts --type json --legacy --file /etc/admin/accounts.json
+    else
+        mongoimport --uri ${MONGODB_URI} --collection accounts --type json --file /etc/admin/accounts.json    
+    fi  
 else
     echo "Something went wrong !" && exit 1
 fi
 
 if [ $? == 0 ]; then
-    mongoimport --uri ${MONGODB_URI} --collection users --type json --file /etc/admin/users.json
+    if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
+        mongoimport --uri ${MONGODB_URI} --collection users --type json --legacy --file /etc/admin/users.json
+    else
+        mongoimport --uri ${MONGODB_URI} --collection users --type json --file /etc/admin/users.json
+    fi 
 else
     echo "Something went wrong !" && exit 1
 fi
 
 if [ $? == 0 ]; then
-    mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
+    if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
+        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
+    else
+        mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
+    fi  
 else
     echo "Something went wrong !" && exit 1
 fi
