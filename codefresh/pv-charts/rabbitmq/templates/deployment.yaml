@@ -38,8 +38,8 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "rabbitmq.fullname" . }}
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "bitnami/" .Values.image }}"
         {{- else }}
         image: "{{ .Values.image }}"
         {{- end }}

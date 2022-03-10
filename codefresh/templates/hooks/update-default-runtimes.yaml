@@ -30,8 +30,8 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}-update-default-re
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "bitnami/" .Values.global.mongodbImage }}"
         {{- else }}
         image: {{ .Values.global.mongodbImage }}
         {{- end }}
@@ -77,16 +77,15 @@ spec:
           - |
 {{ .Files.Get (print .Values.updateDefREImgScript ) | indent 12  }}
         volumeMounts:
-        {{- if $.Values.global.mongoTLS }} 
+        {{- if $.Values.global.mongoTLS }}
         - mountPath: /etc/ssl/mongodb/
           name: mongodb-tls
           readOnly: true
-        {{- end }} 
+        {{- end }}
       volumes:
-      {{- if $.Values.global.mongoTLS }}    
+      {{- if $.Values.global.mongoTLS }}
       - name: mongodb-tls
         secret:
           secretName: {{ $.Release.Name }}-{{ $.Values.global.codefresh }}-mongodb-tls
       {{- end }}
       restartPolicy: Never
-

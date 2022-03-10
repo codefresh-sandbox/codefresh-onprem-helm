@@ -7,7 +7,11 @@ metadata:
 spec:
   initContainers:
     - name: test-framework
+      {{- if .Values.global.privateRegistry }}
+      image: {{ .Values.global.dockerRegistry }}codefresh/bats:0.4.0
+      {{- else }}
       image: dduportal/bats:0.4.0
+      {{- end }}
       command:
       - "bash"
       - "-c"
@@ -20,7 +24,11 @@ spec:
         name: tools
   containers:
     - name: {{ .Release.Name }}-ui-test
+      {{- if .Values.global.privateRegistry }}
+      image: {{ .Values.global.dockerRegistry }}{{ trimPrefix "quay.io/" .Values.test.image }}:{{ .Values.test.imageTag }}
+      {{- else }}
       image: {{ .Values.test.image }}:{{ .Values.test.imageTag }}
+      {{- end }}
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:
       - mountPath: /tests

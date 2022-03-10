@@ -31,8 +31,8 @@ spec:
           restartPolicy: Never
           containers:
           - name: {{ .Release.Name }}-clean-postgres
-            {{- if .Values.global.privateRegistry }} 
-            image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.cleanJob.image | default "postgres:9.6" }}
+            {{- if .Values.global.privateRegistry }}
+            image: {{ .Values.global.dockerRegistry }}codefresh/{{ .Values.postgresql.cleanJob.image | default "postgres:9.6" }}
             {{- else }}
             image: {{ .Values.postgresql.cleanJob.image | default "postgres:9.6" }}
             {{- end }}
@@ -43,7 +43,7 @@ spec:
               - name: PGPORT
                 value: {{ .Values.global.postgresPort | default "5432" | quote }}
               - name: PGDATABASE
-                value: {{ .Values.global.postgresDatabase | default "codefresh" }}        
+                value: {{ .Values.global.postgresDatabase | default "codefresh" }}
               - name: PGUSER
                 valueFrom:
                   secretKeyRef:

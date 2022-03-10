@@ -123,7 +123,7 @@ spec:
   replicas: {{ default 3 .Values.Replicas }}
   selector:
     matchLabels:
-      component: "{{ .Release.Name }}-{{ .Values.Component }}"  
+      component: "{{ .Release.Name }}-{{ .Values.Component }}"
   updateStrategy:
     type: RollingUpdate
   template:
@@ -182,8 +182,8 @@ spec:
       {{- end }}
       containers:
       - name: "{{ template "consul.fullname" . }}"
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.Image }}:{{ .Values.ImageTag }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ .Values.Image }}:{{ .Values.ImageTag }}"
         {{- else }}
         image: "{{ .Values.Image }}:{{ .Values.ImageTag }}"
         {{- end }}
@@ -254,7 +254,7 @@ spec:
               GOSSIP_KEY="-config-file /etc/consul/encrypt.json"
             fi
             {{- end }}
-            
+
             set -o pipefail
             PEERS=""
             for i in $(seq 0 $((${INITIAL_CLUSTER_SIZE} - 1))); do
@@ -304,8 +304,8 @@ spec:
       - name: datadir
         persistentVolumeClaim:
           claimName: {{ $existingPvc }}
-      {{- end }}    
-  {{- if not $existingPvc }}        
+      {{- end }}
+  {{- if not $existingPvc }}
   volumeClaimTemplates:
   - metadata:
       name: datadir
@@ -323,5 +323,5 @@ spec:
           storage: "{{ $storageSize }}"
       {{- if $storageClass }}
       storageClassName: {{ $storageClass | quote }}
-      {{- end }}  
+      {{- end }}
   {{- end }}

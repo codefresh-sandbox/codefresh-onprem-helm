@@ -12,7 +12,7 @@ spec:
   replicas: {{ default 1 .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "fullname" . }}  
+      app: {{ template "fullname" . }}
   template:
     metadata:
       labels:
@@ -38,8 +38,8 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}:{{ .Values.imageTag }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ .Values.image }}:{{ .Values.imageTag }}"
         {{- else }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         {{- end }}
@@ -91,4 +91,3 @@ spec:
         configMap:
           name: {{ template "fullname" . }}
       {{- end }}
-          

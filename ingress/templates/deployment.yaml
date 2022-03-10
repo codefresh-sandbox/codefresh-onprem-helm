@@ -19,7 +19,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: {{ template "fullname" . }}  
+      app: {{ template "fullname" . }}
   template:
     metadata:
       annotations:
@@ -48,8 +48,8 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}-controller
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "k8s.gcr.io/ingress-nginx/" .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
         {{- else }}
         image: "{{ .Values.controllerRegistry }}{{ .Values.controllerImage }}:{{ .Values.controllerImageTag }}"
         {{- end }}

@@ -50,10 +50,10 @@ spec:
       restartPolicy: Never
       containers:
       - name: {{ template "fullname" . }}-seed-postgres
-        {{- if .Values.global.privateRegistry }} 
-        image: {{ .Values.global.dockerRegistry }}{{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:11.7.0-debian-10-r99" }}
+        {{- if .Values.global.privateRegistry }}
+        image: {{ .Values.global.dockerRegistry }}{{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:9.6.24" }}
         {{- else }}
-        image: {{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:11.7.0-debian-10-r99" }}
+        image: {{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:9.6.24" }}
         {{- end }}
         imagePullPolicy: IfNotPresent
         env:

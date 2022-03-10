@@ -14,7 +14,7 @@ spec:
   replicas: {{ default 1 .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "fullname" . }}  
+      app: {{ template "fullname" . }}
   template:
     metadata:
       labels:
@@ -36,8 +36,8 @@ spec:
         # Any image is permissable as long as:
         # 1. It serves a 404 page at /
         # 2. It serves 200 on a /healthz endpoint
-        {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}:{{ .Values.imageTag }}"
+        {{- if .Values.global.privateRegistry }}
+        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "google_containers/" .Values.image }}:{{ .Values.imageTag }}"
         {{- else }}
         image: "{{ .Values.dockerRegistry }}{{ .Values.image }}:{{ .Values.imageTag }}"
         {{- end }}
@@ -57,5 +57,4 @@ spec:
           requests:
             cpu: 10m
             memory: 20Mi
-{{- end }}            
-
+{{- end }}
