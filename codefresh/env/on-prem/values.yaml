@@ -405,12 +405,6 @@ global:
   # Redis service
   redisService: redis
 
-  # Docker Registry service
-  registryService: registry
-
-  # registry port
-  registryPort: 5000
-
   # PostgresSQL service
   postgresService: postgresql
 

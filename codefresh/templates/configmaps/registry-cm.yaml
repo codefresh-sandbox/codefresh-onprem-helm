@@ -1,5 +1,3 @@
-{{- $registryService := printf "%s-%s.%s.svc:%v" .Release.Name .Values.global.registryService .Release.Namespace .Values.global.registryPort }}
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,13 +9,6 @@ metadata:
     heritage: {{ .Release.Service  | quote }}
 data:
   internal-registry.json: |
-    {
-      "kind": "standard",
-      "domain": "{{ $registryService }}",
-      "connection": {
-        "protocol": "https",
-        "caPath": "/etc/ssl/cf/ca.pem"
-      }
-    }
+    []
   additional-internal-registries.json: |
     []

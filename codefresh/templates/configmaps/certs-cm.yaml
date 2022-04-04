@@ -1,9 +1,7 @@
 {{- $nameBuilder := printf "%s-%s" .Release.Name .Values.global.builderService }}
 {{- $nameRunner := printf "%s-%s" .Release.Name .Values.global.runnerService }}
-{{- $nameRegistry := printf "%s-%s" .Release.Name .Values.global.registryService }}
 {{- $ns := .Release.Namespace }}
 {{- $namesList := list $nameBuilder $nameRunner }}
-{{- $domainsList := list $nameRegistry }}
 
 # kind: scheduler-kubernetes
 apiVersion: v1

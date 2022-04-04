@@ -326,10 +326,10 @@ global:
   consulHttpPort: 8500
   # Redis service
   redisService: redis
-  # Docker Registry service
-  registryService: registry
-  # registry port
-  registryPort: 5000
+  # Docker Registry service [deprecated]
+  # registryService: registry
+  # registry port [deprecated]
+  # registryPort: 5000
   # PostgresSQL service
   postgresService: postgresql
   # PostgresSQL user name
