@@ -382,6 +382,7 @@ tags:
   saas: false
   infra: true
   old-scheduler: false
+  deprecated: false
 engineImage: codefresh/engine:1.131.6
 CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.4
 GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.2

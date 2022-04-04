@@ -23,6 +23,9 @@ dependencies:
 - name: runner
   repository: file://local-charts/runner
   version: 0.1.4
+- name: registry
+  repository: file://../registry
+  version: 0.1.2
 - name: ingress
   repository: file://../ingress
   version: 0.1.10
@@ -92,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:8d67bcbc14a16d43474e4c13ded0671cef538ea9e79b252d2c20a994671f8e95
-generated: "2022-04-04T10:09:25.743556111+03:00"
+digest: sha256:a9838f3949c6959a021d0035fa93f09d8a8ce7474f078e0cf4dc361a3f14ae11
+generated: "2022-04-04T12:28:41.902345488+03:00"
