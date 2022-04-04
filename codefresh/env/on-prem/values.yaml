@@ -405,7 +405,7 @@ global:
   # Redis service
   redisService: redis
 
-  # [Deprected] Docker Registry service
+  # [Deprecated] Docker Registry service
   registryService: registry
 
   # [Deprecated] Docker Registry port
