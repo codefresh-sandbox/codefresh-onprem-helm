@@ -48,12 +48,6 @@ dependencies:
     version: 0.1.4
     tags:
       - infra
-  - name: registry
-    version: 0.1.2
-    repository: file://../registry
-    condition: registry.enabled
-    tags:
-      - infra
   - name: ingress
     version: 0.1.10
     repository: 'file://../ingress'
@@ -184,7 +178,6 @@ dependencies:
     tags:
     - trigger
     - event-provider
-    - registry
     - dockerhub
   - name: cronus
     version: "*"
