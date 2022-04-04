@@ -405,6 +405,12 @@ global:
   # Redis service
   redisService: redis
 
+  # [Deprected] Docker Registry service
+  registryService: registry
+
+  # [Deprecated] Docker Registry port
+  registryPort: 5000
+
   # PostgresSQL service
   postgresService: postgresql
 

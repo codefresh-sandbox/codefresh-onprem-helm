@@ -1,3 +1,4 @@
+{{- $registryService := printf "%s-%s.%s.svc:%v" .Release.Name .Values.global.registryService .Release.Namespace .Values.global.registryPort }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -99,6 +100,8 @@ spec:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: {{ .Values.global.tlsRejectUnauthorized | quote }}
         {{- end }}
+        - name: RUNTIME_LOCAL_REGISTRY_NAME
+          value: {{ $registryService | quote }}
         {{- if .Values.dockerCleanerCron }}
         - name: DOCKER_CLEANER_CRON
           value: {{ .Values.dockerCleanerCron | quote}}
