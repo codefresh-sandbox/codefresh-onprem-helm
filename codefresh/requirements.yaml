@@ -53,7 +53,7 @@ dependencies:
     repository: file://../registry
     condition: registry.enabled
     tags:
-      - infra
+      - deprecated
   - name: ingress
     version: 0.1.10
     repository: 'file://../ingress'

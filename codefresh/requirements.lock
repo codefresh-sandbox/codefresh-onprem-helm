@@ -52,25 +52,25 @@ dependencies:
   version: 1.15.5
 - name: salesforce-reporter
   repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.23.2
+  version: 1.25.0
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
   version: 1.17.2
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
-  version: 2.20.19
+  version: 2.20.20
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.3
+  version: 3.121.4
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.14
+  version: 1.7.15
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.151.3
+  version: 21.151.6
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.29
+  version: 14.69.30
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.13
@@ -82,7 +82,7 @@ dependencies:
   version: 3.21.1
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.10.4
+  version: 1.10.6
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
   version: 0.8.3
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:760dbe2f3131ee354efc95052edd78b5f13f4f22fa04ddf88dbb3267b3953656
-generated: "2022-03-29T11:55:04.861153129+03:00"
+digest: sha256:97156413a16693c333f63edee12b4bb2f6b9bd138a144f511ac2afc3d4d6d18e
+generated: "2022-04-04T12:55:38.825611681+03:00"
