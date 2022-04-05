@@ -62,6 +62,7 @@ podSecurityContext:
 
 ## containerSecurityContext.enabled Enable MongoDB container Security Context
 ## containerSecurityContext.runAsUser User ID for the MongoDB container
+## containerSecurityContext.runAsNonRoot Set MongoDB container's Security Context runAsNonRoot
 containerSecurityContext:
   enabled: true
   runAsUser: 1001

@@ -64,7 +64,7 @@ spec:
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         {{- if .Values.containerSecurityContext.enabled }}
-        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 10 }}
         {{- end }}
         env:
         - name: MONGODB_ROOT_PASSWORD
