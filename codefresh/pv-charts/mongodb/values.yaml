@@ -50,5 +50,14 @@ resources:
 nodeSelector: {}
 tolerations: []
 
-securityContext:
-  runAsUser: 0
+volumePermissions:
+  enabled: false
+
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+  runAsNonRoot: true

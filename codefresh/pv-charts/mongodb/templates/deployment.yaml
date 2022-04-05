@@ -34,10 +34,25 @@ spec:
       {{- if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccountName }}
       {{- end }}
-      {{- with .Values.securityContext }}
-      securityContext:
-{{ toYaml . | indent 8}}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
+      initContainers:
+      {{- if and .Values.volumePermissions.enabled .Values.persistence.enabled }}
+      - name: volume-permissions
+        image: busybox 
+        command:
+        - /bin/sh
+        - -ec
+        args:
+          - |
+            chown -R "{{ .Values.containerSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/mongodb
+        volumeMounts:
+        - mountPath: /bitnami/mongodb
+          name: data
+        securityContext:
+          runAsUser: 0
+      {{- end }}           
       containers:
       - name: {{ template "fullname" . }}
         {{- $image := (split ":" .Values.image)._0 -}}
@@ -48,6 +63,9 @@ spec:
         image: "{{ $image }}:{{ $tag }}"
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        {{- if .Values.containerSecurityContext.enabled }}
+        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+        {{- end }}
         env:
         - name: MONGODB_ROOT_PASSWORD
           valueFrom:
