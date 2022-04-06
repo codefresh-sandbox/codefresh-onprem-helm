@@ -50,5 +50,20 @@ resources:
 nodeSelector: {}
 tolerations: []
 
-securityContext:
-  runAsUser: 0
+## volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume(s) mountpoint to runAsUser:fsGroup
+volumePermissions:
+  enabled: false
+
+## podSecurityContext.enabled Enable MongoDB pod Security Context
+## podSecurityContext.fsGroup Group ID for the volume of the MongoDB pod
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+## containerSecurityContext.enabled Enable MongoDB container Security Context
+## containerSecurityContext.runAsUser User ID for the MongoDB container
+## containerSecurityContext.runAsNonRoot Set MongoDB container's Security Context runAsNonRoot
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+  runAsNonRoot: true
