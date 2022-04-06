@@ -20,6 +20,8 @@ spec:
   selector:
     matchLabels:
       app: {{ template "fullname" . }}
+  strategy:
+    type: Recreate    
   template:
     metadata:
       annotations:
