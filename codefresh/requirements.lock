@@ -28,7 +28,7 @@ dependencies:
   version: 0.1.2
 - name: ingress
   repository: file://../ingress
-  version: 0.1.10
+  version: 0.1.11
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
   version: 1.10.7
@@ -67,7 +67,7 @@ dependencies:
   version: 1.7.17
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.151.8
+  version: 21.151.9
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.30
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:317935fe301dc9fac0b198e0e9989aa4d3a491161388d7b58422a2986062fb91
-generated: "2022-04-05T17:11:41.613365189+03:00"
+digest: sha256:f40a0d2be6fb11d32aac7de99cafb4cde0e8b47550fc6acaecb0fb1548164ceb
+generated: "2022-04-06T10:26:20.20368027+03:00"

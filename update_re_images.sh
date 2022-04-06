@@ -2,7 +2,7 @@
 
 <<COMMENT
 Separate script (from update_onprem.sh) updates runtime images from system/default-plan runtime to codefresh/env/on-prem/versions.yaml
-yq (https://github.com/mikefarah/yq/) version 4.22.1 is used
+yq (https://github.com/mikefarah/yq/) version 4.23.1
 COMMENT
 
 set -ue
@@ -37,14 +37,14 @@ RUNTIME_IMAGES=(
 
 for k in ${RUNTIME_IMAGES[@]}; do
     if [[ "$k" == "ENGINE_IMAGE" ]]; then
-        image="$(jq -er .runtimeScheduler.image $runtimeJson)"
-        yq -i '.ENGINE_IMAGE |= env(image)' codefresh/env/on-prem/versions.yaml
+        image="$(jq -er .runtimeScheduler.image $runtimeJson)" 
+        yq eval ".ENGINE_IMAGE = \"$image\"" -i codefresh/env/on-prem/versions.yaml
     elif [[ "$k" == "DIND_IMAGE" ]]; then
         image="$(jq -er .dockerDaemonScheduler.dindImage $runtimeJson)"
-        yq -i '.DIND_IMAGE |= env(image)' codefresh/env/on-prem/versions.yaml
+        yq eval ".DIND_IMAGE = \"$image\"" -i codefresh/env/on-prem/versions.yaml
     else
-        image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
-        yq -i '.[env(k)] |= env(image)' codefresh/env/on-prem/versions.yaml
+        image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)" 
+        yq eval ".\"$k\" = \"$image\"" -i codefresh/env/on-prem/versions.yaml
     fi
 done
 
