@@ -219,9 +219,8 @@ steps:
       branch:
         ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
       condition:
-        any:
+        all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
-          skipUpgrade: '"${{SKIP_HELM_UPGRADE}}" != "true"'
 
   export_cf_projs_ver:
     stage: test
