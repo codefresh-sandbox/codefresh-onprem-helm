@@ -18,7 +18,7 @@ dependencies:
     tags:
       - infra
   - name: redis
-    version: 0.8.0
+    version: 0.8.1
     repository: file://pv-charts/redis
     condition: redis.enabled
     tags:

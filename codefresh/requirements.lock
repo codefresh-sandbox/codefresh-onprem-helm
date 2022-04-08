@@ -10,7 +10,7 @@ dependencies:
   version: 0.7.2
 - name: redis
   repository: file://pv-charts/redis
-  version: 0.8.0
+  version: 0.8.1
 - name: rabbitmq
   repository: file://pv-charts/rabbitmq
   version: 0.6.15
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:1fdf4ff7fdbab074247001750eb139e05011dbe7ec382a683b3277769eb1fcf7
-generated: "2022-04-08T13:13:57.594737175+03:00"
+digest: sha256:ef0921b5f88d78e375d1cb998c6f5cac34f86f01fc0341af2e7c5d5be0cac3f7
+generated: "2022-04-08T13:28:10.776728059+03:00"
