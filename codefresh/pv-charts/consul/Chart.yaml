@@ -10,4 +10,4 @@ maintainers:
 name: consul
 sources:
 - https://github.com/kelseyhightower/consul-on-kubernetes
-version: 1.1.2
+version: 1.1.3
