@@ -182,6 +182,7 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/install_pure_helm.sh
+      - cf_export CF_APP_HOST CLUSTER_NAME
     when:
       steps:
         - name: build_chart
