@@ -1,4 +1,4 @@
-appVersion: 3.2.9
+appVersion: 6.0.9
 description: Open source, advanced key-value store. It is often referred to as a data
   structure server since keys can contain strings, hashes, lists, sets and sorted
   sets.
@@ -15,4 +15,4 @@ maintainers:
 name: redis
 sources:
 - https://github.com/bitnami/bitnami-docker-redis
-version: 0.8.1
+version: 0.8.2

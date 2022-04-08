@@ -18,7 +18,7 @@ dependencies:
     tags:
       - infra
   - name: redis
-    version: 0.8.1
+    version: 0.8.2
     repository: file://pv-charts/redis
     condition: redis.enabled
     tags:
@@ -30,7 +30,7 @@ dependencies:
     tags:
       - infra
   - name: nats
-    version: 0.1.1
+    version: 0.1.2
     repository: file://../nats
     condition: nats.enabled
     tags:

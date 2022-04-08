@@ -3,7 +3,7 @@ image: "nats"
 ## postgres image version
 ## ref: https://hub.docker.com/r/library/postgres/tags/
 ##
-imageTag: "0.9.4"
+imageTag: "2.7"
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'

@@ -32,16 +32,35 @@ spec:
       {{- if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccountName }}
       {{- end }}
-      {{- with .Values.securityContext }}
-      securityContext:
-{{ toYaml . | indent 8}}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
+      {{- end }}
+      initContainers:
+      {{- if and .Values.volumePermissions.enabled .Values.persistence.enabled }}
+      - name: volume-permissions
+        image: busybox 
+        command:
+        - /bin/sh
+        - -ec
+        args:
+          - |
+            chown -R "{{ .Values.containerSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/redis
+        volumeMounts:
+        - mountPath: /bitnami/redis
+          name: redis-data
+        securityContext:
+          runAsUser: 0
+      {{- end }}         
       containers:
       - name: {{ template "fullname" . }}
         {{- if .Values.global.privateRegistry }}
         image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "bitnami/" .Values.image }}"
         {{- else }}
         image: "{{ .Values.image }}"
+        {{- end }}
+        {{- if .Values.containerSecurityContext.enabled }}
+        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 10 }}
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         env:
