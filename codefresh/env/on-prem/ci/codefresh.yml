@@ -267,12 +267,12 @@ steps:
           on:
             - success
 
-  e2e_api_test:
-    title: Running API E2E Tests
+  e2e_api_test_on_install:
+    title: "[ON_INSTALL] Running API E2E Tests"
     stage: test
     type: parallel
     steps:
-      sequential_e2e_api_test:
+      sequential_e2e_api_test_on_install:
         title: Sequential Running API E2E Tests
         type: freestyle
         stage: test
@@ -284,7 +284,7 @@ steps:
           - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
           - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
           - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential --tag !onprem_bug
-      parallel_e2e_api_test:
+      parallel_e2e_api_test_on_install:
         title: Parallel Running API E2E Tests
         type: freestyle
         stage: test
@@ -304,13 +304,54 @@ steps:
         - name: helm_install
           on:
           - success
-        # - name: helm_upgrade
-        #   on:
-        #   - success
+      condition:
+        all:
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "true"'
+
+  e2e_api_test_on_upgrade:
+    title: "[ON_UPGRADE] Running API E2E Tests"
+    stage: test
+    type: parallel
+    steps:
+      sequential_e2e_api_test_on_upgrade:
+        title: Sequential Running API E2E Tests
+        type: freestyle
+        stage: test
+        working_directory: /app
+        fail_fast: true
+        image: codefresh/cf-api-testing
+        commands:
+          - set -eu
+          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential --tag !onprem_bug
+      parallel_e2e_api_test_on_upgrade:
+        title: Parallel Running API E2E Tests
+        type: freestyle
+        stage: test
+        working_directory: /app
+        fail_fast: true
+        image: codefresh/cf-api-testing
+        commands:
+          - set -eu
+          - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+          - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag !onprem_bug
+    when:
+      steps:
+        - name: api_clone
+          on:
+          - success
+        - name: helm_upgrade
+          on:
+          - success  
+      condition:
+        all:
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "false"'
 
 
-  e2e_ui_test:
-    title: Running UI E2E Tests
+  e2e_ui_test_on_upgrade:
+    title: "[ON_UPGRADE] Running UI E2E Tests"
     type: freestyle
     stage: test
     fail_fast: true
@@ -338,15 +379,15 @@ steps:
         - name: ui_clone
           on:
             - success
-        - name: helm_install
+        - name: helm_upgrade
           on:
             - success
-        # - name: helm_upgrade
-        #   on:
-        #     - success
         - name: extract_chrome_vers
           on:
             - success
+      condition:
+        all:
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "false"'    
 
   failed_e2e_notifications:
     stage: notifications
@@ -357,18 +398,20 @@ steps:
         MESSAGE: "E2E has failed in the build ${{CF_BUILD_URL}}"
     when:
       steps:
-        - name: e2e_api_test
+        any:
+        - name: e2e_api_test_on_install
           on:
             - failure
+        - name: e2e_api_test_on_upgrade
+          on:
+            - failure            
 
-  delete_test_cluster:
+  delete_test_cluster_01:
     stage: delete test infra
     image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.4
     working_directory: IMAGE_WORK_DIR
-    matrix:
-      environment:
-        - [TEST_CASE_ID=01]
-        - [TEST_CASE_ID=02]
+    environment:
+      - TEST_CASE_ID=01
     commands:
       - ./delete-cluster.sh
     when:
@@ -376,17 +419,32 @@ steps:
         - name: helm_install
           on:
           - success
-          - failure
-        # - name: helm_upgrade
-        #   on:
-        #   - success
-        #   - failure
-        - name: e2e_api_test
+        - name: e2e_api_test_on_install
           on:
           - success
-        - name: e2e_ui_test
+        - name: e2e_ui_test_on_install
           on:
-            - success
+          - success
+
+  delete_test_cluster_02:
+    stage: delete test infra
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.4
+    working_directory: IMAGE_WORK_DIR
+    environment:
+      - TEST_CASE_ID=02
+    commands:
+      - ./delete-cluster.sh
+    when:
+      steps:
+        - name: helm_upgrade
+          on:
+          - success
+        - name: e2e_api_test_on_upgrade
+          on:
+          - success
+        - name: e2e_ui_test_on_upgrade
+          on:
+          - success
 
 
   create_git_tag:
