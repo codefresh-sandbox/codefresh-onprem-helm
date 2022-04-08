@@ -12,7 +12,7 @@ dependencies:
     tags:
       - infra
   - name: postgresql
-    version: 0.7.1
+    version: 0.7.2
     repository: file://pv-charts/postgresql
     condition: postgresql.enabled
     tags:
@@ -24,7 +24,7 @@ dependencies:
     tags:
       - infra
   - name: rabbitmq
-    version: 0.6.15
+    version: 0.6.16
     repository: file://pv-charts/rabbitmq
     condition: rabbitmq.enabled
     tags:
