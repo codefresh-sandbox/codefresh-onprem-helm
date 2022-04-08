@@ -303,9 +303,9 @@ steps:
         - name: helm_install
           on:
           - success
-        - name: helm_upgrade
-          on:
-          - success
+        # - name: helm_upgrade
+        #   on:
+        #   - success
 
 
   e2e_ui_test:
@@ -340,9 +340,9 @@ steps:
         - name: helm_install
           on:
             - success
-        - name: helm_upgrade
-          on:
-            - success
+        # - name: helm_upgrade
+        #   on:
+        #     - success
         - name: extract_chrome_vers
           on:
             - success
@@ -376,10 +376,10 @@ steps:
           on:
           - success
           - failure
-        - name: helm_upgrade
-          on:
-          - success
-          - failure
+        # - name: helm_upgrade
+        #   on:
+        #   - success
+        #   - failure
         - name: e2e_api_test
           on:
           - success
