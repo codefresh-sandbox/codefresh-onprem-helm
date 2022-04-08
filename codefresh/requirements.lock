@@ -7,13 +7,13 @@ dependencies:
   version: 0.4.13
 - name: postgresql
   repository: file://pv-charts/postgresql
-  version: 0.7.1
+  version: 0.7.2
 - name: redis
   repository: file://pv-charts/redis
   version: 0.8.0
 - name: rabbitmq
   repository: file://pv-charts/rabbitmq
-  version: 0.6.15
+  version: 0.6.16
 - name: nats
   repository: file://../nats
   version: 0.1.1
@@ -31,10 +31,10 @@ dependencies:
   version: 0.1.11
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.10.7
+  version: 1.10.8
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.11
+  version: 1.25.12
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io/charts-manager
   version: 1.9.4
@@ -55,7 +55,7 @@ dependencies:
   version: 1.25.0
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.17.2
+  version: 1.17.3
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
   version: 2.20.22
@@ -67,13 +67,13 @@ dependencies:
   version: 1.7.17
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.151.9
+  version: 21.152.1
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.30
+  version: 14.69.36
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.8.13
+  version: 4.8.14
 - name: onboarding-status
   repository: http://chartmuseum.codefresh.io/onboarding-status
   version: 1.6.11
@@ -88,12 +88,12 @@ dependencies:
   version: 0.8.4
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
-  version: 0.17.23
+  version: 0.17.24
 - name: nomios
   repository: http://chartmuseum.codefresh.io/nomios
-  version: 0.9.3
+  version: 0.9.4
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:f40a0d2be6fb11d32aac7de99cafb4cde0e8b47550fc6acaecb0fb1548164ceb
-generated: "2022-04-06T10:26:20.20368027+03:00"
+digest: sha256:915fbf6da927df4a1cc3437631cd46a3cbebf2d25fb8c83a3cdf5e8e134b7377
+generated: "2022-04-08T12:56:47.052431833+03:00"
