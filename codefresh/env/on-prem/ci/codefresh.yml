@@ -350,6 +350,45 @@ steps:
           isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "false"'
 
 
+  e2e_ui_test_on_install:
+    title: "[ON_INSTALL] Running UI E2E Tests"
+    type: freestyle
+    stage: test
+    fail_fast: true
+    arguments:
+      image: codefresh/ui-e2e-image
+      working_directory: '${{ui_clone}}'
+      environment:
+        - ENVIROMENT=${{ENVIRONMENT}}
+        - BASE_URL=https://${{CF_APP_HOST}}
+        - SLACK_URI=${{UI_E2E_SLACK}}
+        - TEST_USER=${{UI_USER_NAME}}
+        - TEST_PASSWORD=${{UI_USER_PWD}}
+        - TEST_PUBLIC_PIPELINE_ID=${{PUBLIC_PIPELINE_ID}}
+        - AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}}
+        - AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
+    commands:
+      - set -eu
+      - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
+      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}} BASE_URL=https://${{CF_APP_HOST}}
+      - export ON_PREM=yes
+      - yarn install
+      - yarn e2e
+    when:
+      steps:
+        - name: ui_clone
+          on:
+            - success
+        - name: helm_install
+          on:
+            - success
+        - name: extract_chrome_vers
+          on:
+            - success
+      condition:
+        all:
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "true"' 
+
   e2e_ui_test_on_upgrade:
     title: "[ON_UPGRADE] Running UI E2E Tests"
     type: freestyle
