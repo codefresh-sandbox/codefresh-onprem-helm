@@ -221,6 +221,7 @@ steps:
       condition:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
+          skipHelmUpgrade: '"${{SKIP_HELM_UPGADE}}" == "false"'
 
   export_cf_projs_ver:
     stage: test
