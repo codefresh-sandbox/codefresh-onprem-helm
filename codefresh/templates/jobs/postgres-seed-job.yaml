@@ -51,9 +51,9 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-seed-postgres
         {{- if .Values.global.privateRegistry }}
-        image: {{ .Values.global.dockerRegistry }}{{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:9.6.24" }}
+        image: {{ .Values.global.dockerRegistry }}codefresh/{{ .Values.postgresql.image | default "postgres:" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- else }}
-        image: {{ .Values.global.postgresSeedJob.image | default "docker.io/bitnami/postgresql:9.6.24" }}
+        image: {{ .Values.postgresql.image | default "postgres:" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- end }}
         imagePullPolicy: IfNotPresent
         env:
