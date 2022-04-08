@@ -13,7 +13,7 @@ dependencies:
   version: 0.8.0
 - name: rabbitmq
   repository: file://pv-charts/rabbitmq
-  version: 0.6.16
+  version: 0.6.15
 - name: nats
   repository: file://../nats
   version: 0.1.1
@@ -95,5 +95,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:915fbf6da927df4a1cc3437631cd46a3cbebf2d25fb8c83a3cdf5e8e134b7377
-generated: "2022-04-08T12:56:47.052431833+03:00"
+digest: sha256:1fdf4ff7fdbab074247001750eb139e05011dbe7ec382a683b3277769eb1fcf7
+generated: "2022-04-08T13:13:57.594737175+03:00"

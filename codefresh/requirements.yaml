@@ -24,7 +24,7 @@ dependencies:
     tags:
       - infra
   - name: rabbitmq
-    version: 0.6.16
+    version: 0.6.15
     repository: file://pv-charts/rabbitmq
     condition: rabbitmq.enabled
     tags:
