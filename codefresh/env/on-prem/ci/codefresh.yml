@@ -222,7 +222,7 @@ steps:
       condition:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
-          skipHelmUpgrade: '"${{SKIP_HELM_UPGADE}}" == "false"'
+          skipHelmUpgrade: '"${{SKIP_HELM_UPGRADE}}" == "false"'
 
   export_cf_projs_ver:
     stage: test
@@ -306,7 +306,7 @@ steps:
           - success
       condition:
         all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "true"'
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "true"'
 
   e2e_api_test_on_upgrade:
     title: "[ON_UPGRADE] Running API E2E Tests"
@@ -347,7 +347,7 @@ steps:
           - success  
       condition:
         all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "false"'
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "false"'
 
 
   e2e_ui_test_on_install:
@@ -387,7 +387,7 @@ steps:
             - success
       condition:
         all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "true"' 
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "true"' 
 
   e2e_ui_test_on_upgrade:
     title: "[ON_UPGRADE] Running UI E2E Tests"
@@ -426,7 +426,7 @@ steps:
             - success
       condition:
         all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGADE}}" == "false"'    
+          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "false"'    
 
   failed_e2e_notifications:
     stage: notifications
