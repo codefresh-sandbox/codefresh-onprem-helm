@@ -61,7 +61,7 @@ spec:
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         {{- if .Values.containerSecurityContext }}
-        securityContext: {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 10 }}
         {{- end }}
         env:
         {{- if .Values.global.env }}
