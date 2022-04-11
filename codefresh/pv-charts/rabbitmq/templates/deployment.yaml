@@ -45,7 +45,7 @@ spec:
         args:
           - |
             mkdir -p /bitnami/rabbitmq
-            chown -R "{{ .Values.podSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/rabbitmq
+            chown -R "{{ .Values.containerSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/rabbitmq
         volumeMounts:
         - mountPath: /bitnami/rabbitmq
           name: data
