@@ -46,6 +46,7 @@ spec:
         - -ec
         args:
           - |
+            mkdir -p /bitnami/mongodb
             chown -R "{{ .Values.containerSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/mongodb
         volumeMounts:
         - mountPath: /bitnami/mongodb

@@ -44,6 +44,7 @@ spec:
         - -ec
         args:
           - |
+            mkdir -p /bitnami/redis
             chown -R "{{ .Values.containerSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/redis
         volumeMounts:
         - mountPath: /bitnami/redis
