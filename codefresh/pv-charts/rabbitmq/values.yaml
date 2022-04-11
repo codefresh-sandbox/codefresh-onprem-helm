@@ -106,10 +106,10 @@ volumePermissions:
 ## podSecurityContext.enabled Enable RabbitMQ pod Security Context
 ## podSecurityContext.fsGroup Group ID for the filesystem used by the container
 ## podSecurityContext.runAsUser User ID for the service user running the pod
-podSecurityContext: {}
-  # enabled: true
-  # fsGroup: 1001
-  # runAsUser: 1001
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+  runAsUser: 1001
 
 ## Configure Container Security Context
 ## containerSecurityContext.enabled Enabled Redis container Security Context
