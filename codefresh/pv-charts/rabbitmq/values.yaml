@@ -1,7 +1,7 @@
 ## Bitnami RabbitMQ image version
 ## ref: https://hub.docker.com/r/bitnami/rabbitmq/tags/
 ##
-image: bitnami/rabbitmq:3.9.14
+image: bitnami/rabbitmq:3.7.7-r19
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
@@ -100,7 +100,7 @@ tolerations: []
 
 ## volumePermissions.enabled Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`
 volumePermissions:
-  enabled: true
+  enabled: false
 
 ## Configure Pods Security Context
 ## podSecurityContext.enabled Enable RabbitMQ pod Security Context
