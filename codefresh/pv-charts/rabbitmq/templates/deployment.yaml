@@ -32,26 +32,10 @@ spec:
       {{- if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccountName }}
       {{- end }}
-      {{- if .Values.podSecurityContext.enabled }}
-      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- with .Values.securityContext }}
+      securityContext:
+{{ toYaml . | indent 8}}
       {{- end }}
-      initContainers:
-      {{- if and .Values.volumePermissions.enabled .Values.persistence.enabled }}
-      - name: volume-permissions
-        image: busybox 
-        command:
-        - /bin/sh
-        - -ec
-        args:
-          - |
-            mkdir -p /bitnami/rabbitmq
-            chown -R "{{ .Values.podSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }}" /bitnami/rabbitmq
-        volumeMounts:
-        - mountPath: /bitnami/rabbitmq
-          name: data
-        securityContext:
-          runAsUser: 0
-      {{- end }}   
       containers:
       - name: {{ template "rabbitmq.fullname" . }}
         {{- if .Values.global.privateRegistry }}
@@ -60,9 +44,6 @@ spec:
         image: "{{ .Values.image }}"
         {{- end }}
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
-        {{- if .Values.containerSecurityContext }}
-        securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 10 }}
-        {{- end }}
         env:
         {{- if .Values.global.env }}
         {{- range $key, $value := .Values.global.env }}

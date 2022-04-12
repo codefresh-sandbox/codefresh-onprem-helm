@@ -1,7 +1,7 @@
 ## Bitnami RabbitMQ image version
 ## ref: https://hub.docker.com/r/bitnami/rabbitmq/tags/
 ##
-image: bitnami/rabbitmq:3.7.7
+image: bitnami/rabbitmq:3.7.2-r1
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
@@ -97,20 +97,3 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#taints-and-tolerations-beta-feature
 nodeSelector: {}
 tolerations: []
-
-## volumePermissions.enabled Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`
-volumePermissions:
-  enabled: false
-
-## Configure Pods Security Context
-## podSecurityContext.enabled Enable RabbitMQ pod Security Context
-## podSecurityContext.fsGroup Set RabbitMQ pod Security Context fsGroup
-## podSecurityContext.runAsUser Set RabbitMQ container Security Context runAsUser
-podSecurityContext:
-  enabled: true
-  fsGroup: 1001
-  runAsUser: 1001
-
-## Configure Container Security Context
-## containerSecurityContext.enabled Enabled RabbitMQ container Security Context
-containerSecurityContext: {}
