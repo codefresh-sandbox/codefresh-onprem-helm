@@ -82,9 +82,10 @@ redis:
       memory: 64Mi
 
 rabbitmq:
-  rabbitmqUsername: user
-  rabbitmqPassword: cVz9ZdJKYm7u
-  nodeSelector: {}
+  enabled: false # replacing cf-rabbitmq (subchart in pv-charts) with rabbit (subchart in cf-db-chart)
+  #rabbitmqUsername: user
+  #rabbitmqPassword: cVz9ZdJKYm7u
+  #nodeSelector: {}
 
 registry:
   mainChart: codefresh
@@ -382,8 +383,13 @@ global:
   natsService: nats
   natsPort: 4222
 
-  # rabbitmq service name
-  rabbitService: rabbitmq
+  # rabbitmq service name (rabbit subchart in cf-db-chart)
+  rabbitService: rabbit
+
+  # rabbitmq service name (rabbit subchart in cf-db-chart)
+  rabbitmqHostname: rabbit
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
 
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
