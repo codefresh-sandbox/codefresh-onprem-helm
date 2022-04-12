@@ -466,6 +466,11 @@ global:
     operator: Equal
     value: internal
 
+cf-db:
+  enabled: true
+  rabbit:
+    enabled: true
+
 tags:
   saas: false
   infra: true

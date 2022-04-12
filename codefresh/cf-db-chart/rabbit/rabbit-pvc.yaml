@@ -1,0 +1,15 @@
+{{- if .Values.rabbit.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: rabbit
+  name: rabbit-data
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 32Gi
+  volumeMode: Filesystem
+{{- end }}
