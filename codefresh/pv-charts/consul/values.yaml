@@ -16,7 +16,7 @@ ConsulDnsPort: 8600
 Component: "consul"
 Replicas: 3
 Image: "consul"
-ImageTag: "1.0.0"
+ImageTag: "1.11"
 ImagePullPolicy: "Always"
 securityContext: {}
 #  fsGroup: 1000

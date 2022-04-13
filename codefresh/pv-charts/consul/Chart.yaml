@@ -1,4 +1,4 @@
-appVersion: 1.0.0
+appVersion: 1.11
 description: Highly available and distributed service discovery and key-value store
   designed with support for the modern data center to make distributed systems and
   configuration easy.
@@ -10,4 +10,4 @@ maintainers:
 name: consul
 sources:
 - https://github.com/kelseyhightower/consul-on-kubernetes
-version: 1.1.2
+version: 1.1.3

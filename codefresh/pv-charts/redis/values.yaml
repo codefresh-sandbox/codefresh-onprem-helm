@@ -1,7 +1,7 @@
 ## Bitnami Redis image version
 ## ref: https://hub.docker.com/r/bitnami/redis/tags/
 ##
-image: bitnami/redis:3.2.9-r2
+image: bitnami/redis:6.0.16
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -58,3 +58,21 @@ resources:
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#taints-and-tolerations-beta-feature
 nodeSelector: {}
 tolerations: []
+
+## volumePermissions.enabled Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`
+volumePermissions:
+  enabled: false
+
+## Configure Pods Security Context
+## podSecurityContext.enabled Enable Redis pod Security Context
+## podSecurityContext.fsGroup Set Redis pod Security Context fsGroup
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+## Configure Container Security Context
+## containerSecurityContext.enabled Enabled Redis container Security Context
+## containerSecurityContext.runAsUser Set Redis containers Security Context runAsUser
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001  

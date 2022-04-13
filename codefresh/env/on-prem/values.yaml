@@ -64,9 +64,9 @@ postgresql:
       memory: 128Mi
 
 mongodb:
-  image: bitnami/mongodb:3.6.13-r0
+  image: bitnami/mongodb:4.2
   mongodbRootPassword: XT9nmM8dZD
-  version: "3.6.13-r0"
+  # version: "4.2" # default tag; overrides tag in `mongodb.image` field
   migration:
     setFeatureCompat: "3.6"
   nodeSelector: {}
@@ -82,9 +82,10 @@ redis:
       memory: 64Mi
 
 rabbitmq:
-  rabbitmqUsername: user
-  rabbitmqPassword: cVz9ZdJKYm7u
-  nodeSelector: {}
+  enabled: false # replacing cf-rabbitmq (subchart in pv-charts) with rabbit (subchart in cf-db-chart)
+  #rabbitmqUsername: user
+  #rabbitmqPassword: cVz9ZdJKYm7u
+  #nodeSelector: {}
 
 registry:
   mainChart: codefresh
@@ -382,8 +383,13 @@ global:
   natsService: nats
   natsPort: 4222
 
-  # rabbitmq service name
-  rabbitService: rabbitmq
+  # rabbitmq service name (rabbit subchart in cf-db-chart)
+  rabbitService: rabbit
+
+  # rabbitmq service name (rabbit subchart in cf-db-chart)
+  rabbitmqHostname: rabbit
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
 
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
@@ -392,7 +398,7 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
-  mongodbImage: bitnami/mongodb:3.6.13-r0
+  mongodbImage: bitnami/mongodb:4.2
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
 
@@ -465,6 +471,11 @@ global:
     key: nodeType
     operator: Equal
     value: internal
+
+cf-db:
+  enabled: true
+  rabbit:
+    enabled: true
 
 tags:
   saas: false
