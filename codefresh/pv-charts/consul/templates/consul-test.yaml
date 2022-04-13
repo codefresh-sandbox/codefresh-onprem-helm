@@ -8,9 +8,9 @@ spec:
   initContainers:
     - name: test-framework
       {{- if .Values.global.privateRegistry }}
-      image: {{ .Values.global.dockerRegistry }}codefresh/bats:0.4.0
+      image: {{ .Values.global.dockerRegistry }}codefresh/bats:latest
       {{- else }}
-      image: dduportal/bats:0.4.0
+      image: bats/bats:latest
       {{- end }}
       command:
       - "bash"
