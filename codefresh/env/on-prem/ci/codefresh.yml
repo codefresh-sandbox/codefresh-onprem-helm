@@ -456,8 +456,8 @@ steps:
     when:
       condition:
         any:
-          deleteIfE2EonInstallPassed: helm_install == 'success' && e2e_api_test_on_install.result == 'success' && e2e_ui_test_on_install == 'success'
-          deleteIfE2EonUpgradePassed: helm_upgrade == 'success' && e2e_api_test_on_upgrade.result == 'success' && e2e_ui_test_on_upgrade == 'success'
+          deleteIfE2EonInstallPassed: helm_install.result == 'success' && e2e_api_test_on_install.result == 'success' && e2e_ui_test_on_install == 'success'
+          deleteIfE2EonUpgradePassed: helm_upgrade.result == 'success' && e2e_api_test_on_upgrade.result == 'success' && e2e_ui_test_on_upgrade == 'success'
 
   delete_test_cluster_02:
     stage: delete test infra
