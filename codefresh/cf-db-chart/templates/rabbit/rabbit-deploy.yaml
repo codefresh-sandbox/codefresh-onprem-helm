@@ -25,9 +25,13 @@ spec:
         app: rabbit
     spec:
       containers:
-      - image: rabbitmq:3-management
+      - name: rabbit
+        {{- if .Values.global.privateRegistry }}
+        image: {{ .Values.global.dockerRegistry }}codefresh/rabbitmq:3-management
+        {{- else }}
+        image: rabbitmq:3-management
+        {{- end }}   
         imagePullPolicy: Always
-        name: rabbit
         ports:
         - containerPort: 5672
           name: rabbit
