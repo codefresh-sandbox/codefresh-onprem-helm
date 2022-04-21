@@ -61,7 +61,7 @@ dependencies:
     tags:
       - deprecated
   - name: ingress
-    version: 0.1.11
+    version: 0.1.12
     repository: 'file://../ingress'
     condition: ingress.enabled
   - name: cluster-providers

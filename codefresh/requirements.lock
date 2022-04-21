@@ -31,7 +31,7 @@ dependencies:
   version: 0.1.2
 - name: ingress
   repository: file://../ingress
-  version: 0.1.11
+  version: 0.1.12
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
   version: 1.10.9
@@ -79,9 +79,9 @@ dependencies:
   version: 0.17.24
 - name: nomios
   repository: http://chartmuseum.codefresh.io/nomios
-  version: 0.9.4
+  version: 0.9.5
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:d315b485291f3d074127524ce0b41e8770efb856a20034d94e2090cdff10a0a4
-generated: "2022-04-21T15:43:37.688396048+03:00"
+digest: sha256:7da6facd20327fee4cab6a8bb11e441c9b07f9283802b490f1f03f17c0c9b5a5
+generated: "2022-04-21T22:41:21.085408189+03:00"
