@@ -7,6 +7,9 @@ metadata:
   {{- if .Values.global.elbEnable }}
     service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
   {{- end }}
+  {{- range $key, $value := .Values.controller.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
   name: {{ template "fullname" . }}-controller
   labels:
     app: {{ template "fullname" . }}
