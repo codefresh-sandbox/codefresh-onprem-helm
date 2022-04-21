@@ -76,16 +76,6 @@ dependencies:
     tags:
     - saas
     - infra
-  - name: mailer
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/mailer
-    tags:
-    - saas
-  - name: payments
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/payments
-    tags:
-    - saas
   - name: cfsign
     version: "*"
     repository: http://chartmuseum.codefresh.io/cfsign
@@ -93,16 +83,6 @@ dependencies:
     tags:
     - saas
     - infra
-  - name: segment-reporter
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/segment-reporter
-    tags:
-    - saas
-  - name: salesforce-reporter
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/salesforce-reporter
-    tags:
-    - saas
   - name: tasker-kubernetes
     version: "*"
     repository: http://chartmuseum.codefresh.io/tasker-kubernetes
@@ -148,13 +128,6 @@ dependencies:
     tags:
       - saas
       - infra
-  - name: onboarding-status
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/onboarding-status
-    condition: onboarding-status.enabled
-    tags:
-    - saas
-    - infra
   - name: runtime-environment-manager
     version: "*"
     repository: http://chartmuseum.codefresh.io/runtime-environment-manager

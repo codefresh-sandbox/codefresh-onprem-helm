@@ -87,10 +87,6 @@ rabbitmq:
   #rabbitmqPassword: cVz9ZdJKYm7u
   #nodeSelector: {}
 
-registry:
-  mainChart: codefresh
-  nodeSelector: {}
-
 builder:
   replicaCount: 1
 
@@ -141,12 +137,6 @@ cfui:
 #  webTLS:
 #    secretName: star.codefresh.io
 
-onboarding-status:
-  enabled: false
-  image: gcr.io/codefresh-enterprise/codefresh/onboarding-status
-  dockercfg: placeholder
-  newrelicLicenseKey: invalid-key
-
 runtime-environment-manager:
   enabled: true
   dockerRegistry: gcr.io/codefresh-enterprise/
@@ -155,11 +145,6 @@ runtime-environment-manager:
   newrelicLicenseKey: invalid-key
   env:
     ON_PREMISE: true
-
-cfanalytic:
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  image: codefresh/cf-analytic
-  enabled: false
 
 cfapi:
   github:
@@ -433,8 +418,6 @@ global:
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-  accountsReferralsService: accounts-referrals
-  accountsReferralsPort: 9000
   chartsManagerService: charts-manager
   chartsManagerPort: 9000
   contextManagerService: context-manager
@@ -444,8 +427,6 @@ global:
   gitopsDashboardManagerService: gitops-dashboard-manager
   gitopsDashboardManagerDatabase: pipeline-manager
   gitopsDashboardManagerPort: 9000
-  onboardingStatusService: onboarding-status
-  onboardingStatusPort: 80
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
   helmRepoManagerService: helm-repo-manager
@@ -482,16 +463,5 @@ tags:
   infra: true
   old-scheduler: false
   deprecated: false
-engineImage: codefresh/engine:1.131.6
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.4
-GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.2
-DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.3-os
-DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
-DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:8.0.2
-DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.12
-COMPOSE_IMAGE: codefresh/compose:1.25.0-1.1.1
-KUBE_DEPLOY: codefresh/cf-deploy-kubernetes:16.1.4
-FS_OPS_IMAGE: codefresh/fs-ops:1.1.1
-TEMPLATE_ENGINE: codefresh/pikolo:latest
 
-# versions:
+
