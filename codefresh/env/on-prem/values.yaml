@@ -30,7 +30,6 @@ rbacCreate: true
 #  secretName: star.codefresh.io
 
 ingress:
-  enabled: true
   controller:
     ingressClassResource:
       enabled: true

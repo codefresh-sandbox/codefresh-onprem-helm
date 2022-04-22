@@ -63,7 +63,8 @@ dependencies:
   - name: ingress-nginx
     version: 4.1.0
     repository: 'https://kubernetes.github.io/ingress-nginx'
-    condition: ingress.enabled    
+    condition: ingress-nginx.enabled,ingress.enabled
+    alias: ingress    
   - name: cluster-providers
     version: "*"
     repository: http://chartmuseum.codefresh.io/cluster-providers

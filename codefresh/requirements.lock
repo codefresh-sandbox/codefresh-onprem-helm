@@ -58,7 +58,7 @@ dependencies:
   version: 1.7.18
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.153.5
+  version: 21.153.6
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.38
@@ -83,5 +83,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:c8494b9768eb83021541437bcfa1bf7f1c62f794c3d3bf7c505504e240751eec
-generated: "2022-04-22T17:42:00.371438404+03:00"
+digest: sha256:27b8acbecf884338a5f764d20fd71e6903fa18f98741a273736b4b26108628b6
+generated: "2022-04-22T20:18:00.167330117+03:00"
