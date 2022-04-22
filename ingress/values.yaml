@@ -31,21 +31,10 @@ containerPort: 8080
 servicePort: 80
 
 controllerImage: k8s.gcr.io/ingress-nginx/controller
-controllerImageTag: v1.1.3
+controllerImageTag: v0.51.0
 
 controllerContainerPort: 80
 controllerHostPost: 80
 controllerSecureContainerPort: 443
 controllerSecureHostPort: 443
 controllerProbePort: 10254
-
-controller:
-  ingressClassResource:
-    enabled: true
-    name: nginx-codefresh
-    default: false
-    controllerValue: "k8s.io/codefresh-ingress-nginx"
-    parameters: {}
-  labels: {}
-  service:
-    annotations: {}  
