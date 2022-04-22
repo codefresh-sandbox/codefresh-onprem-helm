@@ -60,14 +60,10 @@ dependencies:
     condition: registry.enabled
     tags:
       - deprecated
-  - name: ingress
-    version: 0.1.12
-    repository: 'file://../ingress'
-    condition: ingress.enabled
   - name: ingress-nginx
     version: 4.1.0
     repository: 'https://kubernetes.github.io/ingress-nginx'
-    condition: ingress-nginx.enabled    
+    condition: ingress.enabled    
   - name: cluster-providers
     version: "*"
     repository: http://chartmuseum.codefresh.io/cluster-providers
