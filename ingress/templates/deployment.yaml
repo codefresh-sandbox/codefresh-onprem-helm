@@ -86,7 +86,7 @@ spec:
         args:
         - /nginx-ingress-controller
         - --ingress-class=nginx-codefresh
-        - --controller-class=k8s.io/codefresh-ingress-nginx
+        - --controller-class=k8s.io/ingress-nginx
         - --default-backend-service={{ .Release.Namespace }}/{{ template "fullname" . }}-http-backend
         - --watch-namespace={{ .Release.Namespace }}
         {{- if .Values.webTlsSecretName }}
