@@ -5,18 +5,13 @@ repos="
     cluster-providers
     kube-integration
     charts-manager
-    mailer
-    payments
     cfsign
-    segment-reporter
-    salesforce-reporter
     tasker-kubernetes
     context-manager
     pipeline-manager
     gitops-dashboard-manager
     cfapi
     cfui
-    onboarding-status
     runtime-environment-manager
     cf-broadcaster
     helm-repo-manager

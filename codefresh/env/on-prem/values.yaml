@@ -31,6 +31,8 @@ rbacCreate: true
 
 ingress:
   enabled: true
+  rbac:
+    scope: true
   controller:
     ingressClassResource:
       enabled: true
@@ -40,6 +42,8 @@ ingress:
     ingressClassByName: true
     scope:
       enabled: true
+    admissionWebhooks:
+      enabled: false
     config:
       disable-access-log: "false"
       enable-vts-status: "true"
