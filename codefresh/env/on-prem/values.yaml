@@ -31,8 +31,6 @@ rbacCreate: true
 
 ingress:
   enabled: true
-  rbac:
-    scope: true
   controller:
     ingressClassResource:
       enabled: true
