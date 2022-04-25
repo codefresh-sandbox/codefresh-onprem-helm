@@ -58,6 +58,7 @@ dependencies:
     version: 4.1.0
     repository: 'https://kubernetes.github.io/ingress-nginx'
     condition: ingress-nginx.enabled,ingress.enabled
+    alias: ingress
     tags:
       - ingress
       - ingress-nginx    
