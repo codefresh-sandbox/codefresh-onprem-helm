@@ -89,6 +89,7 @@ mongodb:
   mongodbRootPassword: XT9nmM8dZD
   # version: "4.2" # default tag; overrides tag in `mongodb.image` field
   migration:
+    enabled: false
     setFeatureCompat: "3.6"
   nodeSelector: {}
   resources:

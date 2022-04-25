@@ -1,4 +1,5 @@
 {{- if semverCompare ">3.6" (default (split ":" .Values.mongodb.image)._1 .Values.mongodb.version) }}
+{{- if .Values.mongodb.migration.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -46,4 +47,5 @@ spec:
           - |
 {{ .Files.Get (print .Values.setMdbCompatVerScript ) | indent 12  }}
       restartPolicy: Never
+{{- end }}      
 {{- end }}
