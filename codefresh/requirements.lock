@@ -70,7 +70,7 @@ dependencies:
   version: 1.10.7
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.8.4
+  version: 0.8.5
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.24
@@ -80,5 +80,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:1f43bb441cde8882b11824c96624d38e80ade89a0c31c0c7067abe3f7d0c4112
-generated: "2022-04-23T01:03:13.76966432+03:00"
+digest: sha256:73d9379d27e93ab69c6bff074c8129e63370623f457f0ea3818eaec47b7a5e96
+generated: "2022-04-25T15:39:41.11427331+03:00"
