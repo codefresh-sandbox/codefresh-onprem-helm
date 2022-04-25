@@ -40,7 +40,7 @@ spec:
           - name: MONGODB_ROOT_PASSWORD
             value: {{ .Values.mongodb.mongodbRootPassword }}
           - name: MONGO_COMPAT_VERSION
-            value: "{{ .Values.mongodb.setFeatureCompat }}"
+            value: "{{ .Values.mongodb.migration.setFeatureCompat }}"
         command:
           - "/bin/bash"
           - "-c"
