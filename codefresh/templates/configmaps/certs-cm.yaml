@@ -25,7 +25,7 @@ data:
     openssl genrsa -des3 -passout pass:xxxx -out server.pass.key 2048
     openssl rsa -passin pass:xxxx -in server.pass.key -out tls.key
     rm server.pass.key
-    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.global.appUrl }}"
+    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.global.appUrl }}" -addext "subjectAltName = DNS:{{ .Values.global.appUrl }}"
     openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
 
     secretName={{ template "fullname" . }}-star-selfsigned
