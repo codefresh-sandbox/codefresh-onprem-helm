@@ -26,7 +26,8 @@ data:
     openssl rsa -passin pass:xxxx -in server.pass.key -out tls.key
     rm server.pass.key
     openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.global.appUrl }}"
-    openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt
+    echo "subjectAltName = DNS:{{ .Values.global.appUrl }}" > extfile.cnf
+    openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt -extfile extfile.cnf
 
     secretName={{ template "fullname" . }}-star-selfsigned
     if kubectl get secret $secretName; then

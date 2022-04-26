@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -26,29 +26,44 @@ spec:
       {{- else }}
       secretName: {{ template "fullname" . }}-star-selfsigned
       {{- end }}
-  backend:
-    serviceName: {{ .Release.Name }}-cfui
-    servicePort: {{ .Values.servicePort }}
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-cfui
+      port:
+        number: {{ .Values.servicePort }}
+  ingressClassName: {{ .Values.ingress.controller.ingressClassResource.name | default "nginx-codefresh" }}
   rules:
   - host: {{ .Values.ingress.domain | default .Values.global.appUrl }}
     http:
       paths:
       - path: /api/
+        pathType: ImplementationSpecific
         backend:
-          serviceName: {{ .Release.Name }}-cfapi
-          servicePort: {{ .Values.servicePort }}
+          service:
+            name: {{ .Release.Name }}-cfapi
+            port:
+              number: {{ .Values.servicePort }}
       - path: /ws
+        pathType: ImplementationSpecific
         backend:
-          serviceName: {{ .Release.Name }}-cfapi
-          servicePort: {{ .Values.servicePort }}
+          service:
+            name: {{ .Release.Name }}-cfapi
+            port:
+              number: {{ .Values.servicePort }}
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: {{ .Release.Name }}-cfui
-          servicePort: {{ .Values.servicePort }}
+          service:
+            name: {{ .Release.Name }}-cfui
+            port:
+              number: {{ .Values.servicePort }}
       {{- if .Values.global.exposeRegistry }}
       - path: /v2/
+        pathType: ImplementationSpecific
         backend:
-          serviceName: {{ .Release.Name }}-registry
-          servicePort: 5000
+          service:
+            name: {{ .Release.Name }}-registry
+            port:
+              number: 5000
       {{- end }}
 {{- end }}

@@ -26,77 +26,59 @@ dependencies:
 - name: runner
   repository: file://local-charts/runner
   version: 0.1.4
-- name: registry
-  repository: file://../registry
-  version: 0.1.2
-- name: ingress
-  repository: file://../ingress
-  version: 0.1.11
+- name: ingress-nginx
+  repository: https://kubernetes.github.io/ingress-nginx
+  version: 4.1.0
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.10.8
+  version: 1.10.9
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.12
+  version: 1.25.13
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io/charts-manager
-  version: 1.9.4
-- name: mailer
-  repository: http://chartmuseum.codefresh.io/mailer
-  version: 1.17.2
-- name: payments
-  repository: http://chartmuseum.codefresh.io/payments
-  version: 2.18.0
+  version: 1.9.5
 - name: cfsign
   repository: http://chartmuseum.codefresh.io/cfsign
   version: 1.3.5
-- name: segment-reporter
-  repository: http://chartmuseum.codefresh.io/segment-reporter
-  version: 1.15.5
-- name: salesforce-reporter
-  repository: http://chartmuseum.codefresh.io/salesforce-reporter
-  version: 1.25.0
 - name: tasker-kubernetes
   repository: http://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.17.3
+  version: 1.17.4
 - name: context-manager
   repository: http://chartmuseum.codefresh.io/context-manager
-  version: 2.20.23
+  version: 2.20.25
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.6
+  version: 3.121.7
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.17
+  version: 1.7.18
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.153.1
+  version: 21.153.6
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.37
+  version: 14.69.38
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.14
-- name: onboarding-status
-  repository: http://chartmuseum.codefresh.io/onboarding-status
-  version: 1.6.11
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io/runtime-environment-manager
   version: 3.21.2
 - name: cf-broadcaster
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.10.6
+  version: 1.10.7
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.8.4
+  version: 0.8.5
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.24
 - name: nomios
   repository: http://chartmuseum.codefresh.io/nomios
-  version: 0.9.4
+  version: 0.9.5
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
-digest: sha256:550ae0d8d14bed6ecaf9e530863d73499f09353102e92ec0399282ef139aef9d
-generated: "2022-04-13T09:30:35.759971408Z"
+digest: sha256:02564f45a3706c3c4749835d1c6b26fb4cee01ab6237e2f94e9e8908ebae82d4
+generated: "2022-04-25T15:59:33.112553727+03:00"

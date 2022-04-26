@@ -7,8 +7,8 @@ dockercfg: placeholder
 # default service port
 servicePort: 80
 
-# image with kubectl that can work with our K8s version
-kubectlImage: quay.io/codefresh/generate-certs:1.0.0
+# image with kubectl and openssl
+kubectlImage: quay.io/codefresh/generate-certs:latest
 
 slackAppID: "4027524866.65820083427"
 slackAppSecret: placeholder
@@ -31,13 +31,35 @@ rbacCreate: true
 
 ingress:
   enabled: true
-  rbacEnable: true
-#  domain: '*'
-#  webTlsSecretName: "star.codefresh.io"
-
-# ingress resource annotations:
+  controller:
+    ingressClassResource:
+      enabled: true
+      default: false
+      controllerValue: "k8s.io/ingress-nginx-codefresh"
+      name: nginx-codefresh
+    ingressClass: nginx-codefresh
+    ingressClassByName: true
+    scope:
+      enabled: true
+    admissionWebhooks:
+      enabled: false
+    config:
+      disable-access-log: "false"
+      enable-vts-status: "true"
+      client-body-buffer-size: "16k"
+      proxy-body-size: "5M"
+      log-format-escape-json: "true"
+      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+                                "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
+                                "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
+                                $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
+                                "request_query": "$args", "request_length": $request_length, "duration": $request_time,
+                                "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
+                                "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
+      
+# `cf-codefresh-ingress` ingress resource annotations:
   annotations:
-    kubernetes.io/ingress.class: nginx-codefresh
+    # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.org/redirect-to-https: "false"
@@ -68,6 +90,7 @@ mongodb:
   mongodbRootPassword: XT9nmM8dZD
   # version: "4.2" # default tag; overrides tag in `mongodb.image` field
   migration:
+    enabled: false
     setFeatureCompat: "3.6"
   nodeSelector: {}
   resources:
@@ -86,10 +109,6 @@ rabbitmq:
   #rabbitmqUsername: user
   #rabbitmqPassword: cVz9ZdJKYm7u
   #nodeSelector: {}
-
-registry:
-  mainChart: codefresh
-  nodeSelector: {}
 
 builder:
   replicaCount: 1
@@ -141,12 +160,6 @@ cfui:
 #  webTLS:
 #    secretName: star.codefresh.io
 
-onboarding-status:
-  enabled: false
-  image: gcr.io/codefresh-enterprise/codefresh/onboarding-status
-  dockercfg: placeholder
-  newrelicLicenseKey: invalid-key
-
 runtime-environment-manager:
   enabled: true
   dockerRegistry: gcr.io/codefresh-enterprise/
@@ -155,11 +168,6 @@ runtime-environment-manager:
   newrelicLicenseKey: invalid-key
   env:
     ON_PREMISE: true
-
-cfanalytic:
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  image: codefresh/cf-analytic
-  enabled: false
 
 cfapi:
   github:
@@ -283,22 +291,16 @@ helm-repo-manager:
     name: codefresh/helm-repo-manager
     dockerRegistry: gcr.io/codefresh-enterprise/
 
-cf-broadcaster:
-  replicaCount: 1
-  image: codefresh/cf-broadcaster
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  env:
-    RUNTIME_MONGO_DB: codefresh
-
 chartmuseum:
   publicHelmRepo: false
   localHelmRepo: true
   ingress:
     enabled: false
     # Used to create an Ingress record.
-    hosts:
-      - chartmuseum.local
-    annotations:
+    hosts: []
+      # - name: chartmuseum.local
+      #   path: /
+    annotations: {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
   env:
@@ -309,7 +311,14 @@ chartmuseum:
       ALLOW_OVERWRITE: "true"
       DISABLE_API: "false"
       DISABLE_METRICS: "false"
-      INDEX_LIMIT: 2500
+      INDEX_LIMIT: 2500  
+
+cf-broadcaster:
+  replicaCount: 1
+  image: codefresh/cf-broadcaster
+  dockerRegistry: gcr.io/codefresh-enterprise/
+  env:
+    RUNTIME_MONGO_DB: codefresh
 
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
@@ -433,8 +442,6 @@ global:
   clusterProvidersPort: 9000
   kubeIntegrationService: kube-integration
   kubeIntegrationPort: 9000
-  accountsReferralsService: accounts-referrals
-  accountsReferralsPort: 9000
   chartsManagerService: charts-manager
   chartsManagerPort: 9000
   contextManagerService: context-manager
@@ -444,8 +451,6 @@ global:
   gitopsDashboardManagerService: gitops-dashboard-manager
   gitopsDashboardManagerDatabase: pipeline-manager
   gitopsDashboardManagerPort: 9000
-  onboardingStatusService: onboarding-status
-  onboardingStatusPort: 80
   runtimeEnvironmentManagerService: runtime-environment-manager
   runtimeEnvironmentManagerPort: 80
   helmRepoManagerService: helm-repo-manager
@@ -482,16 +487,5 @@ tags:
   infra: true
   old-scheduler: false
   deprecated: false
-engineImage: codefresh/engine:1.131.6
-CONTAINER_LOGGER_IMAGE: codefresh/cf-container-logger:1.4.4
-GIT_CLONE_IMAGE: codefresh/cf-git-cloner:10.0.2
-DOCKER_PUSHER_IMAGE: codefresh/cf-docker-pusher:6.0.3-os
-DOCKER_TAG_PUSHER_IMAGE: codefresh/cf-docker-tag-pusher:v2
-DOCKER_PULLER_IMAGE: codefresh/cf-docker-puller:8.0.2
-DOCKER_BUILDER_IMAGE: codefresh/cf-docker-builder:1.1.12
-COMPOSE_IMAGE: codefresh/compose:1.25.0-1.1.1
-KUBE_DEPLOY: codefresh/cf-deploy-kubernetes:16.1.4
-FS_OPS_IMAGE: codefresh/fs-ops:1.1.1
-TEMPLATE_ENGINE: codefresh/pikolo:latest
 
-# versions:
+

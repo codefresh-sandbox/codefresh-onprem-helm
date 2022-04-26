@@ -1,4 +1,5 @@
 {{- if semverCompare ">3.6" (default (split ":" .Values.mongodb.image)._1 .Values.mongodb.version) }}
+{{- if .Values.mongodb.migration.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -39,11 +40,12 @@ spec:
           - name: MONGODB_ROOT_PASSWORD
             value: {{ .Values.mongodb.mongodbRootPassword }}
           - name: MONGO_COMPAT_VERSION
-            value: "{{ .Values.mongodb.setFeatureCompat }}"
+            value: "{{ .Values.mongodb.migration.setFeatureCompat }}"
         command:
           - "/bin/bash"
           - "-c"
           - |
 {{ .Files.Get (print .Values.setMdbCompatVerScript ) | indent 12  }}
       restartPolicy: Never
+{{- end }}      
 {{- end }}
