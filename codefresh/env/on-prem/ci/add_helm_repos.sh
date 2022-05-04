@@ -19,6 +19,7 @@ repos="
     nomios
     cronus
     k8s-monitor
+    argo-platform
 "
 for r in $repos; do
     helm repo add $r http://chartmuseum.codefresh.io/$r

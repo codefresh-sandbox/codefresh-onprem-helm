@@ -6,3 +6,9 @@ values-*
 bak/*
 *.orig
 *.bak
+
+# files dir
+files/dynamic/*
+files/load/*
+files/production/*
+files/staging/*

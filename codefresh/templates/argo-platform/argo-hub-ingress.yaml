@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx-codefresh
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/add-base-url : "true"
+  name: argo-hub-platform-ingress
+  labels:
+    app: argo-hub-platform
+spec:
+  tls:
+  - hosts:
+    - {{ $.Values.global.appUrl }}
+    secretName: {{ $.Values.global.appUrl }}-cert
+  rules:
+  - host: {{ $.Values.global.appUrl }}
+    http:
+      paths:
+      - path: /argo/hub(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: argo-hub-platform
+            port:
+              number: 80
