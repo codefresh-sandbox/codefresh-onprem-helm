@@ -173,7 +173,7 @@ dependencies:
     - cron
   - name: argo-platform
     version: "1.1166.0-CR-10928-eba7cc5"
-    repository: https://chartmuseum-dev.codefresh.io/argo-platform  #file://../../../../v2/codefresh-io/argo-platform/.deploy/chart #tmp
+    repository: http://chartmuseum-dev.codefresh.io/argo-platform
     condition: argo-platform.enabled
     tags:
     - argo-platform   
