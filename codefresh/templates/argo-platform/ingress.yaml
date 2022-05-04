@@ -1,8 +1,8 @@
-{{- $servicePort := "http" -}}
+{{- $servicePort := 80 -}}
 {{- if index $.Values "argo-platform" "ingress" "enabled" -}}
-{{- range $rule := index .Values "argo-platform" "ingress" "rules" }}
+{{- range $rule := index $.Values "argo-platform" "ingress" "rules" }}
 ---
-{{- if index .Values "argo-platform" "enabled" }}
+{{- if index $.Values "argo-platform" "enabled" }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -25,6 +25,7 @@ spec:
     {{- range $serviceName, $paths := $rule.services }}
       {{- range $path := $paths }}
       - path: {{ $path }}
+        pathType: ImplementationSpecific
         backend:
           service:
             name: {{ $serviceName }}
@@ -32,12 +33,13 @@ spec:
               number: {{ $servicePort }}
       {{- end }}
     {{- end }}
-      - path: /metrics
-        backend:
-          service:
-            name: non-existent
-            port:
-              number: non-existent
+      # - path: /metrics
+      #   pathType: ImplementationSpecific
+      #   backend:
+      #     service:
+      #       name: non-existent
+      #       port:
+      #         number: non-existent
   {{- if $rule.tls }}
   tls:
   - hosts:

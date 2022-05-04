@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   type: ExternalName
-  externalName: {{ template "cfapi.fullname" .Subcharts.cfapi }}.{{ .Release.Namespace }}.svc.cluster.local
+  externalName: {{ .Release.Name }}-cfapi.{{ .Release.Namespace }}.svc.cluster.local
   ports:
   - name: http
     port: 80
