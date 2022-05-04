@@ -1,3 +1,4 @@
+{{- if index .Values "argo-platform" "enabled" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,3 +23,4 @@ spec:
         - containerPort: 3000
       imagePullSecrets:
         - name: argo-hub-registry
+{{- end }}
