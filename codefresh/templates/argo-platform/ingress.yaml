@@ -1,4 +1,4 @@
-{{- $servicePort := 80 -}}
+{{- $servicePort := "http" -}}
 {{- if index $.Values "argo-platform" "ingress" "enabled" -}}
 {{- range $rule := index $.Values "argo-platform" "ingress" "rules" }}
 ---
@@ -30,7 +30,7 @@ spec:
           service:
             name: {{ $serviceName }}
             port:
-              number: {{ $servicePort }}
+              name: {{ $servicePort }}
       {{- end }}
     {{- end }}
       # - path: /metrics
