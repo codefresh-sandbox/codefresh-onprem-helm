@@ -13,11 +13,12 @@ metadata:
     release: {{ $.Release.Name }}
     heritage: {{ $.Release.Service }}
   annotations:
-    kubernetes.io/ingress.class: nginx-codefresh
+    #kubernetes.io/ingress.class: nginx-codefresh
   {{- with $rule.annotations -}}
     {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  ingressClassName: {{ $.Values.ingress.controller.ingressClassResource.name | default "nginx-codefresh" }} 
   rules:
   - host: {{ $.Values.global.appUrl }}
     http:
