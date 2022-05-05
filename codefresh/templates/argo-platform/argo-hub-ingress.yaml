@@ -13,7 +13,11 @@ spec:
   tls:
   - hosts:
     - {{ $.Values.global.appUrl }}
+    {{- if $.Values.webTLS }}
     secretName: {{ $.Values.global.appUrl }}-cert
+    {{- else }}
+    secretName: {{ template "fullname" $ }}-star-selfsigned
+    {{- end }}
   rules:
   - host: {{ $.Values.global.appUrl }}
     http:
