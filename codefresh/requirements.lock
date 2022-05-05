@@ -82,6 +82,6 @@ dependencies:
   version: 0.6.4
 - name: argo-platform
   repository: http://chartmuseum-dev.codefresh.io/argo-platform
-  version: 1.1166.0-CR-10928-eba7cc5
-digest: sha256:b0d7c7468fdaf5cc07c75d00d53c237786a648aeb3c2e244353c938a978ea44a
-generated: "2022-05-04T17:12:02.919302972+03:00"
+  version: 1.1175.0-CR-10928-879eaaa
+digest: sha256:bddd33f9e01327d3387543f0256f710b5b362ab10163c6becb110c3bac03ca62
+generated: "2022-05-05T18:17:26.165785789+03:00"
