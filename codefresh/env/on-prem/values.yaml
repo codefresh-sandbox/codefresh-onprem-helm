@@ -547,6 +547,10 @@ argo-platform:
 
   api-graphql:
     secrets: {}
+    env:
+      V1_HOST: http://codefresh-v1-api
+      GRAPHQL_PLAYGROUND: true
+      ARGO_HUB_HOST: http://argo-hub-platform
     hpa:
       enabled: false
     pdb:
