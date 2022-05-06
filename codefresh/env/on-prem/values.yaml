@@ -478,6 +478,7 @@ global:
   argoPlatformRabbitMqUri: amqp://guest:guest@rabbit:5672
   argoPlatformRedisHost: cf-redis
   argoPlatformRedisPassword: hoC9szf7NtrU
+  ### argo-platform default values
 
   internalServiceTolerations:
   - effect: NoSchedule
@@ -542,23 +543,29 @@ argo-platform:
   event-handler:
     enabled: true
     secrets: {}
+    env:
+      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
+      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672      
     hpa:
       enabled: false
     pdb:
       enabled: false
     tolerations: []
     affinity: []
-
+  
   cron-executor:
-    enabled: true
+    enabled: true   
     secrets: {}
+    env:
+      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
+      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
     hpa:
       enabled: false
     pdb:
       enabled: false
     tolerations: []
-    affinity: []      
-
+    affinity: []
+  
   api-graphql:
     enabled: true
     secrets: {}
@@ -566,34 +573,40 @@ argo-platform:
       V1_HOST: http://codefresh-v1-api
       GRAPHQL_PLAYGROUND: true
       ARGO_HUB_HOST: http://argo-hub-platform
+      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
+      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
+      CACHE_HOST: cf-redis
+      CACHE_PASSWORD: hoC9szf7NtrU
     hpa:
       enabled: false
     pdb:
-      enabled: false 
+      enabled: false
     tolerations: []
-    affinity: []     
-
+    affinity: []
+  
   api-events:
-    enabled: true
+    enabled: true  
     secrets: {}
+    env:
+      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
     hpa:
       enabled: false
     pdb:
       enabled: false
     tolerations: []
-    affinity: []      
-
+    affinity: []
+  
   ui:
-    enabled: true
+    enabled: true 
     hpa:
       enabled: false
     pdb:
-      enabled: false 
+      enabled: false
     tolerations: []
-    affinity: []     
-
+    affinity: []
+  
   argocd-hooks:
     enabled: false
-
+  
   analytics-reporter:
     enabled: false
