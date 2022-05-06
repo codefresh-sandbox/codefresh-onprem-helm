@@ -470,6 +470,14 @@ global:
   runtimeMongoDb: codefresh
   ### new logging solution
 
+  ### argo-platform default values
+  argoPlatformMongoDatabase: read-models
+  argoPlatformMongodbUsername: argo-platform
+  argoPlatformMongodbPassword: oDpLLqEoPM
+  argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
+  argoPlatformRabbitMqUri: amqp://guest:guest@rabbit:5672
+  argoPlatformRedisHost: cf-redis
+  argoPlatformRedisPassword: hoC9szf7NtrU
 
   internalServiceTolerations:
   - effect: NoSchedule
@@ -532,6 +540,7 @@ argo-platform:
         tls: true
   
   event-handler:
+    enabled: true
     secrets: {}
     hpa:
       enabled: false
@@ -541,6 +550,7 @@ argo-platform:
     affinity: []
 
   cron-executor:
+    enabled: true
     secrets: {}
     hpa:
       enabled: false
@@ -550,6 +560,7 @@ argo-platform:
     affinity: []      
 
   api-graphql:
+    enabled: true
     secrets: {}
     env:
       V1_HOST: http://codefresh-v1-api
@@ -563,6 +574,7 @@ argo-platform:
     affinity: []     
 
   api-events:
+    enabled: true
     secrets: {}
     hpa:
       enabled: false
@@ -572,6 +584,7 @@ argo-platform:
     affinity: []      
 
   ui:
+    enabled: true
     hpa:
       enabled: false
     pdb:
