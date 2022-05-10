@@ -8,8 +8,6 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
 spec:
   backoffLimit: 6
   template:
