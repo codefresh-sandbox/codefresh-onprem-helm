@@ -542,6 +542,7 @@ argo-platform:
   
   event-handler:
     enabled: true
+    kind: Deployment
     secrets: {}
     env:
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
@@ -554,7 +555,8 @@ argo-platform:
     affinity: []
   
   cron-executor:
-    enabled: true   
+    enabled: true
+    kind: Deployment   
     secrets: {}
     env:
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
@@ -568,6 +570,7 @@ argo-platform:
   
   api-graphql:
     enabled: true
+    kind: Deployment
     secrets: {}
     env:
       V1_HOST: http://codefresh-v1-api
@@ -585,7 +588,8 @@ argo-platform:
     affinity: []
   
   api-events:
-    enabled: true  
+    enabled: true
+    kind: Deployment  
     secrets: {}
     env:
       RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
@@ -597,7 +601,8 @@ argo-platform:
     affinity: []
   
   ui:
-    enabled: true 
+    enabled: true
+    kind: Deployment 
     hpa:
       enabled: false
     pdb:
@@ -610,3 +615,4 @@ argo-platform:
   
   analytics-reporter:
     enabled: false
+    kind: Deployment 
