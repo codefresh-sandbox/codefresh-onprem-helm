@@ -97,14 +97,6 @@ mongodb:
     requests:
       memory: 64Mi
 
-### old cf-redis
-# redis:
-#   redisPassword: hoC9szf7NtrU
-#   nodeSelector: {}
-#   resources:
-#     requests:
-#       memory: 64Mi
-
 redis:
   image:
     repository: bitnami/redis

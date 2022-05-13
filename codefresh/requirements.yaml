@@ -34,13 +34,6 @@ dependencies:
     tags:
     - infra
     - argo-platform    
-  # - name: redis
-  #   version: 0.8.2
-  #   repository: file://pv-charts/redis
-  #   condition: redis.enabled
-  #   tags:
-  #   - infra
-  #   - argo-platform
   - name: rabbitmq
     version: 0.6.16
     repository: file://pv-charts/rabbitmq

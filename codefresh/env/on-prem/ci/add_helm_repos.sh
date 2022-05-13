@@ -27,3 +27,4 @@ for r in $repos; do
 done
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo add bitnami https://charts.bitnami.com/bitnami
