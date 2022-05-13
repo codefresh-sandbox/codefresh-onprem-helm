@@ -97,12 +97,21 @@ mongodb:
     requests:
       memory: 64Mi
 
+### old cf-redis
+# redis:
+#   redisPassword: hoC9szf7NtrU
+#   nodeSelector: {}
+#   resources:
+#     requests:
+#       memory: 64Mi
+
 redis:
-  redisPassword: hoC9szf7NtrU
-  nodeSelector: {}
-  resources:
-    requests:
-      memory: 64Mi
+  image:
+    repository: bitnami/redis
+    tag: 6.0.16
+  architecture: standalone
+  auth:
+    password: "hoC9szf7NtrU"
 
 rabbitmq:
   enabled: false # replacing cf-rabbitmq (subchart in pv-charts) with rabbit (subchart in cf-db-chart)
@@ -418,7 +427,7 @@ global:
   consulHttpPort: 8500
 
   # Redis service
-  redisService: redis
+  redisService: redis-master
 
   # [Deprecated] Docker Registry service
   registryService: registry
@@ -462,7 +471,7 @@ global:
   cfk8smonitorService: k8s-monitor
   onprem: true
   ### new logging solution
-  runtimeRedisHost: cf-redis
+  runtimeRedisHost: cf-redis-master
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
@@ -476,7 +485,7 @@ global:
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
   argoPlatformRabbitMqUri: amqp://guest:guest@rabbit:5672
-  argoPlatformRedisHost: cf-redis
+  argoPlatformRedisHost: cf-redis-master
   argoPlatformRedisPassword: hoC9szf7NtrU
   ### argo-platform default values
 
@@ -578,7 +587,7 @@ argo-platform:
       ARGO_HUB_HOST: http://argo-hub-platform
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
       RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
-      CACHE_HOST: cf-redis
+      CACHE_HOST: cf-redis-master
       CACHE_PASSWORD: hoC9szf7NtrU
     hpa:
       enabled: false

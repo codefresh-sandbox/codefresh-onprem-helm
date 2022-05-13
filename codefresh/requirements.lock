@@ -12,8 +12,8 @@ dependencies:
   repository: file://pv-charts/postgresql
   version: 0.7.2
 - name: redis
-  repository: file://pv-charts/redis
-  version: 0.8.2
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.9.0
 - name: rabbitmq
   repository: file://pv-charts/rabbitmq
   version: 0.6.16
@@ -52,10 +52,10 @@ dependencies:
   version: 3.121.7
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.19
+  version: 1.7.20
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.154.1
+  version: 21.154.4
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.48
@@ -83,5 +83,5 @@ dependencies:
 - name: argo-platform
   repository: http://chartmuseum-dev.codefresh.io/argo-platform
   version: 1.1177.0-CR-10928-6c66501
-digest: sha256:758fd31c0034b5cc3736d349b94fe4b2daec37dfb4d4a9214aa63d4e771348a2
-generated: "2022-05-10T18:00:53.570721911+03:00"
+digest: sha256:97fb543bee1c2bfef27187d7483e02281ffd923e874fcde763b540bf7145b824
+generated: "2022-05-13T21:46:51.615775306+03:00"
