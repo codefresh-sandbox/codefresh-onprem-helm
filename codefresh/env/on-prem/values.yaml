@@ -487,16 +487,9 @@ global:
     operator: Equal
     value: internal
 
-cf-db:
-  enabled: false
-  rabbit:
-    enabled: false
-
 tags:
-  saas: false
   infra: true
-  old-scheduler: false
-  deprecated: false
+  argo-platfrom: false
 
 argo-platform:
   enabled: false
