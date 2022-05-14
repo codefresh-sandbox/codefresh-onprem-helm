@@ -106,10 +106,13 @@ redis:
     password: "hoC9szf7NtrU"
 
 rabbitmq:
-  enabled: false # replacing cf-rabbitmq (subchart in pv-charts) with rabbit (subchart in cf-db-chart)
-  #rabbitmqUsername: user
-  #rabbitmqPassword: cVz9ZdJKYm7u
-  #nodeSelector: {}
+  image:
+    repository: bitnami/rabbitmq
+    tag: 3.9
+  auth:
+    username: user
+    password: "cVz9ZdJKYm7u"
+    erlangCookie: "WIWVHCDTCIUAWANLMQAW"
 
 builder:
   replicaCount: 1
@@ -393,13 +396,10 @@ global:
   natsService: nats
   natsPort: 4222
 
-  # rabbitmq service name (rabbit subchart in cf-db-chart)
-  rabbitService: rabbit
-
-  # rabbitmq service name (rabbit subchart in cf-db-chart)
-  rabbitmqHostname: rabbit
-  rabbitmqUsername: guest
-  rabbitmqPassword: guest
+  rabbitService: rabbitmq
+  #rabbitmqHostname: rabbitmq
+  rabbitmqUsername: user
+  rabbitmqPassword: cVz9ZdJKYm7u
 
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
@@ -476,7 +476,7 @@ global:
   argoPlatformMongodbUsername: argo-platform
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-  argoPlatformRabbitMqUri: amqp://guest:guest@rabbit:5672
+  argoPlatformRabbitMqUri: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
   argoPlatformRedisHost: cf-redis-master
   argoPlatformRedisPassword: hoC9szf7NtrU
   ### argo-platform default values
@@ -488,9 +488,9 @@ global:
     value: internal
 
 cf-db:
-  enabled: true
+  enabled: false
   rabbit:
-    enabled: true
+    enabled: false
 
 tags:
   saas: false
@@ -547,7 +547,7 @@ argo-platform:
     secrets: {}
     env:
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672      
+      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672      
     hpa:
       enabled: false
     pdb:
@@ -561,7 +561,7 @@ argo-platform:
     secrets: {}
     env:
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
+      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
     hpa:
       enabled: false
     pdb:
@@ -578,7 +578,7 @@ argo-platform:
       GRAPHQL_PLAYGROUND: true
       ARGO_HUB_HOST: http://argo-hub-platform
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
+      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
       CACHE_HOST: cf-redis-master
       CACHE_PASSWORD: hoC9szf7NtrU
     hpa:
@@ -593,7 +593,7 @@ argo-platform:
     kind: Deployment  
     secrets: {}
     env:
-      RABBITMQ_URLS: amqp://guest:guest@rabbit:5672
+      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
     hpa:
       enabled: false
     pdb:

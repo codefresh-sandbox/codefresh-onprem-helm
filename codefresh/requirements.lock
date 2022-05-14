@@ -15,8 +15,8 @@ dependencies:
   repository: https://charts.bitnami.com/bitnami
   version: 16.9.0
 - name: rabbitmq
-  repository: file://pv-charts/rabbitmq
-  version: 0.6.16
+  repository: https://charts.bitnami.com/bitnami
+  version: 9.0.8
 - name: nats
   repository: file://../nats
   version: 0.1.2
@@ -83,5 +83,5 @@ dependencies:
 - name: argo-platform
   repository: http://chartmuseum-dev.codefresh.io/argo-platform
   version: 1.1177.0-CR-10928-6c66501
-digest: sha256:97fb543bee1c2bfef27187d7483e02281ffd923e874fcde763b540bf7145b824
-generated: "2022-05-13T21:46:51.615775306+03:00"
+digest: sha256:208cb1dd9f9e77ccb2726a8a5486a6fd36dc6584fff3ccee186e66d008c20afb
+generated: "2022-05-14T13:09:09.56002731+03:00"

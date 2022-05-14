@@ -35,12 +35,12 @@ dependencies:
     - infra
     - argo-platform    
   - name: rabbitmq
-    version: 0.6.16
-    repository: file://pv-charts/rabbitmq
+    version: 9.0.8
+    repository: https://charts.bitnami.com/bitnami
     condition: rabbitmq.enabled
     tags:
     - infra
-    - argo-platform
+    - argo-platform        
   - name: nats
     version: 0.1.2
     repository: file://../nats
