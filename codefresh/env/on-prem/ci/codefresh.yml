@@ -428,6 +428,15 @@ steps:
         all:
           isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "false"'    
 
+  e2e_argo_platform:
+    title: "Running Argo-Platfrom E2E Tests"
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: argo-platform/e2e-onprem
+      VARIABLE:
+        - CODEFRESH_API_URL_BASE=${{E2E_API_KEY}}
+        - CF_API_KEY=https://${{CF_APP_HOST}}
+
   failed_e2e_notifications:
     stage: notifications
     title: E2E failures notification
