@@ -6,6 +6,7 @@ stages:
   - create package
   - security report
   - create test infra
+  - install
   - test
   - delete test infra
   - git_tag
@@ -115,13 +116,14 @@ steps:
   prepare_test_clusters:
     stage: create test infra
     description: "Prepares a GKE cluster for the tests"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.7
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
     shell: bash
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
         - [TEST_CASE_ID=01]
         - [TEST_CASE_ID=02]
+        - [TEST_CASE_ID=03]
     commands:
       - source ./prepare_test_cluster.sh
     when:
@@ -174,9 +176,10 @@ steps:
             cf_export CURRENT_CHROME_VERSION
 
   helm_install:
-    stage: test
+    stage: install
+    title: "[Classic] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.7
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -198,11 +201,12 @@ steps:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
 
   helm_upgrade:
-    stage: test
+    stage: install
+    title: "[Classic] Helm Upgrade"
     description: |-
       Verifies if the latest onprem release can be successfully upgraded
       with the chart built from the current branch. Seeds the data for the E2E tests
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.7
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -223,6 +227,31 @@ steps:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
           skipHelmUpgrade: '"${{SKIP_HELM_UPGRADE}}" == "false"'
+
+  helm_install_argo_platfrom:
+    stage: install
+    title: "[Argo-Platform] Helm Install"
+    description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    shell: bash
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - export LOCAL_CHART_PATH=${{PACKAGE}}
+      - source ./test-cases/install_argo_platform_helm.sh
+      - cf_export CF_APP_HOST CLUSTER_NAME
+    when:
+      steps:
+        - name: build_chart
+          on:
+          - success
+        - name: prepare_test_clusters
+          on:
+          - success
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
 
   export_cf_projs_ver:
     stage: test
@@ -378,7 +407,7 @@ steps:
 
   delete_test_clusters:
     stage: delete test infra
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.7
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
