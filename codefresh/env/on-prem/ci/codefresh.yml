@@ -408,7 +408,7 @@ steps:
         - CF_API_KEY=${{E2E_API_KEY}}
     when:
       steps:
-        - name: helm_upgrade_argo_platfrom
+        - name: helm_upgrade_argo_platform
           on:
             - success 
       condition:
@@ -462,9 +462,9 @@ steps:
         - name: e2e_ui_test
           on:
             - success
-        # - name: e2e_argo_platform
-        #   on:
-        #     - success
+        - name: e2e_argo_platform
+          on:
+            - success
 
 
   create_git_tag:
