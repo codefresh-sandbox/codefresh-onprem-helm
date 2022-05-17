@@ -447,15 +447,22 @@ steps:
         - name: helm_install
           on:
           - success
-          - failure
         - name: helm_upgrade
           on:
           - success
-          - failure
+        - name: helm_install_argo_platform
+          on:
+          - success
+        - name: helm_upgrade_argo_platform
+          on:
+          - success         
         - name: e2e_api_test
           on:
           - success
         - name: e2e_ui_test
+          on:
+            - success
+        - name: e2e_argo_platform
           on:
             - success
 
