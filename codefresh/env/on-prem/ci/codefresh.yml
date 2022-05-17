@@ -121,10 +121,10 @@ steps:
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
-        - [TEST_CASE_ID=01]
-        - [TEST_CASE_ID=02]
-        - [TEST_CASE_ID=03]
-        - [TEST_CASE_ID=04]
+        - [TEST_CASE_ID=01,USE_EXISTING_CLUSTER=true]
+        - [TEST_CASE_ID=02,USE_EXISTING_CLUSTER=true]
+        - [TEST_CASE_ID=03,USE_EXISTING_CLUSTER=true]
+        - [TEST_CASE_ID=04,USE_EXISTING_CLUSTER=true]
     commands:
       - source ./prepare_test_cluster.sh
     when:
