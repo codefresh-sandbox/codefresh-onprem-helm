@@ -212,7 +212,7 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_pure_helm.sh
-      - cf_export CF_APP_HOST_V1=CF_APP_HOST
+      - cf_export CF_APP_HOST_V1=$CF_APP_HOST
       - cf_export CLUSTER_NAME
     when:
       steps:
@@ -264,7 +264,7 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_argo_platform_helm.sh
-      - cf_export CF_APP_HOST_V2=CF_APP_HOST
+      - cf_export CF_APP_HOST_V2=$CF_APP_HOST
       - cf_export CLUSTER_NAME
     when:
       steps:
@@ -397,20 +397,20 @@ steps:
           on:
             - success
 
-  # e2e_argo_platform:
-  #   title: "Running Argo-Platfrom E2E Tests"
-  #   stage: test
-  #   type: codefresh-run
-  #   arguments:
-  #     PIPELINE_ID: argo-platform/e2e-onprem
-  #     VARIABLE:
-  #       - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST_V1}}
-  #       - CF_API_KEY=${{E2E_API_KEY}}
-  #   when:
-  #     steps:
-  #       - name: helm_upgrade
-  #         on:
-  #           - success      
+  e2e_argo_platform:
+    title: "[Argo-Platfrom] Running E2E Tests"
+    stage: test
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: argo-platform/e2e-onprem
+      VARIABLE:
+        - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST_V2}}
+        - CF_API_KEY=${{E2E_API_KEY}}
+    when:
+      steps:
+        - name: helm_upgrade
+          on:
+            - success      
 
   failed_e2e_notifications:
     stage: notifications
