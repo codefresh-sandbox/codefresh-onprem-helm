@@ -408,9 +408,13 @@ steps:
         - CF_API_KEY=${{E2E_API_KEY}}
     when:
       steps:
-        - name: helm_upgrade
+        - name: helm_upgrade_argo_platfrom
           on:
-            - success      
+            - success 
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+          skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'            
 
   failed_e2e_notifications:
     stage: notifications
