@@ -430,12 +430,18 @@ steps:
 
   e2e_argo_platform:
     title: "Running Argo-Platfrom E2E Tests"
+    stage: test
     type: codefresh-run
     arguments:
       PIPELINE_ID: argo-platform/e2e-onprem
       VARIABLE:
         - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST}}
         - CF_API_KEY=${{E2E_API_KEY}}
+    when:
+      steps:
+        - name: helm_upgrade
+            on:
+              - success      
 
   failed_e2e_notifications:
     stage: notifications
