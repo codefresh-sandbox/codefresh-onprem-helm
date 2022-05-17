@@ -440,8 +440,8 @@ steps:
     when:
       steps:
         - name: helm_upgrade
-            on:
-              - success      
+          on:
+            - success      
 
   failed_e2e_notifications:
     stage: notifications
