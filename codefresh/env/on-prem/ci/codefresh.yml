@@ -124,6 +124,7 @@ steps:
         - [TEST_CASE_ID=01]
         - [TEST_CASE_ID=02]
         - [TEST_CASE_ID=03]
+        - [TEST_CASE_ID=04]
     commands:
       - source ./prepare_test_cluster.sh
     when:
@@ -185,7 +186,6 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/install_pure_helm.sh
-      - cf_export CF_APP_HOST CLUSTER_NAME
     when:
       steps:
         - name: build_chart
@@ -212,7 +212,7 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_pure_helm.sh
-      - cf_export CF_APP_HOST CLUSTER_NAME
+      - cf_export CF_APP_HOST_V1 CLUSTER_NAME
     when:
       steps:
         - name: build_chart
@@ -226,7 +226,6 @@ steps:
       condition:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
-          skipHelmUpgrade: '"${{SKIP_HELM_UPGRADE}}" == "false"'
 
   helm_install_argo_platfrom:
     stage: install
@@ -238,7 +237,33 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/install_argo_platform_helm.sh
-      - cf_export CF_APP_HOST CLUSTER_NAME
+    when:
+      steps:
+        - name: build_chart
+          on:
+          - success
+        - name: prepare_test_clusters
+          on:
+          - success
+      branch:
+        ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
+      condition:
+        all:
+          skipTests: '"${{SKIP_TESTS}}" != "true"'
+
+  helm_upgrade_argo_platfrom:
+    stage: install
+    title: "[Argo-Platform] Helm Upgrade"
+    description: |-
+      Verifies if the latest onprem release can be successfully upgraded
+      with the chart built from the current branch. Seeds the data for the E2E tests
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    shell: bash
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - export LOCAL_CHART_PATH=${{PACKAGE}}
+      - source ./test-cases/upgrade_argo_platform_helm.sh
+      - cf_export CF_APP_HOST_V2 CLUSTER_NAME
     when:
       steps:
         - name: build_chart
@@ -312,7 +337,7 @@ steps:
           - set -eu
           - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
           - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential --tag !onprem_bug
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST_V1} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --sequential --tag !onprem_bug
       parallel_e2e_api_test:
         title: Parallel Running API E2E Tests
         type: freestyle
@@ -324,7 +349,7 @@ steps:
           - set -eu
           - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
           - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}}
-          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag !onprem_bug
+          - yarn cli test --user-token ${{E2E_API_KEY}} --report html --api-url https://${CF_APP_HOST_V1} --report-path ${{CF_VOLUME_PATH}}/e2e_api_test --tests-source ${{CF_VOLUME_PATH}}/cf-api/e2e-tests --parallel --tag !onprem_bug
     when:
       steps:
         - name: api_clone
@@ -332,10 +357,7 @@ steps:
           - success
         - name: helm_upgrade
           on:
-          - success  
-      condition:
-        all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "false"'
+          - success
 
   e2e_ui_test:
     title: "[Classic] Running UI E2E Tests"
@@ -347,7 +369,7 @@ steps:
       working_directory: '${{ui_clone}}'
       environment:
         - ENVIROMENT=${{ENVIRONMENT}}
-        - BASE_URL=https://${{CF_APP_HOST}}
+        - BASE_URL=https://${{CF_APP_HOST_V1}}
         - SLACK_URI=${{UI_E2E_SLACK}}
         - TEST_USER=${{UI_USER_NAME}}
         - TEST_PASSWORD=${{UI_USER_PWD}}
@@ -357,7 +379,7 @@ steps:
     commands:
       - set -eu
       - export NODE_TLS_REJECT_UNAUTHORIZED=0 HOST=${{E2E_K8S_HOST}} CLIENT_CA=${{E2E_K8S_CLIENT_CA}} TOKEN=${{E2E_K8S_TOKEN}}
-      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}} BASE_URL=https://${{CF_APP_HOST}}
+      - export AWS_ACCESS_KEY=${{UI_E2E_AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{UI_E2E_AWS_SECRET_ACCESS_KEY}} BASE_URL=https://${{CF_APP_HOST_V1}}
       - export ON_PREM=yes
       - yarn install
       - yarn e2e
@@ -372,9 +394,6 @@ steps:
         - name: extract_chrome_vers
           on:
             - success
-      condition:
-        all:
-          isHelmUpgradeSkipped: '"${{SKIP_HELM_UPGRADE}}" == "false"'    
 
   # e2e_argo_platform:
   #   title: "Running Argo-Platfrom E2E Tests"
@@ -383,7 +402,7 @@ steps:
   #   arguments:
   #     PIPELINE_ID: argo-platform/e2e-onprem
   #     VARIABLE:
-  #       - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST}}
+  #       - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST_V1}}
   #       - CF_API_KEY=${{E2E_API_KEY}}
   #   when:
   #     steps:
@@ -413,6 +432,8 @@ steps:
       environment:
         - [TEST_CASE_ID=01]
         - [TEST_CASE_ID=02]
+        - [TEST_CASE_ID=03]
+        - [TEST_CASE_ID=04]
     commands:
       - ./delete-cluster.sh
     when:
