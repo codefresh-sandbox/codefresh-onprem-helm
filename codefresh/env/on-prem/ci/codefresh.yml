@@ -228,7 +228,7 @@ steps:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
 
-  helm_install_argo_platfrom:
+  helm_install_argo_platform:
     stage: install
     title: "[Argo-Platform] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
@@ -252,7 +252,7 @@ steps:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
 
-  helm_upgrade_argo_platfrom:
+  helm_upgrade_argo_platform:
     stage: install
     title: "[Argo-Platform] Helm Upgrade"
     description: |-
