@@ -212,7 +212,8 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_pure_helm.sh
-      - cf_export CF_APP_HOST_V1 CLUSTER_NAME
+      - cf_export CF_APP_HOST_V1=CF_APP_HOST
+      - cf_export CLUSTER_NAME
     when:
       steps:
         - name: build_chart
@@ -263,7 +264,8 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_argo_platform_helm.sh
-      - cf_export CF_APP_HOST_V2 CLUSTER_NAME
+      - cf_export CF_APP_HOST_V2=CF_APP_HOST
+      - cf_export CLUSTER_NAME
     when:
       steps:
         - name: build_chart
