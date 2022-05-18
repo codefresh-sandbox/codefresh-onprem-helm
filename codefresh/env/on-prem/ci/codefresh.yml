@@ -237,9 +237,7 @@ steps:
     working_directory: IMAGE_WORK_DIR
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
-      - source ./test-cases/install_argo_platform_helm.sh
-      - cf_export CF_APP_HOST_V2=$CF_APP_HOST
-      - cf_export CLUSTER_NAME      
+      - source ./test-cases/install_argo_platform_helm.sh   
     when:
       steps:
         - name: build_chart
@@ -266,6 +264,8 @@ steps:
     commands:
       - export LOCAL_CHART_PATH=${{PACKAGE}}
       - source ./test-cases/upgrade_argo_platform_helm.sh
+      - cf_export CF_APP_HOST_V2=$CF_APP_HOST
+      - cf_export CLUSTER_NAME   
     when:
       steps:
         - name: build_chart
@@ -408,7 +408,7 @@ steps:
         - CF_API_KEY=${{E2E_API_KEY}}
     when:
       steps:
-        - name: helm_install_argo_platform
+        - name: helm_upgrade_argo_platform
           on:
             - success 
       condition:
