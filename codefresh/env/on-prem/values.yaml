@@ -651,18 +651,18 @@ argo-platform:
         memory: 128Mi
       limits:
         memory: 128Mi
-  hpa:
-    enabled: true
-    spec:
-      minReplicas: 2
-      maxReplicas: 10
-      metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 70
+    hpa:
+      enabled: true
+      spec:
+        minReplicas: 2
+        maxReplicas: 10
+        metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
     pdb:
       enabled: false
     tolerations: []
