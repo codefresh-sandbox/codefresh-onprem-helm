@@ -59,71 +59,6 @@ data:
         "localUserPasswordIDPEnabled": true,
         "__v" : NumberInt(0)
     }
-    { 
-        "_id" : ObjectId("627e3aa3e62cd24ad1b66d21"), 
-        "integrations" : {
-            "stash" : {
-                "active" : false
-            }, 
-            "github" : {
-                "active" : false
-            }, 
-            "gitlab" : {
-                "active" : false
-            }, 
-            "aks" : {
-                "exist" : false
-            }, 
-            "aks_sp" : {
-                "exist" : false
-            }, 
-            "aks_mi" : {
-                "exist" : false
-            }, 
-            "gcloud" : {
-                "exist" : false
-            }, 
-            "digitalOcean" : {
-                "exist" : false
-            }, 
-            "registries" : [
-
-            ]
-        }, 
-        "build" : {
-            "nodes" : NumberInt(0),
-            "parallel" : NumberInt(1),
-            "strategy" : "account"
-        }, 
-        "admins" : [
-            ObjectId("59009221c102763beda7cf04")
-        ], 
-        "environment" : NumberInt(5), 
-        "dedicatedInfrastructure" : false, 
-        "canUsePrivateRepos" : true, 
-        "localUserPasswordIDPEnabled" : true, 
-        "name" : "codefresh-v2-e2e",  
-        "runtimeEnvironment" : "codefresh", 
-        "features" : {
-            "launchDarklyManagement" : false, 
-            "environmentsV2Flag" : true, 
-            "codefreshV2" : true, 
-            "codefreshV2NonAdmins" : true, 
-            "showClassicCodefreshButton" : true
-        }, 
-        "notifications" : [
-            {
-                "events" : [
-                    "build-success"
-                ], 
-                "type" : "pr"
-            }
-        ], 
-        "updatedAt" : ISODate("2022-05-14T07:01:15.890+0000"), 
-        "createdAt" : ISODate("2022-05-13T11:01:55.516+0000"), 
-        "badgeToken" : "eyJhbGciOiJIUzI1NiJ9.NjI3ZTNhYTNlNjJjZDI0YWQxYjY2ZDIx.7KrRoRyb5UTv68YDhZGU4Xalwo645yj5EnQjc3l5Jog", 
-        "__v" : NumberInt(0)
-    }
   users.json: |
     {
         "_id" : ObjectId("59009221c102763beda7cf04"),
@@ -145,8 +80,7 @@ data:
         }],
         "status" : "new",
         "account" : [
-            ObjectId("59009117c102763beda7ce71"),
-            ObjectId("627e3aa3e62cd24ad1b66d21")
+            ObjectId("59009117c102763beda7ce71")
         ],
         "roles" : [
             "User",
