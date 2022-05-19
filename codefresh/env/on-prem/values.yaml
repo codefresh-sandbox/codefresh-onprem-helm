@@ -541,8 +541,24 @@ argo-platform:
     env:
       MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
       RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672      
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
     hpa:
-      enabled: false
+      enabled: true
+      spec:
+        minReplicas: 2
+        maxReplicas: 10
+        metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
     pdb:
       enabled: false
     tolerations: []
@@ -574,8 +590,24 @@ argo-platform:
       RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
       CACHE_HOST: cf-redis-master
       CACHE_PASSWORD: hoC9szf7NtrU
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
     hpa:
-      enabled: false
+      enabled: true
+      spec:
+        minReplicas: 2
+        maxReplicas: 10
+        metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
     pdb:
       enabled: false
     tolerations: []
@@ -587,8 +619,24 @@ argo-platform:
     secrets: {}
     env:
       RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
     hpa:
-      enabled: false
+      enabled: true
+      spec:
+        minReplicas: 2
+        maxReplicas: 10
+        metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
     pdb:
       enabled: false
     tolerations: []
@@ -597,8 +645,24 @@ argo-platform:
   ui:
     enabled: true
     kind: Deployment 
-    hpa:
-      enabled: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+  hpa:
+    enabled: true
+    spec:
+      minReplicas: 2
+      maxReplicas: 10
+      metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 70
     pdb:
       enabled: false
     tolerations: []
