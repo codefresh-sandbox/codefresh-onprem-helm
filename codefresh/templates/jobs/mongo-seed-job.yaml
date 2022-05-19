@@ -9,7 +9,6 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  ttlSecondsAfterFinished: 60
   template:
     metadata:
       name: {{ template "fullname" . }}-seed-mongo
