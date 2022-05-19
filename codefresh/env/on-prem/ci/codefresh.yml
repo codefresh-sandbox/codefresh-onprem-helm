@@ -406,6 +406,7 @@ steps:
       VARIABLE:
         - CODEFRESH_API_URL_BASE=https://${{CF_APP_HOST_V2}}
         - CF_API_KEY=${{E2E_API_KEY}}
+        - CF_BRANCH=${{CF_BRANCH}}
     when:
       steps:
         - name: helm_upgrade_argo_platform
