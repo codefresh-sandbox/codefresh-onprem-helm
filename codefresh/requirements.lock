@@ -78,7 +78,7 @@ dependencies:
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
 - name: argo-platform
-  repository: https://chartmuseum.codefresh.io/argo-platform
+  repository: http://chartmuseum.codefresh.io/argo-platform
   version: 1.1262.0
-digest: sha256:b521cf8688d167c74b003b31e854175403125bd0b25eb41a5c0def00a16bf262
-generated: "2022-05-24T14:25:23.846469557+03:00"
+digest: sha256:83ab49827cac9893cbe1fa5326e998a5c1b3b36b3707ea4e1582ebe37d66efca
+generated: "2022-05-24T14:37:48.72161466+03:00"
