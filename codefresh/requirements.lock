@@ -52,7 +52,7 @@ dependencies:
   version: 1.7.20
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.154.9
+  version: 21.155.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.54
@@ -79,6 +79,6 @@ dependencies:
   version: 0.6.4
 - name: argo-platform
   repository: http://chartmuseum.codefresh.io/argo-platform
-  version: 1.1262.0
-digest: sha256:83ab49827cac9893cbe1fa5326e998a5c1b3b36b3707ea4e1582ebe37d66efca
-generated: "2022-05-24T14:37:48.72161466+03:00"
+  version: 1.1267.0
+digest: sha256:7bcb376b32505655a4ebea63fc3662353e77b527db1e5fefc9775aee47385cf5
+generated: "2022-05-24T19:38:38.435163513+03:00"
