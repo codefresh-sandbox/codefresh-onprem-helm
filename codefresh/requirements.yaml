@@ -178,4 +178,4 @@ dependencies:
     repository: http://chartmuseum.codefresh.io/argo-platform
     condition: argo-platform.enabled
     tags:
-    - argo-platform   
+    - argo-platform
