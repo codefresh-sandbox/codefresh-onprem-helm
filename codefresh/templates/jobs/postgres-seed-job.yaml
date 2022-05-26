@@ -51,7 +51,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-seed-postgres
         {{- if .Values.global.privateRegistry }}
-        image: {{ .Values.global.dockerRegistry }}codefresh/{{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
+        image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- else }}
         image: {{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- end }}

@@ -29,7 +29,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-k8s-monitor-create-db
         {{- if .Values.global.privateRegistry }}
-        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "bitnami/" .Values.global.mongodbImage }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
         {{- else }}
         image: {{ .Values.global.mongodbImage }}
         {{- end }}

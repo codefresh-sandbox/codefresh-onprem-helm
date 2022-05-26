@@ -25,7 +25,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-admincf
         {{- if .Values.global.privateRegistry }}
-        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ trimPrefix "bitnami/" .Values.global.mongodbImage }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
         {{- else }}
         image: {{ .Values.global.mongodbImage }}
         {{- end }}
