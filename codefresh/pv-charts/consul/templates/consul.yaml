@@ -183,7 +183,7 @@ spec:
       containers:
       - name: "{{ template "consul.fullname" . }}"
         {{- if .Values.global.privateRegistry }}
-        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ .Values.Image }}:{{ .Values.ImageTag }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.Image }}:{{ .Values.ImageTag }}"
         {{- else }}
         image: "{{ .Values.Image }}:{{ .Values.ImageTag }}"
         {{- end }}

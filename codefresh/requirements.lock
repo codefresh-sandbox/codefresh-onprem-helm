@@ -52,10 +52,10 @@ dependencies:
   version: 1.7.20
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.155.0
+  version: 21.156.0
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.54
+  version: 14.69.55
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.14
@@ -67,7 +67,7 @@ dependencies:
   version: 1.10.7
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.8.5
+  version: 0.8.6
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.24
@@ -79,6 +79,6 @@ dependencies:
   version: 0.6.4
 - name: argo-platform
   repository: http://chartmuseum.codefresh.io/argo-platform
-  version: 1.1267.0
-digest: sha256:7bcb376b32505655a4ebea63fc3662353e77b527db1e5fefc9775aee47385cf5
-generated: "2022-05-24T19:38:38.435163513+03:00"
+  version: 1.1273.0
+digest: sha256:fb1544a048bb0621c35a5cd0b68a117790a31a1c1435ec46c614cc7fc142ee50
+generated: "2022-05-26T14:34:10.61312031+03:00"

@@ -39,7 +39,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}
         {{- if .Values.global.privateRegistry }}
-        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.image }}:{{ .Values.imageTag }}"
         {{- else }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         {{- end }}
