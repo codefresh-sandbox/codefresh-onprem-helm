@@ -23,7 +23,7 @@ repos="
 "
 for r in $repos; do
     helm repo add $r http://chartmuseum.codefresh.io/$r
-    helm repo add $r-dev http://chartmuseum-dev.codefresh.io/$r
+    #helm repo add $r-dev http://chartmuseum-dev.codefresh.io/$r
 done
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
