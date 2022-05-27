@@ -74,9 +74,9 @@ steps:
         cf_export ONPREM_VERSION
 
         # the line below is a workaround for CR-2459 and https://github.com/helm/helm/issues/8036
-        ./codefresh/env/on-prem/ci/add_helm_repos.sh
+        #./codefresh/env/on-prem/ci/add_helm_repos.sh
 
-        helm dependency build --debug codefresh
+        helm dependency update codefresh --debug
         cf_export PACKAGE=$(echo $(helm package codefresh -d ${{CF_VOLUME_PATH}}/cf_chart --version $ONPREM_VERSION) | awk -F ': ' '{print $2}')
 
   push_chart:
