@@ -12,3 +12,8 @@ files/dynamic/*
 files/load/*
 files/production/*
 files/staging/*
+
+# deprecated charts
+cf-db-chart/*
+pv-charts/rabbitmq/*
+pv-charts/redis/*
