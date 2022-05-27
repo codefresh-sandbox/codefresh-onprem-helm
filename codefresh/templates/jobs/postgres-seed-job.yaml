@@ -32,7 +32,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: 60
   backoffLimit: 0
   template:
     metadata:
