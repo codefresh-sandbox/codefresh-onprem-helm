@@ -198,11 +198,6 @@ steps:
       else
         echo "Skipping renewing of SSL certificates, its not dynamic env"
       fi
-    when:
-      steps:
-        - name: build_chart
-          on:
-          - success  
   
   helm_install:
     stage: install
