@@ -58,7 +58,7 @@ dependencies:
   version: 14.69.56
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.8.14
+  version: 4.8.15
 - name: runtime-environment-manager
   repository: http://chartmuseum.codefresh.io/runtime-environment-manager
   version: 3.21.3
@@ -78,7 +78,7 @@ dependencies:
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.4
 - name: argo-platform
-  repository: https://chartmuseum-dev.codefresh.io/argo-platform
-  version: 1.1282.0-CR-10928-a3a1478
-digest: sha256:64df5686f6bb2e9ec50741a45f964cf04adad075e9174d5e02b5a6c067ae691b
-generated: "2022-05-30T18:37:23.095997847+03:00"
+  repository: https://chartmuseum.codefresh.io/argo-platform
+  version: 1.1284.0
+digest: sha256:511f844a914fae07bb1d7bc3c4b04ef5fac18dda05ba80230d6e7a7f14d0bfc5
+generated: "2022-05-30T23:32:48.003952176+03:00"
