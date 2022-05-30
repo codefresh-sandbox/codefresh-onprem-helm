@@ -537,6 +537,8 @@ argo-platform:
   event-handler:
     enabled: true
     kind: Deployment
+    env:
+      MONGODB_PROTOCOL: mongodb
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
@@ -571,6 +573,8 @@ argo-platform:
   cron-executor:
     enabled: true
     kind: Deployment   
+    env:
+      MONGODB_PROTOCOL: mongodb
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
@@ -603,6 +607,7 @@ argo-platform:
       V1_HOST: http://codefresh-v1-api
       GRAPHQL_PLAYGROUND: true
       ARGO_HUB_HOST: http://argo-hub-platform
+      MONGODB_PROTOCOL: mongodb
     resources:
       requests:
         cpu: 100m
