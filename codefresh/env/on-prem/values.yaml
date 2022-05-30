@@ -537,10 +537,14 @@ argo-platform:
   event-handler:
     enabled: true
     kind: Deployment
-    secrets: {}
-    env:
-      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672      
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM 
     resources:
       requests:
         cpu: 100m
@@ -567,10 +571,14 @@ argo-platform:
   cron-executor:
     enabled: true
     kind: Deployment   
-    secrets: {}
-    env:
-      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM
     hpa:
       enabled: false
     pdb:
@@ -581,15 +589,20 @@ argo-platform:
   api-graphql:
     enabled: true
     kind: Deployment
-    secrets: {}
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM
+      cache-host: cf-redis-master
+      cache-password: hoC9szf7NtrU
     env:
       V1_HOST: http://codefresh-v1-api
       GRAPHQL_PLAYGROUND: true
       ARGO_HUB_HOST: http://argo-hub-platform
-      MONGODB_READMODELS_URI: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
-      CACHE_HOST: cf-redis-master
-      CACHE_PASSWORD: hoC9szf7NtrU
     resources:
       requests:
         cpu: 100m
@@ -616,9 +629,11 @@ argo-platform:
   api-events:
     enabled: true
     kind: Deployment  
-    secrets: {}
-    env:
-      RABBITMQ_URLS: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
     resources:
       requests:
         cpu: 100m

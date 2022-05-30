@@ -174,8 +174,8 @@ dependencies:
     - event-provider
     - cron
   - name: argo-platform
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/argo-platform
+    version: "1.1282.0-CR-10928-181cf3b"
+    repository: https://chartmuseum-dev.codefresh.io/argo-platform
     condition: argo-platform.enabled
     tags:
     - argo-platform
