@@ -116,7 +116,7 @@ steps:
   prepare_test_clusters:
     stage: create test infra
     description: "Prepares a GKE cluster for the tests"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     shell: bash
     working_directory: IMAGE_WORK_DIR
     matrix:
@@ -176,11 +176,39 @@ steps:
 
             cf_export CURRENT_CHROME_VERSION
 
+  renew_certificates:
+    stage: create test infra
+    image: codefresh/dev-tools-web-tls-cert-updater
+    title: Renew SSL certs on dev environment
+    environment:
+    - CODEFRESH_TOKEN=${{CF_API_KEY}}
+    - WEB_TLS_EMAIL=admin@codefresh.io
+    - ENVIRONMENT_URL=*.dev.codefresh.io
+    - CERTBOT_TARGET_DIR=dev.codefresh.io
+    - CONTEXT_NAME=dynamic-ssl
+    - TARGET_CERTS_DIR=/codefresh/volume/webtls
+    # AWS_ACCESS_KEY_ID - required
+    # AWS_SECRET_ACCESS_KEY - required
+    commands:
+    - |
+      if [ "$DYNAMIC_ENVIRONMENT" == "true" ]
+      then
+        sh -c "/web-tls-cert-updater/web-tls-cert-updater"
+        cf_export DYNAMIC_ENV_CERTS=$TARGET_CERTS_DIR
+      else
+        echo "Skipping renewing of SSL certificates, its not dynamic env"
+      fi
+    when:
+      steps:
+        - name: build_chart
+          on:
+          - success  
+  
   helm_install:
     stage: install
     title: "[Classic] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -206,7 +234,7 @@ steps:
     description: |-
       Verifies if the latest onprem release can be successfully upgraded
       with the chart built from the current branch. Seeds the data for the E2E tests
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -232,7 +260,7 @@ steps:
     stage: install
     title: "[Argo-Platform] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -258,7 +286,7 @@ steps:
     description: |-
       Verifies if the latest onprem release can be successfully upgraded
       with the chart built from the current branch. Seeds the data for the E2E tests
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -433,7 +461,7 @@ steps:
 
   delete_test_clusters:
     stage: delete test infra
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.8
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
