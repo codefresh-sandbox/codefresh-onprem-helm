@@ -132,6 +132,9 @@ steps:
         - name: validate_and_export_version
           on:
           - success
+        - name: renew_certificates
+          on:
+          - success
       branch:
         ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
       condition:
