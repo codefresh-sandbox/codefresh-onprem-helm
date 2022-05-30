@@ -539,6 +539,7 @@ argo-platform:
     kind: Deployment
     env:
       MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
@@ -575,6 +576,7 @@ argo-platform:
     kind: Deployment   
     env:
       MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
@@ -608,6 +610,7 @@ argo-platform:
       GRAPHQL_PLAYGROUND: true
       ARGO_HUB_HOST: http://argo-hub-platform
       MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
     resources:
       requests:
         cpu: 100m
@@ -634,6 +637,8 @@ argo-platform:
   api-events:
     enabled: true
     kind: Deployment  
+    env:
+      RABBITMQ_PROTOCOL: amqp
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
