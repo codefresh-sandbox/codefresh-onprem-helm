@@ -9,8 +9,8 @@ dependencies:
   repository: file://pv-charts/postgresql
   version: 0.7.2
 - name: redis
-  repository: https://charts.bitnami.com/bitnami
-  version: 16.9.0
+  repository: file://pv-charts/redis
+  version: 0.8.2
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 9.0.8
@@ -80,5 +80,5 @@ dependencies:
 - name: argo-platform
   repository: https://chartmuseum-dev.codefresh.io/argo-platform
   version: 1.1283.0-CR-10928-6ead16b
-digest: sha256:0773778f27caab7da1030423c7b9a5b0beed6fce0ae38f4f4d689e20f3907681
-generated: "2022-05-31T00:25:42.41886547+03:00"
+digest: sha256:7bb9f3234bd87fbe663eef61dee25d551cda9578ca7b429746499ba1349c871d
+generated: "2022-05-31T10:50:22.672421448+03:00"
