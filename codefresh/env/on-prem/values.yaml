@@ -98,11 +98,12 @@ mongodb:
       memory: 64Mi
 
 redis:
-  redisPassword: hoC9szf7NtrU
-  nodeSelector: {}
-  resources:
-    requests:
-      memory: 64Mi
+  image:
+    repository: bitnami/redis
+    tag: 6.0.16
+  architecture: standalone
+  auth:
+    password: "hoC9szf7NtrU"
 
 rabbitmq:
   image:
@@ -418,7 +419,7 @@ global:
   consulHttpPort: 8500
 
   # Redis service
-  redisService: redis
+  redisService: redis-master
 
   # [Deprecated] Docker Registry service
   registryService: registry
@@ -462,7 +463,7 @@ global:
   cfk8smonitorService: k8s-monitor
   onprem: true
   ### new logging solution
-  runtimeRedisHost: cf-redis
+  runtimeRedisHost: cf-redis-master
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
@@ -476,7 +477,7 @@ global:
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
   argoPlatformRabbitMqUri: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
-  argoPlatformRedisHost: cf-redis
+  argoPlatformRedisHost: cf-redis-master
   argoPlatformRedisPassword: hoC9szf7NtrU
   ### argo-platform default values
 
@@ -602,7 +603,7 @@ argo-platform:
       mongodb-host: mongodb
       mongodb-user: argo-platform
       mongodb-password: oDpLLqEoPM
-      cache-host: cf-redis
+      cache-host: cf-redis-master
       cache-password: hoC9szf7NtrU
     env:
       V1_HOST: http://codefresh-v1-api

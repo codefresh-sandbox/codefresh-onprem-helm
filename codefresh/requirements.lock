@@ -9,8 +9,8 @@ dependencies:
   repository: file://pv-charts/postgresql
   version: 0.7.2
 - name: redis
-  repository: file://pv-charts/redis
-  version: 0.8.2
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.9.0
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 9.0.8
@@ -28,10 +28,10 @@ dependencies:
   version: 4.1.0
 - name: cluster-providers
   repository: http://chartmuseum.codefresh.io/cluster-providers
-  version: 1.10.10
+  version: 1.10.11
 - name: kube-integration
   repository: http://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.13
+  version: 1.25.14
 - name: charts-manager
   repository: http://chartmuseum.codefresh.io/charts-manager
   version: 1.9.6
@@ -49,13 +49,13 @@ dependencies:
   version: 3.121.8
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.21
+  version: 1.7.22
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.156.1
+  version: 21.156.2
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.56
+  version: 14.69.57
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.15
@@ -67,18 +67,18 @@ dependencies:
   version: 1.10.7
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.8.6
+  version: 0.8.7
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
-  version: 0.17.24
+  version: 0.17.25
 - name: nomios
   repository: http://chartmuseum.codefresh.io/nomios
-  version: 0.9.5
+  version: 0.9.6
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
-  version: 0.6.4
+  version: 0.6.5
 - name: argo-platform
   repository: https://chartmuseum-dev.codefresh.io/argo-platform
   version: 1.1283.0-CR-10928-6ead16b
-digest: sha256:7bb9f3234bd87fbe663eef61dee25d551cda9578ca7b429746499ba1349c871d
-generated: "2022-05-31T10:50:22.672421448+03:00"
+digest: sha256:06b09016264813bacbcd7ff93bace35bf78c3d9847804ce6f261151d316303f0
+generated: "2022-05-31T15:14:14.410462275+03:00"
