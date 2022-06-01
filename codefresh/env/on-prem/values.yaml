@@ -398,8 +398,8 @@ global:
 
   rabbitService: rabbitmq
   #rabbitmqHostname: rabbitmq
-  rabbitmqUsername: user
-  rabbitmqPassword: cVz9ZdJKYm7u
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
 
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
@@ -476,9 +476,6 @@ global:
   argoPlatformMongodbUsername: argo-platform
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-  argoPlatformRabbitMqUri: amqp://user:cVz9ZdJKYm7u@cf-rabbitmq:5672
-  argoPlatformRedisHost: cf-redis-master
-  argoPlatformRedisPassword: hoC9szf7NtrU
   ### argo-platform default values
 
   internalServiceTolerations:
@@ -543,8 +540,8 @@ argo-platform:
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
+      rabbitmq-user: guest
+      rabbitmq-password: guest
       mongodb-host: mongodb
       mongodb-user: argo-platform
       mongodb-password: oDpLLqEoPM 
@@ -570,8 +567,8 @@ argo-platform:
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
+      rabbitmq-user: guest
+      rabbitmq-password: guest
       mongodb-host: mongodb
       mongodb-user: argo-platform
       mongodb-password: oDpLLqEoPM
@@ -588,8 +585,8 @@ argo-platform:
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
+      rabbitmq-user: guest
+      rabbitmq-password: guest
       mongodb-host: mongodb
       mongodb-user: argo-platform
       mongodb-password: oDpLLqEoPM
@@ -622,8 +619,8 @@ argo-platform:
     secrets:
       rabbitmq-host: cf-rabbitmq
       rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
+      rabbitmq-user: guest
+      rabbitmq-password: guest
     resources:
       requests:
         cpu: 100m
