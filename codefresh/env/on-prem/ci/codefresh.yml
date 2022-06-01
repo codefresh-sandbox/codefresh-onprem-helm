@@ -443,7 +443,11 @@ steps:
       condition:
         all:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
-          skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'            
+          skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'   
+    retry:
+      maxAttempts: 3
+      delay: 5
+      exponentialFactor: 1               
 
   failed_e2e_notifications:
     stage: notifications
