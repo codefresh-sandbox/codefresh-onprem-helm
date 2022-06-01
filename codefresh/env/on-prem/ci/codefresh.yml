@@ -392,6 +392,10 @@ steps:
         - name: helm_upgrade
           on:
           - success
+    retry:
+      maxAttempts: 3
+      delay: 5
+      exponentialFactor: 1       
 
   e2e_ui_test:
     title: "[Classic] Running UI E2E Tests"
@@ -428,6 +432,10 @@ steps:
         - name: extract_chrome_vers
           on:
             - success
+    retry:
+      maxAttempts: 3
+      delay: 5
+      exponentialFactor: 1         
 
   e2e_argo_platform:
     title: "[Argo-Platfrom] Running E2E Tests"
