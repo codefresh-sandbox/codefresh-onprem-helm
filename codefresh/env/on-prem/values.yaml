@@ -550,10 +550,10 @@ argo-platform:
       mongodb-password: oDpLLqEoPM 
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 1
+        memory: 1Gi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: true
     pdb:
@@ -603,10 +603,10 @@ argo-platform:
       RABBITMQ_PROTOCOL: amqp
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 1
+        memory: 1Gi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: true
     pdb:
@@ -626,10 +626,10 @@ argo-platform:
       rabbitmq-password: cVz9ZdJKYm7u
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 1
+        memory: 1Gi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: true
     pdb:
