@@ -58,6 +58,7 @@ ingress-nginx:
     #                             "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
       
 # `cf-codefresh-ingress` ingress resource annotations:
+ingress:
   annotations:
     # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
     nginx.ingress.kubernetes.io/service-upstream: "true"
