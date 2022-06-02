@@ -454,8 +454,7 @@ steps:
             - success 
       condition:
         all:
-          skipTests: '"${{SKIP_TESTS}}" != "true"'
-          skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'   
+          skipE2ETests: '"${{SKIP_E2E_V2_TESTS}}" != "true"'   
     retry:
       maxAttempts: 2
       delay: 5
