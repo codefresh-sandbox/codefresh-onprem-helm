@@ -18,7 +18,7 @@ metadata:
     {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  ingressClassName: {{ $.Values.ingress.controller.ingressClassResource.name | default "nginx-codefresh" }} 
+  ingressClassName: {{ index .Values.ingress.ingressClassName | default (index .Values "ingress-nginx" "controller" "ingressClassResource" "name") }}
   rules:
   - host: {{ $.Values.global.appUrl }}
     http:
