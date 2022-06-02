@@ -457,7 +457,7 @@ steps:
           skipTests: '"${{SKIP_TESTS}}" != "true"'
           skipE2ETests: '"${{SKIP_E2E_TESTS}}" != "true"'   
     retry:
-      maxAttempts: 3
+      maxAttempts: 2
       delay: 5
       exponentialFactor: 1               
 
