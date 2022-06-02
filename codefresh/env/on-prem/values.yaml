@@ -471,12 +471,11 @@ global:
   runtimeMongoDb: codefresh
   ### new logging solution
 
-  ### argo-platform default values
+  ### values for argo-platform-create-db seed job
   argoPlatformMongoDatabase: read-models
   argoPlatformMongodbUsername: argo-platform
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-  ### argo-platform default values
 
   internalServiceTolerations:
   - effect: NoSchedule
