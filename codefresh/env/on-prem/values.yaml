@@ -108,7 +108,7 @@ redis:
 rabbitmq:
   image:
     repository: bitnami/rabbitmq
-    tag: 3.10
+    tag: "3.10"
   auth:
     username: user
     password: "cVz9ZdJKYm7u"
