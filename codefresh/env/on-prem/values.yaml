@@ -488,171 +488,171 @@ tags:
   infra: true
   argo-platfrom: false
 
-argo-platform:
-  enabled: false
+# argo-platform:
+#   enabled: false
 
-  ingress:
-    enabled: false
-    rules:
-      - name: ui
-        hosts: []
-        services:
-          argo-platform-ui:
-            - /2.0
-        annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"    
-        tls: true
-      - name: auth
-        hosts: []
-        services:
-          codefresh-v1-api:
-            - /api/auth/authenticate
-        annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"
-          nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_pass_request_body off;
-            proxy_set_header Content-Length "";
-            proxy_set_header X-Original-URI $request_uri;
-        tls: true
-      - name: api
-        hosts: []
-        services:
-          argo-platform-api-events:
-            - /2.0/api/events
-          argo-platform-api-graphql:
-            - /2.0/api/graphql
-        annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"
-          # Get 'X-CF-Auth-Entity' from '/api/auth/authenticate' sub-request and pass it on
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            auth_request /api/auth/authenticate;
-            auth_request_set $auth_entity $upstream_http_x_cf_auth_entity;
-            proxy_set_header X-CF-Auth-Entity $auth_entity;
-        tls: true
+#   ingress:
+#     enabled: false
+#     rules:
+#       - name: ui
+#         hosts: []
+#         services:
+#           argo-platform-ui:
+#             - /2.0
+#         annotations:
+#           nginx.ingress.kubernetes.io/ssl-redirect: "false"    
+#         tls: true
+#       - name: auth
+#         hosts: []
+#         services:
+#           codefresh-v1-api:
+#             - /api/auth/authenticate
+#         annotations:
+#           nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#           nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+#           nginx.ingress.kubernetes.io/configuration-snippet: |
+#             proxy_pass_request_body off;
+#             proxy_set_header Content-Length "";
+#             proxy_set_header X-Original-URI $request_uri;
+#         tls: true
+#       - name: api
+#         hosts: []
+#         services:
+#           argo-platform-api-events:
+#             - /2.0/api/events
+#           argo-platform-api-graphql:
+#             - /2.0/api/graphql
+#         annotations:
+#           nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#           # Get 'X-CF-Auth-Entity' from '/api/auth/authenticate' sub-request and pass it on
+#           nginx.ingress.kubernetes.io/configuration-snippet: |
+#             auth_request /api/auth/authenticate;
+#             auth_request_set $auth_entity $upstream_http_x_cf_auth_entity;
+#             proxy_set_header X-CF-Auth-Entity $auth_entity;
+#         tls: true
   
-  event-handler:
-    enabled: true
-    kind: Deployment
-    env:
-      MONGODB_PROTOCOL: mongodb
-      RABBITMQ_PROTOCOL: amqp
-    secrets:
-      rabbitmq-host: cf-rabbitmq
-      rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
-      mongodb-host: mongodb
-      mongodb-user: argo-platform
-      mongodb-password: oDpLLqEoPM 
-    resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
-      limits:
-        memory: 512Mi
-    hpa:
-      enabled: true
-    pdb:
-      enabled: false
-    tolerations: []
-    affinity: []
+#   event-handler:
+#     enabled: true
+#     kind: Deployment
+#     env:
+#       MONGODB_PROTOCOL: mongodb
+#       RABBITMQ_PROTOCOL: amqp
+#     secrets:
+#       rabbitmq-host: cf-rabbitmq
+#       rabbitmq-port: 5672
+#       rabbitmq-user: user
+#       rabbitmq-password: cVz9ZdJKYm7u
+#       mongodb-host: mongodb
+#       mongodb-user: argo-platform
+#       mongodb-password: oDpLLqEoPM 
+#     resources:
+#       requests:
+#         cpu: 100m
+#         memory: 512Mi
+#       limits:
+#         memory: 512Mi
+#     hpa:
+#       enabled: true
+#     pdb:
+#       enabled: false
+#     tolerations: []
+#     affinity: []
   
-  cron-executor:
-    enabled: true
-    kind: Deployment   
-    env:
-      MONGODB_PROTOCOL: mongodb
-      RABBITMQ_PROTOCOL: amqp
-    secrets:
-      rabbitmq-host: cf-rabbitmq
-      rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
-      mongodb-host: mongodb
-      mongodb-user: argo-platform
-      mongodb-password: oDpLLqEoPM
-    hpa:
-      enabled: false
-    pdb:
-      enabled: false
-    tolerations: []
-    affinity: []
+#   cron-executor:
+#     enabled: true
+#     kind: Deployment   
+#     env:
+#       MONGODB_PROTOCOL: mongodb
+#       RABBITMQ_PROTOCOL: amqp
+#     secrets:
+#       rabbitmq-host: cf-rabbitmq
+#       rabbitmq-port: 5672
+#       rabbitmq-user: user
+#       rabbitmq-password: cVz9ZdJKYm7u
+#       mongodb-host: mongodb
+#       mongodb-user: argo-platform
+#       mongodb-password: oDpLLqEoPM
+#     hpa:
+#       enabled: false
+#     pdb:
+#       enabled: false
+#     tolerations: []
+#     affinity: []
   
-  api-graphql:
-    enabled: true
-    kind: Deployment
-    secrets:
-      rabbitmq-host: cf-rabbitmq
-      rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
-      mongodb-host: mongodb
-      mongodb-user: argo-platform
-      mongodb-password: oDpLLqEoPM
-      cache-host: cf-redis-master
-      cache-password: hoC9szf7NtrU
-    env:
-      V1_HOST: http://codefresh-v1-api
-      GRAPHQL_PLAYGROUND: true
-      ARGO_HUB_HOST: http://argo-hub-platform
-      MONGODB_PROTOCOL: mongodb
-      RABBITMQ_PROTOCOL: amqp
-    resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
-      limits:
-        memory: 512Mi
-    hpa:
-      enabled: true
-    pdb:
-      enabled: false
-    tolerations: []
-    affinity: []
+#   api-graphql:
+#     enabled: true
+#     kind: Deployment
+#     secrets:
+#       rabbitmq-host: cf-rabbitmq
+#       rabbitmq-port: 5672
+#       rabbitmq-user: user
+#       rabbitmq-password: cVz9ZdJKYm7u
+#       mongodb-host: mongodb
+#       mongodb-user: argo-platform
+#       mongodb-password: oDpLLqEoPM
+#       cache-host: cf-redis-master
+#       cache-password: hoC9szf7NtrU
+#     env:
+#       V1_HOST: http://codefresh-v1-api
+#       GRAPHQL_PLAYGROUND: true
+#       ARGO_HUB_HOST: http://argo-hub-platform
+#       MONGODB_PROTOCOL: mongodb
+#       RABBITMQ_PROTOCOL: amqp
+#     resources:
+#       requests:
+#         cpu: 100m
+#         memory: 512Mi
+#       limits:
+#         memory: 512Mi
+#     hpa:
+#       enabled: true
+#     pdb:
+#       enabled: false
+#     tolerations: []
+#     affinity: []
   
-  api-events:
-    enabled: true
-    kind: Deployment  
-    env:
-      RABBITMQ_PROTOCOL: amqp
-    secrets:
-      rabbitmq-host: cf-rabbitmq
-      rabbitmq-port: 5672
-      rabbitmq-user: user
-      rabbitmq-password: cVz9ZdJKYm7u
-    resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
-      limits:
-        memory: 512Mi
-    hpa:
-      enabled: true
-    pdb:
-      enabled: false
-    tolerations: []
-    affinity: []
+#   api-events:
+#     enabled: true
+#     kind: Deployment  
+#     env:
+#       RABBITMQ_PROTOCOL: amqp
+#     secrets:
+#       rabbitmq-host: cf-rabbitmq
+#       rabbitmq-port: 5672
+#       rabbitmq-user: user
+#       rabbitmq-password: cVz9ZdJKYm7u
+#     resources:
+#       requests:
+#         cpu: 100m
+#         memory: 512Mi
+#       limits:
+#         memory: 512Mi
+#     hpa:
+#       enabled: true
+#     pdb:
+#       enabled: false
+#     tolerations: []
+#     affinity: []
   
-  ui:
-    enabled: true
-    kind: Deployment 
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        memory: 128Mi
-    hpa:
-      enabled: true
-    pdb:
-      enabled: false
-    tolerations: []
-    affinity: []
+#   ui:
+#     enabled: true
+#     kind: Deployment 
+#     resources:
+#       requests:
+#         cpu: 100m
+#         memory: 128Mi
+#       limits:
+#         memory: 128Mi
+#     hpa:
+#       enabled: true
+#     pdb:
+#       enabled: false
+#     tolerations: []
+#     affinity: []
   
-  argocd-hooks:
-    enabled: false
+#   argocd-hooks:
+#     enabled: false
   
-  analytics-reporter:
-    enabled: false
-    kind: Deployment 
+#   analytics-reporter:
+#     enabled: false
+#     kind: Deployment 
