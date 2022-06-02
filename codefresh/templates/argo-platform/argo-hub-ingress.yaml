@@ -11,7 +11,7 @@ metadata:
   labels:
     app: argo-hub-platform
 spec:
-  ingressClassName: {{ $.Values.ingress.controller.ingressClassResource.name | default "nginx-codefresh" }} 
+  ingressClassName: {{ $.Values.ingress.ingressClassName | default (index $.Values "ingress-nginx" "controller" "ingressClassResource" "name") }}
   tls:
   - hosts:
     - {{ $.Values.global.appUrl }}
