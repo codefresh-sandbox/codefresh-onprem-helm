@@ -1,29 +1,20 @@
 ---
 # on-prem values
 imagePullPolicy: IfNotPresent
-
 dockercfg: placeholder
-
 # default service port
 servicePort: 80
-
 # image with kubectl and openssl
 kubectlImage: quay.io/codefresh/generate-certs:latest
-
 slackAppID: "4027524866.65820083427"
 slackAppSecret: placeholder
-
 stripeSecretKey: sk_test_8AnaAlccXXkcPXP7vrgKZQyy
 stripePublicKey: ""
 stripeWebhookSecret: ""
-
 rollbarAccessToken: ""
-
 logglyToken: invalid-token
-
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
-
 rbacEnable: true
 rbacCreate: true
 #webTLS:
@@ -56,24 +47,21 @@ ingress-nginx:
     #                             "request_query": "$args", "request_length": $request_length, "duration": $request_time,
     #                             "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
     #                             "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
-      
-# `cf-codefresh-ingress` ingress resource annotations:
+  # `cf-codefresh-ingress` ingress resource annotations:
+
   annotations:
     # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.org/redirect-to-https: "false"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-          more_set_headers "X-Request-ID: $request_id";
-          proxy_set_header X-Request-ID $request_id;
-
+      more_set_headers "X-Request-ID: $request_id";
+      proxy_set_header X-Request-ID $request_id;
 consul:
   DatacenterName: codefresh-onprem
   Replicas: 1
   Memory: 64Mi
   nodeSelector: {}
-
-
 postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
@@ -84,7 +72,6 @@ postgresql:
   resources:
     requests:
       memory: 128Mi
-
 mongodb:
   image: bitnami/mongodb:4.2
   mongodbRootPassword: XT9nmM8dZD
@@ -96,7 +83,6 @@ mongodb:
   resources:
     requests:
       memory: 64Mi
-
 redis:
   image:
     repository: bitnami/redis
@@ -104,7 +90,6 @@ redis:
   architecture: standalone
   auth:
     password: "hoC9szf7NtrU"
-
 rabbitmq:
   image:
     repository: bitnami/rabbitmq
@@ -113,10 +98,8 @@ rabbitmq:
     username: user
     password: "cVz9ZdJKYm7u"
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
-
 builder:
   replicaCount: 1
-
 getRuntimeEnvs: files/on-prem/runtimeEnvironments.json
 mongoSeedJobScript: files/on-prem/mongoSeedJobScript
 postgresSeedJobScript: files/on-prem/postgresSeedScript
@@ -124,25 +107,21 @@ postgresCleanJobScript: files/on-prem/postgresCleanJobScript
 updateDefREImgScript: files/on-prem/updateDefREImgScript
 migrateHermesDataScript: files/on-prem/migrateHermesDataScript
 setMdbCompatVerScript: files/on-prem/setMdbCompatVerScript
-
 runtime_envs:
   - name: codefresh-inc
     inCluster: true
     selectorRuntimeEnv: codefresh-inc
     namespace: dinds
-
 nomios:
   image:
     name: codefresh/nomios
     dockerRegistry: gcr.io/codefresh-enterprise/
-
 cronus:
   event:
     action: "s"
   image:
     name: codefresh/cronus
     dockerRegistry: gcr.io/codefresh-enterprise/
-
 hermes:
   image:
     name: codefresh/hermes
@@ -151,7 +130,6 @@ hermes:
     enabled: false # deprecation of a separate redis for hermes (CR-705)
     redisPassword: kj57kfwjeg
     db: 15
-
 cfui:
   image: codefresh/cf-ui
   dockerRegistry: gcr.io/codefresh-enterprise/
@@ -172,7 +150,6 @@ runtime-environment-manager:
   newrelicLicenseKey: invalid-key
   env:
     ON_PREMISE: true
-
 cfapi:
   github:
     apiPathPrefix: /api/v3
@@ -206,7 +183,6 @@ cfapi:
         "code": " # Required Environment Variables:\n #\n # KUBERNETES_USER - The user for the Kubernetes cluster.\n # KUBERNETES_PASSWORD - The password for the Kubernetes cluster.\n # KUBERNETES_SERVER - The server (HTTPS endpoint) of the Kubernetes cluster's API\n #\n # Use command below to deploy compose application to kubernetes\n #\n # /cf-deploy-kubernetes deployment.yml\n #\n # Make sure you change the path of 'deployment.yml' to the path in your repository\n #\n # read more about how to obtain the kubernetes credentials and using the codefresh deploy here: https://docs.codefresh.io/docs/kubernetes\n"
       }
     ]
-
 cfapi-buildmanager:
   replicaCount: 0
 cfapi-cacheevictmanager:
@@ -224,7 +200,6 @@ k8s-monitor:
   enabled: true
   replicaCount: 0
   dockerRegistry: gcr.io/codefresh-enterprise/
-
 cluster-providers:
   replicaCount: 1
   gcAuthClientID: ""
@@ -232,12 +207,10 @@ cluster-providers:
   safeSecret: ""
   image: codefresh/cluster-providers
   dockerRegistry: gcr.io/codefresh-enterprise/
-
 cfsign:
   replicaCount: 1
   image: codefresh/cf-tls-sign
   dockerRegistry: gcr.io/codefresh-enterprise/
-
 charts-manager:
   replicaCount: 1
   image: codefresh/charts-manager
@@ -249,7 +222,6 @@ charts-manager:
     CONTEXT_MANAGER_URI: cf-context-manager
     API_URI: cf-cfapi
   disablePublicRepos: true
-
 context-manager:
   safeSecret: ""
   replicaCount: 1
@@ -259,7 +231,6 @@ context-manager:
     MONGO_URI: mongodb://mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
     POSTGRES_HOST: cf-postgresql
-
 pipeline-manager:
   replicaCount: 1
   safeSecret: ""
@@ -269,7 +240,6 @@ pipeline-manager:
   environment:
     MONGO_URI: mongodb://mongodb:27017/pipeline-manager
     INTERNAL_API_URI: http://cf-cfapi:9007
-
 gitops-dashboard-manager:
   imagePullPolicy: IfNotPresent
   image: codefresh/gitops-dashboard-manager
@@ -278,23 +248,19 @@ gitops-dashboard-manager:
     LOGGER_LEVEL: "info"
     EVENTBUS_IGNORE_CREATE_SCHEMA: true
     INTERNAL_API_URI: http://cf-cfapi:9007
-
 kube-integration:
   replicaCount: 1
   image: codefresh/kube-integration
   dockerRegistry: gcr.io/codefresh-enterprise/
-
 tasker-kubernetes:
   replicaCount: 1
   image: codefresh/tasker-kubernetes
   dockerRegistry: gcr.io/codefresh-enterprise/
-
 helm-repo-manager:
   replicaCount: 1
   image:
     name: codefresh/helm-repo-manager
     dockerRegistry: gcr.io/codefresh-enterprise/
-
 chartmuseum:
   publicHelmRepo: false
   localHelmRepo: true
@@ -302,11 +268,11 @@ chartmuseum:
     enabled: false
     # Used to create an Ingress record.
     hosts: []
-      # - name: chartmuseum.local
-      #   path: /
+    # - name: chartmuseum.local
+    #   path: /
     annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
   env:
     open:
       STORAGE: local
@@ -315,15 +281,13 @@ chartmuseum:
       ALLOW_OVERWRITE: "true"
       DISABLE_API: "false"
       DISABLE_METRICS: "false"
-      INDEX_LIMIT: 2500  
-
+      INDEX_LIMIT: 2500
 cf-broadcaster:
   replicaCount: 1
   image: codefresh/cf-broadcaster
   dockerRegistry: gcr.io/codefresh-enterprise/
   env:
     RUNTIME_MONGO_DB: codefresh
-
 global:
   # Instantiate databases with seed data. Usually used in dynamic and on-prem environments.
   #seedJobs: true
@@ -332,42 +296,32 @@ global:
   # when using custom registry, enable the following seetings to add imagePullSecret to all images and replace docker registry prefix with custom one (has to be with trailing /)
   #privateRegistry: true
   #dockerRegistry: containers-nexus-francisco.codefresh.io/
-
   stepsCatalogOnPremise: "1"
   #appUrl: app-url
   githubInternalToken: placeholder
   githubClientSecret: placeholder
   githubClientID: placeholder
-
   gitlabClientID: placeholder
   gitlabClientSecret: placeholder
-
   bitbucketClientID: invalid-id
   bitbucketClientSecret: invalid-secret
-
   # Global codefresh chart name; all subcharts use this name to access secrets and configmaps
   codefresh: codefresh
-
   # default application protocol
   appProtocol: http
-
   # Codefresh Payments service
   paymentsService: payments
   paymentsServicePort: 9000
-
   # cfapi service name
   cfapiService: cfapi
   cfcrDomain: ""
   gceProject: ""
   # cfapi internal service port
   cfapiInternalPort: 3000
-
   # Builder service
   builderService: builder
-
   # Runner service
   runnerService: runner
-
   # dind image with tag
   #dindImage: docker:17.06-dind
   dindImage: docker:18.09-dind
@@ -375,32 +329,24 @@ global:
 
   # curl image
   curlImage: quay.io/codefresh/curl:1.0.0
-
   # dind cpu requests
   dindCPU: 100m
-
   # dind memory requests
   dindMemory: 256Mi
-
   # dind cpu limits
   dindCPULimits: 1000m
-
   # dind memory limits
   dindMemoryLimits: 4096Mi
-
   # tls-sign service
   tlsSignService: cfsign
   tlsSignPort: 4999
-
   # nats service
   natsService: nats
   natsPort: 4222
-
   rabbitService: rabbitmq
   #rabbitmqHostname: rabbitmq
   rabbitmqUsername: user
   rabbitmqPassword: cVz9ZdJKYm7u
-
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
   mongoService: mongodb
@@ -411,33 +357,24 @@ global:
   mongodbImage: bitnami/mongodb:4.2
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
-
   # consul service
   consulService: consul
-
   # consul http port
   consulHttpPort: 8500
-
   # Redis service
   redisService: redis-master
-
   # [Deprecated] Docker Registry service
   registryService: registry
-
   # [Deprecated] Docker Registry port
   registryPort: 5000
-
   # PostgresSQL service
   postgresService: postgresql
-
   # PostgresSQL user name
   postgresUser: postgres
   # PostgresSQL password
   postgresPassword: eC9arYka4ZbH
-
   # database
   postgresDatabase: codefresh
-
   # k8s-beta
   clusterProvidersService: cluster-providers
   clusterProvidersPort: 9000
@@ -476,20 +413,16 @@ global:
   argoPlatformMongodbUsername: argo-platform
   argoPlatformMongodbPassword: oDpLLqEoPM
   argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
-
   internalServiceTolerations:
-  - effect: NoSchedule
-    key: nodeType
-    operator: Equal
-    value: internal
-
+    - effect: NoSchedule
+      key: nodeType
+      operator: Equal
+      value: internal
 tags:
   infra: true
   argo-platfrom: false
-
 argo-platform:
   enabled: false
-
   ingress:
     enabled: false
     rules:
@@ -499,7 +432,7 @@ argo-platform:
           argo-platform-ui:
             - /2.0
         annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"    
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
         tls: true
       - name: auth
         hosts: []
@@ -529,7 +462,6 @@ argo-platform:
             auth_request_set $auth_entity $upstream_http_x_cf_auth_entity;
             proxy_set_header X-CF-Auth-Entity $auth_entity;
         tls: true
-  
   event-handler:
     enabled: true
     kind: Deployment
@@ -543,7 +475,7 @@ argo-platform:
       rabbitmq-password: cVz9ZdJKYm7u
       mongodb-host: mongodb
       mongodb-user: argo-platform
-      mongodb-password: oDpLLqEoPM 
+      mongodb-password: oDpLLqEoPM
     resources:
       requests:
         cpu: 100m
@@ -556,10 +488,9 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   cron-executor:
     enabled: true
-    kind: Deployment   
+    kind: Deployment
     env:
       MONGODB_PROTOCOL: mongodb
       RABBITMQ_PROTOCOL: amqp
@@ -577,7 +508,6 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   api-graphql:
     enabled: true
     kind: Deployment
@@ -609,10 +539,9 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   api-events:
     enabled: true
-    kind: Deployment  
+    kind: Deployment
     env:
       RABBITMQ_PROTOCOL: amqp
     secrets:
@@ -632,10 +561,9 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   ui:
     enabled: true
-    kind: Deployment 
+    kind: Deployment
     resources:
       requests:
         cpu: 100m
@@ -648,10 +576,22 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   argocd-hooks:
     enabled: false
-  
   analytics-reporter:
     enabled: false
-    kind: Deployment 
+    kind: Deployment
+
+ENGINE_IMAGE: quay.io/codefresh/engine:1.147.9
+DIND_IMAGE: quay.io/codefresh/dind:20.10.13-1.25.2
+CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.8.1
+GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.0.9
+DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.4
+DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.4
+DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.4
+DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.15
+COMPOSE_IMAGE: quay.io/codefresh/compose:1.2.1
+KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.8
+FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.1.1
+TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.2
+PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.1.2

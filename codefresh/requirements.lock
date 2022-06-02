@@ -49,10 +49,10 @@ dependencies:
   version: 3.121.8
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.22
+  version: 1.7.23
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.156.3
+  version: 21.156.7
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.57
@@ -79,6 +79,6 @@ dependencies:
   version: 0.6.5
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
-  version: 1.1289.0
-digest: sha256:2c7a5d2948e6bb3e1dbc70f1ac5fcf01cc2e4bd069cc96b33a195395199fd140
-generated: "2022-05-31T22:46:26.38109775+03:00"
+  version: 1.1298.0
+digest: sha256:cbfb966eb7994bce83f33e47b344c585c9d53ac284a68f97395a76a3f7e14953
+generated: "2022-06-02T21:22:03.278192432+03:00"

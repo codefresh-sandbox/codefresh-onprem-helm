@@ -1,4 +1,3 @@
-{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -31,7 +30,7 @@ spec:
       name: {{ .Release.Name }}-cfui
       port:
         number: {{ .Values.servicePort }}
-  ingressClassName: {{ .Values.ingress.controller.ingressClassResource.name | default "nginx-codefresh" }}
+  ingressClassName: {{ .Values.ingress.ingressClassName | default (index .Values "ingress-nginx" "controller" "ingressClassResource" "name") }}
   rules:
   - host: {{ .Values.ingress.domain | default .Values.global.appUrl }}
     http:
@@ -66,4 +65,3 @@ spec:
             port:
               number: 5000
       {{- end }}
-{{- end }}
