@@ -73,12 +73,12 @@ dependencies:
   version: 0.17.25
 - name: nomios
   repository: http://chartmuseum.codefresh.io/nomios
-  version: 0.9.6
+  version: 0.9.8
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.5
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
   version: 1.1300.0
-digest: sha256:21a062779a838b074534fb55fd79b10fb96c2d9f04e3cd7dad495beb42e12a93
-generated: "2022-06-03T19:46:13.615627004+03:00"
+digest: sha256:d6cf451095f98f7a1892c74ce8add81d0ca298fd47cd604295d9f071c0507ad4
+generated: "2022-06-03T23:40:10.438288153+03:00"
