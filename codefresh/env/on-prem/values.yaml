@@ -59,6 +59,7 @@ ingress-nginx:
       
 # `cf-codefresh-ingress` ingress resource annotations:
 ingress:
+  enabled: true
   annotations:
     # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
     nginx.ingress.kubernetes.io/service-upstream: "true"
