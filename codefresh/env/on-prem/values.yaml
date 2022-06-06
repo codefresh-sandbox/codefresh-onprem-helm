@@ -463,14 +463,14 @@ global:
   broadcasterPort: 80
   cfk8smonitorService: k8s-monitor
   onprem: true
-  ### new logging solution
+  
+  ### OfflineLogging values
   runtimeRedisHost: cf-redis-master
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
   runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017
   runtimeMongoDb: codefresh
-  ### new logging solution
 
   ### values for argo-platform-create-db seed job
   argoPlatformMongoDatabase: read-models
