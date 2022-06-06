@@ -90,7 +90,7 @@ configGitCiBot() {
 gitCommitAndPush() {
     msg "Committing requirements.lock, Chart.yaml and pushing to the ${pr_branch} branch..."
 
-    git add codefresh/requirements.lock codefresh/Chart.yaml codefresh/env/on-prem/versions.yaml
+    git add codefresh/Chart.lock codefresh/Chart.yaml codefresh/env/on-prem/versions.yaml
     git commit -m "Update onprem to ${new_version}"
     git push ${GIT_ORIGIN_NAME} ${pr_branch} -f
 }
