@@ -29,7 +29,7 @@ rbacCreate: true
 #webTLS:
 #  secretName: star.codefresh.io
 
-ingress:
+ingress-nginx:
   enabled: true
   controller:
     ingressClassResource:
@@ -43,21 +43,23 @@ ingress:
       enabled: true
     admissionWebhooks:
       enabled: false
-    config:
-      disable-access-log: "false"
-      enable-vts-status: "true"
-      client-body-buffer-size: "16k"
-      proxy-body-size: "5M"
-      log-format-escape-json: "true"
-      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
-                                "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
-                                "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
-                                $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
-                                "request_query": "$args", "request_length": $request_length, "duration": $request_time,
-                                "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
-                                "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
+    # config:
+    #   disable-access-log: "false"
+    #   enable-vts-status: "true"
+    #   client-body-buffer-size: "16k"
+    #   proxy-body-size: "5M"
+    #   log-format-escape-json: "true"
+    #   log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+    #                             "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
+    #                             "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
+    #                             $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
+    #                             "request_query": "$args", "request_length": $request_length, "duration": $request_time,
+    #                             "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
+    #                             "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
       
 # `cf-codefresh-ingress` ingress resource annotations:
+ingress:
+  enabled: true
   annotations:
     # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
     nginx.ingress.kubernetes.io/service-upstream: "true"
@@ -72,7 +74,6 @@ consul:
   Replicas: 1
   Memory: 64Mi
   nodeSelector: {}
-
 
 postgresql:
   postgresDatabase: codefresh
@@ -98,17 +99,21 @@ mongodb:
       memory: 64Mi
 
 redis:
-  redisPassword: hoC9szf7NtrU
-  nodeSelector: {}
-  resources:
-    requests:
-      memory: 64Mi
+  image:
+    repository: bitnami/redis
+    tag: 6.0.16
+  architecture: standalone
+  auth:
+    password: "hoC9szf7NtrU"
 
 rabbitmq:
-  enabled: false # replacing cf-rabbitmq (subchart in pv-charts) with rabbit (subchart in cf-db-chart)
-  #rabbitmqUsername: user
-  #rabbitmqPassword: cVz9ZdJKYm7u
-  #nodeSelector: {}
+  image:
+    repository: bitnami/rabbitmq
+    tag: "3.10"
+  auth:
+    username: user
+    password: "cVz9ZdJKYm7u"
+    erlangCookie: "WIWVHCDTCIUAWANLMQAW"
 
 builder:
   replicaCount: 1
@@ -392,13 +397,10 @@ global:
   natsService: nats
   natsPort: 4222
 
-  # rabbitmq service name (rabbit subchart in cf-db-chart)
-  rabbitService: rabbit
-
-  # rabbitmq service name (rabbit subchart in cf-db-chart)
-  rabbitmqHostname: rabbit
-  rabbitmqUsername: guest
-  rabbitmqPassword: guest
+  rabbitService: rabbitmq
+  #rabbitmqHostname: rabbitmq
+  rabbitmqUsername: user
+  rabbitmqPassword: cVz9ZdJKYm7u
 
   # mongodb service
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
@@ -418,7 +420,7 @@ global:
   consulHttpPort: 8500
 
   # Redis service
-  redisService: redis
+  redisService: redis-master
 
   # [Deprecated] Docker Registry service
   registryService: registry
@@ -461,15 +463,20 @@ global:
   broadcasterPort: 80
   cfk8smonitorService: k8s-monitor
   onprem: true
-  ### new logging solution
-  runtimeRedisHost: cf-redis
+  
+  ### OfflineLogging values
+  runtimeRedisHost: cf-redis-master
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
   runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017
   runtimeMongoDb: codefresh
-  ### new logging solution
 
+  ### values for argo-platform-create-db seed job
+  argoPlatformMongoDatabase: read-models
+  argoPlatformMongodbUsername: argo-platform
+  argoPlatformMongodbPassword: oDpLLqEoPM
+  argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
 
   internalServiceTolerations:
   - effect: NoSchedule
@@ -477,15 +484,175 @@ global:
     operator: Equal
     value: internal
 
-cf-db:
-  enabled: true
-  rabbit:
-    enabled: true
-
 tags:
-  saas: false
   infra: true
-  old-scheduler: false
-  deprecated: false
+  argo-platfrom: false
 
+argo-platform:
+  enabled: false
 
+  ingress:
+    enabled: false
+    rules:
+      - name: ui
+        hosts: []
+        services:
+          argo-platform-ui:
+            - /2.0
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"    
+        tls: true
+      - name: auth
+        hosts: []
+        services:
+          codefresh-v1-api:
+            - /api/auth/authenticate
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_pass_request_body off;
+            proxy_set_header Content-Length "";
+            proxy_set_header X-Original-URI $request_uri;
+        tls: true
+      - name: api
+        hosts: []
+        services:
+          argo-platform-api-events:
+            - /2.0/api/events
+          argo-platform-api-graphql:
+            - /2.0/api/graphql
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          # Get 'X-CF-Auth-Entity' from '/api/auth/authenticate' sub-request and pass it on
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            auth_request /api/auth/authenticate;
+            auth_request_set $auth_entity $upstream_http_x_cf_auth_entity;
+            proxy_set_header X-CF-Auth-Entity $auth_entity;
+        tls: true
+  
+  event-handler:
+    enabled: true
+    kind: Deployment
+    env:
+      MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM 
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: true
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: []
+  
+  cron-executor:
+    enabled: true
+    kind: Deployment   
+    env:
+      MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: []
+  
+  api-graphql:
+    enabled: true
+    kind: Deployment
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+      mongodb-host: mongodb
+      mongodb-user: argo-platform
+      mongodb-password: oDpLLqEoPM
+      cache-host: cf-redis-master
+      cache-password: hoC9szf7NtrU
+    env:
+      V1_HOST: http://codefresh-v1-api
+      GRAPHQL_PLAYGROUND: true
+      ARGO_HUB_HOST: http://argo-hub-platform
+      MONGODB_PROTOCOL: mongodb
+      RABBITMQ_PROTOCOL: amqp
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: true
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: []
+  
+  api-events:
+    enabled: true
+    kind: Deployment  
+    env:
+      RABBITMQ_PROTOCOL: amqp
+    secrets:
+      rabbitmq-host: cf-rabbitmq
+      rabbitmq-port: 5672
+      rabbitmq-user: user
+      rabbitmq-password: cVz9ZdJKYm7u
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: true
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: []
+  
+  ui:
+    enabled: true
+    kind: Deployment 
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+    hpa:
+      enabled: true
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: []
+  
+  argocd-hooks:
+    enabled: false
+  
+  analytics-reporter:
+    enabled: false
+    kind: Deployment 

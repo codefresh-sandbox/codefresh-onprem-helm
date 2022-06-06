@@ -32,7 +32,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: 60
   backoffLimit: 0
   template:
     metadata:
@@ -51,7 +51,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-seed-postgres
         {{- if .Values.global.privateRegistry }}
-        image: {{ .Values.global.dockerRegistry }}codefresh/{{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
+        image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- else }}
         image: {{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
         {{- end }}

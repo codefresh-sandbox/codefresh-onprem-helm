@@ -72,7 +72,7 @@ spec:
       containers:
       - name: {{ template "fullname" . }}
         {{- if .Values.global.privateRegistry }}
-        image: "{{ .Values.global.dockerRegistry }}codefresh/{{ .Values.global.dindImage }}"
+        image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.dindImage }}"
         {{- else }}
         image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.global.dindImage) }}"
         {{- end }}

@@ -1,18 +1,21 @@
-{{- if .Values.global.seedJobs }}
+{{- if and (index .Values "argo-platform" "enabled") (not .Values.global.mongoSkipUserCreation) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "fullname" . }}-seed-mongo
+  name: {{ template "fullname" . }}-argo-platform-create-db
+  annotations:
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
+  backoffLimit: 6
   ttlSecondsAfterFinished: 60
   template:
     metadata:
-      name: {{ template "fullname" . }}-seed-mongo
+      name: {{ template "fullname" . }}-argo-platform-create-db
       labels:
         app: {{ template "fullname" . }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -24,7 +27,7 @@ spec:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       {{- end }}
       containers:
-      - name: {{ template "fullname" . }}-admincf
+      - name: {{ template "fullname" . }}-argo-platform-create-db
         {{- if .Values.global.privateRegistry }}
         image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
         {{- else }}
@@ -43,31 +46,17 @@ spec:
           - name: MONGODB_ROOT_PASSWORD
             value: {{ .Values.global.mongodbRootPassword }}
           - name: MONGODB_URI
-            value: {{ .Values.global.mongoURI}}
+            value: {{ .Values.global.argoPlatformMongoUri | quote }}
           - name: MONGODB_DATABASE
-            value: {{ .Values.global.mongodbDatabase }}
+            value: {{ .Values.global.argoPlatformMongoDatabase }}
           - name: MONGODB_USER
-            value: {{ .Values.global.mongodbUsername }}
+            value: {{ .Values.global.argoPlatformMongodbUsername }}
           - name: MONGODB_PASSWORD
-            value: {{ .Values.global.mongodbPassword }}
+            value: {{ .Values.global.argoPlatformMongodbPassword }}
         command:
           - "/bin/bash"
           - "-exc"
           - |
-{{ .Files.Get (print .Values.mongoSeedJobScript ) | indent 12  }}
-        volumeMounts:
-        - name: seed
-          mountPath: "/etc/admin/accounts.json"
-          subPath: "accounts.json"
-        - name: seed
-          mountPath: "/etc/admin/users.json"
-          subPath: "users.json"
-        - name: seed
-          mountPath: "/etc/admin/idps.json"
-          subPath: "idps.json"
-      restartPolicy: OnFailure
-      volumes:
-      - name: seed
-        configMap:
-          name: {{ template "fullname" . }}-seeds
+{{ .Files.Get (print "files/on-prem/mongoCreateDbJobScript" ) | indent 12  }}
+      restartPolicy: Never
 {{- end }}

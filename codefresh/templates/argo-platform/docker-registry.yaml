@@ -1,15 +1,14 @@
-{{- if .Values.registryConfig }}
----
+{{- if index .Values "argo-platform" "enabled" }}
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ .Release.Name }}-registry
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service  | quote }}
+type: kubernetes.io/dockerconfigjson
 data:
-  config.yml: |
-{{ toYaml .Values.registryConfig | indent 4 }}
+  .dockerconfigjson: {{ toJson .Values.dockerconfigjson | b64enc | quote }}
 {{- end }}

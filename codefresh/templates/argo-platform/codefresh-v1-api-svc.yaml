@@ -1,0 +1,18 @@
+{{- if index .Values "argo-platform" "enabled" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: codefresh-v1-api
+  labels:
+    app: {{ template "argo-platform.fullname" . }}
+    chart: {{ template "argo-platform.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: ExternalName
+  externalName: {{ .Release.Name }}-cfapi.{{ .Release.Namespace }}.svc.cluster.local
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+{{- end }}
