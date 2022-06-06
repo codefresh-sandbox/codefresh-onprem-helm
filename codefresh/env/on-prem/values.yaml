@@ -75,7 +75,6 @@ consul:
   Memory: 64Mi
   nodeSelector: {}
 
-
 postgresql:
   postgresDatabase: codefresh
   postgresUser: postgres
