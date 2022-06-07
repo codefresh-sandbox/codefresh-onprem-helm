@@ -656,3 +656,6 @@ argo-platform:
   analytics-reporter:
     enabled: false
     kind: Deployment 
+
+  runtime-manager:
+    enabled: false  
