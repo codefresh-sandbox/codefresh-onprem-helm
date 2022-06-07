@@ -511,9 +511,9 @@ steps:
         - name: e2e_ui_test
           on:
             - success
-        # - name: e2e_argo_platform
-        #   on:
-        #     - success
+        - name: e2e_argo_platform
+          on:
+            - success
 
 
   create_git_tag:
