@@ -509,6 +509,9 @@ steps:
         #- name: e2e_argo_platform
         #  on:
         #    - success
+      condition:
+        all:
+          deleteClusters: '"${{DELETE_TEST_CLUSTERS}}" == "true"'        
 
 
   create_git_tag:
