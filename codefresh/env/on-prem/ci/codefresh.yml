@@ -125,10 +125,10 @@ steps:
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
-        - [TEST_CASE_ID=01,USE_EXISTING_CLUSTER=true]
-        - [TEST_CASE_ID=02,USE_EXISTING_CLUSTER=true]
-        - [TEST_CASE_ID=03,USE_EXISTING_CLUSTER=true]
-        - [TEST_CASE_ID=04,USE_EXISTING_CLUSTER=true]
+        - [TEST_CASE_ID=01]
+        - [TEST_CASE_ID=02]
+        - [TEST_CASE_ID=03]
+        - [TEST_CASE_ID=04]
     commands:
       - source ./prepare_test_cluster.sh
     when:
@@ -459,11 +459,7 @@ steps:
             - success 
       condition:
         all:
-          skipE2ETests: '"${{SKIP_E2E_V2_TESTS}}" != "true"'   
-    retry:
-      maxAttempts: 2
-      delay: 5
-      exponentialFactor: 1               
+          skipE2ETests: '"${{SKIP_E2E_V2_TESTS}}" != "true"'            
 
   failed_e2e_notifications:
     stage: notifications
@@ -488,7 +484,6 @@ steps:
         - [TEST_CASE_ID=01]
         - [TEST_CASE_ID=02]
         - [TEST_CASE_ID=03]
-        - [TEST_CASE_ID=04]
     commands:
       - ./delete-cluster.sh
     when:
@@ -511,9 +506,9 @@ steps:
         - name: e2e_ui_test
           on:
             - success
-        - name: e2e_argo_platform
-          on:
-            - success
+        #- name: e2e_argo_platform
+        #  on:
+        #    - success
 
 
   create_git_tag:
