@@ -375,7 +375,7 @@ global:
   #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
 
   # curl image
-  curlImage: quay.io/codefresh/curl:latest
+  curlImage: quay.io/codefresh/curl:1.0.0
 
   # dind cpu requests
   dindCPU: 100m
