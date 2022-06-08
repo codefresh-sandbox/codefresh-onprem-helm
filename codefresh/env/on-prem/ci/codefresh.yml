@@ -459,7 +459,7 @@ steps:
             - success 
       condition:
         all:
-          skipE2ETests: '"${{SKIP_E2E_V2_TESTS}}" != "true"'            
+          skipE2ETests: '"${{SKIP_E2E_V2_TESTS}}" != "true"'   
 
   failed_e2e_notifications:
     stage: notifications

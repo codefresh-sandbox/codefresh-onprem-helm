@@ -43,19 +43,19 @@ ingress-nginx:
       enabled: true
     admissionWebhooks:
       enabled: false
-    # config:
-    #   disable-access-log: "false"
-    #   enable-vts-status: "true"
-    #   client-body-buffer-size: "16k"
-    #   proxy-body-size: "5M"
-    #   log-format-escape-json: "true"
-    #   log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
-    #                             "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
-    #                             "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
-    #                             $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
-    #                             "request_query": "$args", "request_length": $request_length, "duration": $request_time,
-    #                             "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
-    #                             "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
+    config:
+      disable-access-log: "false"
+      enable-vts-status: "true"
+      client-body-buffer-size: "16k"
+      proxy-body-size: "5M"
+      log-format-escape-json: "true"
+      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+                                "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
+                                "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
+                                $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
+                                "request_query": "$args", "request_length": $request_length, "duration": $request_time,
+                                "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
+                                "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
       
 # `cf-codefresh-ingress` ingress resource annotations:
 ingress:
@@ -370,12 +370,10 @@ global:
   runnerService: runner
 
   # dind image with tag
-  #dindImage: docker:17.06-dind
-  dindImage: docker:18.09-dind
-  #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
+  dindImage: docker:20.10.13-dind
 
   # curl image
-  curlImage: quay.io/codefresh/curl:1.0.0
+  curlImage: quay.io/codefresh/curl:latest
 
   # dind cpu requests
   dindCPU: 100m
@@ -656,3 +654,7 @@ argo-platform:
   analytics-reporter:
     enabled: false
     kind: Deployment 
+
+  runtime-manager:
+    enabled: false
+    kind: Deployment  
