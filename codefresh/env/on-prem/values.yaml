@@ -370,9 +370,7 @@ global:
   runnerService: runner
 
   # dind image with tag
-  #dindImage: docker:17.06-dind
-  dindImage: docker:18.09-dind
-  #dindImage: eugenecodefresh/cf-dind-with-cleaner:17.05.0-ce-dind
+  dindImage: docker:20.10.13-dind
 
   # curl image
   curlImage: quay.io/codefresh/curl:latest
