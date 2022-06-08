@@ -30,9 +30,9 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-migrate-hermes-store
         {{- if .Values.global.privateRegistry }} 
-        image: "{{ .Values.global.dockerRegistry }}codefresh/hermes-store-backup:0.2.0"
+        image: "{{ .Values.global.dockerRegistry }}codefresh/hermes-store-backup:0.2"
         {{- else }}
-        image: "codefresh/hermes-store-backup:0.2.0"
+        image: "codefresh/hermes-store-backup:0.2"
         {{- end }}
         imagePullPolicy: IfNotPresent
         env:
