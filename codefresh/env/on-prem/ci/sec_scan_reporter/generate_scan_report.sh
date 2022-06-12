@@ -16,11 +16,11 @@ function scan_image() {
     count=$( echo $object | jq .Results | jq length)
     for ((i = 0 ; i < $count ; i++)); do
     local vuln_length=$(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities | length')
-    echo -e "\n"Target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
-    echo "..."
     if [[ "$vuln_length" -eq "0" ]] && [[ "$SKIP_EMPTY" == "true" ]]; then
         continue
     fi
+    echo -e "\n"Target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
+    echo "..."
     echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities[] | "\(.PkgName) \(.VulnerabilityID) \(.Severity)"' | column -t | sort -k3
     done
 }
