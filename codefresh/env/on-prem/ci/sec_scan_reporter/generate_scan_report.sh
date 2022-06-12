@@ -6,7 +6,7 @@ log() { echo -e "\e[1mboldINFO [$(date +%F\ %T)] ---> $1\e[0m"; }
 success() { echo -e "\e[32mSUCCESS [$(date +%F\ %T)] ---> $1\e[0m"; }
 err() { echo -e "\e[31mERR [$(date +%F\ %T)] ---> $1\e[0m" ; return 1; }
 
-SKIP_EMPTY=false
+SKIP_EMPTY=true
 CACHE_DIR=${CACHE_DIR:-/codefresh/volume/trivy_cache}
 SCAN_REPORT_FILE=${SCAN_REPORT_FILE:-/codefresh/volume/scan_report}
 
@@ -16,11 +16,11 @@ function scan_image() {
     count=$( echo $object | jq .Results | jq length)
     for ((i = 0 ; i < $count ; i++)); do
     local vuln_length=$(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities | length')
+    echo -e "\n"Target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
+    echo "..."
     if [[ "$vuln_length" -eq "0" ]] && [[ "$SKIP_EMPTY" == "true" ]]; then
         continue
     fi
-    echo -e "\n"Target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
-    echo "..."
     echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities[] | "\(.PkgName) \(.VulnerabilityID) \(.Severity)"' | column -t | sort -k3
     done
 }
