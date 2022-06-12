@@ -12,7 +12,7 @@ SCAN_REPORT_FILE=${SCAN_REPORT_FILE:-/codefresh/volume/scan_report}
 
 function scan_image() {
     local image=$1
-    local object=$(trivy --severity HIGH,CRITICAL -q -f json  --ignore-unfixed --cache-dir ${CACHE_DIR} ${image} | sed 's|null|\[\]|')
+    local object=$(trivy -q --cache-dir ${CACHE_DIR} image -f json --severity HIGH,CRITICAL --ignore-unfixed ${image} | sed 's|null|\[\]|')
     count=$( echo $object | jq length)
     for ((i = 0 ; i < $count ; i++)); do
     local vuln_length=$(echo $object | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities | length')
