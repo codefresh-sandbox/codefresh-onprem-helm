@@ -30,7 +30,7 @@ steps:
 
   generate_scan_report:
     description: "Scans the images in the provided list and generates a report file"
-    image: codefreshio/onprem-vuln-reporter
+    image: quay.io/codefresh/onprem-vuln-reporter:latest
     working_directory: IMAGE_WORK_DIR
     shell: bash
     stage: generate_and_send_report
