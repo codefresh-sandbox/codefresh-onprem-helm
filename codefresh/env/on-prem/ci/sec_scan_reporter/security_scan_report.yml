@@ -41,4 +41,4 @@ steps:
     image: mesosphere/aws-cli
     stage: generate_and_send_report
     commands:
-      - aws s3 cp ${SCAN_REPORT_FILE} s3://${S3_BUCKET_NAME}/onprem/${ONPREM_VERSION}.txt
+      - aws s3 cp ${SCAN_REPORT_FILE} s3://${S3_BUCKET_NAME}/onprem/${ONPREM_VERSION}.log
