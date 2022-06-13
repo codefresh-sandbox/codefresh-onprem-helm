@@ -14,7 +14,7 @@ function scan_image() {
     local image=$1
     local object=$(trivy -q --cache-dir ${CACHE_DIR} image -f json --severity HIGH,CRITICAL --ignore-unfixed ${image} | sed 's|null|\[\]|')
     count=$( echo $object | jq .Results | jq length)
-    echo -e "\n\n"IMAGE: $(echo $object | jq .ArtifactName )
+    echo -e "\n---\n"IMAGE: $(echo $object | jq .ArtifactName )
     for ((i = 0 ; i < $count ; i++)); do
     local vuln_length=$(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities | length')
     if [[ "$vuln_length" -eq "0" ]] && [[ "$SKIP_EMPTY" == "true" ]]; then
