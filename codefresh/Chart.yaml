@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.1
+version: 1.2.2
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -16,181 +16,181 @@ maintainers:
   email: dev@codefresh.io
 appVersion: 1.2.0
 dependencies:
-  - name: consul
-    version: 1.1.3
-    repository: file://pv-charts/consul
-    condition: consul.enabled
-    tags:
-    - infra
-  - name: mongodb
-    version: 0.4.13
-    repository: file://pv-charts/mongodb
-    condition: mongo.enabled,global.mongoDeploy
-    tags:
-    - infra
-    - argo-platform
-  - name: postgresql
-    version: 0.7.2
-    repository: file://pv-charts/postgresql
-    condition: postgresql.enabled
-    tags:
-    - infra
-    - argo-platform
-  - name: redis
-    version: 16.9.0
-    repository: https://charts.bitnami.com/bitnami
-    condition: redis.enabled
-    tags:
-    - infra
-    - argo-platform    
-  - name: rabbitmq
-    version: 9.0.8
-    repository: https://charts.bitnami.com/bitnami
-    condition: rabbitmq.enabled
-    tags:
-    - infra
-    - argo-platform        
-  - name: nats
-    version: 0.1.2
-    repository: file://../nats
-    condition: nats.enabled
-    tags:
-    - infra
-  - name: builder
-    repository: file://local-charts/builder
-    condition: builder.enabled
-    version: 0.1.4
-    tags:
-    - infra
-  - name: runner
-    repository: file://local-charts/runner
-    condition: runner.enabled
-    version: 0.1.4
-    tags:
-    - infra
-  - name: ingress-nginx
-    version: 4.1.0
-    repository: 'https://kubernetes.github.io/ingress-nginx'
-    condition: ingress-nginx.enabled
-    tags:
-    - infra
-    - argo-platform
-    - ingress-nginx    
-  - name: cluster-providers
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cluster-providers
-    tags:
-    - infra
-  - name: kube-integration
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/kube-integration
-    tags:
-    - infra
-  - name: charts-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/charts-manager
-    tags:
-    - infra
-  - name: cfsign
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cfsign
-    condition: cfsign.enabled
-    tags:
-    - infra
-  - name: tasker-kubernetes
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/tasker-kubernetes
-    tags:
-    - infra
-  - name: context-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/context-manager
-    tags:
-    - infra
-    - argo-platform
-  - name: pipeline-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/pipeline-manager
-    tags:
-    - infra
-    - argo-platform
-  - name: gitops-dashboard-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-    tags:
-    - infra
-    - argo-platform
-  - name: cfapi
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cfapi
-    condition: cfapi.enabled
-    tags:
-    - infra
-    - argo-platform
-  - name: cfui
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cfui
-    condition: cfui.enabled
-    tags:
-    - infra
-    - argo-platform
-  - name: k8s-monitor
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/k8s-monitor
-    condition: k8s-monitor.enabled
-    tags:
-    - infra
-  - name: runtime-environment-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/runtime-environment-manager
-    condition: runtime-environment-manager.enabled
-    tags:
-    - infra
-    - argo-platform
-  - name: cf-broadcaster
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cf-broadcaster
-    condition: cf-broadcaster.enabled
-    tags:
-    - infra
-  - name: helm-repo-manager
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/helm-repo-manager
-    condition: helm-repo-manager.enabled
-    tags:
-    - infra
-    - helm
-    - chartmuseum
-  - name: hermes
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/hermes
-    condition: hermes.enabled
-    tags:
-    - infra
-    - trigger
-    - trigger-manager
-  - name: nomios
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/nomios
-    condition: hermes.enabled
-    tags:
-    - infra
-    - trigger
-    - event-provider
-    - registry
-    - dockerhub
-  - name: cronus
-    version: "*"
-    repository: http://chartmuseum.codefresh.io/cronus
-    condition: hermes.enabled
-    tags:
-    - infra
-    - trigger
-    - event-provider
-    - cron
-  - name: argo-platform
-    version: "*"
-    repository: https://chartmuseum.codefresh.io/argo-platform
-    condition: argo-platform.enabled
-    tags:
-    - argo-platform
+- name: consul
+  version: 1.1.3
+  repository: file://pv-charts/consul
+  condition: consul.enabled
+  tags:
+  - infra
+- name: mongodb
+  version: 0.4.13
+  repository: file://pv-charts/mongodb
+  condition: mongo.enabled,global.mongoDeploy
+  tags:
+  - infra
+  - argo-platform
+- name: postgresql
+  version: 0.7.2
+  repository: file://pv-charts/postgresql
+  condition: postgresql.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: redis
+  version: 16.9.0
+  repository: https://charts.bitnami.com/bitnami
+  condition: redis.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: rabbitmq
+  version: 9.0.8
+  repository: https://charts.bitnami.com/bitnami
+  condition: rabbitmq.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: nats
+  version: 0.1.2
+  repository: file://../nats
+  condition: nats.enabled
+  tags:
+  - infra
+- name: builder
+  repository: file://local-charts/builder
+  condition: builder.enabled
+  version: 0.1.4
+  tags:
+  - infra
+- name: runner
+  repository: file://local-charts/runner
+  condition: runner.enabled
+  version: 0.1.4
+  tags:
+  - infra
+- name: ingress-nginx
+  version: 4.1.0
+  repository: 'https://kubernetes.github.io/ingress-nginx'
+  condition: ingress-nginx.enabled
+  tags:
+  - infra
+  - argo-platform
+  - ingress-nginx
+- name: cluster-providers
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cluster-providers
+  tags:
+  - infra
+- name: kube-integration
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/kube-integration
+  tags:
+  - infra
+- name: charts-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/charts-manager
+  tags:
+  - infra
+- name: cfsign
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cfsign
+  condition: cfsign.enabled
+  tags:
+  - infra
+- name: tasker-kubernetes
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/tasker-kubernetes
+  tags:
+  - infra
+- name: context-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/context-manager
+  tags:
+  - infra
+  - argo-platform
+- name: pipeline-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/pipeline-manager
+  tags:
+  - infra
+  - argo-platform
+- name: gitops-dashboard-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
+  tags:
+  - infra
+  - argo-platform
+- name: cfapi
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cfapi
+  condition: cfapi.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: cfui
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cfui
+  condition: cfui.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: k8s-monitor
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/k8s-monitor
+  condition: k8s-monitor.enabled
+  tags:
+  - infra
+- name: runtime-environment-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/runtime-environment-manager
+  condition: runtime-environment-manager.enabled
+  tags:
+  - infra
+  - argo-platform
+- name: cf-broadcaster
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cf-broadcaster
+  condition: cf-broadcaster.enabled
+  tags:
+  - infra
+- name: helm-repo-manager
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/helm-repo-manager
+  condition: helm-repo-manager.enabled
+  tags:
+  - infra
+  - helm
+  - chartmuseum
+- name: hermes
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/hermes
+  condition: hermes.enabled
+  tags:
+  - infra
+  - trigger
+  - trigger-manager
+- name: nomios
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/nomios
+  condition: hermes.enabled
+  tags:
+  - infra
+  - trigger
+  - event-provider
+  - registry
+  - dockerhub
+- name: cronus
+  version: "*"
+  repository: http://chartmuseum.codefresh.io/cronus
+  condition: hermes.enabled
+  tags:
+  - infra
+  - trigger
+  - event-provider
+  - cron
+- name: argo-platform
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/argo-platform
+  condition: argo-platform.enabled
+  tags:
+  - argo-platform
