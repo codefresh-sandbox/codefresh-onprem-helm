@@ -20,8 +20,8 @@ function scan_image() {
     if [[ "$vuln_length" -eq "0" ]] && [[ "$SKIP_EMPTY" == "true" ]]; then
         continue
     fi
-    echo -e "\n"target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
-    echo "vulnerabilities:"
+    echo -e "\n"Target: $(echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Target')
+    echo "Vulnerabilities:"
     echo $object | jq .Results | jq -r --arg index "${i}" '.[($index|tonumber)].Vulnerabilities[] | "\(.PkgName) \(.VulnerabilityID) \(.Severity)"' | column -t | sort -k3
     done
 }
