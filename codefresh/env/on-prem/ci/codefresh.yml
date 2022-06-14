@@ -282,7 +282,7 @@ steps:
         ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
       condition:
         all:
-          skipTests: '"${{SKIP_TESTS}}" != "true"'
+          skipV2InstallStep: '"${{SKIP_V2_STAGE}}" != "true"'   
 
   helm_upgrade_argo_platform:
     stage: install
@@ -310,7 +310,7 @@ steps:
         ignore: [ "${{ONPREM_MASTER_BRANCH}}" ]
       condition:
         all:
-          skipTests: '"${{SKIP_TESTS}}" != "true"'
+          skipV2UpgradeStep: '"${{SKIP_V2_STAGE}}" != "true"'   
 
   export_cf_projs_ver:
     stage: test
@@ -475,15 +475,15 @@ steps:
           on:
             - failure            
 
-  delete_test_clusters:
+  delete_classic_test_clusters:
     stage: delete test infra
+    description: "[Classic] Delete test clusters"
     image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
         - [TEST_CASE_ID=01]
         - [TEST_CASE_ID=02]
-        - [TEST_CASE_ID=03]
     commands:
       - ./delete-cluster.sh
     when:
@@ -494,21 +494,38 @@ steps:
         - name: helm_upgrade
           on:
           - success
-        - name: helm_install_argo_platform
-          on:
-          - success
-        - name: helm_upgrade_argo_platform
-          on:
-          - success         
         - name: e2e_api_test
           on:
           - success
         - name: e2e_ui_test
           on:
             - success
-        #- name: e2e_argo_platform
-        #  on:
-        #    - success
+      condition:
+        all:
+          deleteClusters: '"${{DELETE_TEST_CLUSTERS}}" == "true"'        
+
+  delete_argo_platform_test_clusters:
+    stage: delete test infra
+    description: "[Argo-Platfrom] Delete test clusters"
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    working_directory: IMAGE_WORK_DIR
+    matrix:
+      environment:
+        - [TEST_CASE_ID=03]
+        - [TEST_CASE_ID=04]
+    commands:
+      - ./delete-cluster.sh
+    when:
+      steps:
+        - name: helm_install_argo_platform
+          on:
+          - success
+        - name: helm_upgrade_argo_platform
+          on:
+          - success     
+        - name: e2e_argo_platform
+          on:
+          - success
       condition:
         all:
           deleteClusters: '"${{DELETE_TEST_CLUSTERS}}" == "true"'        
