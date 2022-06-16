@@ -102,20 +102,20 @@ steps:
         on:
         - success
 
-  security_scan_report:
-    image: codefresh/cli
-    description: Scans all onprem images and sends a report to S3
-    fail_fast: false
-    stage: security report
-    commands:
-      - codefresh run --variable CHANNEL=${CHANNEL} --variable ONPREM_VERSION=${ONPREM_VERSION} on-prem/onprem-security-report
-    when:
-      branch:
-        only: [ "${{ONPREM_MASTER_BRANCH}}" ]
-      steps:
-      - name: push_chart
-        on:
-        - success
+  # security_scan_report:
+  #   image: codefresh/cli
+  #   description: Scans all onprem images and sends a report to S3
+  #   fail_fast: false
+  #   stage: security report
+  #   commands:
+  #     - codefresh run --variable CHANNEL=${CHANNEL} --variable ONPREM_VERSION=${ONPREM_VERSION} on-prem/onprem-security-report
+  #   when:
+  #     branch:
+  #       only: [ "${{ONPREM_MASTER_BRANCH}}" ]
+  #     steps:
+  #     - name: push_chart
+  #       on:
+  #       - success
 
   prepare_classic_test_clusters:
     stage: create test infra
