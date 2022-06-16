@@ -24,4 +24,5 @@ index.yaml
 *.orig
 .idea/
 
-hack/**
+# dry-run templates from `helm template` output
+dry-run/** 
