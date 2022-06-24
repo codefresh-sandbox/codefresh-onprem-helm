@@ -44,7 +44,7 @@ dependencies:
   - infra
   - argo-platform
 - name: rabbitmq
-  version: 9.0.8
+  version: 10.1.8
   repository: https://charts.bitnami.com/bitnami
   condition: rabbitmq.enabled
   tags:
