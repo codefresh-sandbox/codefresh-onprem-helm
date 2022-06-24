@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.4
+version: 1.2.5
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -44,7 +44,7 @@ dependencies:
   - infra
   - argo-platform
 - name: rabbitmq
-  version: 9.0.8
+  version: 10.1.8
   repository: https://charts.bitnami.com/bitnami
   condition: rabbitmq.enabled
   tags:

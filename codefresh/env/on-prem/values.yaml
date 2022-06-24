@@ -107,9 +107,14 @@ redis:
     password: "hoC9szf7NtrU"
 
 rabbitmq:
-  image:
-    repository: bitnami/rabbitmq
-    tag: "3.10"
+  enabled: true
+  replicaCount: 1
+  pdb:
+    create: true
+  persistence:
+    size: 8Gi
+  metrics:
+    enabled: true    
   auth:
     username: user
     password: "cVz9ZdJKYm7u"
