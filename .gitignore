@@ -2,9 +2,6 @@
 **/charts/*.tgz
 *.tgz
 
-# lock files
-*.lock
-
 # decrypted files
 **/*-dec.yaml
 
