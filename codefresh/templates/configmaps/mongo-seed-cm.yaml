@@ -77,6 +77,8 @@ data:
         ],
         "logins": [{
             "idp": ObjectId("5b79a32e3b80d12608352f8e")
+        },{
+            "idp": ObjectId("62b574f2b0d10d48788e15e9")
         }],
         "status" : "new",
         "account" : [
