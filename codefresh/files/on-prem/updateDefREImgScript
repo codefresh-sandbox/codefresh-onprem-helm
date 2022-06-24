@@ -10,7 +10,7 @@ DEFAULT_RE_NAMES=(
 function updateRESpec {
     if [[ -s /etc/ssl/mongodb/ca.pem ]]
     then
-        mongo "$MONGO_URI_RE_MANAGER" --tls --tlsCertificateKeyFile /etc/ssl/mongodb/ca.pem --tlsAllowInvalidHostnames --tlsAllowInvalidCertificates --eval "db.getCollection('runtime-environment').update(
+        mongosh "$MONGO_URI_RE_MANAGER" --tls --tlsCertificateKeyFile /etc/ssl/mongodb/ca.pem --tlsAllowInvalidHostnames --tlsAllowInvalidCertificates --eval "db.getCollection('runtime-environment').updateOne(
                 {'metadata.name': '$1'},
                 { \$set: {
                     \"dockerDaemonScheduler.dindImage\": \"$DIND_IMAGE\",
@@ -30,7 +30,7 @@ function updateRESpec {
                 }
             )"
     else
-        mongo "$MONGO_URI_RE_MANAGER" --eval "db.getCollection('runtime-environment').update(
+        mongosh "$MONGO_URI_RE_MANAGER" --eval "db.getCollection('runtime-environment').updateOne(
                 {'metadata.name': '$1'},
                 { \$set: {
                     \"dockerDaemonScheduler.dindImage\": \"$DIND_IMAGE\",
