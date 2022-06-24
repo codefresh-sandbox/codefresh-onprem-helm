@@ -5,7 +5,7 @@ waitForMongoDB() {
         status=$(mongosh ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
 
         echo -e "MongoDB status:\n$status"
-        if $(echo $status | grep '"ok" : 1' -q); then
+        if $(echo $status | grep 'ok: 1' -q); then
             break
         fi
 
