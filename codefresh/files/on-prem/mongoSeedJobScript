@@ -48,6 +48,16 @@ done
 
 if [ $? == 0 ]; then
     if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
+        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
+    else
+        mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
+    fi  
+else
+    echo "Something went wrong !" && exit 1
+fi
+
+if [ $? == 0 ]; then
+    if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
         mongoimport --uri ${MONGODB_URI} --collection accounts --type json --legacy --file /etc/admin/accounts.json
     else
         mongoimport --uri ${MONGODB_URI} --collection accounts --type json --file /etc/admin/accounts.json    
@@ -62,16 +72,6 @@ if [ $? == 0 ]; then
     else
         mongoimport --uri ${MONGODB_URI} --collection users --type json --file /etc/admin/users.json
     fi 
-else
-    echo "Something went wrong !" && exit 1
-fi
-
-if [ $? == 0 ]; then
-    if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
-        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
-    else
-        mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
-    fi  
 else
     echo "Something went wrong !" && exit 1
 fi
