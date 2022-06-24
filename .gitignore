@@ -2,6 +2,7 @@
 **/charts/*.tgz
 *.tgz
 
+
 # decrypted files
 **/*-dec.yaml
 
