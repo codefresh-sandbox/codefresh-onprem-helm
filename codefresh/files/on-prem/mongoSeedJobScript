@@ -2,7 +2,7 @@
 
 waitForMongoDB() {
     while true; do
-        status=$(mongo ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
+        status=$(mongosh ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
 
         echo -e "MongoDB status:\n$status"
         if $(echo $status | grep '"ok" : 1' -q); then
@@ -28,7 +28,7 @@ parseMongoURI() {
 }
 
 getMongoVersion() {
-    MONOGDB_VERSION=$(mongo ${MONGODB_ROOT_URI} --eval "db.version()" 2>&1 | tail -n1)
+    MONOGDB_VERSION=$(mongosh ${MONGODB_ROOT_URI} --eval "db.version()" 2>&1 | tail -n1)
 }
 
 parseMongoURI $MONGODB_URI
@@ -43,7 +43,7 @@ waitForMongoDB
 getMongoVersion
 
 for db in ${MONGODB_DATABASE} "archive"; do
-    mongo ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${db}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
+    mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${db}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
 done
 
 if [ $? == 0 ]; then
