@@ -324,7 +324,7 @@ steps:
         - name: build_chart
           on:
           - success
-        - name: prepare_argo_platfrom_test_clusters
+        - name: prepare_argo_platform_test_clusters
           on:
           - success
       branch:
