@@ -120,7 +120,7 @@ steps:
   prepare_classic_test_clusters:
     stage: create test infra
     description: "[Classic] Prepares a cluster for the tests"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     matrix:
@@ -143,7 +143,7 @@ steps:
   prepare_argo_platform_test_clusters:
     stage: create test infra
     description: "[Argo Platform] Prepares a cluster for the tests"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     matrix:
@@ -233,7 +233,7 @@ steps:
     stage: install
     title: "[Classic] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -259,7 +259,7 @@ steps:
     description: |-
       Verifies if the latest onprem release can be successfully upgraded
       with the chart built from the current branch. Seeds the data for the E2E tests
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -285,7 +285,7 @@ steps:
     stage: install
     title: "[Argo-Platform] Helm Install"
     description: "Verifies if the chart built from the current branch can be successfully installed with Helm"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -311,7 +311,7 @@ steps:
     description: |-
       Verifies if the latest onprem release can be successfully upgraded
       with the chart built from the current branch. Seeds the data for the E2E tests
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     shell: bash
     working_directory: IMAGE_WORK_DIR
     commands:
@@ -500,7 +500,7 @@ steps:
   delete_classic_test_clusters:
     stage: delete test infra
     description: "[Classic] Delete test clusters"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
@@ -529,7 +529,7 @@ steps:
   delete_argo_platform_test_clusters:
     stage: delete test infra
     description: "[Argo-Platfrom] Delete test clusters"
-    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.9
+    image: gcr.io/codefresh-inc/codefresh/onprem-tester:0.1.10
     working_directory: IMAGE_WORK_DIR
     matrix:
       environment:
