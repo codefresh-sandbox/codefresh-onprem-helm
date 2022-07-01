@@ -109,19 +109,19 @@ dependencies:
   - infra
   - argo-platform
 - name: pipeline-manager
-  version: "3.121.10"
+  version: "*"
   repository: http://chartmuseum.codefresh.io/pipeline-manager
   tags:
   - infra
   - argo-platform
 - name: gitops-dashboard-manager
-  version: "1.7.29"
+  version: "*"
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
   tags:
   - infra
   - argo-platform
 - name: cfapi
-  version: "21.156.25"
+  version: "*"
   repository: http://chartmuseum.codefresh.io/cfapi
   condition: cfapi.enabled
   tags:

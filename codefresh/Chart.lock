@@ -46,16 +46,16 @@ dependencies:
   version: 2.20.27
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.10
+  version: 3.121.11
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.29
+  version: 1.7.30
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.156.25
+  version: 21.156.29
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
-  version: 14.69.65
+  version: 14.69.66
 - name: k8s-monitor
   repository: http://chartmuseum.codefresh.io/k8s-monitor
   version: 4.8.15
@@ -77,5 +77,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.5
-digest: sha256:a60469fd197a07b073dc8ba70950a47ba93f0a24dd3d32b4b1a94b32b1b1afc0
-generated: "2022-07-01T14:22:16.963238475+03:00"
+digest: sha256:cc4ef1bc5b3e75527f2299bf9de4691d68021301b528452b20a3aac5be1f2822
+generated: "2022-07-01T15:06:58.70175035+03:00"
