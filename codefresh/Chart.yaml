@@ -109,13 +109,13 @@ dependencies:
   - infra
   - argo-platform
 - name: pipeline-manager
-  version: "*"
+  version: "3.121.10"
   repository: http://chartmuseum.codefresh.io/pipeline-manager
   tags:
   - infra
   - argo-platform
 - name: gitops-dashboard-manager
-  version: "*"
+  version: "1.7.29"
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
   tags:
   - infra
