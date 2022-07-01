@@ -10,7 +10,7 @@ dependencies:
   version: 0.7.2
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 16.9.0
+  version: 16.13.0
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 10.1.8
@@ -46,13 +46,13 @@ dependencies:
   version: 2.20.27
 - name: pipeline-manager
   repository: http://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.10
+  version: 3.121.11
 - name: gitops-dashboard-manager
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.29
+  version: 1.7.30
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.156.25
+  version: 21.156.28
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.65
@@ -77,5 +77,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.5
-digest: sha256:d38fe27f744ddaca93da70318614b81f9b42609aab1ac1d239d82970d800d76c
-generated: "2022-06-24T20:46:19.783920652+03:00"
+digest: sha256:f08512e115396cf2dc5f63ea1307ffc2fed465f1db0b38330b91f6b689191583
+generated: "2022-07-01T11:23:07.698044919+03:00"
