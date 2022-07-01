@@ -121,7 +121,7 @@ dependencies:
   - infra
   - argo-platform
 - name: cfapi
-  version: "*"
+  version: "21.156.25"
   repository: http://chartmuseum.codefresh.io/cfapi
   condition: cfapi.enabled
   tags:
