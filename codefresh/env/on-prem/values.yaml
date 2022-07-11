@@ -302,7 +302,7 @@ helm-repo-manager:
     dockerRegistry: gcr.io/codefresh-enterprise/
 
   chartmuseum:
-    publicHelmRepo: false
+    publicHelmRepo: true
     localHelmRepo: true
     ingress:
       enabled: false
