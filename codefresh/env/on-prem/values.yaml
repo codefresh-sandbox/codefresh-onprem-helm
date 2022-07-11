@@ -303,7 +303,6 @@ helm-repo-manager:
 
   chartmuseum:
     publicHelmRepo: true
-    localHelmRepo: true
     ingress:
       enabled: false
       # Used to create an Ingress record.
