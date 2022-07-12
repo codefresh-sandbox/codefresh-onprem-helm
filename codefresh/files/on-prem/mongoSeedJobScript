@@ -55,6 +55,7 @@ if [ $? == 0 ]; then
                 mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode delete --upsertFields=clientName --file /etc/admin/idps.json
                 mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
         fi
+    fi    
 fi
     else
         mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
