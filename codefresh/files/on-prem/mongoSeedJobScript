@@ -54,9 +54,7 @@ if [ $? == 0 ]; then
                 echo "Local IDP already exists, attempting to recreate it with a new _id"
                 mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode delete --upsertFields=clientName --file /etc/admin/idps.json
                 mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
-        fi
-    fi    
-fi
+        fi  
     else
         mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
     fi  
