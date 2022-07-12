@@ -48,7 +48,7 @@ done
 
 if [ $? == 0 ]; then
     if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
-        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode=upsert --upsertFields=clientName --file /etc/admin/idps.json
+        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode=upsert --file /etc/admin/idps.json
     else
         mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
     fi  
