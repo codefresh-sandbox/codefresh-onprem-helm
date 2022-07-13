@@ -11,8 +11,8 @@ waitForMongoDB() {
             break
         fi
 
-        echo "Sleeping 10 seconds ..."
-        sleep 10
+        echo "Sleeping 3 seconds ..."
+        sleep 3
     done
 }
 

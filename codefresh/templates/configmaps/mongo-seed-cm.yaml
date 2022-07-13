@@ -75,6 +75,9 @@ data:
                 ]
             }
         ],
+        "logins": [{
+            "idp": ObjectId("5b79a32e3b80d12608352f8e")
+        }],
         "status" : "new",
         "account" : [
             ObjectId("59009117c102763beda7ce71")
