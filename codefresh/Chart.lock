@@ -10,7 +10,7 @@ dependencies:
   version: 0.7.2
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 16.9.0
+  version: 16.13.0
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 10.1.8

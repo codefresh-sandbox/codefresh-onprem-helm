@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.7
+version: 1.2.8
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -37,7 +37,7 @@ dependencies:
   - infra
   - argo-platform
 - name: redis
-  version: 16.9.0
+  version: 16.13.0
   repository: https://charts.bitnami.com/bitnami
   condition: redis.enabled
   tags:
