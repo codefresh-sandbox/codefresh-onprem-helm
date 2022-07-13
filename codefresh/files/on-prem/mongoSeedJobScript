@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set +e
+
 waitForMongoDB() {
     while true; do
         status=$(mongosh ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
@@ -9,8 +11,8 @@ waitForMongoDB() {
             break
         fi
 
-        echo "Sleeping 10 seconds ..."
-        sleep 10
+        echo "Sleeping 3 seconds ..."
+        sleep 3
     done
 }
 
@@ -48,7 +50,13 @@ done
 
 if [ $? == 0 ]; then
     if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
-        mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
+        importResult=$(mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json 2>&1)
+        echo $importResult
+        # if [[ $(echo $importResult | grep -i 'duplicate key error') ]]; then ## CR-13035
+        #         echo "Local IDP already exists, attempting to recreate it with a new _id"
+        #         mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode delete --upsertFields=clientName --file /etc/admin/idps.json
+        #         mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
+        # fi  
     else
         mongoimport --uri ${MONGODB_URI} --collection idps --type json --file /etc/admin/idps.json
     fi  
