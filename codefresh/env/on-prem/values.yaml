@@ -99,12 +99,18 @@ mongodb:
       memory: 64Mi
 
 redis:
-  image:
-    repository: bitnami/redis
-    tag: 6.0.16
+  enabled: true
   architecture: standalone
   auth:
     password: "hoC9szf7NtrU"
+  master:
+    count: 1
+    persistence:
+      size: 8Gi
+  pdb:
+    create: true
+  metrics:
+    enabled: true   
 
 rabbitmq:
   enabled: true

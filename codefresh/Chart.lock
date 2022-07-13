@@ -10,7 +10,7 @@ dependencies:
   version: 0.7.2
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 16.9.0
+  version: 16.13.0
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
   version: 10.1.8
@@ -78,4 +78,4 @@ dependencies:
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.5
 digest: sha256:196b54ba95a2c509ba5852de3e42953a2d044ae47c3e4eabd6227022542f09d3
-generated: "2022-07-13T13:33:46.817396028+03:00"
+generated: "2022-07-13T14:03:48.669161094+03:00"
