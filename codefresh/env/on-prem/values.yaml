@@ -412,7 +412,7 @@ global:
   mongodbDatabase: codefresh
   mongodbPassword: mTiXcU2wafr9
   mongodbUsername: cfuser
-  mongodbImage: bitnami/mongodb:4.4
+  mongodbImage: bitnami/mongodb:4.2
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
 
