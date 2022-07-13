@@ -52,7 +52,7 @@ dependencies:
   version: 1.7.30
 - name: cfapi
   repository: http://chartmuseum.codefresh.io/cfapi
-  version: 21.156.38
+  version: 21.156.41
 - name: cfui
   repository: http://chartmuseum.codefresh.io/cfui
   version: 14.69.73
@@ -67,7 +67,7 @@ dependencies:
   version: 1.10.9
 - name: helm-repo-manager
   repository: http://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.8.7
+  version: 0.8.8
 - name: hermes
   repository: http://chartmuseum.codefresh.io/hermes
   version: 0.17.25
@@ -77,5 +77,5 @@ dependencies:
 - name: cronus
   repository: http://chartmuseum.codefresh.io/cronus
   version: 0.6.5
-digest: sha256:19fda658693a002f078504d4dda4fa190ac9e0b823178a640c890a3d9f9368a9
-generated: "2022-07-12T16:22:02.989490361+03:00"
+digest: sha256:196b54ba95a2c509ba5852de3e42953a2d044ae47c3e4eabd6227022542f09d3
+generated: "2022-07-13T14:03:48.669161094+03:00"
