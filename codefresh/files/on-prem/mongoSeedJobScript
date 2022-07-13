@@ -50,7 +50,7 @@ if [ $? == 0 ]; then
     if [[ $MONOGDB_VERSION =~ 4.* ]]; then #if mongodb server 4.x version, run mongoimport with --legacy flag
         importResult=$(mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json 2>&1)
         echo $importResult
-        # if [[ $(echo $importResult | grep -i 'duplicate key error') ]]; then
+        # if [[ $(echo $importResult | grep -i 'duplicate key error') ]]; then ## CR-13035
         #         echo "Local IDP already exists, attempting to recreate it with a new _id"
         #         mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --mode delete --upsertFields=clientName --file /etc/admin/idps.json
         #         mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
