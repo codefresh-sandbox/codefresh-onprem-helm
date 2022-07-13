@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set +e
+
 waitForMongoDB() {
     while true; do
         status=$(mongosh ${MONGODB_ROOT_URI} --eval "db.adminCommand('ping')" 2>&1)
