@@ -30,7 +30,7 @@ global:
   seedJobs: true
   ## Generate self-signed certificates for Builder/Runner/Ingress. Used in on-prem environments.
   certsJobs: true
-  ## Keep default `true` for now!
+  ## !Keep default `true` for now!
   onprem: true
 
   ## When using private docker registry, enable the following seetings to add imagePullSecret 
@@ -157,7 +157,7 @@ global:
   gceProject: ""
   stepsCatalogOnPremise: "1"
 
-  ### [WIP] values for argo-platform-create-db seed job
+  ### [WIP]
   # argoPlatformMongoDatabase: read-models
   # argoPlatformMongodbUsername: argo-platform
   # argoPlatformMongodbPassword: oDpLLqEoPM
