@@ -15,7 +15,7 @@ firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
 ### TLS certificate for Ingress object
-### Uncomment `webTLS` to create tls secret from existing certificate and privatee key, otherwise self-signed tls secret will be created.
+### Uncomment `webTLS` to create tls secret from existing certificate and private key, otherwise self-signed tls secret will be created.
 # webTLS:
 #   secretName: star.codefresh.io
 #   cert: |
