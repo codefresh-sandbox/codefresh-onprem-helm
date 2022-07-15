@@ -30,7 +30,7 @@ spec:
       {{- if not .Values.global.clientCertsCA }}
       - name: {{ template "fullname" . }}-certs
         image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
-        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/codefresh/gen-runtime-certs"]
         env:
           - name: DUMMY
