@@ -2,6 +2,21 @@ tags:
   cf-infra: true
   argo-platfrom: false
 
+dockerconfigjson:
+  auths:
+    gcr.io:
+      auth: placeholder
+
+## TLS certificate for Ingress object
+# webTLS:
+#   secretName: star.codefresh.io
+#   cert: |
+#     -----BEGIN CERTIFICATE-----
+#     -----END CERTIFICATE-----
+#   key: |
+#     -----BEGIN RSA PRIVATE KEY-----
+#     -----END RSA PRIVATE KEY-----
+
 global:
   ## Instantiate databases with seed data. Used in on-prem environments.
   seedJobs: true
@@ -442,16 +457,6 @@ tasker-kubernetes:
   replicaCount: 1
   image: codefresh/tasker-kubernetes
   dockerRegistry: gcr.io/codefresh-enterprise/
-
-## webTLS: TLS certificate for Ingress object
-webTLS:
-  secretName: star.codefresh.io
-  # cert: |
-  #   -----BEGIN CERTIFICATE-----
-  #   -----END CERTIFICATE-----
-  # key: |
-  #   -----BEGIN RSA PRIVATE KEY-----
-  #   -----END RSA PRIVATE KEY-----
 
 ### [WIP]
 argo-platform:
