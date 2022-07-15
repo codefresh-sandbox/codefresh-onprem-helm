@@ -28,28 +28,24 @@ dependencies:
   condition: mongo.enabled,global.mongoDeploy
   tags:
   - cf-infra
-  - argo-platform
 - name: postgresql
   version: 0.7.2
   repository: file://pv-charts/postgresql
   condition: postgresql.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: redis
   version: 16.13.0
   repository: https://charts.bitnami.com/bitnami
   condition: redis.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: rabbitmq
   version: 10.1.8
   repository: https://charts.bitnami.com/bitnami
   condition: rabbitmq.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: nats
   version: 0.1.2
   repository: file://../nats
@@ -74,8 +70,6 @@ dependencies:
   condition: ingress-nginx.enabled
   tags:
   - cf-infra
-  - argo-platform
-  - ingress-nginx
 - name: cluster-providers
   version: "*"
   repository: http://chartmuseum.codefresh.io/cluster-providers
@@ -113,27 +107,23 @@ dependencies:
   repository: http://chartmuseum.codefresh.io/pipeline-manager
   tags:
   - cf-infra
-  - argo-platform
 - name: gitops-dashboard-manager
   version: "*"
   repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
   tags:
   - cf-infra
-  - argo-platform
 - name: cfapi
   version: "*"
   repository: http://chartmuseum.codefresh.io/cfapi
   condition: cfapi.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: cfui
   version: "*"
   repository: http://chartmuseum.codefresh.io/cfui
   condition: cfui.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: k8s-monitor
   version: "*"
   repository: http://chartmuseum.codefresh.io/k8s-monitor
@@ -146,7 +136,6 @@ dependencies:
   condition: runtime-environment-manager.enabled
   tags:
   - cf-infra
-  - argo-platform
 - name: cf-broadcaster
   version: "*"
   repository: http://chartmuseum.codefresh.io/cf-broadcaster
@@ -159,33 +148,22 @@ dependencies:
   condition: helm-repo-manager.enabled
   tags:
   - cf-infra
-  - helm
-  - chartmuseum
 - name: hermes
   version: "*"
   repository: http://chartmuseum.codefresh.io/hermes
   condition: hermes.enabled
   tags:
   - cf-infra
-  - trigger
-  - trigger-manager
 - name: nomios
   version: "*"
   repository: http://chartmuseum.codefresh.io/nomios
   condition: hermes.enabled
   tags:
   - cf-infra
-  - trigger
-  - event-provider
-  - registry
-  - dockerhub
 - name: cronus
   version: "*"
   repository: http://chartmuseum.codefresh.io/cronus
   condition: hermes.enabled
   tags:
   - cf-infra
-  - trigger
-  - event-provider
-  - cron
 

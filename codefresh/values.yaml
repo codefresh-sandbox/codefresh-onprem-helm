@@ -15,7 +15,7 @@ firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
 firebaseSecret: placeholder
 
 ### TLS certificate for Ingress object
-### Uncomment `webTLS` to create tls secret from existing certificate and private key, otherwise self-signed tls secret will be created.
+### Uncomment `webTLS` to create tls secret from existing certificate and private key, otherwise tls secret with self-signed certificate will be created.
 # webTLS:
 #   secretName: star.codefresh.io
 #   cert: |
@@ -164,7 +164,7 @@ global:
   # argoPlatformMongoUri: mongodb://argo-platform:oDpLLqEoPM@mongodb/read-models?retryWrites=true&w=majority
 
 ## create system/default and system/default/hybrid/k8 runtimes
-getRuntimeEnvs: true # files/on-prem/runtimeEnvironments.json
+getRuntimeEnvs: true
 
 ## helper scripts for seed jobs/pre(post)-upgarde hooks
 mongoSeedJobScript: files/on-prem/mongoSeedJobScript
