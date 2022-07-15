@@ -47,8 +47,8 @@ dependencies:
   tags:
   - cf-infra
 - name: nats
-  version: 0.1.2
-  repository: file://../nats
+  version: 7.3.6
+  repository: https://charts.bitnami.com/bitnami
   condition: nats.enabled
   tags:
   - cf-infra
