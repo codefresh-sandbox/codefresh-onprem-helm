@@ -399,19 +399,6 @@ mongodb:
     requests:
       memory: 64Mi
 
-nats:
-  enabled: true
-  replicaCount: 1
-  auth:
-    enabled: false
-  cluster:
-    auth:
-      enabled: false
-  pdb:
-    enabled: true
-  metrics:
-    enabled: true 
-
 nomios:
   image:
     name: codefresh/nomios
