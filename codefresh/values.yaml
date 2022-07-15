@@ -30,7 +30,7 @@ global:
   seedJobs: true
   ## Generate self-signed certificates for Builder/Runner/Ingress. Used in on-prem environments.
   certsJobs: true
-  ##
+  ## Keep default `true` for now!
   onprem: true
 
   ## When using private docker registry, enable the following seetings to add imagePullSecret 
