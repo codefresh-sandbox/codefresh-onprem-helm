@@ -441,7 +441,6 @@ tasker-kubernetes:
 ### [WIP]
 argo-platform:
   enabled: false
-
   ingress:
     enabled: false
     rules:
@@ -481,7 +480,6 @@ argo-platform:
             auth_request_set $auth_entity $upstream_http_x_cf_auth_entity;
             proxy_set_header X-CF-Auth-Entity $auth_entity;
         tls: true
-  
   event-handler:
     enabled: true
     kind: Deployment
@@ -508,7 +506,6 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   cron-executor:
     enabled: true
     kind: Deployment   
@@ -529,7 +526,6 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   api-graphql:
     enabled: true
     kind: Deployment
@@ -561,7 +557,6 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   api-events:
     enabled: true
     kind: Deployment  
@@ -583,8 +578,7 @@ argo-platform:
     pdb:
       enabled: false
     tolerations: []
-    affinity: []
-  
+    affinity: [] 
   ui:
     enabled: true
     kind: Deployment 
@@ -600,14 +594,11 @@ argo-platform:
       enabled: false
     tolerations: []
     affinity: []
-  
   argocd-hooks:
-    enabled: false
-  
+    enabled: false  
   analytics-reporter:
     enabled: false
     kind: Deployment 
-
   runtime-manager:
     enabled: false
     kind: Deployment  
