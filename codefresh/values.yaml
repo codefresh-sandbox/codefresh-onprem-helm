@@ -415,6 +415,9 @@ rabbitmq:
     password: "cVz9ZdJKYm7u"
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
 ###
+runner:
+  enabled: false
+###
 pipeline-manager:
   replicaCount: 1
   safeSecret: ""
