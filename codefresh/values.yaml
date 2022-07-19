@@ -116,7 +116,7 @@ global:
   helmRepoManagerService: helm-repo-manager
   hermesService: hermes
   broadcasterService: cf-broadcaster
-  broadcasterPort: 80  
+  broadcasterPort: 80
   cfk8smonitorService: k8s-monitor
   ### DEPRECATED
   ## Docker Registry service and port
@@ -279,11 +279,11 @@ helm-repo-manager:
       enabled: false
       # Used to create an Ingress record.
       hosts: []
-        # - name: chartmuseum.local
-        #   path: /
+      # - name: chartmuseum.local
+      #   path: /
       annotations: {}
-        # kubernetes.io/ingress.class: nginx
-        # kubernetes.io/tls-acme: "true"
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
     image:
       repository: ghcr.io/helm/chartmuseum
       tag: v0.15.0
@@ -295,7 +295,7 @@ helm-repo-manager:
         ALLOW_OVERWRITE: "true"
         DISABLE_API: "false"
         DISABLE_METRICS: "false"
-        INDEX_LIMIT: 2500  
+        INDEX_LIMIT: 2500
 ###
 hermes:
   image:
@@ -326,13 +326,7 @@ ingress-nginx:
       client-body-buffer-size: "16k"
       proxy-body-size: "5M"
       log-format-escape-json: "true"
-      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
-                                "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user":
-                                "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status":
-                                $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri",
-                                "request_query": "$args", "request_length": $request_length, "duration": $request_time,
-                                "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
-                                "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'  
+      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'
 ###
 ingress:
   enabled: true
@@ -345,8 +339,8 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.org/redirect-to-https: "false"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-          more_set_headers "X-Request-ID: $request_id";
-          proxy_set_header X-Request-ID $request_id;
+      more_set_headers "X-Request-ID: $request_id";
+      proxy_set_header X-Request-ID $request_id;
 ###
 k8s-monitor:
   image: codefresh/cf-k8s-monitor
@@ -399,7 +393,7 @@ redis:
   pdb:
     create: true
   metrics:
-    enabled: true   
+    enabled: true
 ###
 rabbitmq:
   enabled: true
@@ -409,11 +403,14 @@ rabbitmq:
   persistence:
     size: 8Gi
   metrics:
-    enabled: true    
+    enabled: true
   auth:
     username: user
     password: "cVz9ZdJKYm7u"
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
+###
+runner:
+  enabled: false
 ###
 pipeline-manager:
   replicaCount: 1
@@ -450,7 +447,7 @@ argo-platform:
           argo-platform-ui:
             - /2.0
         annotations:
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"    
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
         tls: true
       - name: auth
         hosts: []
@@ -493,7 +490,7 @@ argo-platform:
       rabbitmq-password: cVz9ZdJKYm7u
       mongodb-host: mongodb
       mongodb-user: argo-platform
-      mongodb-password: oDpLLqEoPM 
+      mongodb-password: oDpLLqEoPM
     resources:
       requests:
         cpu: 100m
@@ -508,7 +505,7 @@ argo-platform:
     affinity: []
   cron-executor:
     enabled: true
-    kind: Deployment   
+    kind: Deployment
     env:
       MONGODB_PROTOCOL: mongodb
       RABBITMQ_PROTOCOL: amqp
@@ -559,7 +556,7 @@ argo-platform:
     affinity: []
   api-events:
     enabled: true
-    kind: Deployment  
+    kind: Deployment
     env:
       RABBITMQ_PROTOCOL: amqp
     secrets:
@@ -578,10 +575,10 @@ argo-platform:
     pdb:
       enabled: false
     tolerations: []
-    affinity: [] 
+    affinity: []
   ui:
     enabled: true
-    kind: Deployment 
+    kind: Deployment
     resources:
       requests:
         cpu: 100m
@@ -595,10 +592,10 @@ argo-platform:
     tolerations: []
     affinity: []
   argocd-hooks:
-    enabled: false  
+    enabled: false
   analytics-reporter:
     enabled: false
-    kind: Deployment 
+    kind: Deployment
   runtime-manager:
     enabled: false
-    kind: Deployment  
+    kind: Deployment

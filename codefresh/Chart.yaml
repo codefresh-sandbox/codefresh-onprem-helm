@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.10
+version: 1.2.11
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -53,15 +53,15 @@ dependencies:
   tags:
   - cf-infra
 - name: builder
-  repository: file://local-charts/builder
+  repository: https://chartmuseum.codefresh.io/builder
   condition: builder.enabled
-  version: 0.1.4
+  version: 1.0.0
   tags:
   - cf-infra
 - name: runner
-  repository: file://local-charts/runner
+  repository: https://chartmuseum.codefresh.io/runner
   condition: runner.enabled
-  version: 0.1.4
+  version: 1.0.0
   tags:
   - cf-infra
 - name: ingress-nginx
@@ -72,97 +72,97 @@ dependencies:
   - cf-infra
 - name: cluster-providers
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cluster-providers
+  repository: https://chartmuseum.codefresh.io/cluster-providers
   tags:
   - cf-infra
 - name: kube-integration
   version: "*"
-  repository: http://chartmuseum.codefresh.io/kube-integration
+  repository: https://chartmuseum.codefresh.io/kube-integration
   tags:
   - cf-infra
 - name: charts-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/charts-manager
+  repository: https://chartmuseum.codefresh.io/charts-manager
   tags:
   - cf-infra
 - name: cfsign
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cfsign
+  repository: https://chartmuseum.codefresh.io/cfsign
   condition: cfsign.enabled
   tags:
   - cf-infra
 - name: tasker-kubernetes
   version: "*"
-  repository: http://chartmuseum.codefresh.io/tasker-kubernetes
+  repository: https://chartmuseum.codefresh.io/tasker-kubernetes
   tags:
   - cf-infra
 - name: context-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/context-manager
+  repository: https://chartmuseum.codefresh.io/context-manager
   tags:
   - cf-infra
   - argo-platform
 - name: pipeline-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/pipeline-manager
+  repository: https://chartmuseum.codefresh.io/pipeline-manager
   tags:
   - cf-infra
 - name: gitops-dashboard-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/gitops-dashboard-manager
+  repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
   tags:
   - cf-infra
 - name: cfapi
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cfapi
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi.enabled
   tags:
   - cf-infra
 - name: cfui
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cfui
+  repository: https://chartmuseum.codefresh.io/cfui
   condition: cfui.enabled
   tags:
   - cf-infra
 - name: k8s-monitor
   version: "*"
-  repository: http://chartmuseum.codefresh.io/k8s-monitor
+  repository: https://chartmuseum.codefresh.io/k8s-monitor
   condition: k8s-monitor.enabled
   tags:
   - cf-infra
 - name: runtime-environment-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/runtime-environment-manager
+  repository: https://chartmuseum.codefresh.io/runtime-environment-manager
   condition: runtime-environment-manager.enabled
   tags:
   - cf-infra
 - name: cf-broadcaster
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cf-broadcaster
+  repository: https://chartmuseum.codefresh.io/cf-broadcaster
   condition: cf-broadcaster.enabled
   tags:
   - cf-infra
 - name: helm-repo-manager
   version: "*"
-  repository: http://chartmuseum.codefresh.io/helm-repo-manager
+  repository: https://chartmuseum.codefresh.io/helm-repo-manager
   condition: helm-repo-manager.enabled
   tags:
   - cf-infra
 - name: hermes
   version: "*"
-  repository: http://chartmuseum.codefresh.io/hermes
+  repository: https://chartmuseum.codefresh.io/hermes
   condition: hermes.enabled
   tags:
   - cf-infra
 - name: nomios
   version: "*"
-  repository: http://chartmuseum.codefresh.io/nomios
+  repository: https://chartmuseum.codefresh.io/nomios
   condition: hermes.enabled
   tags:
   - cf-infra
 - name: cronus
   version: "*"
-  repository: http://chartmuseum.codefresh.io/cronus
+  repository: https://chartmuseum.codefresh.io/cronus
   condition: hermes.enabled
   tags:
   - cf-infra
