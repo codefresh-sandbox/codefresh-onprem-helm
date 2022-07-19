@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.11
+version: 1.2.12
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -166,4 +166,3 @@ dependencies:
   condition: hermes.enabled
   tags:
   - cf-infra
-
