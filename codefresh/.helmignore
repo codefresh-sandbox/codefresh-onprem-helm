@@ -1,6 +1,8 @@
 env/*
 regsecret-*
 values-*
+# temporary
+templates/argo-platform/* 
 
 # backup files
 bak/*
