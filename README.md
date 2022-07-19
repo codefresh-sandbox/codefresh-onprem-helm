@@ -1,6 +1,9 @@
 ### How to build CF onprem chart locally
 
 ```shell
+# Optionaly: update runtime images from SAAS system/default-plan runtime first
+./update_re_images.sh
+
 helm dependency update codefresh --debug
 helm package codefresh
 ```
@@ -19,7 +22,7 @@ VALUES_MAIN="values-main.yaml"
 CF_APP_HOST="myonprem.local"
 ```
 
-- feed them into `values.yaml`:
+- feed them into `values-main.yaml`:
 
 ```shell
 cat <<EOF > ${VALUES_MAIN}
