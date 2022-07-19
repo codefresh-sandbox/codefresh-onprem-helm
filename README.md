@@ -1,7 +1,6 @@
 ### How to build CF onprem chart locally
 
 ```shell
-yq m -x codefresh/env/on-prem/values.yaml codefresh/env/on-prem/versions.yaml > codefresh/values.yaml
 helm dependency update codefresh --debug
 helm package codefresh
 ```
@@ -36,24 +35,13 @@ dockerconfigjson:
   auths:
     ${REGISTRY}:
       auth: ${DOCKER_CFG_VAR}
-cfui:
-  dockerconfigjson:
-    auths:
-      ${REGISTRY}:
-        auth: ${DOCKER_CFG_VAR}
-runtime-environment-manager:
-  dockerconfigjson:
-    auths:
-      ${REGISTRY}:
-        auth: ${DOCKER_CFG_VAR}
 EOF
 ```
 
 ```shell
-CF_VERSION=1.2.0
 helm repo add codefresh-onprem-prod http://charts.codefresh.io/prod
-helm pull codefresh-onprem-prod/codefresh --version $CF_VERSION
-helm upgrade --install cf codefresh-$CF_VERSION.tgz -f values-main.yaml --create-namespace --namespace codefresh --debug
+helm pull codefresh-onprem-prod/codefresh
+helm upgrade --install cf codefresh-onprem-prod/codefresh -f values-main.yaml --create-namespace --namespace codefresh --debug
 ```
 
 ### Additional docs
