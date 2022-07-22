@@ -1,7 +1,7 @@
 ### How to build CF onprem chart locally
 
 ```shell
-# Optionaly: update runtime images from SAAS system/default-plan runtime first
+# Optionally: update runtime images from SAAS system/default-plan runtime first
 ./update_re_images.sh
 
 helm dependency update codefresh --debug
