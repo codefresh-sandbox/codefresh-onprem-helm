@@ -396,7 +396,7 @@ redis:
   pdb:
     create: true
   metrics:
-    enabled: true
+    enabled: false
 ###
 rabbitmq:
   enabled: true
@@ -406,7 +406,7 @@ rabbitmq:
   persistence:
     size: 8Gi
   metrics:
-    enabled: true
+    enabled: false
   auth:
     username: user
     password: "cVz9ZdJKYm7u"
