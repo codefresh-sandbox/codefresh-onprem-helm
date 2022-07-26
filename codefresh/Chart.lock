@@ -37,7 +37,7 @@ dependencies:
   version: 1.9.9
 - name: cfsign
   repository: https://chartmuseum.codefresh.io/cfsign
-  version: 1.3.9
+  version: 1.3.10
 - name: tasker-kubernetes
   repository: https://chartmuseum.codefresh.io/tasker-kubernetes
   version: 1.17.6
@@ -77,5 +77,5 @@ dependencies:
 - name: cronus
   repository: https://chartmuseum.codefresh.io/cronus
   version: 0.6.5
-digest: sha256:15c3069a5e7dd362bb53480c2b8467723d8bd2dd97d076da7999dee124c7a5dd
-generated: "2022-07-22T21:21:30.11332695+03:00"
+digest: sha256:7d980053c11473ea873e4628280cadd2f285aa5b403f7c4501abde3842a1ecd9
+generated: "2022-07-26T11:17:18.969859221+03:00"
