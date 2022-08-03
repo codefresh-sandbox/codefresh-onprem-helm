@@ -42,9 +42,9 @@ EOF
 ```
 
 ```shell
-helm repo add codefresh-onprem-prod https://chartmuseum.codefresh.io/codefresh
-helm pull codefresh-onprem-prod/codefresh
-helm upgrade --install cf codefresh-onprem-prod/codefresh -f values-main.yaml --create-namespace --namespace codefresh --debug
+helm repo add codefresh-onprem https://chartmuseum.codefresh.io/codefresh
+helm pull codefresh-onprem/codefresh
+helm upgrade --install cf codefresh-onprem/codefresh -f values-main.yaml --create-namespace --namespace codefresh --debug
 ```
 
 ### Additional docs
