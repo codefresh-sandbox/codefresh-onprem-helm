@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Codefresh CD pipeline management platform for Kubernetes
 name: codefresh
-version: 1.2.12
+version: 1.2.13
 kubeVersion: '>=1.19.0-0'
 keywords:
 - codefresh
@@ -103,7 +103,7 @@ dependencies:
   - cf-infra
   - argo-platform
 - name: pipeline-manager
-  version: "*"
+  version: "3.121.12"
   repository: https://chartmuseum.codefresh.io/pipeline-manager
   tags:
   - cf-infra
