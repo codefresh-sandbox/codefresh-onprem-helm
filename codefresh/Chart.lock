@@ -28,13 +28,13 @@ dependencies:
   version: 4.1.0
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
-  version: 1.10.13
+  version: 1.10.14
 - name: kube-integration
   repository: https://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.18
+  version: 1.25.20
 - name: charts-manager
   repository: https://chartmuseum.codefresh.io/charts-manager
-  version: 1.9.9
+  version: 1.9.10
 - name: cfsign
   repository: https://chartmuseum.codefresh.io/cfsign
   version: 1.3.10
@@ -43,28 +43,28 @@ dependencies:
   version: 1.17.6
 - name: context-manager
   repository: https://chartmuseum.codefresh.io/context-manager
-  version: 2.20.28
+  version: 2.20.29
 - name: pipeline-manager
   repository: https://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.12
+  version: 3.121.14
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.30
+  version: 1.7.31
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.156.56
+  version: 21.156.69
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.69.75
+  version: 14.69.80
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.8.16
+  version: 4.8.17
 - name: runtime-environment-manager
   repository: https://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.21.8
+  version: 3.21.9
 - name: cf-broadcaster
   repository: https://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.10.10
+  version: 1.10.11
 - name: helm-repo-manager
   repository: https://chartmuseum.codefresh.io/helm-repo-manager
   version: 0.8.8
@@ -77,5 +77,5 @@ dependencies:
 - name: cronus
   repository: https://chartmuseum.codefresh.io/cronus
   version: 0.6.5
-digest: sha256:7d980053c11473ea873e4628280cadd2f285aa5b403f7c4501abde3842a1ecd9
-generated: "2022-08-03T13:00:46.201526839+03:00"
+digest: sha256:081fba0659d510087d40ea977ddf2a006ae538bd9f8a80d9a68245a985739567
+generated: "2022-08-09T09:59:57.66575312+03:00"
