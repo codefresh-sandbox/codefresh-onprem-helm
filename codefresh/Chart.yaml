@@ -71,8 +71,8 @@ dependencies:
   tags:
   - cf-infra
 - name: cluster-providers
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/cluster-providers
+  version: "1.10.15-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/cluster-providers
   tags:
   - cf-infra
 - name: kube-integration
@@ -81,8 +81,8 @@ dependencies:
   tags:
   - cf-infra
 - name: charts-manager
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/charts-manager
+  version: "1.9.11-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/charts-manager
   tags:
   - cf-infra
 - name: cfsign
@@ -97,19 +97,19 @@ dependencies:
   tags:
   - cf-infra
 - name: context-manager
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/context-manager
+  version: "2.20.30-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/context-manager
   tags:
   - cf-infra
   - argo-platform
 - name: pipeline-manager
-  version: "3.121.12"
-  repository: https://chartmuseum.codefresh.io/pipeline-manager
+  version: "3.121.15-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/pipeline-manager
   tags:
   - cf-infra
 - name: gitops-dashboard-manager
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
+  version: "1.7.32-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/gitops-dashboard-manager
   tags:
   - cf-infra
 - name: cfapi
@@ -125,14 +125,14 @@ dependencies:
   tags:
   - cf-infra
 - name: k8s-monitor
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/k8s-monitor
+  version: "4.8.18-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/k8s-monitor
   condition: k8s-monitor.enabled
   tags:
   - cf-infra
 - name: runtime-environment-manager
-  version: "*"
-  repository: https://chartmuseum.codefresh.io/runtime-environment-manager
+  version: "3.21.10-cr-13634"
+  repository: https://chartmuseum-dev.codefresh.io/runtime-environment-manager
   condition: runtime-environment-manager.enabled
   tags:
   - cf-infra

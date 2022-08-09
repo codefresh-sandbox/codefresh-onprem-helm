@@ -2,14 +2,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "fullname" . }}-seed-mongo
+  name: {{ template "fullname" . }}-mongo-seed-job
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
 spec:
-  ttlSecondsAfterFinished: 60
+  ttlSecondsAfterFinished: 100
   template:
     metadata:
       name: {{ template "fullname" . }}-seed-mongo
