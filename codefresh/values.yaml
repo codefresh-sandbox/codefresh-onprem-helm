@@ -80,7 +80,7 @@ global:
   mongodbUsername: cfuser
   mongodbImage: bitnami/mongodb:4.2 # image for mongo seed job
   mongodbRootUser: root
-  mongodbRootPassword: Gfew3h#i8abcdu #XT9nmM8dZD
+  mongodbRootPassword: XT9nmM8dZD
   # Internal Redis service
   redisService: redis-master
   ### OfflineLogging values
@@ -358,7 +358,7 @@ kube-integration:
 ###
 mongodb:
   image: bitnami/mongodb:4.2
-  mongodbRootPassword: Gfew3h#i8abcdu #XT9nmM8dZD
+  mongodbRootPassword: XT9nmM8dZD
   # version: "4.2" # default tag; overrides tag in `mongodb.image` field
   migration:
     enabled: false
