@@ -28,37 +28,37 @@ dependencies:
   version: 4.1.0
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
-  version: 1.10.15
+  version: 1.10.17
 - name: kube-integration
   repository: https://chartmuseum.codefresh.io/kube-integration
-  version: 1.25.20
+  version: 1.25.22
 - name: charts-manager
   repository: https://chartmuseum.codefresh.io/charts-manager
-  version: 1.9.11
+  version: 1.9.12
 - name: cfsign
   repository: https://chartmuseum.codefresh.io/cfsign
   version: 1.3.10
 - name: tasker-kubernetes
   repository: https://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.17.6
+  version: 1.17.7
 - name: context-manager
   repository: https://chartmuseum.codefresh.io/context-manager
-  version: 2.20.30
+  version: 2.20.34
 - name: pipeline-manager
   repository: https://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.121.16
+  version: 3.121.17
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.7.33
+  version: 1.8.0
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.157.5
+  version: 21.157.24
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.69.93
+  version: 14.70.0
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.8.18
+  version: 4.8.21
 - name: runtime-environment-manager
   repository: https://chartmuseum.codefresh.io/runtime-environment-manager
   version: 3.21.11
@@ -73,9 +73,9 @@ dependencies:
   version: 0.17.25
 - name: nomios
   repository: https://chartmuseum.codefresh.io/nomios
-  version: 0.9.8
+  version: 0.9.11
 - name: cronus
   repository: https://chartmuseum.codefresh.io/cronus
-  version: 0.6.5
-digest: sha256:d47ef3f0ee5354af88cfc92923ef5c9052f804906d79aec183db817fdbf00f66
-generated: "2022-08-25T10:00:47.958289114Z"
+  version: 0.6.6
+digest: sha256:911a46273ebadeae2c3bfeca159d8c526b63f0838aadbbac04393b26b21a73f5
+generated: "2022-09-08T09:11:22.85376719Z"
