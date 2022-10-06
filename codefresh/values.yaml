@@ -232,10 +232,8 @@ cluster-providers:
   dockerRegistry: gcr.io/codefresh-enterprise/
 ###
 consul:
-  DatacenterName: codefresh-onprem
-  Replicas: 1
-  Memory: 64Mi
-  nodeSelector: {}
+  datacenterName: codefresh-onprem
+  replicaCount: 1
 ###
 context-manager:
   safeSecret: ""
