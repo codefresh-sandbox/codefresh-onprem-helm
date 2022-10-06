@@ -96,7 +96,7 @@ global:
   postgresPassword: eC9arYka4ZbH
   postgresDatabase: codefresh
   # Internal Consul service
-  consulService: consul
+  consulService: consul-ui
   consulHttpPort: 8500
   clusterProvidersService: cluster-providers
   clusterProvidersPort: 9000
