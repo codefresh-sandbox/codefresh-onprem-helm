@@ -29,7 +29,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}-migrate-hermes-store
-        {{- if .Values.global.privateRegistry }} 
+        {{- if .Values.global.privateRegistry }}
         image: "{{ .Values.global.dockerRegistry }}codefresh/hermes-store-backup:0.2"
         {{- else }}
         image: "codefresh/hermes-store-backup:0.2"
@@ -59,6 +59,6 @@ spec:
           - "/bin/bash"
           - "-c"
           - |
-{{ .Files.Get (print .Values.migrateHermesDataScript) | indent 12 }}
+{{ .Files.Get "files/on-prem/migrateHermesDataScript" | indent 12 }}
       restartPolicy: Never
 {{- end }}

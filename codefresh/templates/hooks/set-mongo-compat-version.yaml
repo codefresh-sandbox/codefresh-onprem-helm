@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "fullname" . }}-set-mdb-compat-ver
-        {{- if .Values.global.privateRegistry }} 
+        {{- if .Values.global.privateRegistry }}
         image: "{{ .Values.global.dockerRegistry }}{{ .Values.global.mongodbImage }}"
         {{- else }}
         image: {{ .Values.global.mongodbImage }}
@@ -45,7 +45,7 @@ spec:
           - "/bin/bash"
           - "-c"
           - |
-{{ .Files.Get (print .Values.setMdbCompatVerScript ) | indent 12  }}
+{{ .Files.Get "files/on-prem/setMdbCompatVerScript" | indent 12  }}
       restartPolicy: Never
-{{- end }}      
+{{- end }}
 {{- end }}

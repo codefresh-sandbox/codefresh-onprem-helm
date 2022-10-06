@@ -96,5 +96,5 @@ spec:
           - "/bin/bash"
           - "-exc"
           - |
-{{ .Files.Get (print .Values.postgresSeedJobScript ) | indent 12  }}
+{{ .Files.Get "files/on-prem/postgresSeedScript" | indent 12  }}
 {{- end }}

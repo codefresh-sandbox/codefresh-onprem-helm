@@ -64,5 +64,5 @@ spec:
               - "/bin/bash"
               - "-c"
               - |
-{{ .Files.Get (print .Values.postgresCleanJobScript ) | indent 16  }}
+{{ .Files.Get "files/on-prem/postgresCleanJobScript" | indent 16  }}
 {{- end }}

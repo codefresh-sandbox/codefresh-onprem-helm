@@ -29,7 +29,7 @@ spec:
       containers:
       {{- if not .Values.global.clientCertsCA }}
       - name: {{ template "fullname" . }}-certs
-        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.certsJobsImage) }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/codefresh/gen-runtime-certs"]
         env:
@@ -48,7 +48,7 @@ spec:
       {{- end }}
       {{- if not .Values.webTLS }}
       - name: {{ template "fullname" . }}-tls
-        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.kubectlImage) }}"
+        image: "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.certsJobsImage) }}"
         imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
         command: ["/bin/sh", "/opt/codefresh/gen-website-tls"]
         env:
