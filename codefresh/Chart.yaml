@@ -55,7 +55,7 @@ dependencies:
 - name: builder
   repository: https://chartmuseum.codefresh.io/builder
   condition: builder.enabled
-  version: 1.0.0
+  version: 1.0.2
   tags:
   - cf-infra
 - name: runner

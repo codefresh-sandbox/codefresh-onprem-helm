@@ -53,13 +53,6 @@ global:
   builderService: builder
   # Runner service
   runnerService: runner
-  # values for builder/runner charts
-  curlImage: quay.io/codefresh/curl:latest
-  dindImage: docker:20.10.13-dind
-  dindCPU: 100m
-  dindMemory: 256Mi
-  dindCPULimits: 1000m
-  dindMemoryLimits: 4096Mi
   # Internal tls-sign service
   tlsSignService: cfsign
   tlsSignPort: 4999
@@ -163,6 +156,9 @@ PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.2.0
 ###
 builder:
   replicaCount: 1
+  curlImage: quay.io/codefresh/curl:latest
+  dindImage: docker:20.10.13-dind
+  cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
 ###
 cfapi:
   github:
