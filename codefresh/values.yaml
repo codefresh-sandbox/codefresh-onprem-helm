@@ -75,7 +75,7 @@ global:
   ## @param global.mongodbRootUser Default MongoDB root user
   ## @param global.mongodbRootPassword Default MongoDB root password
   ## @param global.mongodbImage Default Image used in seed-jobs
-  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
+  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
   mongodbDatabase: codefresh
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
@@ -98,7 +98,7 @@ global:
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017
   runtimeMongoDb: codefresh
   ## @param global.postgresService Default Internal Postgresql service address
   ## @param global.postgresHostname Default External Postgresql service address
