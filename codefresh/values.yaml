@@ -34,7 +34,7 @@ global:
   ## !Keep default `true` for now!
   onprem: true
   ###
-  ## When using private docker registry, enable the following seetings to add imagePullSecret 
+  ## When using private docker registry, enable the following seetings to add imagePullSecret
   # privateRegistry: true
   ## Replaces docker registry prefix for images (has to be with trailing /)
   # dockerRegistry: my-registry.artifactory.com/
@@ -367,6 +367,13 @@ mongodb:
   resources:
     requests:
       memory: 64Mi
+###
+nats:
+  auth:
+    enabled: false
+  cluster:
+    auth:
+      enabled: false
 ###
 nomios:
   image:
