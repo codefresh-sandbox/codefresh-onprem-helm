@@ -161,6 +161,7 @@ builder:
   cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
 ###
 cfapi:
+  replicaCount: 2
   github:
     apiPathPrefix: /api/v3
   image: codefresh/cf-api
