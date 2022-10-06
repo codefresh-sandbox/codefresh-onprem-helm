@@ -127,7 +127,7 @@
       },
       "description": "System hybrid runtime environment for kubernetes",
       "runtimeScheduler": {
-          "image": "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.runtimeImages.ENGINE_IMAGE) }}",
+          "image": "{{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.ENGINE_IMAGE) }}",
           "command": [
               "npm",
               "run",
