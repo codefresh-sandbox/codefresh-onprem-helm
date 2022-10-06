@@ -12,9 +12,10 @@ dockerconfigjson:
   auths:
     gcr.io:
       auth: placeholder
+## @section Root
 ## @param firebaseUrl Firebase URL for logs streaming
-## @param firebaseSecret Firebase Secret
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
+## @param firebaseSecret Firebase Secret
 firebaseSecret: placeholder
 ###
 ### TLS certificate for Ingress object
@@ -40,7 +41,7 @@ global:
   certsJobs: null
   ## @param global.privateRegistry When using private docker registry, enable this flag
   privateRegistry: false
-  ## @param global.dockerRegistry Replaces/adds docker registry prefix for images when `privateRegistry` is enabled (has to be with trailing "/")
+  ## @param global.dockerRegistry Replaces/adds docker registry prefix for images when `privateRegistry` is enabled (has to be with trailing `/`)
   dockerRegistry: "" ## e.g. `dockerRegistry: my-registry.artifactory.com/`
   ## @skip global.codefresh
   ## Global codefresh chart name; all subcharts use this name to access secrets and configmaps
@@ -81,9 +82,9 @@ global:
   mongodbRootPassword: XT9nmM8dZD
   mongodbImage: bitnami/mongodb:4.2
   ## @param global.redisService Default Internal Redis service address
-  ## @param global.redisPort Default Internal Redis port number
+  ## @param global.redisPort Default Redis port number
   ## @param global.redisUrl Default External Redis service address
-  ## @param global.redisPassword Default Internal Redis password
+  ## @param global.redisPassword Default Redis password
   redisService: redis-master
   redisPort: 6379
   redisUrl: null
@@ -102,10 +103,10 @@ global:
   runtimeMongoDb: codefresh
   ## @param global.postgresService Default Internal Postgresql service address
   ## @param global.postgresHostname Default External Postgresql service address
-  ## @param global.postgresUser Default Internal Postgresql username
-  ## @param global.postgresPassword Default Internal Postgresql password
-  ## @param global.postgresDatabase Default Internal Postgresql database name
-  ## @param global.postgresPort Default Internal Postgresql port number
+  ## @param global.postgresUser Default Postgresql username
+  ## @param global.postgresPassword Default Postgresql password
+  ## @param global.postgresDatabase Default Postgresql database name
+  ## @param global.postgresPort Default Postgresql port number
   ## @skip global.postgresSeedJob
   postgresService: postgresql
   postgresHostname: null
