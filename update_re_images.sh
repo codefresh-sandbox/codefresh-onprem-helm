@@ -37,14 +37,14 @@ RUNTIME_IMAGES=(
 
 for k in ${RUNTIME_IMAGES[@]}; do
     if [[ "$k" == "ENGINE_IMAGE" ]]; then
-        image="$(jq -er .runtimeScheduler.image $runtimeJson)" 
-        yq eval ".ENGINE_IMAGE = \"$image\"" -i codefresh/values.yaml
+        image="$(jq -er .runtimeScheduler.image $runtimeJson)"
+        yq eval ".runtimeImages.ENGINE_IMAGE = \"$image\"" -i codefresh/values.yaml
     elif [[ "$k" == "DIND_IMAGE" ]]; then
         image="$(jq -er .dockerDaemonScheduler.dindImage $runtimeJson)"
-        yq eval ".DIND_IMAGE = \"$image\"" -i codefresh/values.yaml
+        yq eval ".runtimeImages.DIND_IMAGE = \"$image\"" -i codefresh/values.yaml
     else
-        image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)" 
-        yq eval ".\"$k\" = \"$image\"" -i codefresh/values.yaml
+        image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
+        yq eval ".runtimeImages.\"$k\" = \"$image\"" -i codefresh/values.yaml
     fi
 done
 

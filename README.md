@@ -1,5 +1,7 @@
 # Codefresh On-Premises
 
+[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/codefresh-inc/on-prem%2Fonprem-ci?type=cf-2&key=eyJhbGciOiJIUzI1NiJ9.NTY3MmQ4ZGViNjcyNGI2ZTM1OWFkZjYy.AN2wExsAsq7FseTbVxxWls8muNx_bBUnQWQVS8IgDTI)]( https://g.codefresh.io/pipelines/edit/new/builds?id=5ee8d26e8d2815f4e5146d52&pipeline=onprem-ci&projects=on-prem&projectId=5ee9c5edaa339a29053f7498)
+
 ## Prerequisites
 
 - Kubernetes 1.19+
