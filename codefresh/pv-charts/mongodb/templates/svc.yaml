@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  {{- if  or .Values.global.onprem .Values.global.dynamic }}
+  {{- if  or $.Values.global.onprem .Values.global.dynamic }}
   name: mongodb
-  {{- else -}}
+  {{- else }}
   name: {{ template "fullname" . }}
   {{- end }}
   labels:
