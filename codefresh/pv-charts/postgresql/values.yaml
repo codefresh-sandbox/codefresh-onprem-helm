@@ -1,3 +1,6 @@
+global:
+  onprem: null
+
 ## postgres image repository
 image: "postgres"
 ## postgres image version
@@ -38,7 +41,6 @@ persistence:
   ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
   ## Default: volume.alpha.kubernetes.io/storage-class: default
   ##
-  # storageClass:
   accessMode: ReadWriteOnce
   size: 8Gi
   subPath: "postgresql-db"

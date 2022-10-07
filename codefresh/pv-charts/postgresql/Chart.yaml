@@ -1,7 +1,6 @@
-appVersion: 13
+apiVersion: v2
 description: Object-relational database management system (ORDBMS) with an emphasis
   on extensibility and on standards-compliance.
-engine: gotpl
 home: https://www.postgresql.org/
 icon: https://www.postgresql.org/media/img/about/press/elephant.png
 keywords:
@@ -17,3 +16,4 @@ sources:
 - https://github.com/kubernetes/charts
 - https://github.com/docker-library/postgres
 version: 0.7.2
+appVersion: 13.0.0

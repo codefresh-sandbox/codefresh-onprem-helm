@@ -46,36 +46,36 @@ spec:
           - name: MONGO_URI_RE_MANAGER
             value: {{ include "calculateMongoURI" (dict "dbName" "runtime-environment-manager" "mongoURI" .Values.global.mongoURI) }}
           - name: DIND_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.DIND_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.DIND_IMAGE) }}
           - name: ENGINE_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.ENGINE_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.ENGINE_IMAGE) }}
           - name: DOCKER_PUSHER_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.DOCKER_PUSHER_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.DOCKER_PUSHER_IMAGE) }}
           - name: DOCKER_PULLER_IMAGE
-            value: {{  include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.DOCKER_PULLER_IMAGE) }}
+            value: {{  include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.DOCKER_PULLER_IMAGE) }}
           - name: DOCKER_BUILDER_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.DOCKER_BUILDER_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.DOCKER_BUILDER_IMAGE) }}
           - name: CONTAINER_LOGGER_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.CONTAINER_LOGGER_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.CONTAINER_LOGGER_IMAGE) }}
           - name: GIT_CLONE_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.GIT_CLONE_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.GIT_CLONE_IMAGE) }}
           - name: DOCKER_TAG_PUSHER_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.DOCKER_TAG_PUSHER_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.DOCKER_TAG_PUSHER_IMAGE) }}
           - name: FS_OPS_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.FS_OPS_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.FS_OPS_IMAGE) }}
           - name: COMPOSE_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.COMPOSE_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.COMPOSE_IMAGE) }}
           - name: KUBE_DEPLOY
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.KUBE_DEPLOY) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.KUBE_DEPLOY) }}
           - name: TEMPLATE_ENGINE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.TEMPLATE_ENGINE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.TEMPLATE_ENGINE) }}
           - name: PIPELINE_DEBUGGER_IMAGE
-            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.PIPELINE_DEBUGGER_IMAGE) }}
+            value: {{ include "buildImageName" (dict "registry" .Values.global.dockerRegistry "imageFullName" .Values.runtimeImages.PIPELINE_DEBUGGER_IMAGE) }}
         command:
           - "/bin/bash"
           - "-c"
           - |
-{{ .Files.Get (print .Values.updateDefREImgScript ) | indent 12  }}
+{{ .Files.Get "files/on-prem/updateDefREImgScript" | indent 12  }}
         volumeMounts:
         {{- if $.Values.global.mongoTLS }}
         - mountPath: /etc/ssl/mongodb/

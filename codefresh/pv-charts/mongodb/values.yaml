@@ -1,3 +1,6 @@
+global:
+  onprem: null
+
 ## Bitnami MongoDB image version
 ## ref: https://hub.docker.com/r/bitnami/mongodb/tags/
 ##
