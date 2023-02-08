@@ -1,0 +1,133 @@
+{{- if and (.Values.postgresql.migration.enabled) (.Values.postgresql.enabled) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fullname" . }}-psql-dump
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "5"
+spec:
+  ttlSecondsAfterFinished: 180
+  template:
+    metadata:
+      name: {{ include "fullname" . }}-psql-dump
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- with .Values.postgresql.migration.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.migration.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: psql-backup
+        {{- if .Values.global.privateRegistry }}
+        image: {{ .Values.global.dockerRegistry }}/bitnami/postgresql:13
+        {{- else }}
+        image: bitnami/postgresql:13
+        {{- end }}
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+            set -euxo pipefail
+            pg_dump -Fc --dbname audit -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f /pgdata/audit.dump
+        env:
+        - name: PGPASSWORD
+          value: {{ coalesce .Values.postgresql.postgresPassword .Values.postgresql.auth.postgresPassword | quote }}
+        - name: POSTGRES_HOST
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
+        - name: POSTGRES_PORT
+          value: {{ .Values.global.postgresPort | default "5432" | quote }}
+        securityContext:
+          runAsUser: 1001
+        {{- with .Values.postgresql.migration.resources }}
+        resources: {{ toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: data
+          mountPath: /pgdata
+      securityContext:
+        fsGroup: 1001
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.postgresql.migration.existingClaim  | default (printf "%s-psql-dump-pvc" ( include "fullname" . )) }}
+      restartPolicy: OnFailure
+      dnsPolicy: ClusterFirst
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fullname" . }}-psql-restore
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "5"
+spec:
+  ttlSecondsAfterFinished: 180
+  template:
+    metadata:
+      name: {{ include "fullname" . }}-psql-restore
+      labels:
+        app: {{ template "fullname" . }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+        release: {{ .Release.Name  | quote }}
+        heritage: {{ .Release.Service  | quote }}
+    spec:
+      {{- with .Values.postgresql.migration.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.migration.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: psql-restore
+        {{- if .Values.global.privateRegistry }}
+        image: {{ .Values.global.dockerRegistry }}/bitnami/postgresql:13
+        {{- else }}
+        image: bitnami/postgresql:13
+        {{- end }}
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+            set -euxo pipefail
+            pg_restore -Fc --create --clean --if-exists --dbname postgres -U postgres -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} /pgdata/audit.dump
+        env:
+        - name: PGPASSWORD
+          value: {{ .Values.postgresql.auth.postgresPassword | quote }}
+        - name: POSTGRES_HOST
+          value: "{{ .Release.Name }}-{{ .Values.global.postgresService }}"
+        - name: POSTGRES_PORT
+          value: {{ .Values.postgresql.primary.service.ports.postgresql | quote }}
+        securityContext:
+          runAsUser: 1001
+        {{- with .Values.postgresql.migration.resources }}
+        resources: {{ toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: data
+          mountPath: /pgdata
+      securityContext:
+        fsGroup: 1001
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.postgresql.migration.existingClaim  | default (printf "%s-psql-dump-pvc" ( include "fullname" . )) }}
+      restartPolicy: OnFailure
+      dnsPolicy: ClusterFirst
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if and (.Values.postgresql.migration.enabled) (.Values.postgresql.enabled) (not .Values.postgresql.migration.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "fullname" . }}-psql-dump-pvc
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name  | quote }}
+    heritage: {{ .Release.Service  | quote }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/resource-policy": keep
+    "helm.sh/hook-weight": "-5"
+spec:
+  storageClassName: {{ coalesce .Values.postgresql.migration.storageClass .Values.postgresql.primary.persistence.storageClass .Values.global.storageClass | default nil }}
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ coalesce .Values.postgresql.migration.pvcSize .Values.postgresql.primary.persistence.size }}
+{{- end }}

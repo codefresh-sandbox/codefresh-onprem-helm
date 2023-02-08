@@ -1,27 +1,4 @@
-{{- if .Values.global.postgresSeedJob }}
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  labels:
-    app: {{ template "fullname" . }}
-  name: {{ template "fullname" . }}-postgres-creds
-data:
-  user: |-
-    {{ required "postgresUser value is required" .Values.global.postgresUser | b64enc }}
-  password: |-
-    {{ required "postgresPassword value is required" .Values.global.postgresPassword | b64enc }}
-  seedJobUser: |-
-    {{ .Values.global.postgresSeedJob.user | default .Values.global.postgresUser | b64enc }}
-  seedJobPassword: |-
-    {{ .Values.global.postgresSeedJob.password | default .Values.global.postgresPassword | b64enc }}
-  database: |-
-    {{ .Values.global.postgresDatabase | default "codefresh" | b64enc }}
-  host: |-
-    {{ required "postgresHost value is required" .Values.global.postgresHostname | b64enc }}
-  port: |-
-    {{ .Values.global.postgresPort | default "5432" | toString | b64enc }}
----
+{{- if .Values.global.postgresSeedJob.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -51,9 +28,9 @@ spec:
       containers:
       - name: {{ template "fullname" . }}-seed-postgres
         {{- if .Values.global.privateRegistry }}
-        image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
+        image: {{ .Values.global.dockerRegistry }}{{ .Values.postgresql.image.repository | default "postgres" }}:{{ .Values.postgresql.image.tag | default "13" }}
         {{- else }}
-        image: {{ .Values.postgresql.image | default "postgres" }}:{{ .Values.postgresql.imageTag | default "13" }}
+        image: {{ .Values.postgresql.image.repository | default "postgres" }}:{{ .Values.postgresql.image.tag | default "13" }}
         {{- end }}
         imagePullPolicy: IfNotPresent
         env:

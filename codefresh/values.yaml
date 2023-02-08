@@ -1,17 +1,17 @@
-## @section Tags
-## @param tags.cf-infra Enable Codefresh Classic services(charts)
-## @param tags.argo-platform (WIP) Enable Codefresh Argo-Platform services(charts)
+### @section Tags
+## @skip tags
 tags:
   cf-infra: true
-  argo-platform: false
 ### dockerconfigjson used to create imagePullSecret to pull Codefresh images
 ### obtain GCR Service Account JSON from Codefresh and replace `placeholder`
 ### `DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n') && echo $DOCKER_CFG_VAR`
 ## @skip dockerconfigjson
-dockerconfigjson:
-  auths:
-    gcr.io:
-      auth: placeholder
+## e.g.:
+## dockerconfigjson:
+##   auths:
+##     gcr.io:
+##       auth: placeholder
+dockerconfigjson: {}
 ## @section Root
 ## @param firebaseUrl Firebase URL for logs streaming
 firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
@@ -39,6 +39,9 @@ global:
   seedJobs: null
   ## @param global.certsJobs Generate self-signed certificates for Builder/Runner. Used in on-prem environments. `true/false`
   certsJobs: null
+  ## @param global.postgresSeedJob Instantiate EXTERNAL Postgresql databases with seed data. Used in on-prem environments.
+  postgresSeedJob:
+    enabled: false
   ## @param global.privateRegistry When using private docker registry, enable this flag
   privateRegistry: false
   ## @param global.dockerRegistry Replaces/adds docker registry prefix for images when `privateRegistry` is enabled (has to be with trailing `/`)
@@ -55,6 +58,8 @@ global:
   cfapiInternalPort: 3000
   ## @skip global.builderService
   builderService: builder
+  ## @skip global.runnerService
+  runnerService: runner
   ## @skip global.tlsSignService
   ## @skip global.tlsSignPort
   tlsSignService: cfsign
@@ -76,7 +81,7 @@ global:
   ## @param global.mongodbRootUser Default MongoDB root user
   ## @param global.mongodbRootPassword Default MongoDB root password
   ## @param global.mongodbImage Default Image used in seed-jobs
-  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@mongodb:27017"
+  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
   mongodbDatabase: codefresh
   mongodbRootUser: root
   mongodbRootPassword: XT9nmM8dZD
@@ -99,7 +104,7 @@ global:
   runtimeRedisPassword: hoC9szf7NtrU
   runtimeRedisDb: "1"
   runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@mongodb:27017
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
   runtimeMongoDb: codefresh
   ## @param global.postgresService Default Internal Postgresql service address
   ## @param global.postgresHostname Default External Postgresql service address
@@ -164,7 +169,6 @@ global:
   ## @skip global.runnerService
   registryService: registry
   registryPort: 5000
-  runnerService: runner
   ## PLACEHOLDERS
   ## @skip global.githubInternalToken
   ## @skip global.githubClientSecret
@@ -199,8 +203,8 @@ builder:
   dindImage: docker:20.10.13-dind
   cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
 ## @skip cfapi
-cfapi:
-  replicaCount: 2
+cfapi: &cf-api
+  enabled: true
   github:
     apiPathPrefix: /api/v3
   image: codefresh/cf-api
@@ -212,6 +216,54 @@ cfapi:
     AUDIT_AUTO_CREATE_DB: true
     LOGGER_LEVEL: debug
     RUNTIME_MONGO_DB: codefresh
+cfapi-internal:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-ws:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-admin:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-endpoints:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-terminators:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-sso-group-synchronizer:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-buildmanager:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-cacheevictmanager:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-eventsmanagersubscriptions:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-kubernetesresourcemonitor:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-environments:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-gitops-resource-receiver:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-downloadlogmanager:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-teams:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-kubernetes-endpoints:
+  !!merge <<: *cf-api
+  enabled: false
+cfapi-test-reporting:
+  !!merge <<: *cf-api
+  enabled: false
 ## @skip cf-broadcaster
 cf-broadcaster:
   replicaCount: 1
@@ -240,7 +292,7 @@ charts-manager:
   image: codefresh/charts-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://mongodb:27017/charts-manager
+    MONGO_URI: mongodb://cf-mongodb:27017/charts-manager
     POSTGRES_HOST: cf-postgresql
     EVENTBUS_URI: amqp://cf-rabbitmq
     CONTEXT_MANAGER_URI: cf-context-manager
@@ -265,7 +317,7 @@ context-manager:
   image: codefresh/context-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://mongodb:27017/context-manager
+    MONGO_URI: mongodb://cf-mongodb:27017/context-manager
     EVENTBUS_URI: amqp://cf-rabbitmq
     POSTGRES_HOST: cf-postgresql
 ## @skip cronus
@@ -303,7 +355,7 @@ helm-repo-manager:
       # kubernetes.io/tls-acme: "true"
     image:
       repository: ghcr.io/helm/chartmuseum
-      tag: v0.15.0
+      tag: canary
     env:
       open:
         STORAGE: local
@@ -343,15 +395,7 @@ ingress-nginx:
       client-body-buffer-size: "16k"
       proxy-body-size: "5M"
       log-format-escape-json: "true"
-      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
-        "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user": "$remote_user",
-        "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status,
-        "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query":
-        "$args", "request_length": $request_length, "duration": $request_time, "method":
-        "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent",
-        "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid",
-        "metadata": { "correlationId": "$request_id", "service": "ingress", "time":
-        "$time_iso8601" } }'
+      log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'
 ## @skip ingress
 ingress:
   enabled: true
@@ -377,18 +421,23 @@ kube-integration:
   replicaCount: 1
   image: codefresh/kube-integration
   dockerRegistry: gcr.io/codefresh-enterprise/
+## @skip mongo
+mongo:
+  enabled: true
 ## @skip mongodb
 mongodb:
-  image: bitnami/mongodb:4.2
-  mongodbRootPassword: XT9nmM8dZD
-  # version: "4.2" # default tag; overrides tag in `mongodb.image` field
+  image:
+    tag: "4.2"
+  architecture: standalone
+  useStatefulSet: true
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: "XT9nmM8dZD"
+  persistence:
+    size: 8Gi
   migration:
     enabled: false
-    setFeatureCompat: "3.6"
-  nodeSelector: {}
-  resources:
-    requests:
-      memory: 64Mi
 ## @skip nats
 nats:
   replicaCount: 1
@@ -404,15 +453,27 @@ nomios:
     dockerRegistry: gcr.io/codefresh-enterprise/
 ## @skip postgresql
 postgresql:
-  postgresDatabase: codefresh
-  postgresUser: postgres
-  postgresPassword: eC9arYka4ZbH
+  enabled: true
+  image:
+    tag: 13
+  auth:
+    enablePostgresUser: true
+    postgresPassword: eC9arYka4ZbH
+    database: codefresh
+  architecture: standalone
+  primary:
+    persistence:
+      size: 8Gi
   cleanJob:
     enabled: true
-  nodeSelector: {}
-  resources:
-    requests:
-      memory: 128Mi
+  migration:
+    enabled: false
+    # storageClass: standard
+    # pvcSize: 8Gi
+    existingClaim: ""
+    nodeSelector: {}
+    tolerations: []
+    resources: {}
 ## @skip redis
 redis:
   enabled: true
@@ -424,7 +485,7 @@ redis:
     persistence:
       size: 8Gi
   pdb:
-    create: true
+    create: false
   metrics:
     enabled: false
 ## @skip rabbitmq
@@ -432,7 +493,7 @@ rabbitmq:
   enabled: true
   replicaCount: 1
   pdb:
-    create: true
+    create: false
   persistence:
     size: 8Gi
   metrics:
@@ -441,6 +502,12 @@ rabbitmq:
     username: user
     password: "cVz9ZdJKYm7u"
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
+## @skip runner
+runner:
+  replicaCount: 1
+  curlImage: quay.io/codefresh/curl:latest
+  dindImage: docker:20.10.13-dind
+  cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
 ## @skip pipeline-manager
 pipeline-manager:
   replicaCount: 1
@@ -449,7 +516,7 @@ pipeline-manager:
   image: codefresh/pipeline-manager
   dockerRegistry: gcr.io/codefresh-enterprise/
   environment:
-    MONGO_URI: mongodb://mongodb:27017/pipeline-manager
+    MONGO_URI: mongodb://cf-mongodb:27017/pipeline-manager
     INTERNAL_API_URI: http://cf-cfapi:9007
 ## @skip runtime-environment-manager
 runtime-environment-manager:
@@ -467,16 +534,16 @@ tasker-kubernetes:
   dockerRegistry: gcr.io/codefresh-enterprise/
 ## @skip runtimeImages
 runtimeImages:
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.148.5
-  DIND_IMAGE: quay.io/codefresh/dind:20.10.13-1.25.2
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.8.3
-  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.8
-  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.6
-  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.8
-  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.19
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.12
-  COMPOSE_IMAGE: quay.io/codefresh/compose:1.2.5
-  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.8
-  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.1
-  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.4
-  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.2.0
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.158.2
+  DIND_IMAGE: quay.io/codefresh/dind:20.10.18-1.25.4
+  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.9.0
+  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.10
+  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.8
+  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.9
+  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.20
+  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.17
+  COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
+  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.11
+  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.3
+  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.6
+  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0

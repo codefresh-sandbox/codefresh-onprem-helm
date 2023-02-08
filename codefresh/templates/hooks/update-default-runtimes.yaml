@@ -8,11 +8,7 @@ metadata:
     release: {{ .Release.Name  | quote }}
     heritage: {{ .Release.Service  | quote }}
   annotations:
-    {{- if $.Values.global.mongoTLS }} # run hook after mongodb-tls secret is created
     "helm.sh/hook": post-upgrade
-    {{- else }}
-    "helm.sh/hook": pre-upgrade
-    {{- end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   template:
