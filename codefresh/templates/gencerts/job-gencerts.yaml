@@ -1,0 +1,69 @@
+{{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+{{- if or .Values.global.certsJobs .Values.gencerts.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "codefresh.fullname" . }}-gencerts
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.gencerts.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ . }}
+  {{- end }}
+  {{- with .Values.gencerts.backoffLimit }}
+  backoffLimit: {{ . | int }}
+  {{- end }}
+  template:
+    metadata:
+      name: {{ template "codefresh.fullname" . }}-gencerts
+      labels:
+        {{ include "codefresh.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.gencerts.rbac.enabled }}
+      serviceAccountName: {{ template "codefresh.fullname" . }}-gencerts
+      {{- end }}
+      {{- if .Values.global.imageRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      {{- if not .Values.global.clientCertsCA }}
+      - name: {{ template "codefresh.fullname" . }}-runtime-certs
+        image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.gencerts.image "context" .) }}
+        command: ["/bin/sh", "/opt/codefresh/gen-runtime-certs.sh"]
+        resources:
+          {{- toYaml .Values.gencerts.resources | nindent 10 }}
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-runtime-certs.sh"
+          subPath: "gen-runtime-certs.sh"
+      {{- end }}
+      {{- if not .Values.webTLS.enabled }}
+      - name: {{ template "codefresh.fullname" . }}-ingress-cert
+        image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.gencerts.image "context" .) }}
+        command: ["/bin/sh", "/opt/codefresh/gen-ingress-tls.sh"]
+        resources:
+          {{- toYaml .Values.gencerts.resources | nindent 10 }}
+        volumeMounts:
+        - name: tools
+          mountPath: "/opt/codefresh/gen-ingress-tls.sh"
+          subPath: "gen-ingress-tls.sh"
+      {{- end }}
+      {{- with .Values.gencerts.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.gencerts.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8}}
+      {{- end }}
+      {{- with .Values.gencerts.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      restartPolicy: OnFailure
+      volumes:
+      - name: tools
+        configMap:
+          name: {{ template "codefresh.fullname" . }}-gencerts
+{{- end }}

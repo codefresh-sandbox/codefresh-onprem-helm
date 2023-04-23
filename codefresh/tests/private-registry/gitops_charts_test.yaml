@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/quintush/helm-unittest/master/schema/helm-testsuite.json
+suite: (Argo-Platform) should test image private registry prefix
+templates:
+  - charts/argo-platform/templates/abac/*.yaml
+  - charts/argo-platform/templates/analytics-reporter/*.yaml
+  - charts/argo-platform/templates/api-events/*.yaml
+  - charts/argo-platform/templates/api-graphql/*.yaml
+  - charts/argo-platform/templates/audit/*.yaml
+  - charts/argo-platform/templates/cron-executor/*.yaml
+  - charts/argo-platform/templates/event-handler/*.yaml
+  - charts/argo-platform/templates/ui/*.yaml
+tests:
+  - it: "(Argo-Platform) should test image private registry prefix"
+    values:
+      - ../values/private-registry.yaml
+    asserts:
+      # abac
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/abac/deployment.yaml
+      # analytics-reporter
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/analytics-reporter/deployment.yaml
+      # api-events
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/api-events/deployment.yaml
+      # api-graphql
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/api-graphql/deployment.yaml
+      # audit
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/audit/deployment.yaml
+      # cron-executor
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/cron-executor/deployment.yaml
+      # event-handler
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/event-handler/deployment.yaml
+      # ui
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-platform/templates/ui/deployment.yaml

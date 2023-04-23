@@ -1,380 +1,618 @@
-### @section Tags
-## @skip tags
-tags:
-  cf-infra: true
-### dockerconfigjson used to create imagePullSecret to pull Codefresh images
-### obtain GCR Service Account JSON from Codefresh and replace `placeholder`
-### `DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n') && echo $DOCKER_CFG_VAR`
-## @skip dockerconfigjson
-## e.g.:
-## dockerconfigjson:
-##   auths:
-##     gcr.io:
-##       auth: placeholder
+# -- Credentials for Image Pull Secret object
+imageCredentials: {}
+# Pass sa.json (as a single line). Obtain GCR Service Account JSON (sa.json) at support@codefresh.io
+# E.g.:
+# imageCredentials:
+#   registry: gcr.io
+#   username: _json_key
+#   password: '{ "type": "service_account", "project_id": "codefresh-enterprise", "private_key_id": ... }'
+
+# -- DEPRECATED - Use `.imageCredentials` instead
+# dockerconfig (for `kcfi` tool backward compatibility) for Image Pull Secret. Obtain GCR Service Account JSON (sa.json) at support@codefresh.io
+# ```shell
+# GCR_SA_KEY_B64=$(cat sa.json | base64)
+# DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n')
+# ```
+# E.g.:
+# dockerconfigjson:
+#   auths:
+#     gcr.io:
+#       auth: <DOCKER_CFG_VAR>
 dockerconfigjson: {}
-## @section Root
-## @param firebaseUrl Firebase URL for logs streaming
-firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
-## @param firebaseSecret Firebase Secret
-firebaseSecret: placeholder
-###
-### TLS certificate for Ingress object
-### Uncomment `webTLS` to create tls secret from existing certificate and private key, otherwise tls secret with self-signed certificate will be created.
-# webTLS:
-#   secretName: star.codefresh.io
-#   cert: |
-#     -----BEGIN CERTIFICATE-----
-#     -----END CERTIFICATE-----
-#   key: |
-#     -----BEGIN RSA PRIVATE KEY-----
-#     -----END RSA PRIVATE KEY-----
-## @section Global parameters
-global:
-  ## @param global.appUrl Application root url
-  appUrl: onprem.codefresh.local
-  ## @skip global.appProtocol
-  ## Application protocol
-  appProtocol: https
-  ## @param global.seedJobs Instantiate databases with seed data. Used in on-prem environments. `true/false`
-  seedJobs: null
-  ## @param global.certsJobs Generate self-signed certificates for Builder/Runner. Used in on-prem environments. `true/false`
-  certsJobs: null
-  ## @param global.postgresSeedJob Instantiate EXTERNAL Postgresql databases with seed data. Used in on-prem environments.
+
+# -- Job to generate internal runtime secrets. Required at first install.
+# @default -- See below
+gencerts:
+  enabled: true
+  image:
+    registry: quay.io
+    repository: codefresh/generate-certs
+    tag: latest
+  rbac:
+    enabled: true
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
+
+# -- Seed jobs
+# @default -- See below
+seed:
+  # -- Disable all seed jobs
+  enabled: true
+  # -- Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases.
+  # @default -- See below
+  mongoSeedJob:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: bitnami/mongodb
+      tag: 4.2
+  # -- Postgres Seed Job. Required at first install. Creates required user and databases.
+  # @default -- See below
   postgresSeedJob:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: 13
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 10
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
+
+# -- Pre/post-upgrade Job hooks. Updates images in `system/default` runtime.
+hooks:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/mongodb
+    tag: 4.2
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
+
+# -- DEPRECATED - Use `.Values.ingress.tls` instead
+# TLS secret for Ingress
+webTLS:
+  enabled: false
+  secretName: star.codefresh.io
+  cert: ""
+  key: ""
+
+# -- Ingress
+ingress:
+  # -- Enable the Ingress
+  enabled: true
+  # -- Set the ingressClass that is used for the ingress.
+  # Default `nginx-codefresh` is created from `ingress-nginx` controller subchart
+  ingressClassName: nginx-codefresh
+  tls:
+    # -- Enable TLS
     enabled: false
-  ## @param global.privateRegistry When using private docker registry, enable this flag
+    # -- Default secret name to be created with provided `cert` and `key` below
+    secretName: "star.codefresh.io"
+    # -- Certificate (base64 encoded)
+    cert: ""
+    # -- Private key (base64 encoded)
+    key: ""
+    # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
+    existingSecret: ""
+  # -- Default services and corresponding paths
+  # @default -- See below
+  services:
+    cfapi:
+      - /api/
+      - /ws
+    cfui:
+      - /
+    nomios:
+      - /nomios/
+  # -- Set annotations for ingress.
+  # @default -- See below
+  annotations:
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.org/redirect-to-https: "false"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Request-ID: $request_id";
+      proxy_set_header X-Request-ID $request_id;
+
+# -- Global parameters
+# @default -- See below
+global:
+  # -- Application root url. Will be used in Ingress objects as hostname
+  appUrl: onprem.codefresh.local
+  # -- Application protocol.
+  appProtocol: https
+
+  # -- Firebase URL for logs streaming.
+  firebaseUrl: "https://codefresh-on-prem.firebaseio.com/on-prem"
+  # -- Firebase Secret.
+  firebaseSecret: ""
+
+  # -- Global Docker image registry
+  imageRegistry: ""
+
+  # -- Global StorageClass for Persistent Volume(s)
+  storageClass: ""
+
+  # -- Global Env vars
+  env: {}
+
+  # -- Definitions to set up internal-gateway nginx resolver
+  dnsService: kube-dns
+  dnsNamespace: kube-system
+  clusterDomain: cluster.local
+
+  # -- DEPRECATED - Use `.Values.gencerts`
+  # Generate self-signed certificates for internal runtime. Used in on-prem environments.
+  certsJobs: false
+
+  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` and `.Values.seed.postgresSeedJob` and instead
+  # Instantiate databases with seed data. Used in on-prem environments.
+  seedJobs: false
+
+  # -- DEPRECATED - Use `.Values.global.imageRegistry` instead
   privateRegistry: false
-  ## @param global.dockerRegistry Replaces/adds docker registry prefix for images when `privateRegistry` is enabled (has to be with trailing `/`)
-  dockerRegistry: "" ## e.g. `dockerRegistry: my-registry.artifactory.com/`
-  ## @skip global.codefresh
-  ## Global codefresh chart name; all subcharts use this name to access secrets and configmaps
+  dockerRegistry: ""
+
+  # -- Keep `codefresh` as default!
+  # Global codefresh chart name. All subcharts use this name to access secrets and configmaps.
   codefresh: codefresh
-  ## @skip global.onprem
-  ## Keep true as default for now!
+  # -- Keep `true` as default!
   onprem: true
-  ## @skip global.cfapiService
-  ## @skip global.cfapiInternalPort
+
+#----------------------------------
+# Codefresh services. Don't change!
+#----------------------------------
+  # -- Default API service name.
   cfapiService: cfapi
+  # -- Default API service port.
   cfapiInternalPort: 3000
-  ## @skip global.builderService
+  # -- Default builder service name.
   builderService: builder
-  ## @skip global.runnerService
+  # -- Default runner service name.
   runnerService: runner
-  ## @skip global.tlsSignService
-  ## @skip global.tlsSignPort
+  # -- Default tls-sign service name.
   tlsSignService: cfsign
+  # -- Default tls-sign service port.
   tlsSignPort: 4999
-  ## @skip global.natsService
-  ## @skip global.natsPort
+  # -- Default nats service name.
   natsService: nats
+  # -- Default nats service port.
   natsPort: 4222
-  ## @param global.rabbitService Default Internal RabbitMQ service address
-  ## @param global.rabbitmqHostname External RabbitMQ service address
-  ## @param global.rabbitmqUsername Default RabbitMQ username
-  ## @param global.rabbitmqPassword Default RabbitMQ password
-  rabbitService: rabbitmq
-  rabbitmqHostname: null
-  rabbitmqUsername: user
-  rabbitmqPassword: cVz9ZdJKYm7u
-  ## @param global.mongoURI Default Internal MongoDB URI
-  ## @param global.mongodbDatabase Default MongoDB database name
-  ## @param global.mongodbRootUser Default MongoDB root user
-  ## @param global.mongodbRootPassword Default MongoDB root password
-  ## @param global.mongodbImage Default Image used in seed-jobs
-  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
-  mongodbDatabase: codefresh
-  mongodbRootUser: root
-  mongodbRootPassword: XT9nmM8dZD
-  mongodbImage: bitnami/mongodb:4.2
-  ## @param global.redisService Default Internal Redis service address
-  ## @param global.redisPort Default Redis port number
-  ## @param global.redisUrl Default External Redis service address
-  ## @param global.redisPassword Default Redis password
-  redisService: redis-master
-  redisPort: 6379
-  redisUrl: null
-  redisPassword: hoC9szf7NtrU
-  ## @param global.runtimeRedisHost Default for OfflineLogging feature
-  ## @param global.runtimeRedisPassword Default for OfflineLogging feature
-  ## @param global.runtimeRedisDb Default for OfflineLogging feature
-  ## @param global.runtimeRedisPort Default for OfflineLogging feature
-  ## @param global.runtimeMongoURI Default for OfflineLogging feature
-  ## @param global.runtimeMongoDb Default for OfflineLogging feature
-  runtimeRedisHost: cf-redis-master
-  runtimeRedisPassword: hoC9szf7NtrU
-  runtimeRedisDb: "1"
-  runtimeRedisPort: "6379"
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
-  runtimeMongoDb: codefresh
-  ## @param global.postgresService Default Internal Postgresql service address
-  ## @param global.postgresHostname Default External Postgresql service address
-  ## @param global.postgresUser Default Postgresql username
-  ## @param global.postgresPassword Default Postgresql password
-  ## @param global.postgresDatabase Default Postgresql database name
-  ## @param global.postgresPort Default Postgresql port number
-  ## @skip global.postgresSeedJob
-  postgresService: postgresql
-  postgresHostname: null
-  postgresUser: postgres
-  postgresPassword: eC9arYka4ZbH
-  postgresDatabase: codefresh
-  postgresPort: 5432
-  ## @skip global.consulService
-  ## @skip global.consulHttpPort
+  # -- Default Consul service name.
   consulService: consul-headless
+  # -- Default Consul service port.
   consulHttpPort: 8500
-  ## @skip global.clusterProvidersService
-  ## @skip global.clusterProvidersPort
+  # -- Default cluster-providers service name.
   clusterProvidersService: cluster-providers
+  # -- Default cluster-providers service port.
   clusterProvidersPort: 9000
-  ## @skip global.kubeIntegrationService
-  ## @skip global.kubeIntegrationPort
+  # -- Default kube-integration service name.
   kubeIntegrationService: kube-integration
+  # -- Default kube-integration service port.
   kubeIntegrationPort: 9000
-  ## @skip global.chartsManagerService
-  ## @skip global.chartsManagerPort
+  # -- Default charts-manager service name.
   chartsManagerService: charts-manager
+  # -- Default chart-manager service port.
   chartsManagerPort: 9000
-  ## @skip global.contextManagerService
-  ## @skip global.contextManagerPort
+  # -- Default context-manager service name.
   contextManagerService: context-manager
+  # -- Default context-manager service port.
   contextManagerPort: 9000
-  ## @skip global.pipelineManagerService
-  ## @skip global.pipelineManagerPort
+  # -- Default pipeline-manager service name.
   pipelineManagerService: pipeline-manager
+  # -- Default pipeline-manager service port.
   pipelineManagerPort: 9000
-  ## @skip global.gitopsDashboardManagerService
-  ## @skip global.gitopsDashboardManagerDatabase
-  ## @skip global.gitopsDashboardManagerPort
+  # -- Default gitops-dashboarad-manager service name.
   gitopsDashboardManagerService: gitops-dashboard-manager
-  gitopsDashboardManagerDatabase: pipeline-manager
+  # -- Default gitops-dashboarad-manager service port.
   gitopsDashboardManagerPort: 9000
-  ## @skip global.runtimeEnvironmentManagerService
-  ## @skip global.runtimeEnvironmentManagerPort
+  # -- Default gitops-dashboarad-manager db collection.
+  gitopsDashboardManagerDatabase: pipeline-manager
+  # -- Default runtime-environment-manager service name.
   runtimeEnvironmentManagerService: runtime-environment-manager
+  # -- Default runtime-environment-manager service port.
   runtimeEnvironmentManagerPort: 80
-  ## @skip global.helmRepoManagerService
+  # -- Default helm-repo-manager service name.
   helmRepoManagerService: helm-repo-manager
-  ## @skip global.hermesService
+  # -- Default hermes service name.
   hermesService: hermes
-  ## @skip global.broadcasterService
-  ## @skip global.broadcasterPort
+  # -- Default broadcaster service name.
   broadcasterService: cf-broadcaster
+  # -- Default broadcaster service port.
   broadcasterPort: 80
-  ## @skip global.cfk8smonitorService
+  # -- Default k8s-monitor service name.
   cfk8smonitorService: k8s-monitor
-  ### DEPRECATED
-  ## @skip global.registryService
-  ## @skip global.registryPort
-  ## @skip global.runnerService
-  registryService: registry
-  registryPort: 5000
-  ## PLACEHOLDERS
-  ## @skip global.githubInternalToken
-  ## @skip global.githubClientSecret
-  ## @skip global.githubClientID
-  ## @skip global.gitlabClientID
-  ## @skip global.gitlabClientSecret
-  ## @skip global.bitbucketClientID
-  ## @skip global.bitbucketClientSecret
-  ## @skip global.cfcrDomain
-  ## @skip global.gceProject
-  ## @skip global.stepsCatalogOnPremise
-  githubInternalToken: placeholder
-  githubClientSecret: placeholder
-  githubClientID: placeholder
-  gitlabClientID: placeholder
-  gitlabClientSecret: placeholder
-  bitbucketClientID: invalid-id
-  bitbucketClientSecret: invalid-secret
-  cfcrDomain: ""
+  # -- Default platform-analytics service name.
+  platformAnalyticsService: platform-analytics
+  # -- Default platform-analytics service port.
+  platformAnalyticsPort: 80
+
+#--------
+# MongoDB
+#--------
+  # -- Default Internal MongoDB URI (from bitnami/mongodb subchart). Change if you use external MongoDB. See "External MongoDB" example below.
+  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin"
+  # -- Default MongoDB database name.
+  mongodbDatabase: codefresh
+  # -- Root user required for seed jobs.
+  mongodbRootUser: root
+  # -- Root password required for seed jobs.
+  mongodbRootPassword: XT9nmM8dZD
+
+  # Mongo parameters for OfflineLogging. Should match the parameters above.
+  # -- Default Internal MongoDB URI
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin
+  # -- Default Internal MongoDB database name
+  runtimeMongoDb: codefresh
+
+  # External MongoDB example
+  # global:
+  #   # -- Use root user to create `cf_user` and databases
+  #   mongodbRootUser: root
+  #   # -- Password for root user
+  #   mongodbRootPassword: password
+  #   mongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
+  #   runtimeMongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
+
+  # mongodb:
+  #   enabled: false
+
+#-----------
+# Postgresql
+#-----------
+  # -- Default Internal Postgresql service address (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below.
+  postgresService: postgresql
+  # -- Default Postgresql username (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below.
+  postgresUser: postgres
+  # -- Default Postgresql password (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below.
+  postgresPassword: eC9arYka4ZbH
+  # -- Default Postgresql database name (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below.
+  postgresDatabase: codefresh
+  # -- Default Postgresql port number (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below.
+  postgresPort: 5432
+  # -- Set External Postgresql service address. Takes precedence over `global.postgresService`. See "External Postgresql" example below.
+  postgresHostname: ""
+
+  # # External Postgresql example
+  # global:
+  #   postgresHostname: my-postgres.ccjog7pqzunf.us-west-2.rds.amazonaws.com
+  #   postgresUser: cf_user
+  #   postgresPassword: password
+  #   postgresDatabase: codefresh
+  #   postgresPort: 5432
+  #
+  # postgresql:
+  #   enabled: false    # disable default postgresql subchart installation
+
+#---------
+# RabbitMQ
+#---------
+  # -- Default Internal RabbitMQ service address (from bitnami/rabbitmq subchart).
+  rabbitService: rabbitmq
+  # -- Default RabbitMQ username (from bitnami/rabbitmq subchart). Change if you use external RabbitMQ. See "External RabbitMQ" example below.
+  rabbitmqUsername: user
+  # -- Default RabbitMQ password (from bitnami/rabbitmq subchart). Change if you use external RabbitMQ. See "External RabbitMQ" example below.
+  rabbitmqPassword: cVz9ZdJKYm7u
+  # -- Set External RabbitMQ service address. Takes precedence over `global.rabbitService`. See "External RabbitMQ" example below.
+  rabbitmqHostname: ""
+
+  # # External RabbitMQ example
+  # global:
+  #   rabbitmqHostname: my-rabbitmq.prod.svc.cluster.local
+  #   rabbitmqUsername: user
+  #   rabbitmqPassword: password
+  #
+  # rabbitmq:
+  #   enabled: false    # disable default rabbitmq subchart installation
+
+#------
+# Redis
+#------
+  # -- Default Internal Redis service address (from bitnami/redis subchart).
+  redisService: redis-master
+  # -- Default Internal Redis service port (from bitnami/redis subchart). Change if you use external Redis. See "External Redis" example below.
+  redisPort: 6379
+  # -- Default Redis password (from bitnami/redis subchart). Change if you use external Redis. See "External Redis" example below.
+  redisPassword: hoC9szf7NtrU
+  # -- Set External Redis service address. Takes precedence over `global.redisService`
+  redisUrl: ""
+
+  # Redis parameters for Offline Logging. Should match the parameters above.
+  # -- Default Internal Redis service address (from bitnami/redis subchart).
+  runtimeRedisHost: cf-redis-master
+  # -- Default Redis port number.
+  runtimeRedisPort: "6379"
+  # -- Default Redis password.
+  runtimeRedisPassword: hoC9szf7NtrU
+  # -- Default Redis keyspace number.
+  runtimeRedisDb: "1"
+
+  # # External Redis example
+  # global:
+  #   redisUrl: my-redis.prod.svc.cluster.local
+  #   redisPort: 6379
+  #   redisPassword: password
+
+  #   runtimeRedisHost: my-redis.prod.svc.cluster.local
+  #   runtimeRedisPassword: password
+  #   runtimeRedisPort: 6379
+  #   runtimeRedisDb: 2
+  #
+  # redis:
+  #   enabled: false    # disable default redis subchart installation
+
+  # Legacy
   gceProject: ""
   stepsCatalogOnPremise: "1"
-## @skip rbacEnable
-## create SA for gen-certs job (see global.certsJobs)
-rbacEnable: true
-## @skip certsJobsImage
-## image for gen-certs job (see global.certsJobs)
-certsJobsImage: quay.io/codefresh/generate-certs:latest
-## @skip builder
+
+
+# -- runtimeImages
+# @default -- See below
+runtimeImages:
+  COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
+  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.10.0
+  DIND_IMAGE: quay.io/codefresh/dind:20.10.18-1.25.6
+  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.21
+  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.9
+  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.10
+  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.8
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.162.7
+  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.3
+  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.17
+  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.11
+  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0
+  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.6
+
+#--------------------
+# Codefresh subcharts
+#--------------------
+# -- builder
 builder:
-  replicaCount: 1
-  curlImage: quay.io/codefresh/curl:latest
-  dindImage: docker:20.10.13-dind
-  cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
-## @skip cfapi
+  enabled: true
+
+# -- cf-api
+# @default -- See below
 cfapi: &cf-api
   enabled: true
-  github:
-    apiPathPrefix: /api/v3
-  image: codefresh/cf-api
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  expirationURL: https://codefresh.io/contact-sales
-  rbacEnable: true
-  env:
-    ON_PREMISE: true
-    AUDIT_AUTO_CREATE_DB: true
-    LOGGER_LEVEL: debug
-    RUNTIME_MONGO_DB: codefresh
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+    env:
+      AUDIT_AUTO_CREATE_DB: true
+      GITHUB_API_PATH_PREFIX: /api/v3
+      LOGGER_LEVEL: debug
+      ON_PREMISE: true
+      RUNTIME_MONGO_DB: codefresh
+
+# cfapi roles
+# @ignored internal
 cfapi-internal:
   !!merge <<: *cf-api
   enabled: false
+# @ignored ws
 cfapi-ws:
   !!merge <<: *cf-api
   enabled: false
+# @ignored admin
 cfapi-admin:
   !!merge <<: *cf-api
   enabled: false
+# @ignored endpoints
 cfapi-endpoints:
   !!merge <<: *cf-api
   enabled: false
+# @ignored terminators
 cfapi-terminators:
   !!merge <<: *cf-api
   enabled: false
+# @ignored sso-group-synchronizer
 cfapi-sso-group-synchronizer:
   !!merge <<: *cf-api
   enabled: false
+# @ignored buildmanager
 cfapi-buildmanager:
   !!merge <<: *cf-api
   enabled: false
+# @ignored cacheevictmanager
 cfapi-cacheevictmanager:
   !!merge <<: *cf-api
   enabled: false
+# @ignored eventsmanagersubscriptions
 cfapi-eventsmanagersubscriptions:
   !!merge <<: *cf-api
   enabled: false
+# @ignored kubernetesresourcemonitor
 cfapi-kubernetesresourcemonitor:
   !!merge <<: *cf-api
   enabled: false
+# @ignored environments
 cfapi-environments:
   !!merge <<: *cf-api
   enabled: false
+# @ignored gitops-resource-receiver
 cfapi-gitops-resource-receiver:
   !!merge <<: *cf-api
   enabled: false
+# @ignored downloadlogmanager
 cfapi-downloadlogmanager:
   !!merge <<: *cf-api
   enabled: false
+# @ignored teams
 cfapi-teams:
   !!merge <<: *cf-api
   enabled: false
+# @ignored kubernetes-endpoints
 cfapi-kubernetes-endpoints:
   !!merge <<: *cf-api
   enabled: false
+# @ignored test-reporting
 cfapi-test-reporting:
   !!merge <<: *cf-api
   enabled: false
-## @skip cf-broadcaster
+
+# -- broadcaster
+# @default -- See below
 cf-broadcaster:
-  replicaCount: 1
-  image: codefresh/cf-broadcaster
-  dockerRegistry: gcr.io/codefresh-enterprise/
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
   env:
     RUNTIME_MONGO_DB: codefresh
-## @skip cfsign
-cfsign:
-  replicaCount: 1
-  image: codefresh/cf-tls-sign
-  dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip cfui
-cfui:
-  image: codefresh/cf-ui
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  dockercfg: placeholder
-  logglyToken: invalid-token
-  segmentKey: invalid-key
-  newrelicLicenseKey: invalid-key
+
+# -- etl-starter
+# @default -- See below
+cf-platform-analytics-etlstarter:
+  nameOverride: etl-starter
+  controller:
+    enabled: false # disable default deployment controller
+  system-etl-postgres:
+    enabled: true
+  system-etl-gitops:
+    enabled: false
+  system-etl-metabase:
+    enabled: false
+
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+    env:
+      ENV: production
+      DATASET_ID: etl
+      MONGO_DB_DEFAULT_NAME: codefresh
+  redis:
+    enabled: false
+
+  postgresDbName: analytics
+
+# -- platform-analytics
+# @default -- See below
+cf-platform-analytics-platform:
+  nameOverride: platform-analytics
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+  redis:
+    enabled: true
+    nameOverride: redis-platform-analytics
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 500m
   env:
-    ON_PREMISE: true
-## @skip charts-manager
+    ENV: production
+    DATASET_ID: etl
+    NODE_ENV: production
+    CUBEJS_LOG_LEVEL: trace
+    CUBEJS_SCHEDULED_REFRESH_TIMER: 60
+    CUBEJS_DEV_MODE: false
+
+# -- tls-sign
+# @default -- See below
+cfsign:
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+  secrets:
+    cf-ca:
+      enabled: false
+
+# -- cf-ui
+# @default -- See below
+cfui:
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+    env:
+      ON_PREMISE: true
+
+# -- charts-manager
+# @default -- See below
 charts-manager:
-  replicaCount: 1
-  image: codefresh/charts-manager
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/charts-manager
-    POSTGRES_HOST: cf-postgresql
-    EVENTBUS_URI: amqp://cf-rabbitmq
-    CONTEXT_MANAGER_URI: cf-context-manager
-    API_URI: cf-cfapi
-  disablePublicRepos: true
-## @skip cluster-providers
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- cluster-providers
+# @default -- See below
 cluster-providers:
-  replicaCount: 1
-  gcAuthClientID: ""
-  gcAuthClientSecret: ""
-  safeSecret: ""
-  image: codefresh/cluster-providers
-  dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip consul
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- consul
+# @default -- See below
 consul:
+  enabled: true
   datacenterName: codefresh-onprem
   replicaCount: 1
-## @skip context-manager
+
+# -- context-manager
+# @default -- See below
 context-manager:
-  safeSecret: ""
-  replicaCount: 1
-  image: codefresh/context-manager
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/context-manager
-    EVENTBUS_URI: amqp://cf-rabbitmq
-    POSTGRES_HOST: cf-postgresql
-## @skip cronus
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- cronus
+# @default -- See below
 cronus:
-  event:
-    action: "s"
-  image:
-    name: codefresh/cronus
-    dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip gitops-dashboard-manager
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- gitops-dashboard-manager
+# @default -- See below
 gitops-dashboard-manager:
-  imagePullPolicy: IfNotPresent
-  image: codefresh/gitops-dashboard-manager
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  env:
-    LOGGER_LEVEL: "info"
-    EVENTBUS_IGNORE_CREATE_SCHEMA: true
-    INTERNAL_API_URI: http://cf-cfapi:9007
-## @skip helm-repo-manager
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- helm-repo-manager
+# @default -- See below
 helm-repo-manager:
-  replicaCount: 1
-  image:
-    name: codefresh/helm-repo-manager
-    dockerRegistry: gcr.io/codefresh-enterprise/
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
   chartmuseum:
     publicHelmRepo: true
     ingress:
       enabled: false
-      # Used to create an Ingress record.
-      hosts: []
-      # - name: chartmuseum.local
-      #   path: /
-      annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
     image:
       repository: ghcr.io/helm/chartmuseum
-      tag: canary
-    env:
-      open:
-        STORAGE: local
-        DEPTH: 2
-        DEBUG: "true"
-        ALLOW_OVERWRITE: "true"
-        DISABLE_API: "false"
-        DISABLE_METRICS: "false"
-        INDEX_LIMIT: 2500
-## @skip hermes
+      tag: v0.15.0
+
+# -- hermes
+# @default -- See below
 hermes:
-  image:
-    name: codefresh/hermes
-    dockerRegistry: gcr.io/codefresh-enterprise/
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
   redis:
     enabled: false # deprecation of a separate redis for hermes (CR-705)
     redisPassword: kj57kfwjeg
     db: 15
-## @skip ingress-nginx
+
+# -- ingress-nginx
+# @default -- See below
 ingress-nginx:
   enabled: true
   controller:
@@ -386,48 +624,40 @@ ingress-nginx:
     ingressClass: nginx-codefresh
     ingressClassByName: true
     scope:
-      enabled: true
+      enabled: false
     admissionWebhooks:
       enabled: false
     config:
+      ssl-redirect: "false"
       disable-access-log: "false"
       enable-vts-status: "true"
       client-body-buffer-size: "16k"
       proxy-body-size: "5M"
       log-format-escape-json: "true"
       log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'
-## @skip ingress
-ingress:
-  enabled: true
-  # servicePort: default service port for Ingress objects
-  servicePort: 80
-  # annotations: ingress resource annotations
-  annotations:
-    # kubernetes.io/ingress.class: nginx-codefresh ### deprecated in favor of ingressClassName field
-    nginx.ingress.kubernetes.io/service-upstream: "true"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.org/redirect-to-https: "false"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      more_set_headers "X-Request-ID: $request_id";
-      proxy_set_header X-Request-ID $request_id;
-## @skip k8s-monitor
+
+# -- k8s-monitor
+# @default -- See below
 k8s-monitor:
-  image: codefresh/cf-k8s-monitor
   enabled: true
-  replicaCount: 1
-  dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip kube-integration
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- kube-integration
+# @default -- See below
 kube-integration:
-  replicaCount: 1
-  image: codefresh/kube-integration
-  dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip mongo
-mongo:
   enabled: true
-## @skip mongodb
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- mongodb
+# @default -- See below
 mongodb:
+  enabled: true
   image:
-    tag: "4.2"
+    tag: 4.2
   architecture: standalone
   useStatefulSet: true
   auth:
@@ -436,45 +666,62 @@ mongodb:
     rootPassword: "XT9nmM8dZD"
   persistence:
     size: 8Gi
-  migration:
-    enabled: false
-## @skip nats
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+
+# -- nats
+# @default -- See below
 nats:
+  enabled: true
   replicaCount: 1
   auth:
     enabled: false
   cluster:
     auth:
       enabled: false
-## @skip nomios
+
+# -- nomios
+# @default -- See below
 nomios:
-  image:
-    name: codefresh/nomios
-    dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip postgresql
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+  ingress:
+    main:
+      enabled: false
+
+# -- postgresql
+# @default -- See below
 postgresql:
   enabled: true
   image:
+    registry: quay.io
+    repository: codefresh/postgresql
     tag: 13
   auth:
     enablePostgresUser: true
-    postgresPassword: eC9arYka4ZbH
-    database: codefresh
+    postgresPassword: "eC9arYka4ZbH"
+    database: "codefresh"
   architecture: standalone
+  postgresqlSharedPreloadLibraries: pg_partman_bgw,pg_cron
   primary:
+    extendedConfiguration: |
+      pg_partman_bgw.interval = 3600
+      pg_partman_bgw.role = 'postgres'
+      pg_partman_bgw.dbname = 'postgres'
+      cron.database_name = 'postgres'
     persistence:
       size: 8Gi
-  cleanJob:
-    enabled: true
-  migration:
-    enabled: false
-    # storageClass: standard
-    # pvcSize: 8Gi
-    existingClaim: ""
-    nodeSelector: {}
-    tolerations: []
-    resources: {}
-## @skip redis
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1024Mi
+
+# -- redis
+# @default -- See below
 redis:
   enabled: true
   architecture: standalone
@@ -484,11 +731,17 @@ redis:
     count: 1
     persistence:
       size: 8Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1024Mi
   pdb:
     create: false
   metrics:
     enabled: false
-## @skip rabbitmq
+
+# -- rabbitmq
+# @default -- See below
 rabbitmq:
   enabled: true
   replicaCount: 1
@@ -502,48 +755,362 @@ rabbitmq:
     username: user
     password: "cVz9ZdJKYm7u"
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
-## @skip runner
-runner:
-  replicaCount: 1
-  curlImage: quay.io/codefresh/curl:latest
-  dindImage: docker:20.10.13-dind
-  cleanerImage: quay.io/codefresh/cf-runtime-cleaner:latest
-## @skip pipeline-manager
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+
+# -- pipeline-manager
+# @default -- See below
 pipeline-manager:
-  replicaCount: 1
-  safeSecret: ""
-  stepsCatalogGithubToken: ""
-  image: codefresh/pipeline-manager
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  environment:
-    MONGO_URI: mongodb://cf-mongodb:27017/pipeline-manager
-    INTERNAL_API_URI: http://cf-cfapi:9007
-## @skip runtime-environment-manager
+  enabled: true
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+
+# -- runtime-environment-manager
+# @default -- See below
 runtime-environment-manager:
   enabled: true
-  dockerRegistry: gcr.io/codefresh-enterprise/
-  image: codefresh/runtime-environment-manager
-  dockercfg: placeholder
-  newrelicLicenseKey: invalid-key
-  env:
-    ON_PREMISE: true
-## @skip tasker-kubernetes
+  container:
+    image:
+     registry: gcr.io/codefresh-enterprise
+    env:
+      ON_PREMISE: true
+
+# -- tasker-kubernetes
 tasker-kubernetes:
-  replicaCount: 1
-  image: codefresh/tasker-kubernetes
-  dockerRegistry: gcr.io/codefresh-enterprise/
-## @skip runtimeImages
-runtimeImages:
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.158.2
-  DIND_IMAGE: quay.io/codefresh/dind:20.10.18-1.25.4
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.9.0
-  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.10
-  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.8
-  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.9
-  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.20
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.17
-  COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
-  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.11
-  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.3
-  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.6
-  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0
+  enabled: true
+  container:
+    image:
+     registry: gcr.io/codefresh-enterprise
+
+# -- argo-hub
+# @default -- See below
+argo-hub:
+  enabled: true
+
+# -- argo-platform
+# @default -- See below
+argo-platform:
+  enabled: true
+
+  env:
+    MONGODB_PROTOCOL: &MONGODB_PROTOCOL mongodb
+    RABBITMQ_PROTOCOL: &RABBITMQ_PROTOCOL amqp
+    MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_PROTOCOL)://$(MONGODB_USER):$(MONGODB_PASSWORD)@$(MONGODB_HOST)/$(MONGODB_AUDIT_DBNAME)?authSource=admin&retryWrites=true&w=majority
+    MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_PROTOCOL)://$(MONGODB_USER):$(MONGODB_PASSWORD)@$(MONGODB_HOST)/$(MONGODB_READMODELS_DBNAME)?authSource=admin&retryWrites=true&w=majority
+  useExternalSecret: false
+  secrets:
+    cache-host: &cache-host cf-redis-master
+    cache-password: &cache-password hoC9szf7NtrU
+    mongodb-host: &mongodb-host cf-mongodb
+    mongodb-password: &mongodb-password mTiXcU2wafr9
+    mongodb-user: &mongodb-user cfuser
+    pg-db-name: &pg-db-name analytics
+    pg-host-name: &pg-host-name cf-postgresql
+    pg-password: &pg-password eC9arYka4ZbH
+    pg-port: &pg-port 5432
+    pg-user-name: &pg-user-name postgres
+    rabbitmq-host: &rabbitmq-host cf-rabbitmq
+    rabbitmq-password: &rabbitmq-password cVz9ZdJKYm7u
+    rabbitmq-port: &rabbitmq-port 5672
+    rabbitmq-user: &rabbitmq-user user
+
+  abac:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-abac
+    env:
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+    secrets:
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  analytics-reporter:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-analytics-reporter
+    env:
+      ENABLED_DATABASE_TYPES: POSTGRES
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    secrets:
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      pg-db-name: *pg-db-name
+      pg-host-name: *pg-host-name
+      pg-password: *pg-password
+      pg-port: *pg-port
+      pg-user-name: *pg-user-name
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    tolerations: []
+    affinity: {}
+    volumes: []
+    volumeMounts: []
+
+  api-events:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-events
+    env:
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    secrets:
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  api-graphql:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql
+    env:
+      ARGO_HUB_HOST: http://argo-hub-platform
+      GRAPHQL_PLAYGROUND: true
+      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+      V1_HOST: http://cf-cfapi
+      V1_INTERNAL_HOST: http://cf-cfapi:3000
+    secrets:
+      cache-host: *cache-host
+      cache-password: *cache-password
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  argocd-hooks:
+    enabled: false
+
+  audit:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-audit
+    env:
+      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    secrets:
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  cron-executor:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-cron-executor
+    env:
+      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    secrets:
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  event-handler:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-event-handler
+    env:
+      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    secrets:
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  runtime-manager:
+    enabled: false
+
+  runtime-monitor:
+    enabled: false
+
+  ui:
+    enabled: true
+    kind: Deployment
+    image:
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-ui
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+# -- internal-gateway
+# @default -- See below
+internal-gateway:
+  enabled: true
+  # -- Do not change this value! Breaks chart logic
+  libraryMode: true
+
+  ingress:
+    main:
+      enabled: true
+      ingressClassName: nginx-codefresh # Value will be pushed from root context `.Values.ingress.ingressClassName`
+      hosts:
+        - host: '{{ .Values.global.appUrl }}'
+          paths:
+            - path: /2.0/api
+              pathType: ImplementationSpecific
+              service:
+                name: "{{ .Release.Name }}-internal-gateway"
+                port: "{{ .Values.service.main.ports.http.port }}"
+            - path: /2.0
+              pathType: ImplementationSpecific
+              service:
+                name: "{{ .Release.Name }}-internal-gateway"
+                port: "{{ .Values.service.main.ports.http.port }}"
+            - path: /argo/hub
+              pathType: ImplementationSpecific
+              service:
+                name: "argo-hub-platform"
+                port: "80"
+      tls: [] # Keep as empty list. Value will be pushed from root context `.Values.ingress.tls`
+
+# -- codefresh-tunnel-server
+# @default -- See below
+codefresh-tunnel-server:
+  enabled: false
+  codefreshBaseUrl: null
+  tunnels:
+    subdomainHost: null
+    ingress:
+      enabled: true
+      ingressClassName: nginx-codefresh
+  ingress:
+    enabled: true
+    host: null
+    ingressClassName: nginx-codefresh
+  scaling:
+    redisURL:
+      url: "redis://redis-tunnel-server-master:6379/0"
+      secretKeyRef: null
+  imagePullSecrets:
+  - name: cf-registry
+  redis:
+    enabled: true
+    architecture: standalone
+    nameOverride: redis-tunnel-server
+    fullnameOverride: redis-tunnel-server
+    auth:
+      enabled: false
+    master:
+      persistence:
+        enabled: true
+        size: 100Mi

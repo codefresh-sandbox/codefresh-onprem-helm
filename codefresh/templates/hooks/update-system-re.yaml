@@ -1,0 +1,92 @@
+{{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "codefresh.fullname" . }}-update-system-re
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.global.mongoTLS }}
+    "helm.sh/hook": post-upgrade
+    {{- else }}
+    "helm.sh/hook": pre-upgrade
+    {{- end }}
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 180
+  template:
+    metadata:
+      name: {{ include "codefresh.fullname" . }}-update-default-re
+      labels:
+        {{ include "codefresh.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.global.imageRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.hooks.podSecurityContext | nindent 8 }}
+      containers:
+      - name: {{ include "codefresh.fullname" . }}-update-system-re
+        image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.hooks.image "context" .) }}
+        env:
+          - name: MONGO_URI_RE_MANAGER
+            value: {{ include (printf "%s.classic.calculateMongoUri" $libTemplateName) (dict "dbName" "runtime-environment-manager" "mongoURI" .Values.global.mongoURI) }}
+          - name: DIND_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DIND_IMAGE) }}
+          - name: ENGINE_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.ENGINE_IMAGE) }}
+          - name: DOCKER_PUSHER_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DOCKER_PUSHER_IMAGE) }}
+          - name: DOCKER_PULLER_IMAGE
+            value: {{  include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DOCKER_PULLER_IMAGE) }}
+          - name: DOCKER_BUILDER_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DOCKER_BUILDER_IMAGE) }}
+          - name: CONTAINER_LOGGER_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.CONTAINER_LOGGER_IMAGE) }}
+          - name: GIT_CLONE_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.GIT_CLONE_IMAGE) }}
+          - name: DOCKER_TAG_PUSHER_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DOCKER_TAG_PUSHER_IMAGE) }}
+          - name: FS_OPS_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.FS_OPS_IMAGE) }}
+          - name: COMPOSE_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.COMPOSE_IMAGE) }}
+          - name: KUBE_DEPLOY
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.KUBE_DEPLOY) }}
+          - name: TEMPLATE_ENGINE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.TEMPLATE_ENGINE) }}
+          - name: PIPELINE_DEBUGGER_IMAGE
+            value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.PIPELINE_DEBUGGER_IMAGE) }}
+        command:
+          - "/bin/bash"
+          - "-c"
+          - |
+            {{ .Files.Get "files/updateSystemReImages.sh" | nindent 12  }}
+        resources:
+          {{- toYaml .Values.hooks.resources | nindent 10 }}
+        volumeMounts:
+        {{- if .Values.global.mongoTLS }}
+        - mountPath: /etc/ssl/mongodb/
+          name: mongodb-tls
+          readOnly: true
+        {{- end }}
+      {{- with .Values.hooks.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hooks.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8}}
+      {{- end }}
+      {{- with .Values.hooks.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.global.mongoTLS }}
+      - name: mongodb-tls
+        secret:
+          secretName: '{{ .Release.Name }}-{{ .Values.global.codefresh }}-mongodb-tls'
+      {{- end }}
+      restartPolicy: Never

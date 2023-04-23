@@ -1,13 +1,4 @@
 global:
-  seedJobs: true
-  certsJobs: true
-  postgresSeedJob:
-    enabled: true
-
-  # (codefresh charts) private registry prefix
-  privateRegistry: true
-  dockerRegistry: myregistry.io/
-
   # (bitnami charts) private registry prefix
   imageRegistry: myregistry.io
 
@@ -15,10 +6,3 @@ ingress-nginx:
   controller:
     image:
       registry: myregistry.io
-
-mongodb:
-  migration:
-    enabled: true
-postgresql:
-  migration:
-    enabled: true

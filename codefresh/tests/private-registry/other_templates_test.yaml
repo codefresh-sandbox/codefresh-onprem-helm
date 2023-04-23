@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/quintush/helm-unittest/master/schema/helm-testsuite.json
+suite: (Other templates) should test image private registry prefix
+templates:
+  - seed/mongo-seed-job.yaml
+  - seed/postgres-seed-job.yaml
+  - gencerts/job-gencerts.yaml
+  - hooks/update-system-re.yaml
+tests:
+  - it: "(Other templates) should test image private registry prefix"
+    values:
+      - ../values/private-registry.yaml
+    asserts:
+      # mongo-seed-job template
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/.*$
+        template: seed/mongo-seed-job.yaml
+      # certs-job template
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/.*$
+        template: gencerts/job-gencerts.yaml
+      # postgres-seed-job template
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/.*$
+        template: seed/postgres-seed-job.yaml
+      # update-default-runtimes template
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/.*$
+        template: hooks/update-system-re.yaml

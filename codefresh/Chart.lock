@@ -1,4 +1,10 @@
 dependencies:
+- name: cf-common
+  repository: https://chartmuseum.codefresh.io/cf-common
+  version: 0.7.0
+- name: internal-gateway
+  repository: https://chartmuseum-dev.codefresh.io/internal-gateway
+  version: 0.1.1
 - name: consul
   repository: https://charts.bitnami.com/bitnami
   version: 10.9.6
@@ -19,111 +25,123 @@ dependencies:
   version: 7.4.8
 - name: builder
   repository: https://chartmuseum.codefresh.io/builder
-  version: 1.0.2
+  version: 1.1.0
 - name: runner
   repository: https://chartmuseum.codefresh.io/runner
-  version: 1.0.0
+  version: 1.1.0
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
   version: 4.3.0
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
-  version: 1.12.1
+  version: 1.14.3
 - name: kube-integration
   repository: https://chartmuseum.codefresh.io/kube-integration
-  version: 1.27.0
+  version: 1.29.4
 - name: charts-manager
   repository: https://chartmuseum.codefresh.io/charts-manager
-  version: 1.12.0
+  version: 1.15.5
 - name: cfsign
   repository: https://chartmuseum.codefresh.io/cfsign
-  version: 1.4.1
+  version: 1.5.0
 - name: tasker-kubernetes
   repository: https://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.20.0
+  version: 1.23.1
 - name: context-manager
   repository: https://chartmuseum.codefresh.io/context-manager
-  version: 2.21.8
+  version: 2.23.4
 - name: pipeline-manager
   repository: https://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.123.20
+  version: 3.126.0
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.11.0
+  version: 1.13.0
 - name: cfapi
-  repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: 21.221.13-cr-17544
 - name: cfapi-internal
-  repository: https://chartmuseum.codefresh.io/cfapi-internal
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-internal
+  version: 21.221.13-cr-17544
 - name: cfapi-ws
-  repository: https://chartmuseum.codefresh.io/cfapi-ws
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-ws
+  version: 21.221.13-cr-17544
 - name: cfapi-admin
-  repository: https://chartmuseum.codefresh.io/cfapi-admin
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-admin
+  version: 21.221.13-cr-17544
 - name: cfapi-endpoints
-  repository: https://chartmuseum.codefresh.io/cfapi-endpoints
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-endpoints
+  version: 21.221.13-cr-17544
 - name: cfapi-terminators
-  repository: https://chartmuseum.codefresh.io/cfapi-terminators
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-terminators
+  version: 21.221.13-cr-17544
 - name: cfapi-sso-group-synchronizer
-  repository: https://chartmuseum.codefresh.io/cfapi-sso-group-synchronizer
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-sso-group-synchronizer
+  version: 21.221.13-cr-17544
 - name: cfapi-buildmanager
-  repository: https://chartmuseum.codefresh.io/cfapi-buildmanager
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-buildmanager
+  version: 21.221.13-cr-17544
 - name: cfapi-cacheevictmanager
-  repository: https://chartmuseum.codefresh.io/cfapi-cacheevictmanager
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-cacheevictmanager
+  version: 21.221.13-cr-17544
 - name: cfapi-eventsmanagersubscriptions
-  repository: https://chartmuseum.codefresh.io/cfapi-eventsmanagersubscriptions
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-eventsmanagersubscriptions
+  version: 21.221.13-cr-17544
 - name: cfapi-kubernetesresourcemonitor
-  repository: https://chartmuseum.codefresh.io/cfapi-kubernetesresourcemonitor
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-kubernetesresourcemonitor
+  version: 21.221.13-cr-17544
 - name: cfapi-environments
-  repository: https://chartmuseum.codefresh.io/cfapi-environments
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-environments
+  version: 21.221.13-cr-17544
 - name: cfapi-gitops-resource-receiver
-  repository: https://chartmuseum.codefresh.io/cfapi-gitops-resource-receiver
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-gitops-resource-receiver
+  version: 21.221.13-cr-17544
 - name: cfapi-downloadlogmanager
-  repository: https://chartmuseum.codefresh.io/cfapi-downloadlogmanager
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-downloadlogmanager
+  version: 21.221.13-cr-17544
 - name: cfapi-teams
-  repository: https://chartmuseum.codefresh.io/cfapi-teams
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-teams
+  version: 21.221.13-cr-17544
 - name: cfapi-kubernetes-endpoints
-  repository: https://chartmuseum.codefresh.io/cfapi-kubernetes-endpoints
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-kubernetes-endpoints
+  version: 21.221.13-cr-17544
 - name: cfapi-test-reporting
-  repository: https://chartmuseum.codefresh.io/cfapi-test-reporting
-  version: 21.200.2
+  repository: https://chartmuseum-dev.codefresh.io/cfapi-test-reporting
+  version: 21.221.13-cr-17544
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.86.30
+  version: 14.88.13
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.9.0
+  version: 4.10.0
 - name: runtime-environment-manager
   repository: https://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.23.9
+  version: 3.25.0
 - name: cf-broadcaster
   repository: https://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.10.19
+  version: 1.11.2
 - name: helm-repo-manager
   repository: https://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.9.4
+  version: 0.10.1
 - name: hermes
   repository: https://chartmuseum.codefresh.io/hermes
-  version: 0.18.1
+  version: 0.19.2
 - name: nomios
   repository: https://chartmuseum.codefresh.io/nomios
-  version: 0.9.12
+  version: 0.10.2
 - name: cronus
   repository: https://chartmuseum.codefresh.io/cronus
-  version: 0.6.7
-digest: sha256:f71c764e77895ec1cc70cb36ed8b2c38ba5fa1d013db156a59ee07ab3f84cd59
-generated: "2023-02-08T14:38:45.532465637+03:00"
+  version: 0.7.2
+- name: cf-platform-analytics-platform
+  repository: https://chartmuseum-dev.codefresh.io/cf-platform-analytics-platform
+  version: 0.44.0-cr-17903
+- name: cf-platform-analytics-etlstarter
+  repository: https://chartmuseum-dev.codefresh.io/cf-platform-analytics-etlstarter
+  version: 0.44.0-cr-17903
+- name: argo-platform
+  repository: https://chartmuseum.codefresh.io/argo-platform
+  version: 1.2207.0
+- name: codefresh-tunnel-server
+  repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
+  version: 0.1.12
+digest: sha256:126e9e3419d1dcdf644627c6c447041381a0754e1e3d06128bedc7ff592bcd1f
+generated: "2023-04-23T16:03:44.709824805+03:00"

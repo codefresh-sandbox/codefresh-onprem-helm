@@ -1,0 +1,93 @@
+{{- $nameBuilder := printf "%s-%s" .Release.Name .Values.global.builderService }}
+{{- $nameRunner := printf "%s-%s" .Release.Name .Values.global.runnerService }}
+{{- $ns := .Release.Namespace }}
+{{- $namesList := list $nameBuilder $nameRunner }}
+---
+{{- if or .Values.global.certsJobs .Values.gencerts.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "codefresh.fullname" . }}-gencerts
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+data:
+  {{- if not .Values.ingress.tls.enabled }}
+  gen-ingress-tls.sh: |
+    #!/bin/sh
+
+    which openssl || apk add --no-cache openssl
+
+    openssl genrsa -des3 -passout pass:xxxx -out server.pass.key 2048
+    openssl rsa -passin pass:xxxx -in server.pass.key -out tls.key
+    rm server.pass.key
+    openssl req -new -key tls.key -out server.csr -subj "/CN={{ .Values.global.appUrl }}"
+    echo "subjectAltName = DNS:{{ .Values.global.appUrl }}" > extfile.cnf
+    openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt -extfile extfile.cnf
+
+    secretName={{ include "codefresh.fullname" . }}-star-selfsigned
+    if kubectl get secret $secretName; then
+      kubectl delete secret $secretName
+    fi
+    kubectl create secret tls $secretName --cert=tls.crt --key=tls.key
+    kubectl label secret $secretName app={{ include "codefresh.fullname" . }}
+
+  {{- end }}
+  {{- if not .Values.global.clientCertsCA }}
+  gen-runtime-certs.sh: |
+    #!/bin/sh
+    err() { echo "ERROR: $1"; exit 1; }
+
+    which openssl || apk add --no-cache openssl
+
+    TMPDIR=/tmp/cfcerts
+    mkdir -p $TMPDIR || err "Cannot create the temp directory $TMPDIR"
+
+    CA_KEY=$TMPDIR/ca-key.pem
+    CA_PEM=$TMPDIR/ca.pem
+    SERVER_KEY=$TMPDIR/server-key.pem
+    SERVER_PEM=$TMPDIR/server.pem
+    SERVER_CSR=$TMPDIR/server.csr
+    CLIENT_CERT=$TMPDIR/cert.pem
+    CLIENT_KEY=$TMPDIR/key.pem
+    EXTFILE=$TMPDIR/extfile.cnf
+
+    echo "--- Generate ca-key.pem"
+    openssl genrsa -out $CA_KEY 4096
+
+    echo "--- Generate ca.pem"
+    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.{{ .Values.global.appUrl }}"
+
+    echo "--- Generate server-key.pem"
+    openssl genrsa -out $SERVER_KEY 4096
+
+    echo "--- generate csr "
+    openssl req -subj "/CN=*.{{ .Values.global.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
+
+    echo "--- create ca extfile"
+    echo "extendedKeyUsage=serverAuth,clientAuth" >> $EXTFILE
+    echo "subjectAltName={{- range $namesList }}DNS:*.{{ . }},DNS:*.{{ . }}.{{ $ns }},DNS:*.{{ . }}.{{ $ns }}.svc,DNS:*.{{ . }}.{{ $ns }}.svc.cluster.local{{- end }}" >> $EXTFILE
+
+    echo "--- CAT extfile"
+    cat $EXTFILE
+
+    echo "--- sign certificate $SERVER_PEM "
+    openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
+      -CAcreateserial -out $SERVER_PEM -extfile $EXTFILE || err "Failed to sign certificate"
+
+    cp -v $SERVER_PEM $CLIENT_CERT
+    cp -v $SERVER_KEY $CLIENT_KEY
+
+    secretName={{ include "codefresh.fullname" . }}-certs-client
+
+    if ! kubectl get secret $secretName; then
+      kubectl create secret generic {{ include "codefresh.fullname" . }}-certs-client \
+        --from-file=$CA_PEM \
+        --from-file=$CA_KEY \
+        --from-file=$CLIENT_KEY \
+        --from-file=$CLIENT_CERT || err "Failed storing the generated certificates in Kubernetes!"
+
+      kubectl label secret $secretName helm.sh/chart={{ include "codefresh.chart" . }} app.kubernetes.io/name={{ include "codefresh.name" . }} app.kubernetes.io/instance={{ .Release.Name }}
+    fi
+  {{- end }}
+
+{{- end }}

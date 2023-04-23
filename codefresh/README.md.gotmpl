@@ -1,0 +1,94 @@
+## Codefresh On-Premises
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Prerequisites
+
+- Kubernetes 1.22+
+- Helm 3.8.0+
+- PV provisioner support in the underlying infrastructure
+- GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
+- Firebase url and secret
+- Valid TLS certificates for Ingress
+
+## Get Repo Info and Pull Chart
+
+```console
+helm repo add codefresh http://chartmuseum.codefresh.io/codefresh
+helm repo update
+```
+
+## Install Chart
+
+**Important:** only helm 3.8.0+ is supported
+
+Edit default `values.yaml` or create empty `my-values.yaml`
+
+- Pass `sa.json` (as a single line) to `.Values.imageCredentials.password`
+
+```yaml
+# -- Credentials for Image Pull Secret object
+imageCredentials:
+  registry: gcr.io
+  username: _json_key
+  password: '{ "type": "service_account", "project_id": "codefresh-enterprise", "private_key_id": ... }'
+```
+
+- Specify `.Values.global.appUrl`, `.Values.global.firebaseUrl` and `.Values.global.firebaseSecret`
+
+```yaml
+global:
+  # -- Application root url. Will be used in Ingress as hostname
+  appUrl: onprem.mydomain.com
+
+  # -- Firebase URL for logs streaming.
+  firebaseUrl: <>
+  # -- Firebase Secret.
+  firebaseSecret: <>
+```
+
+- Specify `.Values.ingress.tls.cert` and `.Values.ingress.tls.key` OR `.Values.ingress.tls.existingSecret`
+
+```yaml
+ingress:
+  # -- Enable the Ingress
+  enabled: true
+  # -- Set the ingressClass that is used for the ingress.
+  # Default `nginx-codefresh` is created from `ingress-nginx` controller subchart
+  ingressClassName: nginx-codefresh
+  tls:
+    # -- Enable TLS
+    enabled: true
+    # -- Default secret name to be created with provided `cert` and `key` below
+    secretName: "star.codefresh.io"
+    # -- Certificate (base64 encoded)
+    cert: ""
+    # -- Private key (base64 encoded)
+    key: ""
+    # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
+    existingSecret: ""
+```
+
+**Important:** use `cf` as Release Name at the moment
+
+- Install the chart
+
+```console
+helm upgrade --install cf codefresh/codefresh \
+    -f my-values.yaml \
+    --namespace codefresh \
+    --create-namespace \
+    --debug \
+    --wait \
+    --timeout 15m
+```
+
+## Migrating from 1.4.x onprem
+
+TODO
+
+## Configuration
+
+TODO
+
+{{ template "chart.valuesSection" . }}

@@ -1,0 +1,67 @@
+{{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+---
+{{- if and .Values.seed.enabled (or .Values.global.seedJobs .Values.seed.mongoSeedJob.enabled) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "codefresh.fullname" . }}-mongo-seed
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.seed.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ . }}
+  {{- end }}
+  {{- with .Values.seed.backoffLimit }}
+  backoffLimit: {{ . | int }}
+  {{- end }}
+  template:
+    metadata:
+      name: {{ include "codefresh.fullname" . }}-mongo-seed
+      labels:
+        {{ include "codefresh.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.global.imageRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      - name: {{ include "codefresh.fullname" . }}-mongo-seed
+        image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.seed.mongoSeedJob.image "context" .) }}
+        envFrom:
+          - secretRef:
+              name: {{ include "codefresh.fullname" . }}-mongo-seed
+        command:
+          - "/bin/bash"
+          - "-exc"
+          - |
+            {{ .Files.Get "files/mongoSeedJobScript.sh" | nindent 12 }}
+        resources:
+          {{- toYaml .Values.seed.resources | nindent 10 }}
+        volumeMounts:
+        - name: seed-data
+          mountPath: "/etc/admin/accounts.json"
+          subPath: "accounts.json"
+        - name: seed-data
+          mountPath: "/etc/admin/users.json"
+          subPath: "users.json"
+        - name: seed-data
+          mountPath: "/etc/admin/idps.json"
+          subPath: "idps.json"
+      {{- with .Values.seed.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.seed.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8}}
+      {{- end }}
+      {{- with .Values.seed.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      restartPolicy: OnFailure
+      volumes:
+      - name: seed-data
+        configMap:
+          name: {{ include "codefresh.fullname" . }}-mongo-seed
+{{- end }}

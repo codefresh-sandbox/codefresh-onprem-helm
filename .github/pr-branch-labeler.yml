@@ -1,0 +1,17 @@
+production:
+  base: "production*"
+
+onprem:
+  base: "onprem*"
+
+pre-prod:
+  base: "non-prod-ue1-pre-prod*"
+
+test-1:
+  base: "non-prod-ue1-test-1*"
+
+sandbox-1:
+  base: "non-prod-ue1-sandbox-1*"
+
+sandbox-2:
+  base: "non-prod-ue1-sandbox-2*"

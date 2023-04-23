@@ -1,0 +1,51 @@
+{{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+{{- if and .Values.seed.enabled (or .Values.global.seedJobs .Values.seed.postgresSeedJob.enabled) }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "codefresh.fullname" . }}-postgres-seed
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.seed.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ . }}
+  {{- end }}
+  {{- with .Values.seed.backoffLimit }}
+  backoffLimit: {{ . | int }}
+  {{- end }}
+  template:
+    metadata:
+      name: {{ include "codefresh.fullname" . }}-postgres-seed
+      labels:
+        {{ include "codefresh.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.global.imageRegistry }}
+      imagePullSecrets:
+        - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
+      {{- end }}
+      containers:
+      - name: {{ template "codefresh.fullname" . }}-postgres-seed
+        image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.seed.postgresSeedJob.image "context" .) }}
+        envFrom:
+          - secretRef:
+              name: {{ include "codefresh.fullname" . }}-postgres-seed
+        command:
+          - "/bin/bash"
+          - "-exc"
+          - |
+            {{ .Files.Get "files/postgresSeedJobScript.sh" | nindent 12  }}
+      {{- with .Values.seed.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.seed.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8}}
+      {{- end }}
+      {{- with .Values.seed.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      restartPolicy: OnFailure
+{{- end }}

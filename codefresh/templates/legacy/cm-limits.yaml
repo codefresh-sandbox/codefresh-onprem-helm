@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "codefresh.fullname" . }}-resource-limitations
+  labels:
+    {{ include "codefresh.labels" . | nindent 4 }}
+data:
+  resource-limitations.json: |
+    {}

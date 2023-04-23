@@ -25,4 +25,6 @@ index.yaml
 .idea/
 
 # dry-run templates from `helm template` output
-dry-run/** 
+dry-run/**
+**/values-dev.yaml
+**/dry-run.yaml
