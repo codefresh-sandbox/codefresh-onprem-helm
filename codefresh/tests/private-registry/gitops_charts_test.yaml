@@ -9,6 +9,7 @@ templates:
   - charts/argo-platform/templates/cron-executor/*.yaml
   - charts/argo-platform/templates/event-handler/*.yaml
   - charts/argo-platform/templates/ui/*.yaml
+  - charts/argo-hub-platform/templates/*.yaml
 tests:
   - it: "(Argo-Platform) should test image private registry prefix"
     values:
@@ -54,3 +55,12 @@ tests:
           path: spec.template.spec.containers[0].image
           pattern: ^myregistry.io/codefresh/.*$
         template: charts/argo-platform/templates/ui/deployment.yaml
+  - it: "(Argo-Hub) should test image private registry prefix"
+    values:
+      - ../values/private-registry.yaml
+    asserts:
+      # abac
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: ^myregistry.io/codefresh/.*$
+        template: charts/argo-hub-platform/templates/controller.yaml

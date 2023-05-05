@@ -80,3 +80,17 @@ Return the secret containing TLS certificates for Ingress
     {{- printf "%s-%s" (include "codefresh.fullname" .) .Values.ingress.tls.secretName -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Calculate Mongo Uri (for On-Prem)
+Usage:
+{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.path.to.the.value "mongoURI" .Values.path.to.the.value) }}
+*/}}
+{{- define "codefresh.calculateMongoUri" -}}
+  {{- if contains "?" .mongoURI -}}
+    {{- $mongoURI :=  (splitList "?" .mongoURI) -}}
+    {{- printf "%s%s?%s" (first $mongoURI) .dbName (last $mongoURI) }}
+  {{- else -}}
+    {{- printf "%s/%s" .mongoURI .dbName -}}
+  {{- end -}}
+{{- end -}}

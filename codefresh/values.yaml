@@ -140,6 +140,9 @@ global:
   # -- Global Docker image registry
   imageRegistry: ""
 
+  # -- Global Docker registry secret names as array
+  imagePullSecrets: []
+
   # -- Global StorageClass for Persistent Volume(s)
   storageClass: ""
 
@@ -176,6 +179,8 @@ global:
   cfapiService: cfapi
   # -- Default API service port.
   cfapiInternalPort: 3000
+  # -- Default API endpoints service name
+  cfapiEndpointsService: cfapi
   # -- Default builder service name.
   builderService: builder
   # -- Default runner service name.
@@ -478,6 +483,10 @@ cf-platform-analytics-etlstarter:
     enabled: false # disable default deployment controller
   system-etl-postgres:
     enabled: true
+    container:
+      env:
+        MONGO_DAY_OFFSET: 30
+        FIRST_MONGO_DAY_OFFSET: 365
   system-etl-gitops:
     enabled: false
   system-etl-metabase:
@@ -516,6 +525,7 @@ cf-platform-analytics-platform:
     CUBEJS_LOG_LEVEL: trace
     CUBEJS_SCHEDULED_REFRESH_TIMER: 60
     CUBEJS_DEV_MODE: false
+    SUPPORTED_DATA_SOURCE: 'CSDP_POSTGRES,CLASSIC_POSTGRES'
 
 # -- tls-sign
 # @default -- See below
@@ -774,7 +784,7 @@ runtime-environment-manager:
   enabled: true
   container:
     image:
-     registry: gcr.io/codefresh-enterprise
+      registry: gcr.io/codefresh-enterprise
     env:
       ON_PREMISE: true
 
@@ -783,12 +793,19 @@ tasker-kubernetes:
   enabled: true
   container:
     image:
-     registry: gcr.io/codefresh-enterprise
+      registry: gcr.io/codefresh-enterprise
 
-# -- argo-hub
+# -- argo-hub-platform
 # @default -- See below
-argo-hub:
-  enabled: true
+argo-hub-platform:
+  fullnameOverride: argo-hub-platform
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+  imagePullSecrets:
+    - '{{ .Release.Name }}-registry'
+  controller:
+    replicas: 1
 
 # -- argo-platform
 # @default -- See below
@@ -796,26 +813,26 @@ argo-platform:
   enabled: true
 
   env:
-    MONGODB_PROTOCOL: &MONGODB_PROTOCOL mongodb
     RABBITMQ_PROTOCOL: &RABBITMQ_PROTOCOL amqp
-    MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_PROTOCOL)://$(MONGODB_USER):$(MONGODB_PASSWORD)@$(MONGODB_HOST)/$(MONGODB_AUDIT_DBNAME)?authSource=admin&retryWrites=true&w=majority
-    MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_PROTOCOL)://$(MONGODB_USER):$(MONGODB_PASSWORD)@$(MONGODB_HOST)/$(MONGODB_READMODELS_DBNAME)?authSource=admin&retryWrites=true&w=majority
+    MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_URI)
+    MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_READMODELS_URI)
+    MONGODB_AUDIT_DBNAME: audit
+    MONGODB_READMODELS_DBNAME: read-models
   useExternalSecret: false
   secrets:
-    cache-host: &cache-host cf-redis-master
-    cache-password: &cache-password hoC9szf7NtrU
-    mongodb-host: &mongodb-host cf-mongodb
-    mongodb-password: &mongodb-password mTiXcU2wafr9
-    mongodb-user: &mongodb-user cfuser
+    cache-host: &cache-host '{{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}'
+    cache-password: &cache-password '{{ .Values.global.redisPassword }}'
+    mongodb-readmodels-uri: &mongodb-readmodels-uri '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_READMODELS_DBNAME "mongoURI" .Values.global.mongoURI) }}'
+    mongodb-audit-uri: &mongodb-audit-uri '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_AUDIT_DBNAME  "mongoURI" .Values.global.mongoURI) }}'
     pg-db-name: &pg-db-name analytics
-    pg-host-name: &pg-host-name cf-postgresql
-    pg-password: &pg-password eC9arYka4ZbH
-    pg-port: &pg-port 5432
-    pg-user-name: &pg-user-name postgres
-    rabbitmq-host: &rabbitmq-host cf-rabbitmq
-    rabbitmq-password: &rabbitmq-password cVz9ZdJKYm7u
+    pg-host-name: &pg-host-name '{{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname }}'
+    pg-password: &pg-password '{{ .Values.global.postgresPassword }}'
+    pg-port: &pg-port '{{ .Values.global.postgresPort }}'
+    pg-user-name: &pg-user-name '{{ .Values.global.postgresUser }}'
+    rabbitmq-host: &rabbitmq-host '{{ default (printf "%s-%s" .Release.Name (coalesce .Values.global.rabbitService .Values.global.rabbitmqService )) .Values.global.rabbitmqHostname }}'
+    rabbitmq-password: &rabbitmq-password '{{ .Values.global.rabbitmqPassword }}'
     rabbitmq-port: &rabbitmq-port 5672
-    rabbitmq-user: &rabbitmq-user user
+    rabbitmq-user: &rabbitmq-user '{{ .Values.global.rabbitmqUsername }}'
 
   abac:
     enabled: true
@@ -823,12 +840,9 @@ argo-platform:
     image:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-abac
     env:
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
     secrets:
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
     hpa:
       enabled: false
     pdb:
@@ -843,13 +857,10 @@ argo-platform:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-analytics-reporter
     env:
       ENABLED_DATABASE_TYPES: POSTGRES
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
       pg-db-name: *pg-db-name
       pg-host-name: *pg-host-name
       pg-password: *pg-password
@@ -905,21 +916,18 @@ argo-platform:
     image:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql
     env:
-      ARGO_HUB_HOST: http://argo-hub-platform
       GRAPHQL_PLAYGROUND: true
-      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
-      V1_HOST: http://cf-cfapi
-      V1_INTERNAL_HOST: http://cf-cfapi:3000
     secrets:
+      argo-hub-host: http://argo-hub-platform
       cache-host: *cache-host
       cache-password: *cache-password
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      v1-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiEndpointsService }}
+      v1-internal-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}
+      mongodb-audit-uri: *mongodb-audit-uri
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -946,15 +954,12 @@ argo-platform:
     image:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-audit
     env:
-      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      mongodb-audit-uri: *mongodb-audit-uri
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -972,15 +977,12 @@ argo-platform:
     image:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-cron-executor
     env:
-      MONGODB_AUDIT_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      mongodb-audit-uri: *mongodb-audit-uri
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -1004,13 +1006,10 @@ argo-platform:
     image:
       repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-event-handler
     env:
-      MONGODB_PROTOCOL: *MONGODB_PROTOCOL
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-host: *mongodb-host
-      mongodb-password: *mongodb-password
-      mongodb-user: *mongodb-user
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -1085,32 +1084,6 @@ internal-gateway:
 
 # -- codefresh-tunnel-server
 # @default -- See below
+# Don't enable! Not supported at the moment.
 codefresh-tunnel-server:
   enabled: false
-  codefreshBaseUrl: null
-  tunnels:
-    subdomainHost: null
-    ingress:
-      enabled: true
-      ingressClassName: nginx-codefresh
-  ingress:
-    enabled: true
-    host: null
-    ingressClassName: nginx-codefresh
-  scaling:
-    redisURL:
-      url: "redis://redis-tunnel-server-master:6379/0"
-      secretKeyRef: null
-  imagePullSecrets:
-  - name: cf-registry
-  redis:
-    enabled: true
-    architecture: standalone
-    nameOverride: redis-tunnel-server
-    fullnameOverride: redis-tunnel-server
-    auth:
-      enabled: false
-    master:
-      persistence:
-        enabled: true
-        size: 100Mi

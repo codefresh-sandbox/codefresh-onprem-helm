@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.1](https://img.shields.io/badge/Version-2.0.0--alpha.1-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.2](https://img.shields.io/badge/Version-2.0.0--alpha.2-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Prerequisites
 
@@ -95,7 +95,7 @@ TODO
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| argo-hub | object | See below | argo-hub |
+| argo-hub-platform | object | See below | argo-hub-platform |
 | argo-platform | object | See below | argo-platform |
 | builder | object | `{"enabled":true}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
@@ -234,7 +234,7 @@ TODO
 | cfui | object | See below | cf-ui |
 | charts-manager | object | See below | charts-manager |
 | cluster-providers | object | See below | cluster-providers |
-| codefresh-tunnel-server | object | See below | codefresh-tunnel-server |
+| codefresh-tunnel-server | object | See below | codefresh-tunnel-server Don't enable! Not supported at the moment. |
 | consul | object | See below | consul |
 | context-manager | object | See below | context-manager |
 | cronus | object | See below | cronus |
@@ -269,6 +269,7 @@ TODO
 | global.gitopsDashboardManagerService | string | `"gitops-dashboard-manager"` | Default gitops-dashboarad-manager service name. |
 | global.helmRepoManagerService | string | `"helm-repo-manager"` | Default helm-repo-manager service name. |
 | global.hermesService | string | `"hermes"` | Default hermes service name. |
+| global.imagePullSecrets | list | `[]` | Global Docker registry secret names as array |
 | global.imageRegistry | string | `""` | Global Docker image registry |
 | global.kubeIntegrationPort | int | `9000` | Default kube-integration service port. |
 | global.kubeIntegrationService | string | `"kube-integration"` | Default kube-integration service name. |
