@@ -30,6 +30,7 @@ gencerts:
     tag: latest
   rbac:
     enabled: true
+  ttlSecondsAfterFinished: 300
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -799,13 +800,14 @@ tasker-kubernetes:
 # @default -- See below
 argo-hub-platform:
   fullnameOverride: argo-hub-platform
+  controller:
+    deployment:
+      replicas: 1
   container:
     image:
       registry: gcr.io/codefresh-enterprise
   imagePullSecrets:
     - '{{ .Release.Name }}-registry'
-  controller:
-    replicas: 1
 
 # -- argo-platform
 # @default -- See below

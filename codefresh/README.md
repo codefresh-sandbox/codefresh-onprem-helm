@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.2](https://img.shields.io/badge/Version-2.0.0--alpha.2-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.3](https://img.shields.io/badge/Version-2.0.0--alpha.3-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Prerequisites
 
@@ -248,6 +248,7 @@ TODO
 | global.broadcasterService | string | `"cf-broadcaster"` | Default broadcaster service name. |
 | global.builderService | string | `"builder"` | Default builder service name. |
 | global.certsJobs | bool | `false` | DEPRECATED - Use `.Values.gencerts` Generate self-signed certificates for internal runtime. Used in on-prem environments. |
+| global.cfapiEndpointsService | string | `"cfapi"` | Default API endpoints service name |
 | global.cfapiInternalPort | int | `3000` | Default API service port. |
 | global.cfapiService | string | `"cfapi"` | Default API service name. |
 | global.cfk8smonitorService | string | `"k8s-monitor"` | Default k8s-monitor service name. |
