@@ -55,7 +55,7 @@ dependencies:
   version: 3.126.0
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.13.1
+  version: 1.13.2
 - name: cfapi
   repository: https://chartmuseum-dev.codefresh.io/cfapi
   version: 21.221.36-cr-17544
@@ -109,7 +109,7 @@ dependencies:
   version: 21.221.36-cr-17544
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.88.33
+  version: 14.88.36
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
   version: 4.10.0
@@ -133,18 +133,18 @@ dependencies:
   version: 0.7.2
 - name: cf-platform-analytics
   repository: https://chartmuseum.codefresh.io/cf-platform-analytics
-  version: 0.45.3
+  version: 0.45.4
 - name: cf-platform-analytics
   repository: https://chartmuseum.codefresh.io/cf-platform-analytics
-  version: 0.45.3
+  version: 0.45.4
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
-  version: 1.2237.0
+  version: 1.2240.0
 - name: argo-hub-platform
   repository: https://chartmuseum.codefresh.io/argo-hub-platform
   version: 0.1.1
 - name: codefresh-tunnel-server
   repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
   version: 0.1.12
-digest: sha256:3ce138526e5440e2faca68678693659899738febe3b76c7c5d9438fc1248f949
-generated: "2023-05-06T13:35:36.426262271+03:00"
+digest: sha256:7492aeae2516ccc5ec560e5ee831c1d1eee7dd2494b9da515dad4bacbfb0049d
+generated: "2023-05-08T20:19:36.077043718+03:00"

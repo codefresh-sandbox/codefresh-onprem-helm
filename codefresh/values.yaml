@@ -816,16 +816,16 @@ argo-platform:
 
   env:
     RABBITMQ_PROTOCOL: &RABBITMQ_PROTOCOL amqp
-    MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_URI)
-    MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_READMODELS_URI)
+    MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_URI_SEC)
+    MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_READMODELS_URI_SEC)
     MONGODB_AUDIT_DBNAME: audit
     MONGODB_READMODELS_DBNAME: read-models
   useExternalSecret: false
   secrets:
     cache-host: &cache-host '{{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}'
     cache-password: &cache-password '{{ .Values.global.redisPassword }}'
-    mongodb-readmodels-uri: &mongodb-readmodels-uri '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_READMODELS_DBNAME "mongoURI" .Values.global.mongoURI) }}'
-    mongodb-audit-uri: &mongodb-audit-uri '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_AUDIT_DBNAME  "mongoURI" .Values.global.mongoURI) }}'
+    mongodb-readmodels-uri-sec: &mongodb-readmodels-uri-sec '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_READMODELS_DBNAME "mongoURI" .Values.global.mongoURI) }}'
+    mongodb-audit-uri-sec: &mongodb-audit-uri-sec '{{ include "codefresh.calculateMongoUri" (dict "dbName" .Values.env.MONGODB_AUDIT_DBNAME  "mongoURI" .Values.global.mongoURI) }}'
     pg-db-name: &pg-db-name analytics
     pg-host-name: &pg-host-name '{{ default (printf "%s-%s" .Release.Name .Values.global.postgresService) .Values.global.postgresHostname }}'
     pg-password: &pg-password '{{ .Values.global.postgresPassword }}'
@@ -844,7 +844,7 @@ argo-platform:
     env:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
     secrets:
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
     hpa:
       enabled: false
     pdb:
@@ -862,7 +862,7 @@ argo-platform:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
       pg-db-name: *pg-db-name
       pg-host-name: *pg-host-name
       pg-password: *pg-password
@@ -928,8 +928,8 @@ argo-platform:
       cache-password: *cache-password
       v1-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiEndpointsService }}
       v1-internal-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}
-      mongodb-audit-uri: *mongodb-audit-uri
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-audit-uri-sec: *mongodb-audit-uri-sec
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -960,8 +960,8 @@ argo-platform:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-audit-uri: *mongodb-audit-uri
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-audit-uri-sec: *mongodb-audit-uri-sec
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -983,8 +983,8 @@ argo-platform:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-audit-uri: *mongodb-audit-uri
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-audit-uri-sec: *mongodb-audit-uri-sec
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
@@ -1011,7 +1011,7 @@ argo-platform:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
       RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
     secrets:
-      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
       rabbitmq-host: *rabbitmq-host
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
