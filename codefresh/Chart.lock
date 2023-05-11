@@ -109,7 +109,7 @@ dependencies:
   version: 21.221.36-cr-17544
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.88.36
+  version: 14.88.41
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
   version: 4.10.0
@@ -139,12 +139,12 @@ dependencies:
   version: 0.45.4
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
-  version: 1.2240.0
+  version: 1.2246.0
 - name: argo-hub-platform
   repository: https://chartmuseum.codefresh.io/argo-hub-platform
   version: 0.1.1
 - name: codefresh-tunnel-server
   repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
   version: 0.1.12
-digest: sha256:7492aeae2516ccc5ec560e5ee831c1d1eee7dd2494b9da515dad4bacbfb0049d
-generated: "2023-05-08T20:19:36.077043718+03:00"
+digest: sha256:5126e97f6417deda84df57272e286f0eb72157d065af8b80b2ea0f2119fff0f0
+generated: "2023-05-11T20:32:16.581701342+03:00"

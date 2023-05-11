@@ -41,7 +41,6 @@ RUNTIME_IMAGES=(
 for k in ${RUNTIME_IMAGES[@]}; do
     if [[ "$k" == "ENGINE_IMAGE" ]]; then
         image="$(jq -er .runtimeScheduler.image $runtimeJson)"
-<<<<<<< HEAD:scripts/update_re_images.sh
         yq eval ".runtimeImages.ENGINE_IMAGE = \"$image\"" -i $CHARTDIR/values.yaml
     elif [[ "$k" == "DIND_IMAGE" ]]; then
         image="$(jq -er .dockerDaemonScheduler.dindImage $runtimeJson)"
@@ -49,16 +48,7 @@ for k in ${RUNTIME_IMAGES[@]}; do
     else
         image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
         yq eval ".runtimeImages.\"$k\" = \"$image\"" -i $CHARTDIR/values.yaml
-=======
-        yq eval ".runtimeImages.ENGINE_IMAGE = \"$image\"" -i codefresh/values.yaml
-    elif [[ "$k" == "DIND_IMAGE" ]]; then
-        image="$(jq -er .dockerDaemonScheduler.dindImage $runtimeJson)"
-        yq eval ".runtimeImages.DIND_IMAGE = \"$image\"" -i codefresh/values.yaml
-    else
-        image="$(jq -er .runtimeScheduler.envVars.$k $runtimeJson)"
-        yq eval ".runtimeImages.\"$k\" = \"$image\"" -i codefresh/values.yaml
->>>>>>> origin/onprem-alignment:update_re_images.sh
-    fi
+   fi
 done
 
 msg "The list of updated runtime images:\n"

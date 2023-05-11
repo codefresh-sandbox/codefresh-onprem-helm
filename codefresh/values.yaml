@@ -40,7 +40,7 @@ gencerts:
 # -- Seed jobs
 # @default -- See below
 seed:
-  # -- Disable all seed jobs
+  # -- Enable all seed jobs
   enabled: true
   # -- Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases.
   # @default -- See below
@@ -49,7 +49,7 @@ seed:
     image:
       registry: docker.io
       repository: bitnami/mongodb
-      tag: 4.2
+      tag: 4.4
   # -- Postgres Seed Job. Required at first install. Creates required user and databases.
   # @default -- See below
   postgresSeedJob:
@@ -67,12 +67,13 @@ seed:
   tolerations: []
 
 # -- Pre/post-upgrade Job hooks. Updates images in `system/default` runtime.
+# @default -- See below
 hooks:
   enabled: true
   image:
     registry: docker.io
     repository: bitnami/mongodb
-    tag: 4.2
+    tag: 4.4
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -149,6 +150,9 @@ global:
 
   # -- Global Env vars
   env: {}
+
+  # -- New Relic Key
+  newrelicLicenseKey: ""
 
   # -- Definitions to set up internal-gateway nginx resolver
   dnsService: kube-dns
@@ -246,32 +250,34 @@ global:
 #--------
 # MongoDB
 #--------
-  # -- Default Internal MongoDB URI (from bitnami/mongodb subchart). Change if you use external MongoDB. See "External MongoDB" example below.
-  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin"
-  # -- Default MongoDB database name.
+  # -- Default Internal MongoDB URI (from bitnami/mongodb subchart).. Change if you use external MongoDB. See "External MongoDB" example below.
+  # Will be used by ALL services to communicate with MongoDB.
+  # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/
+  # Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]).
+  # Mongo seed job will create and add `cfuser` (useraname and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases
+  mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
+  # -- Default MongoDB database name. Don't change!
   mongodbDatabase: codefresh
-  # -- Root user required for seed jobs.
+  # -- Root user (required ONLY for seed job!)
   mongodbRootUser: root
-  # -- Root password required for seed jobs.
+  # -- Root password (required ONLY for seed job!).
   mongodbRootPassword: XT9nmM8dZD
 
   # Mongo parameters for OfflineLogging. Should match the parameters above.
   # -- Default Internal MongoDB URI
-  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin
+  runtimeMongoURI: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017
   # -- Default Internal MongoDB database name
   runtimeMongoDb: codefresh
 
   # External MongoDB example
   # global:
-  #   # -- Use root user to create `cf_user` and databases
   #   mongodbRootUser: root
-  #   # -- Password for root user
   #   mongodbRootPassword: password
   #   mongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
   #   runtimeMongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
 
   # mongodb:
-  #   enabled: false
+  #   enabled: false  # disable default mongodb subchart installation
 
 #-----------
 # Postgresql
@@ -357,10 +363,9 @@ global:
   # redis:
   #   enabled: false    # disable default redis subchart installation
 
-  # Legacy
+  # Legacy values. Keep as is.
   gceProject: ""
   stepsCatalogOnPremise: "1"
-
 
 # -- runtimeImages
 # @default -- See below
@@ -368,13 +373,13 @@ runtimeImages:
   COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
   CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.10.0
   DIND_IMAGE: quay.io/codefresh/dind:20.10.18-1.25.6
-  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.1.21
+  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.3.1
   DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.9
   DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.10
   DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.8
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.162.7
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.164.0
   FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.3
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.17
+  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.18
   KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.11
   PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0
   TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.6
@@ -387,18 +392,53 @@ builder:
   enabled: true
 
 # -- cf-api
-# @default -- See below
 cfapi: &cf-api
+  # -- Enable cf-api
   enabled: true
+  # -- Controller configuration
+  controller:
+    # -- Replicas number
+    replicas: 2
+  # -- Container configuration
   container:
+    # -- Image
     image:
+      # -- Registry prefix
       registry: gcr.io/codefresh-enterprise
+    # -- Env vars
+    # @default -- See below
     env:
       AUDIT_AUTO_CREATE_DB: true
       GITHUB_API_PATH_PREFIX: /api/v3
       LOGGER_LEVEL: debug
       ON_PREMISE: true
       RUNTIME_MONGO_DB: codefresh
+  # -- Resource requests and limits
+  resources:
+    requests:
+      cpu: 500m
+      memory: "1Gi"
+    limits: {}
+  # -- Autoscaler configuration
+  hpa:
+    # -- Enable HPA
+    enabled: false
+    # -- Minimum number of replicas
+    minReplicas: 2
+    # -- Maximum number of replicas
+    maxReplicas: 10
+    # -- Average CPU utilization percentage
+    targetCPUUtilizationPercentage: 70
+  # -- Pod disruption budget configuration
+  pdb:
+    # -- Enable PDB
+    enabled: false
+    # -- Minimum number of replicas in percentage
+    minAvailable: "50%"
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # cfapi roles
 # @ignored internal
@@ -475,21 +515,37 @@ cf-broadcaster:
       registry: gcr.io/codefresh-enterprise
   env:
     RUNTIME_MONGO_DB: codefresh
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- etl-starter
 # @default -- See below
 cf-platform-analytics-etlstarter:
   nameOverride: etl-starter
+  redis:
+    # -- Disable redis subchart
+    enabled: false
   controller:
-    enabled: false # disable default deployment controller
+    # - Disable default deployment controller
+    enabled: false
+  # -- Only postgres ETL should be running in onprem~
   system-etl-postgres:
     enabled: true
-    container:
-      env:
-        MONGO_DAY_OFFSET: 30
-        FIRST_MONGO_DAY_OFFSET: 365
+  # @ignored
   system-etl-gitops:
     enabled: false
+  # @ignored
   system-etl-metabase:
     enabled: false
 
@@ -500,10 +556,10 @@ cf-platform-analytics-etlstarter:
       ENV: production
       DATASET_ID: etl
       MONGO_DB_DEFAULT_NAME: codefresh
-  redis:
-    enabled: false
-
-  postgresDbName: analytics
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- platform-analytics
 # @default -- See below
@@ -548,6 +604,19 @@ cfui:
       registry: gcr.io/codefresh-enterprise
     env:
       ON_PREMISE: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- charts-manager
 # @default -- See below
@@ -556,6 +625,19 @@ charts-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- cluster-providers
 # @default -- See below
@@ -564,9 +646,23 @@ cluster-providers:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- consul
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/consul/values.yaml
 consul:
   enabled: true
   datacenterName: codefresh-onprem
@@ -579,6 +675,19 @@ context-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- cronus
 # @default -- See below
@@ -587,6 +696,10 @@ cronus:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- gitops-dashboard-manager
 # @default -- See below
@@ -595,6 +708,19 @@ gitops-dashboard-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- helm-repo-manager
 # @default -- See below
@@ -610,6 +736,19 @@ helm-repo-manager:
     image:
       repository: ghcr.io/helm/chartmuseum
       tag: v0.15.0
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- hermes
 # @default -- See below
@@ -618,12 +757,18 @@ hermes:
     image:
       registry: gcr.io/codefresh-enterprise
   redis:
-    enabled: false # deprecation of a separate redis for hermes (CR-705)
+    # Deprecation of a separate redis for hermes (CR-705)
+    enabled: false
     redisPassword: kj57kfwjeg
     db: 15
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- ingress-nginx
 # @default -- See below
+# Ref: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
 ingress-nginx:
   enabled: true
   controller:
@@ -654,6 +799,19 @@ k8s-monitor:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- kube-integration
 # @default -- See below
@@ -662,28 +820,40 @@ kube-integration:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- mongodb
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
 mongodb:
-  enabled: true
   image:
-    tag: 4.2
+    tag: 4.4
   architecture: standalone
   useStatefulSet: true
   auth:
     enabled: true
     rootUser: root
     rootPassword: "XT9nmM8dZD"
-  persistence:
-    size: 8Gi
   resources:
     requests:
-      cpu: 500m
-      memory: 1024Mi
+      cpu: 1
+      memory: 2048Mi
 
 # -- nats
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/nats/values.yaml
 nats:
   enabled: true
   replicaCount: 1
@@ -703,9 +873,14 @@ nomios:
   ingress:
     main:
       enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- postgresql
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
 postgresql:
   enabled: true
   image:
@@ -724,15 +899,14 @@ postgresql:
       pg_partman_bgw.role = 'postgres'
       pg_partman_bgw.dbname = 'postgres'
       cron.database_name = 'postgres'
-    persistence:
-      size: 8Gi
     resources:
       requests:
-        cpu: 500m
-        memory: 1024Mi
+        cpu: 1000m
+        memory: 2048Mi
 
 # -- redis
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
 redis:
   enabled: true
   architecture: standalone
@@ -740,28 +914,17 @@ redis:
     password: "hoC9szf7NtrU"
   master:
     count: 1
-    persistence:
-      size: 8Gi
     resources:
       requests:
         cpu: 500m
         memory: 1024Mi
-  pdb:
-    create: false
-  metrics:
-    enabled: false
 
 # -- rabbitmq
 # @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/rabbitmq/values.yaml
 rabbitmq:
   enabled: true
   replicaCount: 1
-  pdb:
-    create: false
-  persistence:
-    size: 8Gi
-  metrics:
-    enabled: false
   auth:
     username: user
     password: "cVz9ZdJKYm7u"
@@ -771,6 +934,11 @@ rabbitmq:
       cpu: 500m
       memory: 1024Mi
 
+# -- runner
+# @default -- See below
+runner:
+  enabled: true
+
 # -- pipeline-manager
 # @default -- See below
 pipeline-manager:
@@ -778,6 +946,19 @@ pipeline-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- runtime-environment-manager
 # @default -- See below
@@ -788,6 +969,19 @@ runtime-environment-manager:
       registry: gcr.io/codefresh-enterprise
     env:
       ON_PREMISE: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- tasker-kubernetes
 tasker-kubernetes:
@@ -795,6 +989,19 @@ tasker-kubernetes:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- argo-hub-platform
 # @default -- See below
@@ -808,19 +1015,37 @@ argo-hub-platform:
       registry: gcr.io/codefresh-enterprise
   imagePullSecrets:
     - '{{ .Release.Name }}-registry'
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits: {}
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- argo-platform
 # @default -- See below
 argo-platform:
   enabled: true
 
+  # -- Env anchors
+  # @default -- See below
   env:
     RABBITMQ_PROTOCOL: &RABBITMQ_PROTOCOL amqp
     MONGODB_AUDIT_URI: &MONGODB_AUDIT_URI $(MONGODB_AUDIT_URI_SEC)
     MONGODB_READMODELS_URI: &MONGODB_READMODELS_URI $(MONGODB_READMODELS_URI_SEC)
     MONGODB_AUDIT_DBNAME: audit
     MONGODB_READMODELS_DBNAME: read-models
+  # -- Use regular k8s secret object. Keep `false`!
   useExternalSecret: false
+  # -- Secrets anchors
+  # @default -- See below
   secrets:
     cache-host: &cache-host '{{ default (printf "%s-%s" .Release.Name .Values.global.redisService) .Values.global.redisUrl }}'
     cache-password: &cache-password '{{ .Values.global.redisPassword }}'
@@ -836,6 +1061,61 @@ argo-platform:
     rabbitmq-port: &rabbitmq-port 5672
     rabbitmq-user: &rabbitmq-user '{{ .Values.global.rabbitmqUsername }}'
 
+  # -- api-graphql
+  # @default -- See below
+  # All other services under `.Values.argo-platform` follows the same values structure.
+  api-graphql:
+    enabled: true
+    # -- Controller kind. Currently, only `Deployment` is supported
+    kind: Deployment
+    # -- Image
+    image:
+      # -- Image repository
+      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql
+    # -- Env vars
+    # @default -- See below
+    env:
+      GRAPHQL_PLAYGROUND: true
+      MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
+      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
+      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
+    # -- Secrets
+    # @default -- See below
+    secrets:
+      argo-hub-host: http://argo-hub-platform
+      cache-host: *cache-host
+      cache-password: *cache-password
+      v1-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiEndpointsService }}
+      v1-internal-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}
+      mongodb-audit-uri-sec: *mongodb-audit-uri-sec
+      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    # -- Resource limits and requests
+    # @default -- See below
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        memory: 1Gi
+    # -- HPA
+    hpa:
+      # -- Enable autoscaler
+      enabled: false
+    # -- PDB
+    pdb:
+      # -- Enable pod disruption budget
+      enabled: false
+    # -- Set pod's affinity
+    affinity: {}
+    # -- Set pod's tolerations
+    tolerations: []
+
+  # -- abac
+  # @default -- See below
   abac:
     enabled: true
     kind: Deployment
@@ -845,6 +1125,12 @@ argo-platform:
       MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
     secrets:
       mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -852,6 +1138,8 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+  # -- analytics-reporter
+  # @default -- See below
   analytics-reporter:
     enabled: true
     kind: Deployment
@@ -874,10 +1162,10 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 512Mi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -887,6 +1175,8 @@ argo-platform:
     volumes: []
     volumeMounts: []
 
+  # -- api-events
+  # @default -- See below
   api-events:
     enabled: true
     kind: Deployment
@@ -901,10 +1191,10 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 512Mi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -912,44 +1202,14 @@ argo-platform:
     affinity: {}
     tolerations: []
 
-  api-graphql:
-    enabled: true
-    kind: Deployment
-    image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql
-    env:
-      GRAPHQL_PLAYGROUND: true
-      MONGODB_AUDIT_URI: *MONGODB_AUDIT_URI
-      MONGODB_READMODELS_URI: *MONGODB_READMODELS_URI
-      RABBITMQ_PROTOCOL: *RABBITMQ_PROTOCOL
-    secrets:
-      argo-hub-host: http://argo-hub-platform
-      cache-host: *cache-host
-      cache-password: *cache-password
-      v1-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiEndpointsService }}
-      v1-internal-host: http://{{ .Release.Name }}-{{ .Values.global.cfapiService }}:{{ .Values.global.cfapiInternalPort }}
-      mongodb-audit-uri-sec: *mongodb-audit-uri-sec
-      mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
-      rabbitmq-host: *rabbitmq-host
-      rabbitmq-password: *rabbitmq-password
-      rabbitmq-port: *rabbitmq-port
-      rabbitmq-user: *rabbitmq-user
-    resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
-      limits:
-        memory: 512Mi
-    hpa:
-      enabled: false
-    pdb:
-      enabled: false
-    affinity: {}
-    tolerations: []
-
+  # -- argocd-hooks
+  # @default -- See below
+  # Don't enable! Not used in onprem!
   argocd-hooks:
     enabled: false
 
+  # -- audit
+  # @default -- See below
   audit:
     enabled: true
     kind: Deployment
@@ -966,6 +1226,12 @@ argo-platform:
       rabbitmq-password: *rabbitmq-password
       rabbitmq-port: *rabbitmq-port
       rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -973,6 +1239,8 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+  # -- cron-executor
+  # @default -- See below
   cron-executor:
     enabled: true
     kind: Deployment
@@ -991,10 +1259,10 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 512Mi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -1002,6 +1270,8 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+  # -- event-handler
+  # @default -- See below
   event-handler:
     enabled: true
     kind: Deployment
@@ -1018,10 +1288,10 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
         memory: 512Mi
       limits:
-        memory: 512Mi
+        memory: 1Gi
     hpa:
       enabled: false
     pdb:
@@ -1029,12 +1299,20 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+  # -- runtime-manager
+  # @default -- See below
+  # Don't enable! Not used in onprem!
   runtime-manager:
     enabled: false
 
+  # -- runtime-monitor
+  # @default -- See below
+  # Don't enable! Not used in onprem!
   runtime-monitor:
     enabled: false
 
+  # -- ui
+  # @default -- See below
   ui:
     enabled: true
     kind: Deployment
@@ -1045,7 +1323,7 @@ argo-platform:
         cpu: 100m
         memory: 128Mi
       limits:
-        memory: 128Mi
+        memory: 512Mi
     hpa:
       enabled: false
     pdb:
@@ -1060,10 +1338,20 @@ internal-gateway:
   # -- Do not change this value! Breaks chart logic
   libraryMode: true
 
+  # -- Controller configuration
+  controller:
+    # -- Replicas number
+    replicas: 2
+
+  # -- Internal-gateway Ingress
   ingress:
     main:
       enabled: true
-      ingressClassName: nginx-codefresh # Value will be pushed from root context `.Values.ingress.ingressClassName`
+      # -- Internal-gateway ingress class
+      # No need to change it here. Value will be pushed from root context `.Values.ingress.ingressClassName`
+      ingressClassName: nginx-codefresh
+      # -- Internal gateway hosts
+      # @default -- See below
       hosts:
         - host: '{{ .Values.global.appUrl }}'
           paths:
@@ -1082,7 +1370,22 @@ internal-gateway:
               service:
                 name: "argo-hub-platform"
                 port: "80"
-      tls: [] # Keep as empty list. Value will be pushed from root context `.Values.ingress.tls`
+      # -- Enable Internal-gateway Ingress TLS
+      # Keep as empty list. Value will be pushed from root context `.Values.ingress.tls`
+      tls: []
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
 
 # -- codefresh-tunnel-server
 # @default -- See below

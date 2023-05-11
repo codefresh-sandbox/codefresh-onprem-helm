@@ -1,15 +1,16 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.4](https://img.shields.io/badge/Version-2.0.0--alpha.4-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.5](https://img.shields.io/badge/Version-2.0.0--alpha.5-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Prerequisites
 
-- Kubernetes 1.22+
-- Helm 3.8.0+
+- Kubernetes **1.22+**
+- Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
 - Firebase url and secret
 - Valid TLS certificates for Ingress
+- When external PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
 
 ## Get Repo Info and Pull Chart
 
@@ -22,7 +23,7 @@ helm repo update
 
 **Important:** only helm 3.8.0+ is supported
 
-Edit default `values.yaml` or create empty `my-values.yaml`
+Edit default `values.yaml` or create empty `cf-values.yaml`
 
 - Pass `sa.json` (as a single line) to `.Values.imageCredentials.password`
 
@@ -75,7 +76,7 @@ ingress:
 
 ```console
 helm upgrade --install cf codefresh/codefresh \
-    -f my-values.yaml \
+    -f cf-values.yaml \
     --namespace codefresh \
     --create-namespace \
     --debug \
@@ -83,13 +84,709 @@ helm upgrade --install cf codefresh/codefresh \
     --timeout 15m
 ```
 
-## Migrating from 1.4.x onprem
+## Helm Chart Configuration
 
-TODO
+See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
 
-## Configuration
+```console
+helm show values codefresh/codefresh
+```
 
-TODO
+### Configuring external services for databases/message brokers/data stores
+
+The chart contains required dependencies for the corresponding services
+- [bitnami/mongodb](https://github.com/bitnami/charts/tree/main/bitnami/mongodb)
+- [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
+- [bitnami/redis](https://github.com/bitnami/charts/tree/main/bitnami/redis)
+- [bitnami/rabbitmq](https://github.com/bitnami/charts/tree/main/bitnami/rabbitmq)
+
+However, you might need to use external services like [MongoDB Atlas Database](https://www.mongodb.com/atlas/database) or [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/). In order to use them, adjust the values accordingly:
+
+#### External MongoDB
+
+**Important:** Recommended version of Mongo is 4.4.x
+
+```yaml
+seed:
+  mongoSeedJob:
+    # -- Enable mongo seed job. Seeds the required data (default idp/user/account), creates cfuser and required databases.
+    enabled: true
+    # -- Root user (required ONLY for seed job!)
+    mongodbRootUser: root
+    # -- Root password (required ONLY for seed job!).
+    mongodbRootPassword: password
+
+global:
+  # -- MongoDB connection string. Will be used by ALL services to communicate with MongoDB.
+  # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/
+  # Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]).
+  # Mongo seed job will create and add `cfuser` (username and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases
+  mongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/
+  # -- Should be the same as mongoURI above
+  runtimeMongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/
+
+mongodb:
+  # -- Disable mongodb subchart installation
+  enabled: false
+```
+
+#### External MongoDB with MTLS
+
+In order to use MTLS (Mutual TLS) for MongoDB, you need:
+
+* Create a K8S secret that contains the certificate (certificate file and private key).
+  The K8S secret should have one `ca.pem` key.
+```console
+cat cert.crt > ca.pem
+cat cert.key >> ca.pem
+kubectl create secret generic my-mongodb-tls --from-file=ca.pem
+```
+
+  Or you can create certificate using templates provided in Codefresh Helm chart.
+  Add `.Values.secrets` into `values.yaml` as follows.
+```yaml
+secrets:
+  mongodb-tls:
+    enabled: true
+    data:
+      ca.pem: <base64 encoded sting>
+```
+
+*  Add `.Values.global.volumes` and `.Values.global.container.volumeMounts` to mount the secret into all the services.
+```yaml
+global:
+  volumes:
+    mongodb-tls:
+      enabled: true
+      type: secret
+      # Existing secret with TLS certificates (key: `ca.pem`)
+      # existingName: my-mongodb-tls
+      optional: true
+
+  container:
+    volumeMounts:
+      mongodb-tls:
+        path:
+        - mountPath: /etc/ssl/mongodb/ca.pem
+          subPath: ca.pem
+
+  env:
+    MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
+    RUNTIME_MONGO_TLS: "true"
+    # Set these var to 'false' if self-signed certificate is used to avoid x509 errors
+    RUNTIME_MONGO_TLS_VALIDATE: "false"
+    MONGO_MTLS_VALIDATE: "false"
+```
+
+#### External PostgresSQL
+
+**Important:** Recommended version of Postgres is 13.x
+
+```yaml
+seed:
+  postgresSeedJob:
+    # -- Enable postgres seed job. Creates required user and databases.
+    enabled: true
+    # -- (optional) "postgres" admin user (required ONLY for seed job!)
+    # Must be a privileged user allowed to create databases and grant roles.
+    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
+    postgresUser: postgres
+    # -- (optional) Password for "postgres" admin user (required ONLY for seed job!)
+    postgresPassword: password
+
+global:
+  # -- Postgresql hostname
+  postgresHostname: my-postgres.domain.us-east-1.rds.amazonaws.com
+  # -- Postgresql user
+  postgresUser: cf_user
+  # -- Postgresql password
+  postgresPassword: password
+  # -- (optional) Postgresql server port
+  postgresPort: 5432
+
+postgresql:
+  # -- Disable postgresql subchart installation
+  enabled: false
+```
+
+#### External Redis
+
+**Important:** Recommended version of Redis is 7.x
+
+```yaml
+global:
+  # -- Redis hostname
+  redisUrl: my-redis.namespace.svc.cluster.local
+  # -- Redis password
+  redisPassword: password
+  # -- (optional) Redis port
+  redisPort: 6379
+
+  # Should be the same as above.
+  # Required for OfflineLogging feature is turned on. (i.e. when `.Values.global.firebaseSecret` is not provided)
+  runtimeRedisHost: my-redis.namespace.svc.cluster.local
+  runtimeRedisPassword: password
+  runtimeRedisPort: 6379
+  runtimeRedisDb: 2
+
+redis:
+  # -- Disable redis subchart installation
+  enabled: false
+
+```
+
+#### External RabbitMQ
+
+**Important:** Recommended version of RabbitMQ is 3.x
+
+```yaml
+global:
+  # -- RabbitMQ hostname
+  rabbitmqHostname: my-rabbitmq.namespace.svc.cluster.local
+  # -- RabbitMQ user
+  rabbitmqUsername: user
+  # -- RabbitMQ password
+  rabbitmqPassword: password
+
+rabbitmq:
+  # -- Disable rabbitmq subchart installation
+  enabled: false
+```
+
+### Configuring Ingress-NGINX
+
+The chart deploys the [ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/main) and exposes controller behind a Service of `Type=LoadBalancer`
+
+All installation options for `ingress-nginx` are described at [Configuration](https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx#configuration)
+
+Relevant examples for Codefesh are below:
+
+#### ELB with SSL Termination (Classic Load Balancer)
+
+*certificate provided from ACM*
+
+```yaml
+ingress-nginx:
+  controller:
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+        service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: < CERTIFICATE ARN >
+      targetPorts:
+        http: http
+        https: http
+
+# -- Ingress
+ingress:
+  tls:
+    # -- Disable TLS
+    enabled: false
+```
+
+#### NLB (Network Load Balancer)
+
+*certificate provided as base64 string or as exisiting k8s secret*
+
+```yaml
+ingress-nginx:
+  controller:
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+        service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+
+# -- Ingress
+ingress:
+  tls:
+    # -- Enable TLS
+    enabled: true
+    # -- Default secret name to be created with provided `cert` and `key` below
+    secretName: "star.codefresh.io"
+    # -- Certificate (base64 encoded)
+    cert: "LS0tLS1CRUdJTiBDRVJ...."
+    # -- Private key (base64 encoded)
+    key: "LS0tLS1CRUdJTiBSU0E..."
+    # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
+    existingSecret: ""
+```
+
+#### ALB (Application Load Balancer)
+
+*[Application Load Balancer](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main/helm/aws-load-balancer-controller) should be deployed to the cluster*
+
+```yaml
+ingress-nginx:
+  # -- Disable ingress-nginx subchart installation
+  enabled: false
+
+ingress:
+  # -- ALB contoller ingress class
+  ingressClassName: alb
+  annotations:
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig":{ "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/certificate-arn: <ARN>
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/success-codes: 200,404
+    alb.ingress.kubernetes.io/target-type: ip
+  services:
+    # For ALB /* asterisk is required in path
+    cfapi:
+      - /api/*
+      - /ws/*
+```
+
+### Configuration with Private Registry
+
+If you install/upgrade Codefresh on an air-gapped environment without access to public registries (i.e. `quay.io`/`docker.io`) or Codefresh Enterprise registry at `gcr.io`, you will have to mirror the images to your organization’s container registry.
+
+- Obtain [image list](https://github.com/codefresh-io/onprem-images/tree/master/releases) for specific release
+
+- [Push images](https://github.com/codefresh-io/onprem-images/blob/master/push-to-registry.sh) to private docker registry
+
+- Specify image registry in values
+
+```yaml
+global:
+  imageRegistry: myregistry.domain.com
+
+ingress-nginx:
+  controller:
+    image:
+      registry: myregistry.domain.com
+```
+
+There are 3 types of images, with the values above in rendered manifests images will be converted as follows:
+
+**non-Codefresh** like:
+
+```yaml
+bitnami/mongo:4.2
+k8s.gcr.io/ingress-nginx/controller:v1.2.0
+postgres:13
+```
+converted to:
+```yaml
+myregistry.domain.com/bitnami/mongodb:4.2
+myregistry.domain.com/ingress-nginx/controller:v1.2.0
+myregistry.domain.com/postgres:13
+```
+
+Codefresh **public** images like:
+```yaml
+quay.io/codefresh/dind:20.10.13-1.25.2
+quay.io/codefresh/engine:1.147.8
+quay.io/codefresh/cf-docker-builder:1.1.14
+```
+converted to:
+```yaml
+myregistry.domain.com/codefresh/dind:20.10.13-1.25.2
+myregistry.domain.com/codefresh/engine:1.147.8
+myregistry.domain.com/codefresh/cf-docker-builder:1.1.14
+```
+
+Codefresh **private** images like:
+```yaml
+gcr.io/codefresh-enterprise/codefresh/cf-api:21.153.6
+gcr.io/codefresh-enterprise/codefresh/cf-ui:14.69.38
+gcr.io/codefresh-enterprise/codefresh/pipeline-manager:3.121.7
+```
+converted to:
+
+```yaml
+myregistry.domain.com/codefresh/cf-api:21.153.6
+myregistry.domain.com/codefresh/cf-ui:14.69.38
+myregistry.domain.com/codefresh/pipeline-manager:3.121.7
+```
+
+### Multi-role cf-api
+
+The chart installs cf-api as a single deployment. Though, at a larger scale, we do recommend to split cf-api to multiple roles (one deployment per role) as follows:
+
+```yaml
+
+global:
+  # -- Change internal cfapi service address
+  cfapiService: cfapi-internal
+  # -- Change endpoints cfapi service address
+  cfapiEndpointsService: cfapi-endpoints
+
+cfapi:
+  # -- Disable default cfapi deployment
+  enabled: false
+  # -- (optional) Enable the autoscaler
+  # The value will be merged into each cfapi role. So you can specify it once.
+  hpa:
+    enabled: true
+# Enable cf-api roles
+cfapi-internal:
+  enabled: true
+cfapi-ws:
+  enabled: true
+cfapi-admin:
+  enabled: true
+cfapi-endpoints:
+  enabled: true
+cfapi-terminators:
+  enabled: true
+cfapi-sso-group-synchronizer:
+  enabled: true
+cfapi-buildmanager:
+  enabled: true
+cfapi-cacheevictmanager:
+  enabled: true
+cfapi-eventsmanagersubscriptions:
+  enabled: true
+cfapi-kubernetesresourcemonitor:
+  enabled: true
+cfapi-environments:
+  enabled: true
+cfapi-gitops-resource-receiver:
+  enabled: true
+cfapi-downloadlogmanager:
+  enabled: true
+cfapi-teams:
+  enabled: true
+cfapi-kubernetes-endpoints:
+  enabled: true
+cfapi-test-reporting:
+  enabled: true
+
+# Change ingress paths
+ingress:
+  services:
+    cfapi-endpoints:
+      - /api/
+    cfapi-downloadlogmanager:
+      - /api/progress/download
+      - /api/public/progress/download
+    cfapi-admin:
+      - /api/admin/
+    cfapi-ws:
+      - /ws
+    cfapi-teams:
+      - /api/team
+    cfapi-kubernetes-endpoints:
+      - /api/kubernetes
+    cfapi-test-reporting:
+      - /api/testReporting
+    cfapi-kubernetesresourcemonitor:
+      - /api/k8s-monitor/
+    cfapi-environments:
+      - /api/environments-v2/argo/events
+    cfapi-gitops-resource-receiver:
+      - /api/gitops/resources
+      - /api/gitops/rollout
+```
+
+### High Availability
+
+The chart installs the non-HA version of Codefresh by default. If you want to run Codefresh in HA mode, use the example values below.
+
+```yaml
+cfapi:
+  hpa:
+    enabed: true
+    # These are the defaults for all Codefresh subcharts
+    # minReplicas: 2
+    # maxReplicas: 10
+    # targetCPUUtilizationPercentage: 70
+
+argo-platform:
+  abac:
+    hpa:
+      enabled: true
+
+  analytics-reporter:
+    hpa:
+      enabled: true
+
+  api-events:
+    hpa:
+      enabled: true
+
+  api-graphql:
+    hpa:
+      enabled: true
+
+  audit:
+    hpa:
+      enabled: true
+
+  cron-executor:
+    hpa:
+      enabled: true
+
+  event-handler:
+    hpa:
+      enabled: true
+
+  ui:
+    hpa:
+      enabled: true
+
+cfui:
+  hpa:
+    enabled: true
+
+internal-gateway:
+  hpa:
+    enabled: true
+
+charts-manager:
+  hpa:
+    enabled: true
+
+cluster-providers:
+  hpa:
+    enabled: true
+
+context-manager:
+  hpa:
+    enabled: true
+
+gitops-dashboard-manager:
+  hpa:
+    enabled: true
+
+helm-repo-manager:
+  hpa:
+    enabled: true
+
+k8s-monitor:
+  hpa:
+    enabled: true
+
+kube-integration:
+  hpa:
+    enabled: true
+
+pipeline-manager:
+  hpa:
+    enabled: true
+
+runtime-environment-manager:
+  hpa:
+    enabled: true
+
+tasker-kubernetes:
+  hpa:
+    enabled: true
+
+```
+
+## Migrating from 1.4.x onprem to 2.0.0
+
+This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible breaking change needing manual actions**.
+
+**Before applying the upgrade, read through this section!**
+
+### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation Notice
+
+This major release deprecates [kcfi](https://github.com/codefresh-io/kcfi) installer. The recommended way to install Codefresh On-Prem is **Helm**.
+Due to that, Kcfi `config.yaml` will not be compatible for Helm-based installation.
+You still can reuse the same `config.yaml` for the Helm chart, but you need to remove (or update) the following sections.
+
+* `.Values.metadata` is deprecated. Remove it from `config.yaml`
+
+*1.4.x `config.yaml`*
+```yaml
+metadata:
+  kind: codefresh
+  installer:
+    type: helm
+    helm:
+      chart: codefresh
+      repoUrl: http://chartmuseum.codefresh.io/codefresh
+      version: 1.4.x
+```
+
+* `.Values.kubernetes` is deprecated. Remove it from `config.yaml`
+
+*1.4.x `config.yaml`*
+```yaml
+kubernetes:
+  namespace: codefresh
+  context: context-name
+```
+
+* `.Values.tls` (`.Values.webTLS`) is moved under `.Values.ingress.tls`. Remove `.Values.tls` from `config.yaml` afterwards.
+
+  See full [values.yaml](./values.yaml#L92).
+
+*1.4.x `config.yaml`*
+```yaml
+tls:
+  selfSigned: false
+  cert: certs/certificate.crt
+  key: certs/private.key
+```
+
+*2.0.0 `config.yaml`*
+```yaml
+# -- Ingress
+ingress:
+  # -- Enable the Ingress
+  enabled: true
+  # -- Set the ingressClass that is used for the ingress.
+  ingressClassName: nginx-codefresh
+  tls:
+    # -- Enable TLS
+    enabled: true
+    # -- Default secret name to be created with provided `cert` and `key` below
+    secretName: "star.codefresh.io"
+    # -- Certificate (base64 encoded)
+    cert: "LS0tLS1CRUdJTiBDRVJ...."
+    # -- Private key (base64 encoded)
+    key: "LS0tLS1CRUdJTiBSU0E..."
+    # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
+    existingSecret: ""
+```
+
+* `.Values.images` is deprecated.  Remove `.Values.images` from `config.yaml`.
+
+  - `.Values.images.codefreshRegistrySa` is changed to `.Values.imageCredentials`
+
+  - `.Values.privateRegistry.address` is changed to `.Values.global.imageRegistry` (no trailing slash `/` at the end)
+
+  See full `values.yaml` [here](./values.yaml#L2) and [here](./values.yaml#L143).
+
+*1.4.x `config.yaml`*
+```yaml
+images:
+  codefreshRegistrySa: sa.json
+  usePrivateRegistry: true
+  privateRegistry:
+    address: myprivateregistry.domain
+    username: username
+    password: password
+```
+
+*2.0.0 `config.yaml`*
+```yaml
+# -- Credentials for Image Pull Secret object
+imageCredentials: {}
+# Pass sa.json (as a single line). Obtain GCR Service Account JSON (sa.json) at support@codefresh.io
+# E.g.:
+# imageCredentials:
+#   registry: gcr.io
+#   username: _json_key
+#   password: '{ "type": "service_account", "project_id": "codefresh-enterprise", "private_key_id": ... }'
+```
+
+*2.0.0 `config.yaml`*
+```yaml
+global:
+  # -- Global Docker image registry
+  imageRegistry: "myprivateregistry.domain"
+```
+
+* `.Values.dbinfra` is deprecated. Remove it from `config.yaml`
+
+*1.4.x `config.yaml`*
+```yaml
+dbinfra:
+  enabled: false
+```
+
+* `.Values.firebaseUrl` and `.Values.firebaseSecret` is moved under `.Values.global`
+
+*1.4.x `config.yaml`*
+```yaml
+firebaseUrl: <url>
+firebaseSecret: <secret>
+newrelicLicenseKey: <key>
+```
+
+*2.0.0 `config.yaml`*
+```yaml
+global:
+  # -- Firebase URL for logs streaming.
+  firebaseUrl: ""
+  # -- Firebase Secret.
+  firebaseSecret: ""
+  # -- New Relic Key
+  newrelicLicenseKey: ""
+```
+
+* `.Values.global.certsJobs` and `.Values.global.seedJobs` is deprecated. Use `.Values.seed.mongoSeedJob` and `.Values.seed.postgresSeedJob`.
+
+  See full [values.yaml](./values.yaml#L42).
+
+*1.4.x `config.yaml`*
+```yaml
+global:
+  certsJobs: true
+  seedJobs: true
+```
+
+*2.0.0 `config.yaml`*
+```yaml
+seed:
+  # -- Enable all seed jobs
+  enabled: true
+  # -- Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases.
+  # @default -- See below
+  mongoSeedJob:
+    enabled: true
+  # -- Postgres Seed Job. Required at first install. Creates required user and databases.
+  # @default -- See below
+  postgresSeedJob:
+    enabled: true
+```
+
+### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/) Notice
+
+All Codefresh subcharts templates (i.e. `cfapi`, `cfui`, `pipeline-manager`, `context-manager`, etc) has been migrated to use helm [library charts](https://helm.sh/docs/topics/library_charts/).
+That allows to unify values structure across all Codefresh owned charts. However, there are some **immutable** fields in the old charts which cannot be upgraded during a regular `helm upgrade`, thus additional manual actions are required.
+
+Run the following commands before appying the upgrade.
+
+* Delete `cf-runner` and `cf-builder` stateful sets.
+
+```console
+kubectl delete sts cf-runner --namespace $NAMESPACE
+kubectl delete sts cf-builder --namespace $NAMESPACE
+```
+
+* Delete all jobs
+
+```console
+kubectl delete job --namespace $NAMESPACE -l release=cf
+```
+
+* In `values.yaml`/`config.yaml` remove `.Values.nomios.ingress` section if you have it
+
+```yaml
+nomios:
+  # Remove ingress section
+  ingress:
+    ...
+```
+
+### ⚠️ New Services Notice
+
+Codefesh 2.0.0 chart includes additional dependent microservices(charts):
+- `argo-platform`: Main Codefresh GitOps module.
+- `internal-gateway`: NGINX that proxies requests to the correct components (api-graphql, api-events, ui).
+- `argo-hub-platform`: Service for Argo Workflow templates.
+- `platform-analytics` and `etl-starter`: Service for [Pipelines dasboard](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard)
+
+These services require two additional databases in MongoDB (`audit` and `read-models`) and in Postgresql (`analytics` and `analytics_pre_aggregations`)
+The helm chart is configured to re-run seed jobs to create necessary databases and users during the upgrade.
+
+```yaml
+seed:
+  # -- Enable all seed jobs
+  enabled: true
+```
+
+The bare minimal workload footprint for the new services (without HPA or PDB) is `~4vCPU` and `~8Gi RAM`
 
 ## Values
 
@@ -97,145 +794,61 @@ TODO
 |-----|------|---------|-------------|
 | argo-hub-platform | object | See below | argo-hub-platform |
 | argo-platform | object | See below | argo-platform |
+| argo-platform.abac | object | See below | abac |
+| argo-platform.analytics-reporter | object | See below | analytics-reporter |
+| argo-platform.api-events | object | See below | api-events |
+| argo-platform.api-graphql | object | See below | api-graphql All other services under `.Values.argo-platform` follows the same values structure. |
+| argo-platform.api-graphql.affinity | object | `{}` | Set pod's affinity |
+| argo-platform.api-graphql.env | object | See below | Env vars |
+| argo-platform.api-graphql.hpa | object | `{"enabled":false}` | HPA |
+| argo-platform.api-graphql.hpa.enabled | bool | `false` | Enable autoscaler |
+| argo-platform.api-graphql.image | object | `{"repository":"gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql"}` | Image |
+| argo-platform.api-graphql.image.repository | string | `"gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql"` | Image repository |
+| argo-platform.api-graphql.kind | string | `"Deployment"` | Controller kind. Currently, only `Deployment` is supported |
+| argo-platform.api-graphql.pdb | object | `{"enabled":false}` | PDB |
+| argo-platform.api-graphql.pdb.enabled | bool | `false` | Enable pod disruption budget |
+| argo-platform.api-graphql.resources | object | See below | Resource limits and requests |
+| argo-platform.api-graphql.secrets | object | See below | Secrets |
+| argo-platform.api-graphql.tolerations | list | `[]` | Set pod's tolerations |
+| argo-platform.argocd-hooks | object | See below | argocd-hooks Don't enable! Not used in onprem! |
+| argo-platform.audit | object | See below | audit |
+| argo-platform.cron-executor | object | See below | cron-executor |
+| argo-platform.env | object | See below | Env anchors |
+| argo-platform.event-handler | object | See below | event-handler |
+| argo-platform.runtime-manager | object | See below | runtime-manager Don't enable! Not used in onprem! |
+| argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
+| argo-platform.secrets | object | See below | Secrets anchors |
+| argo-platform.ui | object | See below | ui |
+| argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
 | builder | object | `{"enabled":true}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
+| cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
+| cf-platform-analytics-etlstarter.system-etl-postgres | object | `{"enabled":true}` | Only postgres ETL should be running in onprem~ |
 | cf-platform-analytics-platform | object | See below | platform-analytics |
-| cfapi | object | See below | cf-api |
-| cfapi-admin.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-admin.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-admin.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-admin.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-admin.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-admin.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-admin.<<.enabled | bool | `true` |  |
-| cfapi-admin.enabled | bool | `false` |  |
-| cfapi-buildmanager.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-buildmanager.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-buildmanager.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-buildmanager.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-buildmanager.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-buildmanager.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-buildmanager.<<.enabled | bool | `true` |  |
-| cfapi-buildmanager.enabled | bool | `false` |  |
-| cfapi-cacheevictmanager.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-cacheevictmanager.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-cacheevictmanager.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-cacheevictmanager.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-cacheevictmanager.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-cacheevictmanager.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-cacheevictmanager.<<.enabled | bool | `true` |  |
-| cfapi-cacheevictmanager.enabled | bool | `false` |  |
-| cfapi-downloadlogmanager.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-downloadlogmanager.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-downloadlogmanager.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-downloadlogmanager.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-downloadlogmanager.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-downloadlogmanager.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-downloadlogmanager.<<.enabled | bool | `true` |  |
-| cfapi-downloadlogmanager.enabled | bool | `false` |  |
-| cfapi-endpoints.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-endpoints.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-endpoints.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-endpoints.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-endpoints.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-endpoints.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-endpoints.<<.enabled | bool | `true` |  |
-| cfapi-endpoints.enabled | bool | `false` |  |
-| cfapi-environments.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-environments.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-environments.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-environments.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-environments.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-environments.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-environments.<<.enabled | bool | `true` |  |
-| cfapi-environments.enabled | bool | `false` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-eventsmanagersubscriptions.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-eventsmanagersubscriptions.<<.enabled | bool | `true` |  |
-| cfapi-eventsmanagersubscriptions.enabled | bool | `false` |  |
-| cfapi-gitops-resource-receiver.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-gitops-resource-receiver.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-gitops-resource-receiver.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-gitops-resource-receiver.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-gitops-resource-receiver.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-gitops-resource-receiver.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-gitops-resource-receiver.<<.enabled | bool | `true` |  |
-| cfapi-gitops-resource-receiver.enabled | bool | `false` |  |
-| cfapi-internal.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-internal.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-internal.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-internal.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-internal.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-internal.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-internal.<<.enabled | bool | `true` |  |
-| cfapi-internal.enabled | bool | `false` |  |
-| cfapi-kubernetes-endpoints.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-kubernetes-endpoints.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-kubernetes-endpoints.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-kubernetes-endpoints.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-kubernetes-endpoints.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-kubernetes-endpoints.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-kubernetes-endpoints.<<.enabled | bool | `true` |  |
-| cfapi-kubernetes-endpoints.enabled | bool | `false` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-kubernetesresourcemonitor.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-kubernetesresourcemonitor.<<.enabled | bool | `true` |  |
-| cfapi-kubernetesresourcemonitor.enabled | bool | `false` |  |
-| cfapi-sso-group-synchronizer.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-sso-group-synchronizer.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-sso-group-synchronizer.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-sso-group-synchronizer.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-sso-group-synchronizer.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-sso-group-synchronizer.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-sso-group-synchronizer.<<.enabled | bool | `true` |  |
-| cfapi-sso-group-synchronizer.enabled | bool | `false` |  |
-| cfapi-teams.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-teams.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-teams.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-teams.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-teams.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-teams.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-teams.<<.enabled | bool | `true` |  |
-| cfapi-teams.enabled | bool | `false` |  |
-| cfapi-terminators.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-terminators.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-terminators.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-terminators.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-terminators.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-terminators.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-terminators.<<.enabled | bool | `true` |  |
-| cfapi-terminators.enabled | bool | `false` |  |
-| cfapi-test-reporting.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-test-reporting.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-test-reporting.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-test-reporting.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-test-reporting.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-test-reporting.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-test-reporting.<<.enabled | bool | `true` |  |
-| cfapi-test-reporting.enabled | bool | `false` |  |
-| cfapi-ws.<<.container.env.AUDIT_AUTO_CREATE_DB | bool | `true` |  |
-| cfapi-ws.<<.container.env.GITHUB_API_PATH_PREFIX | string | `"/api/v3"` |  |
-| cfapi-ws.<<.container.env.LOGGER_LEVEL | string | `"debug"` |  |
-| cfapi-ws.<<.container.env.ON_PREMISE | bool | `true` |  |
-| cfapi-ws.<<.container.env.RUNTIME_MONGO_DB | string | `"codefresh"` |  |
-| cfapi-ws.<<.container.image.registry | string | `"gcr.io/codefresh-enterprise"` |  |
-| cfapi-ws.<<.enabled | bool | `true` |  |
-| cfapi-ws.enabled | bool | `false` |  |
+| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"500m","memory":"1Gi"}},"tolerations":[]}` | cf-api |
+| cfapi.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}}` | Container configuration |
+| cfapi.container.env | object | See below | Env vars |
+| cfapi.container.image | object | `{"registry":"gcr.io/codefresh-enterprise"}` | Image |
+| cfapi.container.image.registry | string | `"gcr.io/codefresh-enterprise"` | Registry prefix |
+| cfapi.controller | object | `{"replicas":2}` | Controller configuration |
+| cfapi.controller.replicas | int | `2` | Replicas number |
+| cfapi.enabled | bool | `true` | Enable cf-api |
+| cfapi.hpa | object | `{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70}` | Autoscaler configuration |
+| cfapi.hpa.enabled | bool | `false` | Enable HPA |
+| cfapi.hpa.maxReplicas | int | `10` | Maximum number of replicas |
+| cfapi.hpa.minReplicas | int | `2` | Minimum number of replicas |
+| cfapi.hpa.targetCPUUtilizationPercentage | int | `70` | Average CPU utilization percentage |
+| cfapi.pdb | object | `{"enabled":false,"minAvailable":"50%"}` | Pod disruption budget configuration |
+| cfapi.pdb.enabled | bool | `false` | Enable PDB |
+| cfapi.pdb.minAvailable | string | `"50%"` | Minimum number of replicas in percentage |
+| cfapi.resources | object | `{"limits":{},"requests":{"cpu":"500m","memory":"1Gi"}}` | Resource requests and limits |
 | cfsign | object | See below | tls-sign |
 | cfui | object | See below | cf-ui |
 | charts-manager | object | See below | charts-manager |
 | cluster-providers | object | See below | cluster-providers |
 | codefresh-tunnel-server | object | See below | codefresh-tunnel-server Don't enable! Not supported at the moment. |
-| consul | object | See below | consul |
+| consul | object | See below | consul Ref: https://github.com/bitnami/charts/blob/main/bitnami/consul/values.yaml |
 | context-manager | object | See below | context-manager |
 | cronus | object | See below | cronus |
 | dockerconfigjson | object | `{}` | DEPRECATED - Use `.imageCredentials` instead dockerconfig (for `kcfi` tool backward compatibility) for Image Pull Secret. Obtain GCR Service Account JSON (sa.json) at support@codefresh.io ```shell GCR_SA_KEY_B64=$(cat sa.json | base64) DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n') ``` E.g.: dockerconfigjson:   auths:     gcr.io:       auth: <DOCKER_CFG_VAR> |
@@ -274,12 +887,13 @@ TODO
 | global.imageRegistry | string | `""` | Global Docker image registry |
 | global.kubeIntegrationPort | int | `9000` | Default kube-integration service port. |
 | global.kubeIntegrationService | string | `"kube-integration"` | Default kube-integration service name. |
-| global.mongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin"` | Default Internal MongoDB URI (from bitnami/mongodb subchart). Change if you use external MongoDB. See "External MongoDB" example below. |
-| global.mongodbDatabase | string | `"codefresh"` | Default MongoDB database name. |
-| global.mongodbRootPassword | string | `"XT9nmM8dZD"` | Root password required for seed jobs. |
-| global.mongodbRootUser | string | `"root"` | Root user required for seed jobs. |
+| global.mongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"` | Default Internal MongoDB URI (from bitnami/mongodb subchart).. Change if you use external MongoDB. See "External MongoDB" example below. Will be used by ALL services to communicate with MongoDB. Ref: https://www.mongodb.com/docs/manual/reference/connection-string/ Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]). Mongo seed job will create and add `cfuser` (useraname and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases |
+| global.mongodbDatabase | string | `"codefresh"` | Default MongoDB database name. Don't change! |
+| global.mongodbRootPassword | string | `"XT9nmM8dZD"` | Root password (required ONLY for seed job!). |
+| global.mongodbRootUser | string | `"root"` | Root user (required ONLY for seed job!) |
 | global.natsPort | int | `4222` | Default nats service port. |
 | global.natsService | string | `"nats"` | Default nats service name. |
+| global.newrelicLicenseKey | string | `""` | New Relic Key |
 | global.onprem | bool | `true` | Keep `true` as default! |
 | global.pipelineManagerPort | int | `9000` | Default pipeline-manager service port. |
 | global.pipelineManagerService | string | `"pipeline-manager"` | Default pipeline-manager service name. |
@@ -304,7 +918,7 @@ TODO
 | global.runtimeEnvironmentManagerPort | int | `80` | Default runtime-environment-manager service port. |
 | global.runtimeEnvironmentManagerService | string | `"runtime-environment-manager"` | Default runtime-environment-manager service name. |
 | global.runtimeMongoDb | string | `"codefresh"` | Default Internal MongoDB database name |
-| global.runtimeMongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/?authSource=admin"` | Default Internal MongoDB URI |
+| global.runtimeMongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"` | Default Internal MongoDB URI |
 | global.runtimeRedisDb | string | `"1"` | Default Redis keyspace number. |
 | global.runtimeRedisHost | string | `"cf-redis-master"` | Default Internal Redis service address (from bitnami/redis subchart). |
 | global.runtimeRedisPassword | string | `"hoC9szf7NtrU"` | Default Redis password. |
@@ -315,10 +929,10 @@ TODO
 | global.tlsSignService | string | `"cfsign"` | Default tls-sign service name. |
 | helm-repo-manager | object | See below | helm-repo-manager |
 | hermes | object | See below | hermes |
-| hooks | object | `{"affinity":{},"enabled":true,"image":{"registry":"docker.io","repository":"bitnami/mongodb","tag":4.2},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Pre/post-upgrade Job hooks. Updates images in `system/default` runtime. |
+| hooks | object | See below | Pre/post-upgrade Job hooks. Updates images in `system/default` runtime. |
 | imageCredentials | object | `{}` | Credentials for Image Pull Secret object |
 | ingress | object | `{"annotations":{"nginx.ingress.kubernetes.io/configuration-snippet":"more_set_headers \"X-Request-ID: $request_id\";\nproxy_set_header X-Request-ID $request_id;\n","nginx.ingress.kubernetes.io/service-upstream":"true","nginx.ingress.kubernetes.io/ssl-redirect":"false","nginx.org/redirect-to-https":"false"},"enabled":true,"ingressClassName":"nginx-codefresh","services":{"cfapi":["/api/","/ws"],"cfui":["/"],"nomios":["/nomios/"]},"tls":{"cert":"","enabled":false,"existingSecret":"","key":"","secretName":"star.codefresh.io"}}` | Ingress |
-| ingress-nginx | object | See below | ingress-nginx |
+| ingress-nginx | object | See below | ingress-nginx Ref: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml |
 | ingress.annotations | object | See below | Set annotations for ingress. |
 | ingress.enabled | bool | `true` | Enable the Ingress |
 | ingress.ingressClassName | string | `"nginx-codefresh"` | Set the ingressClass that is used for the ingress. Default `nginx-codefresh` is created from `ingress-nginx` controller subchart |
@@ -329,21 +943,28 @@ TODO
 | ingress.tls.key | string | `""` | Private key (base64 encoded) |
 | ingress.tls.secretName | string | `"star.codefresh.io"` | Default secret name to be created with provided `cert` and `key` below |
 | internal-gateway | object | See below | internal-gateway |
+| internal-gateway.controller | object | `{"replicas":2}` | Controller configuration |
+| internal-gateway.controller.replicas | int | `2` | Replicas number |
+| internal-gateway.ingress | object | `{"main":{"enabled":true,"hosts":[{"host":"{{ .Values.global.appUrl }}","paths":[{"path":"/2.0/api","pathType":"ImplementationSpecific","service":{"name":"{{ .Release.Name }}-internal-gateway","port":"{{ .Values.service.main.ports.http.port }}"}},{"path":"/2.0","pathType":"ImplementationSpecific","service":{"name":"{{ .Release.Name }}-internal-gateway","port":"{{ .Values.service.main.ports.http.port }}"}},{"path":"/argo/hub","pathType":"ImplementationSpecific","service":{"name":"argo-hub-platform","port":"80"}}]}],"ingressClassName":"nginx-codefresh","tls":[]}}` | Internal-gateway Ingress |
+| internal-gateway.ingress.main.hosts | list | See below | Internal gateway hosts |
+| internal-gateway.ingress.main.ingressClassName | string | `"nginx-codefresh"` | Internal-gateway ingress class No need to change it here. Value will be pushed from root context `.Values.ingress.ingressClassName` |
+| internal-gateway.ingress.main.tls | list | `[]` | Enable Internal-gateway Ingress TLS Keep as empty list. Value will be pushed from root context `.Values.ingress.tls` |
 | internal-gateway.libraryMode | bool | `true` | Do not change this value! Breaks chart logic |
 | k8s-monitor | object | See below | k8s-monitor |
 | kube-integration | object | See below | kube-integration |
-| mongodb | object | See below | mongodb |
-| nats | object | See below | nats |
+| mongodb | object | See below | mongodb Ref: https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml |
+| nats | object | See below | nats Ref: https://github.com/bitnami/charts/blob/main/bitnami/nats/values.yaml |
 | nomios | object | See below | nomios |
 | pipeline-manager | object | See below | pipeline-manager |
-| postgresql | object | See below | postgresql |
-| rabbitmq | object | See below | rabbitmq |
-| redis | object | See below | redis |
+| postgresql | object | See below | postgresql Ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml |
+| rabbitmq | object | See below | rabbitmq Ref: https://github.com/bitnami/charts/blob/main/bitnami/rabbitmq/values.yaml |
+| redis | object | See below | redis Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml |
+| runner | object | See below | runner |
 | runtime-environment-manager | object | See below | runtime-environment-manager |
 | runtimeImages | object | See below | runtimeImages |
 | seed | object | See below | Seed jobs |
-| seed.enabled | bool | `true` | Disable all seed jobs |
+| seed.enabled | bool | `true` | Enable all seed jobs |
 | seed.mongoSeedJob | object | See below | Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases. |
 | seed.postgresSeedJob | object | See below | Postgres Seed Job. Required at first install. Creates required user and databases. |
-| tasker-kubernetes | object | `{"container":{"image":{"registry":"gcr.io/codefresh-enterprise"}},"enabled":true}` | tasker-kubernetes |
+| tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"gcr.io/codefresh-enterprise"}},"enabled":true,"hpa":{"enabled":false},"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
 | webTLS | object | `{"cert":"","enabled":false,"key":"","secretName":"star.codefresh.io"}` | DEPRECATED - Use `.Values.ingress.tls` instead TLS secret for Ingress |

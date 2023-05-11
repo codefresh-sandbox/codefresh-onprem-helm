@@ -60,14 +60,13 @@ waitForMongoDB
 
 getMongoVersion
 
-mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('admin').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: [{ role: 'readWrite', db: '${MONGODB_DATABASE}' }]})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
-
 for MONGODB_DATABASE in ${MONGODB_DATABASES[@]}; do
-    mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('admin').grantRolesToUser( '${MONGODB_USER}', [ { role: 'readWrite', db: '${MONGODB_DATABASE}' } ] )"
+   mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${MONGODB_DATABASE}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
 done
 
 mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
 mongoimport --uri ${MONGODB_URI} --collection accounts --type json --legacy --file /etc/admin/accounts.json
 mongoimport --uri ${MONGODB_URI} --collection users --type json --legacy --file /etc/admin/users.json
 
+mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('codefresh').grantRolesToUser( '${MONGODB_USER}', [ { role: 'readWrite', db: 'pipeline-manager' } ] )"
 
