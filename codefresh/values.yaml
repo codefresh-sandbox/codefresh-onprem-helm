@@ -734,8 +734,9 @@ helm-repo-manager:
     ingress:
       enabled: false
     image:
-      repository: ghcr.io/helm/chartmuseum
-      tag: v0.15.0
+      registry: quay.io
+      repository: codefresh/chartmuseum
+      tag: a02769a5
   resources:
     requests:
       cpu: 100m

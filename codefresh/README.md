@@ -1,6 +1,28 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.5](https://img.shields.io/badge/Version-2.0.0--alpha.5-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.6](https://img.shields.io/badge/Version-2.0.0--alpha.6-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+
+## Table of Content
+
+- [Prerequisites](#prerequisites)
+- [Get Repo Info and Pull Chart](#get-repo-info-and-pull-chart)
+- [Install Chart](#install-chart)
+- [Helm Chart Configuration](#helm-chart-configuration)
+  - [Configuring external services for databases/message brokers/data stores](#configuring-external-services-for-databasesmessage-brokersdata-stores)
+    - [External MongoDB](#external-mongodb)
+    - [External MongoDB with MTLS](#external-mongodb-with-mtls)
+    - [External PostgresSQL](#external-postgressql)
+    - [External Redis](#external-redis)
+    - [External RabbitMQ](#external-rabbitmq)
+  - [Configuring Ingress-NGINX](#configuring-ingress-nginx)
+    - [ELB with SSL Termination (Classic Load Balancer)](#elb-with-ssl-termination-classic-load-balancer)
+    - [NLB (Network Load Balancer)](#nlb-network-load-balancer)
+    - [ALB (Application Load Balancer)](#alb-application-load-balancer)
+  - [Configuration with Private Registry](#configuration-with-private-registry)
+  - [Configuration with multi-role CF-API](#configuration-with-multi-role-cf-api)
+  - [High Availability](#high-availability)
+- [Migrating from 1.4.x onprem to 2.0.0](#migrating-from-14x-onprem-to-200)
+- [Values](#values)
 
 ## Prerequisites
 
@@ -10,7 +32,7 @@
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
 - Firebase url and secret
 - Valid TLS certificates for Ingress
-- When external PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
+- When external PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
 
 ## Get Repo Info and Pull Chart
 
@@ -355,10 +377,6 @@ If you install/upgrade Codefresh on an air-gapped environment without access to 
 global:
   imageRegistry: myregistry.domain.com
 
-ingress-nginx:
-  controller:
-    image:
-      registry: myregistry.domain.com
 ```
 
 There are 3 types of images, with the values above in rendered manifests images will be converted as follows:
@@ -367,7 +385,7 @@ There are 3 types of images, with the values above in rendered manifests images 
 
 ```yaml
 bitnami/mongo:4.2
-k8s.gcr.io/ingress-nginx/controller:v1.2.0
+registry.k8s.io/ingress-nginx/controller:v1.4.0
 postgres:13
 ```
 converted to:
@@ -404,7 +422,74 @@ myregistry.domain.com/codefresh/cf-ui:14.69.38
 myregistry.domain.com/codefresh/pipeline-manager:3.121.7
 ```
 
-### Multi-role cf-api
+Use the example below to override repository for all templates:
+
+```yaml
+
+seed:
+  mongoSeedJob:
+    image:
+      repository: codefresh/mongodb
+  postgresSeedJob:
+      repository: codefresh/postgresql
+
+ingress-nginx:
+  controller:
+    image:
+      registry: myregistry.domain.com
+      image: codefresh/controller
+
+mongodb:
+  image:
+    repository: codefresh/mongodb
+
+postgresql:
+  image:
+    repository: codefresh/postgresql
+
+consul:
+  image:
+    repository: codefresh/consul
+
+redis:
+  image:
+    repository: codefresh/redis
+
+rabbitmq:
+  image:
+    repository: codefresh/rabbitmq
+
+nats:
+  image:
+    repository: codefresh/nats
+
+builder:
+  container:
+    image:
+      repository: codefresh/docker
+
+runner:
+  container:
+    image:
+      repository: codefresh/docker
+
+internal-gateway:
+  container:
+    image:
+      repository: codefresh/nginx-unprivileged
+
+helm-repo-manager:
+  chartmuseum:
+    image:
+      repository: codefresh/chartmuseum
+
+cf-platform-analytics-platform:
+  redis:
+    image:
+      repository: codefresh/redis
+```
+
+### Configuration with multi-role CF-API
 
 The chart installs cf-api as a single deployment. Though, at a larger scale, we do recommend to split cf-api to multiple roles (one deployment per role) as follows:
 

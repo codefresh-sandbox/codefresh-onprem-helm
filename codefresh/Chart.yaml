@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.5
+version: 2.0.0-alpha.6
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -12,6 +12,15 @@ maintainers:
   - name: codefresh
     url: https://codefresh-io.github.io/
 appVersion: 2.0.0
+annotations:
+  artifacthub.io/alternativeName: "codefresh-onprem"
+  artifacthub.io/prerelease: "true"
+  artifacthub.io/changes: |
+    - Docs update
+    - Bump cf-api
+    - Bump argo-platform
+    - Bump helm-repo-manager
+    - Bump Bitnami charts
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
@@ -21,27 +30,27 @@ dependencies:
   version: "0.1.1"
   condition: argo-platform.enabled
 - name: consul
-  version: 10.9.6
+  version: 10.11.2
   repository: https://charts.bitnami.com/bitnami
   condition: consul.enabled
 - name: mongodb
-  version: 13.6.2
+  version: 13.12.1
   repository: https://charts.bitnami.com/bitnami
   condition: mongodb.enabled,mongo.enabled,global.mongoDeploy
 - name: postgresql
-  version: 12.1.6
+  version: 12.5.1
   repository: https://charts.bitnami.com/bitnami
   condition: postgresql.enabled
 - name: redis
-  version: 17.3.14
+  version: 17.10.3
   repository: https://charts.bitnami.com/bitnami
   condition: redis.enabled
 - name: rabbitmq
-  version: 11.1.5
+  version: 11.15.2
   repository: https://charts.bitnami.com/bitnami
   condition: rabbitmq.enabled
 - name: nats
-  version: 7.4.8
+  version: 7.8.1
   repository: https://charts.bitnami.com/bitnami
   condition: nats.enabled
 - name: builder
@@ -90,88 +99,88 @@ dependencies:
   condition: gitops-dashboard-manager.enabled
 - name: cfapi
   alias: cfapi
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi.enabled
 - name: cfapi
   alias: cfapi-internal
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-internal.enabled
 - name: cfapi
   alias: cfapi-ws
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-ws.enabled
 - name: cfapi
   alias: cfapi-admin
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-admin.enabled
 - name: cfapi
   alias: cfapi-endpoints
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-endpoints.enabled
 - name: cfapi
   alias: cfapi-terminators
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-terminators.enabled
 - name: cfapi
   alias: cfapi-sso-group-synchronizer
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-sso-group-synchronizer.enabled
 - name: cfapi
   alias: cfapi-buildmanager
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-buildmanager.enabled
 - name: cfapi
   alias: cfapi-cacheevictmanager
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-cacheevictmanager.enabled
 - name: cfapi
   alias: cfapi-eventsmanagersubscriptions
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-eventsmanagersubscriptions.enabled
 - name: cfapi
   alias: cfapi-kubernetesresourcemonitor
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-kubernetesresourcemonitor.enabled
 - name: cfapi
   alias: cfapi-environments
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-environments.enabled
 - name: cfapi
   alias: cfapi-gitops-resource-receiver
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-gitops-resource-receiver.enabled
 - name: cfapi
   alias: cfapi-downloadlogmanager
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-downloadlogmanager.enabled
 - name: cfapi
   alias: cfapi-teams
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-teams.enabled
 - name: cfapi
   alias: cfapi-kubernetes-endpoints
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-kubernetes-endpoints.enabled
 - name: cfapi
   alias: cfapi-test-reporting
-  version: "21.221.36-cr-17544"
-  repository: https://chartmuseum-dev.codefresh.io/cfapi
+  version: "*"
+  repository: https://chartmuseum.codefresh.io/cfapi
   condition: cfapi-test-reporting.enabled
 - name: cfui
   version: "*"
