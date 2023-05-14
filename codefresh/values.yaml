@@ -55,8 +55,8 @@ seed:
   postgresSeedJob:
     enabled: true
     image:
-      registry: docker.io
-      repository: bitnami/postgresql
+      registry: quay.io
+      repository: codefresh/postgresql
       tag: 13
   ttlSecondsAfterFinished: 300
   backoffLimit: 10
@@ -390,6 +390,9 @@ runtimeImages:
 # -- builder
 builder:
   enabled: true
+  container:
+    image:
+      tag: 20.10.24-dind
 
 # -- cf-api
 cfapi: &cf-api
@@ -939,6 +942,9 @@ rabbitmq:
 # @default -- See below
 runner:
   enabled: true
+  container:
+    image:
+      tag: 20.10.24-dind
 
 # -- pipeline-manager
 # @default -- See below

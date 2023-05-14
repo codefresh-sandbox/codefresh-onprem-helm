@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.6](https://img.shields.io/badge/Version-2.0.0--alpha.6-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.7](https://img.shields.io/badge/Version-2.0.0--alpha.7-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -8,7 +8,7 @@
 - [Get Repo Info and Pull Chart](#get-repo-info-and-pull-chart)
 - [Install Chart](#install-chart)
 - [Helm Chart Configuration](#helm-chart-configuration)
-  - [Configuring external services for databases/message brokers/data stores](#configuring-external-services-for-databasesmessage-brokersdata-stores)
+  - [Configuring external services](#configuring-external-services)
     - [External MongoDB](#external-mongodb)
     - [External MongoDB with MTLS](#external-mongodb-with-mtls)
     - [External PostgresSQL](#external-postgressql)
@@ -21,7 +21,8 @@
   - [Configuration with Private Registry](#configuration-with-private-registry)
   - [Configuration with multi-role CF-API](#configuration-with-multi-role-cf-api)
   - [High Availability](#high-availability)
-- [Migrating from 1.4.x onprem to 2.0.0](#migrating-from-14x-onprem-to-200)
+- [Upgrading](#upgrading)
+  - [To 2.0.0](#to-200)
 - [Values](#values)
 
 ## Prerequisites
@@ -114,7 +115,7 @@ See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_h
 helm show values codefresh/codefresh
 ```
 
-### Configuring external services for databases/message brokers/data stores
+### Configuring external services
 
 The chart contains required dependencies for the corresponding services
 - [bitnami/mongodb](https://github.com/bitnami/charts/tree/main/bitnami/mongodb)
@@ -665,13 +666,15 @@ tasker-kubernetes:
 
 ```
 
-## Migrating from 1.4.x onprem to 2.0.0
+## Upgrading
+
+### To 2.0.0
 
 This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible breaking change needing manual actions**.
 
 **Before applying the upgrade, read through this section!**
 
-### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation Notice
+#### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation Notice
 
 This major release deprecates [kcfi](https://github.com/codefresh-io/kcfi) installer. The recommended way to install Codefresh On-Prem is **Helm**.
 Due to that, Kcfi `config.yaml` will not be compatible for Helm-based installation.
@@ -825,7 +828,7 @@ seed:
     enabled: true
 ```
 
-### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/) Notice
+#### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/) Notice
 
 All Codefresh subcharts templates (i.e. `cfapi`, `cfui`, `pipeline-manager`, `context-manager`, etc) has been migrated to use helm [library charts](https://helm.sh/docs/topics/library_charts/).
 That allows to unify values structure across all Codefresh owned charts. However, there are some **immutable** fields in the old charts which cannot be upgraded during a regular `helm upgrade`, thus additional manual actions are required.
@@ -854,7 +857,7 @@ nomios:
     ...
 ```
 
-### ⚠️ New Services Notice
+#### ⚠️ New Services Notice
 
 Codefesh 2.0.0 chart includes additional dependent microservices(charts):
 - `argo-platform`: Main Codefresh GitOps module.
@@ -905,7 +908,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | argo-platform.secrets | object | See below | Secrets anchors |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"enabled":true}` | builder |
+| builder | object | `{"container":{"image":{"tag":"20.10.24-dind"}},"enabled":true}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
