@@ -31,7 +31,7 @@ dependencies:
   version: 1.1.0
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 4.3.0
+  version: 4.6.1
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
   version: 1.14.3
@@ -146,5 +146,5 @@ dependencies:
 - name: codefresh-tunnel-server
   repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
   version: 0.1.12
-digest: sha256:fcb78c1b7fab5c7b2c66eab2cbd2153d504c74f2abbd37d0f499da56b39902ae
-generated: "2023-05-14T17:38:07.67238674+03:00"
+digest: sha256:ec4ddab3e1e3d856cd3d842c7bf8b3280ce08df1234ab7d4eab99245d8da6777
+generated: "2023-05-14T20:55:03.78868933+03:00"

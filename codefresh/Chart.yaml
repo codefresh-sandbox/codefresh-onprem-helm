@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.7
+version: 2.0.0-alpha.8
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -16,8 +16,7 @@ annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
-    - Bump platform-analytics
-    - Update image for builder
+    - Bump ingress-nginx
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
@@ -59,7 +58,7 @@ dependencies:
   condition: runner.enabled
   version: 1.1.0
 - name: ingress-nginx
-  version: 4.3.0
+  version: 4.6.1
   repository: https://kubernetes.github.io/ingress-nginx
   condition: ingress-nginx.enabled
 - name: cluster-providers

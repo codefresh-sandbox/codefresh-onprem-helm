@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.7](https://img.shields.io/badge/Version-2.0.0--alpha.7-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.8](https://img.shields.io/badge/Version-2.0.0--alpha.8-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -17,7 +17,7 @@
   - [Configuring Ingress-NGINX](#configuring-ingress-nginx)
     - [ELB with SSL Termination (Classic Load Balancer)](#elb-with-ssl-termination-classic-load-balancer)
     - [NLB (Network Load Balancer)](#nlb-network-load-balancer)
-    - [ALB (Application Load Balancer)](#alb-application-load-balancer)
+  - [Configuration with ALB (Application Load Balancer)](#configuration-with-alb-application-load-balancer)
   - [Configuration with Private Registry](#configuration-with-private-registry)
   - [Configuration with multi-role CF-API](#configuration-with-multi-role-cf-api)
   - [High Availability](#high-availability)
@@ -337,7 +337,7 @@ ingress:
     existingSecret: ""
 ```
 
-#### ALB (Application Load Balancer)
+### Configuration with ALB (Application Load Balancer)
 
 *[Application Load Balancer](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main/helm/aws-load-balancer-controller) should be deployed to the cluster*
 
@@ -674,7 +674,7 @@ This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible 
 
 **Before applying the upgrade, read through this section!**
 
-#### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation Notice
+#### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation
 
 This major release deprecates [kcfi](https://github.com/codefresh-io/kcfi) installer. The recommended way to install Codefresh On-Prem is **Helm**.
 Due to that, Kcfi `config.yaml` will not be compatible for Helm-based installation.
@@ -828,7 +828,7 @@ seed:
     enabled: true
 ```
 
-#### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/) Notice
+#### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/)
 
 All Codefresh subcharts templates (i.e. `cfapi`, `cfui`, `pipeline-manager`, `context-manager`, etc) has been migrated to use helm [library charts](https://helm.sh/docs/topics/library_charts/).
 That allows to unify values structure across all Codefresh owned charts. However, there are some **immutable** fields in the old charts which cannot be upgraded during a regular `helm upgrade`, thus additional manual actions are required.
@@ -857,7 +857,7 @@ nomios:
     ...
 ```
 
-#### ⚠️ New Services Notice
+#### ⚠️ New Services
 
 Codefesh 2.0.0 chart includes additional dependent microservices(charts):
 - `argo-platform`: Main Codefresh GitOps module.
