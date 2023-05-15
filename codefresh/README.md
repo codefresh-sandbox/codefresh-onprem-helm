@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.8](https://img.shields.io/badge/Version-2.0.0--alpha.8-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.9](https://img.shields.io/badge/Version-2.0.0--alpha.9-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -427,13 +427,6 @@ Use the example below to override repository for all templates:
 
 ```yaml
 
-seed:
-  mongoSeedJob:
-    image:
-      repository: codefresh/mongodb
-  postgresSeedJob:
-      repository: codefresh/postgresql
-
 ingress-nginx:
   controller:
     image:
@@ -502,7 +495,7 @@ global:
   # -- Change endpoints cfapi service address
   cfapiEndpointsService: cfapi-endpoints
 
-cfapi:
+cfapi: &cf-api
   # -- Disable default cfapi deployment
   enabled: false
   # -- (optional) Enable the autoscaler
@@ -511,41 +504,58 @@ cfapi:
     enabled: true
 # Enable cf-api roles
 cfapi-internal:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-ws:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-admin:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-endpoints:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-terminators:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-sso-group-synchronizer:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-buildmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-cacheevictmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-eventsmanagersubscriptions:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-kubernetesresourcemonitor:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-environments:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-gitops-resource-receiver:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-downloadlogmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-teams:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-kubernetes-endpoints:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-test-reporting:
+  !!merge <<: *cf-api
   enabled: true
 
 # Change ingress paths
 ingress:
   services:
+    cfapi: null # Set default cfapi path to null!
     cfapi-endpoints:
       - /api/
     cfapi-downloadlogmanager:
@@ -914,7 +924,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
 | cf-platform-analytics-etlstarter.system-etl-postgres | object | `{"enabled":true}` | Only postgres ETL should be running in onprem~ |
 | cf-platform-analytics-platform | object | See below | platform-analytics |
-| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"500m","memory":"1Gi"}},"tolerations":[]}` | cf-api |
+| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[]}` | cf-api |
 | cfapi.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}}` | Container configuration |
 | cfapi.container.env | object | See below | Env vars |
 | cfapi.container.image | object | `{"registry":"gcr.io/codefresh-enterprise"}` | Image |
@@ -930,7 +940,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | cfapi.pdb | object | `{"enabled":false,"minAvailable":"50%"}` | Pod disruption budget configuration |
 | cfapi.pdb.enabled | bool | `false` | Enable PDB |
 | cfapi.pdb.minAvailable | string | `"50%"` | Minimum number of replicas in percentage |
-| cfapi.resources | object | `{"limits":{},"requests":{"cpu":"500m","memory":"1Gi"}}` | Resource requests and limits |
+| cfapi.resources | object | `{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}}` | Resource requests and limits |
 | cfsign | object | See below | tls-sign |
 | cfui | object | See below | cf-ui |
 | charts-manager | object | See below | charts-manager |

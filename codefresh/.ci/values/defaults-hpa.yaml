@@ -1,0 +1,45 @@
+global:
+  appUrl: ""  # placeholder for ${CF_APP_HOST}
+  firebaseSecret: ""  # placeholder for ${FIREBASE_SECRET}
+
+cfapi:
+  hpa:
+    enabled: true
+
+ingress:
+  enabled: true
+  tls:
+    enabled: true
+    cert: ""  # placeholder for ${WEB_TLS_CERT}
+    key: "" # placeholder for ${WEB_TLS_KEY}
+
+argo-platform:
+  enabled: true
+
+  analytics-reporter:
+    hpa:
+      enabled: true
+
+  api-events:
+    hpa:
+      enabled: true
+
+  api-graphql:
+    hpa:
+      enabled: true
+
+  event-handler:
+    hpa:
+      enabled: true
+
+  ui:
+    hpa:
+      enabled: true
+
+  audit:
+    hpa:
+      enabled: true
+
+  abac:
+    hpa:
+      enabled: true

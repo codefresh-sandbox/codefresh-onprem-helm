@@ -428,13 +428,6 @@ Use the example below to override repository for all templates:
 
 ```yaml
 
-seed:
-  mongoSeedJob:
-    image:
-      repository: codefresh/mongodb
-  postgresSeedJob:
-      repository: codefresh/postgresql
-
 ingress-nginx:
   controller:
     image:
@@ -503,7 +496,7 @@ global:
   # -- Change endpoints cfapi service address
   cfapiEndpointsService: cfapi-endpoints
 
-cfapi:
+cfapi: &cf-api
   # -- Disable default cfapi deployment
   enabled: false
   # -- (optional) Enable the autoscaler
@@ -512,41 +505,58 @@ cfapi:
     enabled: true
 # Enable cf-api roles
 cfapi-internal:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-ws:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-admin:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-endpoints:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-terminators:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-sso-group-synchronizer:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-buildmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-cacheevictmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-eventsmanagersubscriptions:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-kubernetesresourcemonitor:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-environments:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-gitops-resource-receiver:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-downloadlogmanager:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-teams:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-kubernetes-endpoints:
+  !!merge <<: *cf-api
   enabled: true
 cfapi-test-reporting:
+  !!merge <<: *cf-api
   enabled: true
 
 # Change ingress paths
 ingress:
   services:
+    cfapi: null # Set default cfapi path to null!
     cfapi-endpoints:
       - /api/
     cfapi-downloadlogmanager:

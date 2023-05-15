@@ -1,0 +1,4 @@
+imageCredentials:
+  registry: gcr.io
+  username: _json_key
+  password: "" # placeholder for ${GCR_SA_KEY}

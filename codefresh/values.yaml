@@ -47,9 +47,9 @@ seed:
   mongoSeedJob:
     enabled: true
     image:
-      registry: docker.io
-      repository: bitnami/mongodb
-      tag: 4.4
+      registry: quay.io
+      repository: codefresh/mongosh
+      tag: 1.8.2
   # -- Postgres Seed Job. Required at first install. Creates required user and databases.
   # @default -- See below
   postgresSeedJob:
@@ -71,9 +71,9 @@ seed:
 hooks:
   enabled: true
   image:
-    registry: docker.io
-    repository: bitnami/mongodb
-    tag: 4.4
+    registry: quay.io
+    repository: codefresh/mongosh
+    tag: 1.8.2
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -419,8 +419,8 @@ cfapi: &cf-api
   # -- Resource requests and limits
   resources:
     requests:
-      cpu: 500m
-      memory: "1Gi"
+      cpu: 200m
+      memory: "256Mi"
     limits: {}
   # -- Autoscaler configuration
   hpa:
@@ -576,8 +576,8 @@ cf-platform-analytics-platform:
     nameOverride: redis-platform-analytics
   resources:
     requests:
-      memory: 512Mi
-      cpu: 500m
+      cpu: 100m
+      memory: 128Mi
   env:
     ENV: production
     DATASET_ID: etl
@@ -852,8 +852,8 @@ mongodb:
     rootPassword: "XT9nmM8dZD"
   resources:
     requests:
-      cpu: 1
-      memory: 2048Mi
+      cpu: 200m
+      memory: 256Mi
 
 # -- nats
 # @default -- See below
@@ -905,8 +905,8 @@ postgresql:
       cron.database_name = 'postgres'
     resources:
       requests:
-        cpu: 1000m
-        memory: 2048Mi
+        cpu: 200m
+        memory: 256Mi
 
 # -- redis
 # @default -- See below
@@ -920,8 +920,8 @@ redis:
     count: 1
     resources:
       requests:
-        cpu: 500m
-        memory: 1024Mi
+        cpu: 200m
+        memory: 256Mi
 
 # -- rabbitmq
 # @default -- See below
@@ -935,8 +935,8 @@ rabbitmq:
     erlangCookie: "WIWVHCDTCIUAWANLMQAW"
   resources:
     requests:
-      cpu: 500m
-      memory: 1024Mi
+      cpu: 200m
+      memory: 256Mi
 
 # -- runner
 # @default -- See below
@@ -1104,8 +1104,8 @@ argo-platform:
     # @default -- See below
     resources:
       requests:
-        cpu: 500m
-        memory: 1Gi
+        cpu: 200m
+        memory: 256Mi
       limits:
         memory: 1Gi
     # -- HPA
@@ -1134,8 +1134,8 @@ argo-platform:
       mongodb-readmodels-uri-sec: *mongodb-readmodels-uri-sec
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1169,8 +1169,8 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1198,8 +1198,8 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1235,8 +1235,8 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1266,8 +1266,8 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1295,8 +1295,8 @@ argo-platform:
       rabbitmq-user: *rabbitmq-user
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 100m
+        memory: 128Mi
       limits:
         memory: 1Gi
     hpa:
@@ -1383,8 +1383,8 @@ internal-gateway:
 
   resources:
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 100m
+      memory: 128Mi
   hpa:
     enabled: false
   pdb:
