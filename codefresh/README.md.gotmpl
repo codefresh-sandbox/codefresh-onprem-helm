@@ -685,7 +685,58 @@ This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible 
 
 **Before applying the upgrade, read through this section!**
 
-#### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation
+#### ⚠️ New MongoDB Indexes
+
+Starting from version 2.0.0, two new MongoDB indexes have been adedd that are vital for optimizing database queries and enhancing overall system performance. It is crucial to create these indexes before performing the upgrade to avoid any potential performance degradation.
+
+- `account_1_annotations.key_1_annotations.value_1` (db: `codefresh`; collection: `annotations`)
+```json
+{
+    "account" : 1,
+    "annotations.key" : 1,
+    "annotations.value" : 1
+}
+```
+
+- `accountId_1_entityType_1_entityId_1` (db: `codefresh`; collection: `workflowprocesses`)
+
+```json
+{
+    "accountId" : 1,
+    "entityType" : 1,
+    "entityId" : 1
+}
+```
+
+To prevent potential performance degradation during the upgrade, it is important to schedule a maintenance window during a period of low activity or minimal user impact and create the indexes mentioned above before initiating the upgrade process. By proactively creating these indexes, you can avoid the application automatically creating them during the upgrade and ensure a smooth transition with optimized performance.
+
+##### Index Creation
+
+If you're hosting MongoDB on [Atlas](https://www.mongodb.com/atlas/database), use the following [Create, View, Drop, and Hide Indexes](https://www.mongodb.com/docs/atlas/atlas-ui/indexes/) guide to create indexes mentioned above. It's important to create them in a rolling fashion (i.e. **Build index via rolling process** checkbox enabled) in produciton environment.
+
+For self-hosted MongoDB, see the following instruction:
+
+- Connect to the MongoDB server using the [mongosh](https://www.mongodb.com/docs/mongodb-shell/install/) shell. Open your terminal or command prompt and run the following command, replacing <connection_string> with the appropriate MongoDB connection string for your server:
+```console
+mongosh "<connection_string>"
+```
+
+- Once connected, switch to the `codefresh` database where the index will be located using the `use` command.
+```console
+use codefresh
+```
+
+- To create the indexes, use the createIndex() method. The createIndex() method should be executed on the db object.
+```console
+db.workflowprocesses.createIndex({ account: 1, 'annotations.key': 1, 'annotations.value': 1 }, { name: 'account_1_annotations.key_1_annotations.value_1', sparse: true, background: true })
+```
+
+```console
+db.annotations.createIndex({ accountId: 1, entityType: 1, entityId: 1 }, { name: 'accountId_1_entityType_1_entityId_1', background: true })
+```
+After executing the createIndex() command, you should see a result indicating the successful creation of the index.
+
+- #### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation
 
 This major release deprecates [kcfi](https://github.com/codefresh-io/kcfi) installer. The recommended way to install Codefresh On-Prem is **Helm**.
 Due to that, Kcfi `config.yaml` will not be compatible for Helm-based installation.
