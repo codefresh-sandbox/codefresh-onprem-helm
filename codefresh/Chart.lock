@@ -34,94 +34,94 @@ dependencies:
   version: 4.6.1
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
-  version: 1.14.3
+  version: 1.14.4
 - name: kube-integration
   repository: https://chartmuseum.codefresh.io/kube-integration
-  version: 1.29.4
+  version: 1.29.6
 - name: charts-manager
   repository: https://chartmuseum.codefresh.io/charts-manager
-  version: 1.15.5
+  version: 1.15.6
 - name: cfsign
   repository: https://chartmuseum.codefresh.io/cfsign
-  version: 1.5.0
+  version: 1.5.1
 - name: tasker-kubernetes
   repository: https://chartmuseum.codefresh.io/tasker-kubernetes
-  version: 1.23.1
+  version: 1.23.3
 - name: context-manager
   repository: https://chartmuseum.codefresh.io/context-manager
-  version: 2.24.0
+  version: 2.24.2
 - name: pipeline-manager
   repository: https://chartmuseum.codefresh.io/pipeline-manager
-  version: 3.126.0
+  version: 3.126.2
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.13.2
+  version: 1.13.4
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
-  version: 21.222.6
+  version: 21.222.16
 - name: cfui
   repository: https://chartmuseum.codefresh.io/cfui
-  version: 14.88.42
+  version: 14.88.44
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.10.0
+  version: 4.10.1
 - name: runtime-environment-manager
   repository: https://chartmuseum.codefresh.io/runtime-environment-manager
-  version: 3.25.0
+  version: 3.25.2
 - name: cf-broadcaster
   repository: https://chartmuseum.codefresh.io/cf-broadcaster
-  version: 1.11.2
+  version: 1.11.3
 - name: helm-repo-manager
   repository: https://chartmuseum.codefresh.io/helm-repo-manager
-  version: 0.10.2
+  version: 0.10.3
 - name: hermes
   repository: https://chartmuseum.codefresh.io/hermes
   version: 0.19.2
@@ -133,18 +133,18 @@ dependencies:
   version: 0.7.2
 - name: cf-platform-analytics
   repository: https://chartmuseum.codefresh.io/cf-platform-analytics
-  version: 0.45.5
+  version: 0.45.7
 - name: cf-platform-analytics
   repository: https://chartmuseum.codefresh.io/cf-platform-analytics
-  version: 0.45.5
+  version: 0.45.7
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
-  version: 1.2248.0
+  version: 1.2257.0
 - name: argo-hub-platform
   repository: https://chartmuseum.codefresh.io/argo-hub-platform
   version: 0.1.1
 - name: codefresh-tunnel-server
   repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
   version: 0.1.12
-digest: sha256:e857522b7672673554bde5f5e18abfb632e9b8c1e30c1d28f1eb0bd143032b54
-generated: "2023-05-16T01:14:50.304862813+03:00"
+digest: sha256:47caaebecd98c97f35dd6d296e35eeff38da981f2542b87f6691d6e589935d05
+generated: "2023-05-18T16:23:11.724098618+03:00"

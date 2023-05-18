@@ -26,8 +26,8 @@ gencerts:
   enabled: true
   image:
     registry: quay.io
-    repository: codefresh/generate-certs
-    tag: latest
+    repository: codefresh/kubectl
+    tag: 1.27.1
   rbac:
     enabled: true
   ttlSecondsAfterFinished: 300
@@ -295,6 +295,9 @@ global:
   # -- Set External Postgresql service address. Takes precedence over `global.postgresService`. See "External Postgresql" example below.
   postgresHostname: ""
 
+  # -- DEPRECATED - Use `.Values.seed.postgresSeedJob` instead.
+  postgresSeedJob: {}
+
   # # External Postgresql example
   # global:
   #   postgresHostname: my-postgres.ccjog7pqzunf.us-west-2.rds.amazonaws.com
@@ -388,11 +391,24 @@ runtimeImages:
 # Codefresh subcharts
 #--------------------
 # -- builder
-builder:
+builder: &builder
   enabled: true
   container:
     image:
-      tag: 20.10.24-dind
+      registry: docker.io
+      repository: docker
+      tag: 23.0-dind
+  initContainers:
+    register:
+      image:
+        registry: quay.io
+        repository: codefresh/curl
+        tag: 8.1.0
+  cleaner:
+    image:
+      registry: quay.io
+      repository: codefresh/docker-cleaner
+      tag: 24.0
 
 # -- cf-api
 cfapi: &cf-api
@@ -941,10 +957,8 @@ rabbitmq:
 # -- runner
 # @default -- See below
 runner:
+  !!merge <<: *builder
   enabled: true
-  container:
-    image:
-      tag: 20.10.24-dind
 
 # -- pipeline-manager
 # @default -- See below

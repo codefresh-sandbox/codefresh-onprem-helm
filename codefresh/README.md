@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.9](https://img.shields.io/badge/Version-2.0.0--alpha.9-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.10](https://img.shields.io/badge/Version-2.0.0--alpha.10-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -33,7 +33,7 @@
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
 - Firebase url and secret
 - Valid TLS certificates for Ingress
-- When external PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
+- When [external](#external-postgressql) PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
 
 ## Get Repo Info and Pull Chart
 
@@ -686,7 +686,7 @@ This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible 
 
 #### ⚠️ New MongoDB Indexes
 
-Starting from version 2.0.0, two new MongoDB indexes have been adedd that are vital for optimizing database queries and enhancing overall system performance. It is crucial to create these indexes before performing the upgrade to avoid any potential performance degradation.
+Starting from version 2.0.0, two new MongoDB indexes have been added that are vital for optimizing database queries and enhancing overall system performance. It is crucial to create these indexes before performing the upgrade to avoid any potential performance degradation.
 
 - `account_1_annotations.key_1_annotations.value_1` (db: `codefresh`; collection: `annotations`)
 ```json
@@ -709,7 +709,7 @@ Starting from version 2.0.0, two new MongoDB indexes have been adedd that are vi
 
 To prevent potential performance degradation during the upgrade, it is important to schedule a maintenance window during a period of low activity or minimal user impact and create the indexes mentioned above before initiating the upgrade process. By proactively creating these indexes, you can avoid the application automatically creating them during the upgrade and ensure a smooth transition with optimized performance.
 
-##### Index Creation
+**Index Creation**
 
 If you're hosting MongoDB on [Atlas](https://www.mongodb.com/atlas/database), use the following [Create, View, Drop, and Hide Indexes](https://www.mongodb.com/docs/atlas/atlas-ui/indexes/) guide to create indexes mentioned above. It's important to create them in a rolling fashion (i.e. **Build index via rolling process** checkbox enabled) in produciton environment.
 
@@ -735,7 +735,7 @@ db.annotations.createIndex({ accountId: 1, entityType: 1, entityId: 1 }, { name:
 ```
 After executing the createIndex() command, you should see a result indicating the successful creation of the index.
 
-- #### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation
+#### ⚠️ [Kcfi](https://github.com/codefresh-io/kcfi) Deprecation
 
 This major release deprecates [kcfi](https://github.com/codefresh-io/kcfi) installer. The recommended way to install Codefresh On-Prem is **Helm**.
 Due to that, Kcfi `config.yaml` will not be compatible for Helm-based installation.
@@ -969,7 +969,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | argo-platform.secrets | object | See below | Secrets anchors |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"container":{"image":{"tag":"20.10.24-dind"}},"enabled":true}` | builder |
+| builder | object | `{"cleaner":{"image":{"registry":"quay.io","repository":"codefresh/docker-cleaner","tag":24}},"container":{"image":{"registry":"docker.io","repository":"docker","tag":"23.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.1.0"}}}}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
@@ -1052,6 +1052,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | global.postgresHostname | string | `""` | Set External Postgresql service address. Takes precedence over `global.postgresService`. See "External Postgresql" example below. |
 | global.postgresPassword | string | `"eC9arYka4ZbH"` | Default Postgresql password (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below. |
 | global.postgresPort | int | `5432` | Default Postgresql port number (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below. |
+| global.postgresSeedJob | object | `{}` | DEPRECATED - Use `.Values.seed.postgresSeedJob` instead. |
 | global.postgresService | string | `"postgresql"` | Default Internal Postgresql service address (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below. |
 | global.postgresUser | string | `"postgres"` | Default Postgresql username (from bitnami/postgresql subchart). Change if you use external PostreSQL. See "External Postgresql" example below. |
 | global.privateRegistry | bool | `false` | DEPRECATED - Use `.Values.global.imageRegistry` instead |
