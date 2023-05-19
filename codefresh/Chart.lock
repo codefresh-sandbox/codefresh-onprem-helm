@@ -1,7 +1,7 @@
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
-  version: 0.7.0
+  version: 0.8.1
 - name: internal-gateway
   repository: https://chartmuseum.codefresh.io/internal-gateway
   version: 0.1.1
@@ -34,7 +34,7 @@ dependencies:
   version: 4.6.1
 - name: cluster-providers
   repository: https://chartmuseum.codefresh.io/cluster-providers
-  version: 1.14.4
+  version: 1.15.0
 - name: kube-integration
   repository: https://chartmuseum.codefresh.io/kube-integration
   version: 1.29.6
@@ -55,7 +55,7 @@ dependencies:
   version: 3.126.3
 - name: gitops-dashboard-manager
   repository: https://chartmuseum.codefresh.io/gitops-dashboard-manager
-  version: 1.13.4
+  version: 1.13.5
 - name: cfapi
   repository: https://chartmuseum.codefresh.io/cfapi
   version: 21.222.17
@@ -112,7 +112,7 @@ dependencies:
   version: 14.88.45
 - name: k8s-monitor
   repository: https://chartmuseum.codefresh.io/k8s-monitor
-  version: 4.10.1
+  version: 4.10.2
 - name: runtime-environment-manager
   repository: https://chartmuseum.codefresh.io/runtime-environment-manager
   version: 3.25.2
@@ -124,13 +124,13 @@ dependencies:
   version: 0.10.3
 - name: hermes
   repository: https://chartmuseum.codefresh.io/hermes
-  version: 0.20.0
+  version: 0.20.1
 - name: nomios
   repository: https://chartmuseum.codefresh.io/nomios
-  version: 0.10.2
+  version: 0.10.3
 - name: cronus
   repository: https://chartmuseum.codefresh.io/cronus
-  version: 0.7.2
+  version: 0.7.3
 - name: cf-platform-analytics
   repository: https://chartmuseum.codefresh.io/cf-platform-analytics
   version: 0.45.8
@@ -139,12 +139,12 @@ dependencies:
   version: 0.45.8
 - name: argo-platform
   repository: https://chartmuseum.codefresh.io/argo-platform
-  version: 1.2257.0
+  version: 1.2258.0
 - name: argo-hub-platform
   repository: https://chartmuseum.codefresh.io/argo-hub-platform
   version: 0.1.1
 - name: codefresh-tunnel-server
   repository: https://chartmuseum.codefresh.io/codefresh-tunnel-server
   version: 0.1.12
-digest: sha256:bca923f93e37198c404f70ee1d86a128bd4c2fee86e429ad7310be4cb0f46061
-generated: "2023-05-19T00:05:18.655905368+03:00"
+digest: sha256:d86f9c468ccb49fa90dcd74dd70cbf6333671038ca9490dad1540a8076c4a51a
+generated: "2023-05-19T22:30:12.602319405+03:00"

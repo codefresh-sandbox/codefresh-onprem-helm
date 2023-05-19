@@ -1,4 +1,5 @@
 {{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+{{ $context := deepCopy .Values.seed }}
 ---
 {{- if and .Values.seed.enabled (or .Values.global.seedJobs .Values.seed.mongoSeedJob.enabled) }}
 apiVersion: batch/v1
@@ -39,14 +40,15 @@ spec:
           {{- toYaml .Values.seed.resources | nindent 10 }}
         volumeMounts:
         - name: seed-data
-          mountPath: "/etc/admin/accounts.json"
+          mountPath: "/usr/share/extras/accounts.json"
           subPath: "accounts.json"
         - name: seed-data
-          mountPath: "/etc/admin/users.json"
+          mountPath: "/usr/share/extras/users.json"
           subPath: "users.json"
         - name: seed-data
-          mountPath: "/etc/admin/idps.json"
+          mountPath: "/usr/share/extras/idps.json"
           subPath: "idps.json"
+      {{- include (printf "%s.volumeMounts" $libTemplateName) ( dict "Values" .Values.seed.volumeMounts "context" $ ) | nindent 8 }}
       {{- with .Values.seed.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -64,4 +66,5 @@ spec:
       - name: seed-data
         configMap:
           name: {{ include "codefresh.fullname" . }}-mongo-seed
+      {{- include (printf "%s.volumes" $libTemplateName) ( dict "Values" .Values.seed.volumes "context" $ ) | nindent 6 }}
 {{- end }}

@@ -9,3 +9,6 @@ bak/*
 
 # helm unittests
 tests
+
+# ci
+.ci/*

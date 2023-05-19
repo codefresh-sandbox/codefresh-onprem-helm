@@ -188,15 +188,15 @@ global:
       # existingName: my-mongodb-tls
       optional: true
 
-  container:
-    volumeMounts:
-      mongodb-tls:
-        path:
-        - mountPath: /etc/ssl/mongodb/ca.pem
-          subPath: ca.pem
+  volumeMounts:
+    mongodb-tls:
+      path:
+      - mountPath: /etc/ssl/mongodb/ca.pem
+        subPath: ca.pem
 
   env:
     MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
+    RUNTIME_MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
     RUNTIME_MONGO_TLS: "true"
     # Set these var to 'false' if self-signed certificate is used to avoid x509 errors
     RUNTIME_MONGO_TLS_VALIDATE: "false"

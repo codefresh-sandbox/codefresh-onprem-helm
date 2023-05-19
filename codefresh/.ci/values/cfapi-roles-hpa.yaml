@@ -38,8 +38,6 @@ global:
 
 cfapi: &cf-api
   enabled: false
-  hpa:
-    enabled: true
 
 cfapi-internal:
   !!merge <<: *cf-api

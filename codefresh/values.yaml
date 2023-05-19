@@ -50,10 +50,10 @@ seed:
       registry: quay.io
       repository: codefresh/mongosh
       tag: 1.8.2
-    # -- Root user (required ONLY for seed job!)
-    mongodbRootUser: root
+    # -- Root user (required ONLY for seed job!).
+    mongodbRootUser: "root"
     # -- Root password (required ONLY for seed job!).
-    mongodbRootPassword: XT9nmM8dZD
+    mongodbRootPassword: "XT9nmM8dZD"
   # -- Postgres Seed Job. Required at first install. Creates required user and databases.
   # @default -- See below
   postgresSeedJob:
@@ -264,7 +264,7 @@ global:
   # Will be used by ALL services to communicate with MongoDB.
   # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/
   # Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]).
-  # Mongo seed job will create and add `cfuser` (useraname and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases
+  # Mongo seed job will create and add `cfuser` (username and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
   # -- Default MongoDB database name. Don't change!
   mongodbDatabase: codefresh
@@ -533,6 +533,8 @@ cfapi-test-reporting:
 # @default -- See below
 cf-broadcaster:
   enabled: true
+  controller:
+    replicas: 3
   container:
     image:
       registry: gcr.io/codefresh-enterprise
@@ -777,6 +779,8 @@ helm-repo-manager:
 # -- hermes
 # @default -- See below
 hermes:
+  controller:
+    replicas: 1
   container:
     image:
       registry: gcr.io/codefresh-enterprise

@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.11
+version: 2.0.0-alpha.12
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -16,16 +16,18 @@ annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
+    - kind: added
+      description: Added MongoDB MTLS test case in CI
     - kind: changed
-      description: Bump cf-api, pipeline-manager, builder, etc
+      description: Changed replicas number for broadcaster and hermes
     - kind: changed
-      description: Bump runtime images: container-logger
-    - kind: fixed
-      description: Fixed mongo-seed job template
+      description: Bump cluster-providers, argo-platform, etc
+    - kind: changed
+      description: Updated mongo seed job script and job template
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
-  version: 0.7.0
+  version: 0.8.1
 - name: internal-gateway
   repository: https://chartmuseum.codefresh.io/internal-gateway
   version: "0.1.1"

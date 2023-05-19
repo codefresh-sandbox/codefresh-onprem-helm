@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 
-set -eou pipefail
+<<COMMENT
+Script is used to seed the inital data for onprem instance:
+
+export ASSETS_PATH=./assets/
+export MONGODB_URI=...
+export MONGODB_ROOT_USER=...
+export MONGODB_ROOT_PASSWORD=...
+
+./mongoSeedJobScript.sh
+
+COMMENT
+
+# set -eou pipefail
+
+ASSETS_PATH=${ASSETS_PATH:-/usr/share/extras/}
 
 MONGODB_DATABASES=(
     "archive"
@@ -64,9 +78,8 @@ for MONGODB_DATABASE in ${MONGODB_DATABASES[@]}; do
    mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('${MONGODB_DATABASE}').createUser({user: '${MONGODB_USER}', pwd: '${MONGODB_PASSWORD}', roles: ['readWrite']})" || echo "Error creating the user. Continuing anyway assuming the user is already created..."
 done
 
-mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file /etc/admin/idps.json
-mongoimport --uri ${MONGODB_URI} --collection accounts --type json --legacy --file /etc/admin/accounts.json
-mongoimport --uri ${MONGODB_URI} --collection users --type json --legacy --file /etc/admin/users.json
+mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('codefresh').grantRolesToUser( '${MONGODB_USER}', [ { role: 'readWrite', db: 'pipeline-manager' } ] )" || true
 
-mongosh ${MONGODB_ROOT_URI} --eval "db.getSiblingDB('codefresh').grantRolesToUser( '${MONGODB_USER}', [ { role: 'readWrite', db: 'pipeline-manager' } ] )"
-
+mongoimport --uri ${MONGODB_URI} --collection idps --type json --legacy --file ${ASSETS_PATH}idps.json
+mongoimport --uri ${MONGODB_URI} --collection accounts --type json --legacy --file ${ASSETS_PATH}accounts.json
+mongoimport --uri ${MONGODB_URI} --collection users --type json --legacy --file ${ASSETS_PATH}users.json
