@@ -50,6 +50,10 @@ seed:
       registry: quay.io
       repository: codefresh/mongosh
       tag: 1.8.2
+    # -- Root user (required ONLY for seed job!)
+    mongodbRootUser: root
+    # -- Root password (required ONLY for seed job!).
+    mongodbRootPassword: XT9nmM8dZD
   # -- Postgres Seed Job. Required at first install. Creates required user and databases.
   # @default -- See below
   postgresSeedJob:
@@ -58,6 +62,12 @@ seed:
       registry: quay.io
       repository: codefresh/postgresql
       tag: 13
+    # -- (optional) "postgres" admin user (required ONLY for seed job!)
+    # Must be a privileged user allowed to create databases and grant roles.
+    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
+    postgresUser: ""
+    # -- (optional) Password for "postgres" admin user (required ONLY for seed job!)
+    postgresPassword: ""
   ttlSecondsAfterFinished: 300
   backoffLimit: 10
   affinity: {}
@@ -258,10 +268,10 @@ global:
   mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"
   # -- Default MongoDB database name. Don't change!
   mongodbDatabase: codefresh
-  # -- Root user (required ONLY for seed job!)
-  mongodbRootUser: root
-  # -- Root password (required ONLY for seed job!).
-  mongodbRootPassword: XT9nmM8dZD
+  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` instead.
+  mongodbRootUser: ""
+  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` instead.
+  mongodbRootPassword: ""
 
   # Mongo parameters for OfflineLogging. Should match the parameters above.
   # -- Default Internal MongoDB URI
@@ -269,13 +279,17 @@ global:
   # -- Default Internal MongoDB database name
   runtimeMongoDb: codefresh
 
-  # External MongoDB example
+  # # External MongoDB example
+  # seed:
+  #   mongoSeedJob:
+  #     enabled: true
+  #     mongodbRootUser: root
+  #     mongodbRootPassword: password
+  #
   # global:
-  #   mongodbRootUser: root
-  #   mongodbRootPassword: password
   #   mongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
   #   runtimeMongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/?authSource=admin
-
+  #
   # mongodb:
   #   enabled: false  # disable default mongodb subchart installation
 
@@ -299,6 +313,12 @@ global:
   postgresSeedJob: {}
 
   # # External Postgresql example
+  # seed:
+  #   postgresSeedJob:
+  #     enabled: true
+  #     postgresUser: postgres
+  #     postgresPassword: password
+  #
   # global:
   #   postgresHostname: my-postgres.ccjog7pqzunf.us-west-2.rds.amazonaws.com
   #   postgresUser: cf_user
@@ -374,7 +394,7 @@ global:
 # @default -- See below
 runtimeImages:
   COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.10.0
+  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.10.1
   DIND_IMAGE: quay.io/codefresh/dind:20.10.18-1.25.6
   DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.3.1
   DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.9
@@ -391,24 +411,8 @@ runtimeImages:
 # Codefresh subcharts
 #--------------------
 # -- builder
-builder: &builder
+builder:
   enabled: true
-  container:
-    image:
-      registry: docker.io
-      repository: docker
-      tag: 23.0-dind
-  initContainers:
-    register:
-      image:
-        registry: quay.io
-        repository: codefresh/curl
-        tag: 8.1.0
-  cleaner:
-    image:
-      registry: quay.io
-      repository: codefresh/docker-cleaner
-      tag: 24.0
 
 # -- cf-api
 cfapi: &cf-api
@@ -957,7 +961,6 @@ rabbitmq:
 # -- runner
 # @default -- See below
 runner:
-  !!merge <<: *builder
   enabled: true
 
 # -- pipeline-manager

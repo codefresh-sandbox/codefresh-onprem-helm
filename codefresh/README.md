@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.10](https://img.shields.io/badge/Version-2.0.0--alpha.10-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.11](https://img.shields.io/badge/Version-2.0.0--alpha.11-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -969,7 +969,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | argo-platform.secrets | object | See below | Secrets anchors |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"cleaner":{"image":{"registry":"quay.io","repository":"codefresh/docker-cleaner","tag":24}},"container":{"image":{"registry":"docker.io","repository":"docker","tag":"23.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.1.0"}}}}` | builder |
+| builder | object | `{"enabled":true}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
@@ -1038,8 +1038,8 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | global.kubeIntegrationService | string | `"kube-integration"` | Default kube-integration service name. |
 | global.mongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"` | Default Internal MongoDB URI (from bitnami/mongodb subchart).. Change if you use external MongoDB. See "External MongoDB" example below. Will be used by ALL services to communicate with MongoDB. Ref: https://www.mongodb.com/docs/manual/reference/connection-string/ Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]). Mongo seed job will create and add `cfuser` (useraname and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases |
 | global.mongodbDatabase | string | `"codefresh"` | Default MongoDB database name. Don't change! |
-| global.mongodbRootPassword | string | `"XT9nmM8dZD"` | Root password (required ONLY for seed job!). |
-| global.mongodbRootUser | string | `"root"` | Root user (required ONLY for seed job!) |
+| global.mongodbRootPassword | string | `""` | DEPRECATED - Use `.Values.seed.mongoSeedJob` instead. |
+| global.mongodbRootUser | string | `""` | DEPRECATED - Use `.Values.seed.mongoSeedJob` instead. |
 | global.natsPort | int | `4222` | Default nats service port. |
 | global.natsService | string | `"nats"` | Default nats service name. |
 | global.newrelicLicenseKey | string | `""` | New Relic Key |
@@ -1115,6 +1115,10 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | seed | object | See below | Seed jobs |
 | seed.enabled | bool | `true` | Enable all seed jobs |
 | seed.mongoSeedJob | object | See below | Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases. |
+| seed.mongoSeedJob.mongodbRootPassword | string | `"XT9nmM8dZD"` | Root password (required ONLY for seed job!). |
+| seed.mongoSeedJob.mongodbRootUser | string | `"root"` | Root user (required ONLY for seed job!) |
 | seed.postgresSeedJob | object | See below | Postgres Seed Job. Required at first install. Creates required user and databases. |
+| seed.postgresSeedJob.postgresPassword | optional | `""` | Password for "postgres" admin user (required ONLY for seed job!) |
+| seed.postgresSeedJob.postgresUser | optional | `""` | "postgres" admin user (required ONLY for seed job!) Must be a privileged user allowed to create databases and grant roles. If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken. |
 | tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"gcr.io/codefresh-enterprise"}},"enabled":true,"hpa":{"enabled":false},"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
 | webTLS | object | `{"cert":"","enabled":false,"key":"","secretName":"star.codefresh.io"}` | DEPRECATED - Use `.Values.ingress.tls` instead TLS secret for Ingress |

@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.10
+version: 2.0.0-alpha.11
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -16,10 +16,12 @@ annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
-    - kind: security
-      description: Update kubectl, curl, docker-cleaner images
     - kind: changed
-      description: Bump cf-api, cf-ui, argo-platform, cf-common libs, etc
+      description: Bump cf-api, pipeline-manager, builder, etc
+    - kind: changed
+      description: Bump runtime images: container-logger
+    - fixed:
+      description: Fixed mongo-seed job template
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
@@ -55,11 +57,11 @@ dependencies:
 - name: builder
   repository: https://chartmuseum.codefresh.io/builder
   condition: builder.enabled
-  version: 1.1.0
+  version: 1.1.3
 - name: runner
   repository: https://chartmuseum.codefresh.io/runner
   condition: runner.enabled
-  version: 1.1.0
+  version: 1.1.3
 - name: ingress-nginx
   version: 4.6.1
   repository: https://kubernetes.github.io/ingress-nginx
