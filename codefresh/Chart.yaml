@@ -20,7 +20,7 @@ annotations:
       description: Bump cf-api, pipeline-manager, builder, etc
     - kind: changed
       description: Bump runtime images: container-logger
-    - fixed:
+    - kinf: fixed
       description: Fixed mongo-seed job template
 dependencies:
 - name: cf-common
