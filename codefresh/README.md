@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.12](https://img.shields.io/badge/Version-2.0.0--alpha.12-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.13](https://img.shields.io/badge/Version-2.0.0--alpha.13-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -13,6 +13,7 @@
     - [External MongoDB with MTLS](#external-mongodb-with-mtls)
     - [External PostgresSQL](#external-postgressql)
     - [External Redis](#external-redis)
+    - [External Redis with MTLS](#external-redis-with-mtls)
     - [External RabbitMQ](#external-rabbitmq)
   - [Configuring Ingress-NGINX](#configuring-ingress-nginx)
     - [ELB with SSL Termination (Classic Load Balancer)](#elb-with-ssl-termination-classic-load-balancer)
@@ -175,7 +176,7 @@ secrets:
       ca.pem: <base64 encoded sting>
 ```
 
-*  Add `.Values.global.volumes` and `.Values.global.container.volumeMounts` to mount the secret into all the services.
+*  Add `.Values.global.volumes` and `.Values.global.volumeMounts` to mount the secret into all the services.
 ```yaml
 global:
   volumes:
@@ -196,7 +197,7 @@ global:
     MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
     RUNTIME_MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
     RUNTIME_MONGO_TLS: "true"
-    # Set these var to 'false' if self-signed certificate is used to avoid x509 errors
+    # Set these env vars to 'false' if self-signed certificate is used to avoid x509 errors
     RUNTIME_MONGO_TLS_VALIDATE: "false"
     MONGO_MTLS_VALIDATE: "false"
 ```
@@ -256,6 +257,54 @@ redis:
   # -- Disable redis subchart installation
   enabled: false
 
+```
+
+#### External Redis with MTLS
+
+In order to use [MTLS (Mutual TLS) for Redis](https://redis.io/docs/management/security/encryption/), you need:
+
+* Create a K8S secret that contains the certificate (ca, certificate and private key).
+```console
+cat ca.crt tls.crt > tls.crt
+kubectl create secret tls my-redis-tls --cert=tls.crt --key=tls.key --dry-run=client -o yaml | kubectl apply -f -
+```
+
+  Or you can create certificate using templates provided in Codefresh Helm chart.
+  Add `.Values.secrets` into `values.yaml` as follows.
+```yaml
+secrets:
+  redis-tls:
+    enabled: true
+    data:
+      ca.crt: <base64 encoded string>
+      tls.crt: <base64 encoded string>
+      tls.key: <base64 encoded string>
+```
+
+*  Add `.Values.global.volumes` and `.Values.global.volumeMounts` to mount the secret into all the services.
+```yaml
+global:
+  volumes:
+    redis-tls:
+      enabled: true
+      type: secret
+      # Existing secret with TLS certificates (keys: `ca.crt` , `tls.crt`, `tls.key`)
+      # existingName: my-redis-tls
+      optional: true
+
+  volumeMounts:
+    redis-tls:
+      path:
+      - mountPath: /etc/ssl/redis
+
+  env:
+    REDIS_TLS: true
+    REDIS_CA_PATH: /etc/ssl/redis/ca.crt
+    REDIS_CLIENT_CERT_PATH : /etc/ssl/redis/tls.crt
+    REDIS_CLIENT_KEY_PATH: /etc/ssl/redis/tls.key
+    # Set these env vars like that if self-signed certificate is used to avoid x509 errors
+    REDIS_REJECT_UNAUTHORIZED: false
+    REDIS_TLS_SKIP_VERIFY: true
 ```
 
 #### External RabbitMQ
