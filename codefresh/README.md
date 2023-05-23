@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.0.0-alpha.14](https://img.shields.io/badge/Version-2.0.0--alpha.14-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 2.0.0-alpha.15](https://img.shields.io/badge/Version-2.0.0--alpha.15-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 ## Table of Content
 
@@ -1119,7 +1119,7 @@ The bare minimal workload footprint for the new services (without HPA or PDB) is
 | global.runtimeMongoDb | string | `"codefresh"` | Default Internal MongoDB database name |
 | global.runtimeMongoURI | string | `"mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017"` | Default Internal MongoDB URI |
 | global.runtimeRedisDb | string | `"1"` | Default Redis keyspace number. |
-| global.runtimeRedisHost | string | `"cf-redis-master"` | Default Internal Redis service address (from bitnami/redis subchart). |
+| global.runtimeRedisHost | string | `""` | Set External Redis service address. Keep empty in built-in redis chart is used (i.e. `.Values.redis.enabled=true`) |
 | global.runtimeRedisPassword | string | `"hoC9szf7NtrU"` | Default Redis password. |
 | global.runtimeRedisPort | string | `"6379"` | Default Redis port number. |
 | global.seedJobs | bool | `false` | DEPRECATED - Use `.Values.seed.mongoSeedJob` and `.Values.seed.postgresSeedJob` and instead Instantiate databases with seed data. Used in on-prem environments. |

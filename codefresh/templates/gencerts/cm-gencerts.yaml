@@ -24,12 +24,12 @@ data:
     echo "subjectAltName = DNS:{{ .Values.global.appUrl }}" > extfile.cnf
     openssl x509 -req -days 365 -in server.csr -signkey tls.key -out tls.crt -extfile extfile.cnf
 
-    secretName={{ include "codefresh.fullname" . }}-star-selfsigned
+    secretName={{ .Release.Name }}-{{ .Values.global.codefresh }}-star-selfsigned
     if kubectl get secret $secretName; then
       kubectl delete secret $secretName
     fi
     kubectl create secret tls $secretName --cert=tls.crt --key=tls.key
-    kubectl label secret $secretName app={{ include "codefresh.fullname" . }}
+    kubectl label secret $secretName app=$secretName
 
   {{- end }}
   {{- if not .Values.global.clientCertsCA }}
@@ -77,10 +77,10 @@ data:
     cp -v $SERVER_PEM $CLIENT_CERT
     cp -v $SERVER_KEY $CLIENT_KEY
 
-    secretName={{ include "codefresh.fullname" . }}-certs-client
+    secretName={{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client
 
     if ! kubectl get secret $secretName; then
-      kubectl create secret generic {{ include "codefresh.fullname" . }}-certs-client \
+      kubectl create secret generic $secretName \
         --from-file=$CA_PEM \
         --from-file=$CA_KEY \
         --from-file=$CLIENT_KEY \

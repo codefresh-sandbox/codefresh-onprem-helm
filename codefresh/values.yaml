@@ -362,9 +362,10 @@ global:
   # -- Set External Redis service address. Takes precedence over `global.redisService`
   redisUrl: ""
 
-  # Redis parameters for Offline Logging. Should match the parameters above.
-  # -- Default Internal Redis service address (from bitnami/redis subchart).
-  runtimeRedisHost: cf-redis-master
+  # Redis parameters for Offline Logging.
+  # -- Set External Redis service address.
+  # Keep empty in built-in redis chart is used (i.e. `.Values.redis.enabled=true`)
+  runtimeRedisHost: ""
   # -- Default Redis port number.
   runtimeRedisPort: "6379"
   # -- Default Redis password.
