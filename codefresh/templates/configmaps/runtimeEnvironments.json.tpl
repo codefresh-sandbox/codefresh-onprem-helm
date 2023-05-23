@@ -81,19 +81,19 @@
         "internal-registry": {
           "name": "internal-registry",
           "configMap": {
-            "name": "cf-codefresh-registry"
+            "name": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
           }
         },
         "additional-internal-registries": {
           "name": "additional-internal-registries",
           "configMap": {
-            "name": "cf-codefresh-registry"
+            "name": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
           }
         },
         "cf-certs": {
           "name": "cf-certs",
           "secret": {
-            "secretName": "cf-codefresh-certs-client"
+            "secretName": "{{ .Release.Name }}-{{ .Values.global.codefresh }}-certs-client"
           }
         }
       }
