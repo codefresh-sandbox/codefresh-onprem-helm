@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.13
+version: 2.0.0-alpha.14
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -16,10 +16,10 @@ annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
-    - kind: added
-      description: Added Redis MTLS support
     - kind: changed
-      description: Bump cf-api, cf-ui, argo-platform
+      description: Changed update-runtime hook annotation to post-upgrade
+    - kind: changed
+      description: Bumped cf-api, argo-platform, etc
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common

@@ -6,11 +6,7 @@ metadata:
   labels:
     {{ include "codefresh.labels" . | nindent 4 }}
   annotations:
-    {{- if .Values.global.mongoTLS }}
     "helm.sh/hook": post-upgrade
-    {{- else }}
-    "helm.sh/hook": pre-upgrade
-    {{- end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   ttlSecondsAfterFinished: 180
@@ -66,11 +62,7 @@ spec:
         resources:
           {{- toYaml .Values.hooks.resources | nindent 10 }}
         volumeMounts:
-        {{- if .Values.global.mongoTLS }}
-        - mountPath: /etc/ssl/mongodb/
-          name: mongodb-tls
-          readOnly: true
-        {{- end }}
+        {{- include (printf "%s.volumeMounts" $libTemplateName) (dict "Values" .Values.hooks.volumeMounts "context" $) | indent 10 }}
       {{- with .Values.hooks.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -84,9 +76,5 @@ spec:
         {{- toYaml . | nindent 6 }}
       {{- end }}
       volumes:
-      {{- if .Values.global.mongoTLS }}
-      - name: mongodb-tls
-        secret:
-          secretName: '{{ .Release.Name }}-{{ .Values.global.codefresh }}-mongodb-tls'
-      {{- end }}
+      {{- include (printf "%s.volumes" $libTemplateName) (dict "Values" .Values.hooks.volumes "context" $) | indent 8 }}
       restartPolicy: Never
