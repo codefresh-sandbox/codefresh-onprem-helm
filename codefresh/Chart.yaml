@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.0.0-alpha.16
+version: 2.0.0
 keywords:
 - codefresh
 home: https://codefresh.io/
@@ -14,12 +14,9 @@ maintainers:
 appVersion: 2.0.0
 annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
-  artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
-    - kind: fixed
-      description: Fixed configmap names
     - kind: changed
-      description: Bumped cf-ui
+      description: Bump cf-ui, cf-api, argo-platform, etc
 dependencies:
 - name: cf-common
   repository: https://chartmuseum.codefresh.io/cf-common
