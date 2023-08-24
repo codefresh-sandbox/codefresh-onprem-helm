@@ -90,7 +90,9 @@ Usage:
   {{- if contains "?" .mongoURI -}}
     {{- $mongoURI :=  (splitList "?" .mongoURI) -}}
     {{- printf "%s%s?%s" (first $mongoURI) .dbName (last $mongoURI) }}
+  {{- else if .mongoURI -}}
+    {{- printf "%s/%s" (trimSuffix "/" .mongoURI) .dbName -}}
   {{- else -}}
-    {{- printf "%s/%s" .mongoURI .dbName -}}
+    {{- printf "" -}}
   {{- end -}}
 {{- end -}}

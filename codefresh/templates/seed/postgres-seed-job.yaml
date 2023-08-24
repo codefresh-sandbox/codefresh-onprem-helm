@@ -24,12 +24,23 @@ spec:
       imagePullSecrets:
         - name: "{{ .Release.Name }}-{{ .Values.global.codefresh }}-registry"
       {{- end }}
+      securityContext:
+        {{- toYaml .Values.seed.podSecurityContext | nindent 8 }}
       containers:
       - name: {{ template "codefresh.fullname" . }}-postgres-seed
         image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.seed.postgresSeedJob.image "context" .) }}
         envFrom:
           - secretRef:
-              name: {{ include "codefresh.fullname" . }}-postgres-seed
+              name: {{ include "codefresh.fullname" . }}
+        env:
+          - name: POSTGRES_USER
+          {{- include "codefresh.postgres-user-env-var-value" . | indent 12 }}
+          - name: POSTGRES_PASSWORD
+          {{- include "codefresh.postgres-password-env-var-value" . | indent 12 }}
+          - name: POSTGRES_HOSTNAME
+          {{- include "codefresh.postgres-host-env-var-value" . | indent 12 }}
+        resources:
+          {{- toYaml .Values.seed.resources | nindent 10 }}
         command:
           - "/bin/bash"
           - "-exc"
@@ -41,7 +52,7 @@ spec:
       {{- end }}
       {{- with .Values.seed.affinity }}
       affinity:
-        {{- toYaml . | nindent 8}}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.seed.tolerations }}
       tolerations:

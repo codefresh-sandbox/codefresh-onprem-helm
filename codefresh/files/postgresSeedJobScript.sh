@@ -36,7 +36,7 @@ function runSeed() {
 
     export PGUSER=${POSTGRES_SEED_USER}
     export PGPASSWORD=${POSTGRES_SEED_PASSWORD}
-    export PGHOST=${POSTGRES_HOST}
+    export PGHOST=${POSTGRES_HOSTNAME}
     export PGPORT=${POSTGRES_PORT}
 
     if [[ "${POSTGRES_SEED_USER}" != "${POSTGRES_USER}" ]]; then

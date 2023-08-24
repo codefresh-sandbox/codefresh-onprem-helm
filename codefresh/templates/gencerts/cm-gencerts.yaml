@@ -11,7 +11,7 @@ metadata:
   labels:
     {{ include "codefresh.labels" . | nindent 4 }}
 data:
-  {{- if not .Values.ingress.tls.enabled }}
+  {{- if .Values.ingress.tls.enabled }}
   gen-ingress-tls.sh: |
     #!/bin/sh
 
@@ -55,13 +55,13 @@ data:
     openssl genrsa -out $CA_KEY 4096
 
     echo "--- Generate ca.pem"
-    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.{{ .Values.global.appUrl }}"
+    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.codefresh.io" -addext "subjectAltName = DNS:ca.{{ .Values.global.appUrl }}"
 
     echo "--- Generate server-key.pem"
     openssl genrsa -out $SERVER_KEY 4096
 
     echo "--- generate csr "
-    openssl req -subj "/CN=*.{{ .Values.global.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
+    openssl req -subj "/CN=*.codefresh.io" -addext "subjectAltName = DNS:*.{{ .Values.global.appUrl }}" -sha256 -new -key $SERVER_KEY -out $SERVER_CSR
 
     echo "--- create ca extfile"
     echo "extendedKeyUsage=serverAuth,clientAuth" >> $EXTFILE

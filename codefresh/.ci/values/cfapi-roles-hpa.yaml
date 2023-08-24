@@ -1,33 +1,19 @@
+seed-e2e:
+  enabled: true
+
+secrets:
+  # default mongouri conn string for e2e
+  e2e-mongo-uri:
+    enabled: true
+    stringData:
+      mongo-uri: mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/codefresh
+
 ingress:
   enabled: true
   tls:
     enabled: true
     cert: ""  # placeholder for ${WEB_TLS_CERT}
     key: "" # placeholder for ${WEB_TLS_KEY}
-  services:
-    cfapi: null
-    cfapi-endpoints:
-      - /api/
-    cfapi-downloadlogmanager:
-      - /api/progress/download
-      - /api/public/progress/download
-    cfapi-admin:
-      - /api/admin/
-    cfapi-ws:
-      - /ws
-    cfapi-teams:
-      - /api/team
-    cfapi-kubernetes-endpoints:
-      - /api/kubernetes
-    cfapi-test-reporting:
-      - /api/testReporting
-    cfapi-kubernetesresourcemonitor:
-      - /api/k8s-monitor/
-    cfapi-environments:
-      - /api/environments-v2/argo/events
-    cfapi-gitops-resource-receiver:
-      - /api/gitops/resources
-      - /api/gitops/rollout
 
 global:
   appUrl: ""  # placeholder for ${CF_APP_HOST}

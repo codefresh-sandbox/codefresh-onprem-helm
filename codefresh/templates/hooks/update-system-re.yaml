@@ -1,4 +1,5 @@
 {{ $libTemplateName := printf "cf-common-%s" (index .Subcharts "cf-common").Chart.Version }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -25,9 +26,18 @@ spec:
       containers:
       - name: {{ include "codefresh.fullname" . }}-update-system-re
         image: {{ include (printf "%s.image.name" $libTemplateName) (dict "image" .Values.hooks.image "context" .) }}
+        envFrom:
+          - secretRef:
+              name: {{ include "codefresh.fullname" . }}
         env:
+          - name: MONGODB_HOST
+          {{- include "codefresh.mongodb-host-env-var-value" . | indent 12 }}
+          - name: MONGODB_USER
+          {{- include "codefresh.mongodb-user-env-var-value" . | indent 12 }}
+          - name: MONGODB_PASSWORD
+          {{- include "codefresh.mongodb-password-env-var-value" . | indent 12 }}
           - name: MONGO_URI_RE_MANAGER
-            value: {{ include (printf "%s.classic.calculateMongoUri" $libTemplateName) (dict "dbName" "runtime-environment-manager" "mongoURI" .Values.global.mongoURI) }}
+          {{- include "codefresh.mongo-uri-re-manager-env-var-value" . | indent 12 }}
           - name: DIND_IMAGE
             value: {{ include "codefresh.buildImageName" (dict "registry" .Values.global.imageRegistry "imageFullName" .Values.runtimeImages.DIND_IMAGE) }}
           - name: ENGINE_IMAGE

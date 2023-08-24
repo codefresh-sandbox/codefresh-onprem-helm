@@ -2,12 +2,15 @@
 
 {{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
 
+Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
+
 ## Table of Content
 
 - [Prerequisites](#prerequisites)
-- [Get Repo Info and Pull Chart](#get-repo-info-and-pull-chart)
+- [Get Repo Info](#get-repo-info)
 - [Install Chart](#install-chart)
 - [Helm Chart Configuration](#helm-chart-configuration)
+  - [Persistent services](#persistent-services)
   - [Configuring external services](#configuring-external-services)
     - [External MongoDB](#external-mongodb)
     - [External MongoDB with MTLS](#external-mongodb-with-mtls)
@@ -22,22 +25,32 @@
   - [Configuration with Private Registry](#configuration-with-private-registry)
   - [Configuration with multi-role CF-API](#configuration-with-multi-role-cf-api)
   - [High Availability](#high-availability)
+  - [Mounting private CA certs](#mounting-private-ca-certs)
+- [Installing on OpenShift](#installing-on-openshift)
+- [Firebase Configuration](#firebase-configuration)
+- [Additional configuration](#additional-configuration)
+  - [Retention policy for builds and logs](#retention-policy-for-builds-and-logs)
+  - [Project's pipelines limit](#projects-pipelines-limit)
+  - [Enable session cookie](#enable-session-cookie)
 - [Upgrading](#upgrading)
   - [To 2.0.0](#to-200)
+  - [To 2.0.12](#to-2012)
+  - [To 2.1.0](#to-210)
+- [Rollback](#rollback)
 - [Values](#values)
 
 ## Prerequisites
 
-- Kubernetes **1.22+**
+- Kubernetes **>= 1.22.0**
 - Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
-- Firebase url and secret
+- Firebase [Realtime Database URL](https://firebase.google.com/docs/database/web/start#create_a_database) and [legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens) for it. See [Firebase Configuration](#firebase-configuration)
 - Valid TLS certificates for Ingress
-- When [external](#external-postgressql) PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/pipeline-analytics/#content) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
+- When [external](#external-postgressql) PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
 
 
-## Get Repo Info and Pull Chart
+## Get Repo Info
 
 ```console
 helm repo add codefresh http://chartmuseum.codefresh.io/codefresh
@@ -69,8 +82,21 @@ global:
 
   # -- Firebase URL for logs streaming.
   firebaseUrl: <>
+  # -- Firebase URL for logs streaming from existing secret
+  firebaseUrlSecretKeyRef: {}
+  # E.g.
+  # firebaseUrlSecretKeyRef:
+  #   name: my-secret
+  #   key: firebase-url
+
   # -- Firebase Secret.
   firebaseSecret: <>
+  # -- Firebase Secret from existing secret
+  firebaseSecretSecretKeyRef: {}
+  # E.g.
+  # firebaseSecretSecretKeyRef:
+  #   name: my-secret
+  #   key: firebase-secret
 ```
 
 - Specify `.Values.ingress.tls.cert` and `.Values.ingress.tls.key` OR `.Values.ingress.tls.existingSecret`
@@ -81,6 +107,7 @@ ingress:
   enabled: true
   # -- Set the ingressClass that is used for the ingress.
   # Default `nginx-codefresh` is created from `ingress-nginx` controller subchart
+  # If you specify a different ingress class, disable `ingress-nginx` subchart (see below)
   ingressClassName: nginx-codefresh
   tls:
     # -- Enable TLS
@@ -93,9 +120,12 @@ ingress:
     key: ""
     # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
     existingSecret: ""
-```
 
-**Important:** use `cf` as Release Name at the moment
+# -- ingress-nginx
+ingress-nginx:
+  # -- Enable ingress-nginx controller
+  enabled: true
+```
 
 - Install the chart
 
@@ -109,6 +139,19 @@ helm upgrade --install cf codefresh/codefresh \
     --timeout 15m
 ```
 
+- *Install from OCI-based registry*
+
+```console
+  helm upgrade --install cf oci://quay.io/codefresh/codefresh \
+      -f cf-values.yaml \
+      --namespace codefresh \
+      --create-namespace \
+      --debug \
+      --wait \
+      --timeout 15m
+  ```
+
+
 ## Helm Chart Configuration
 
 See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
@@ -116,6 +159,22 @@ See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_h
 ```console
 helm show values codefresh/codefresh
 ```
+
+### Persistent services
+
+The following table displays the list of **persistent** services created as part of the on-premises installation:
+
+| Database      | Purpose | Latest supported version     |
+| :---        | :----   |  :--- |
+| MongoDB      | Stores all account data (account settings, users, projects, pipelines, builds etc.)       | 4.4.x   |
+| Postgresql   | Stores data about events for the account (pipeline updates, deletes, etc.). The audit log uses the data from this database.        | 13.x      |
+| Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 6.0.x      |
+
+> Running on netfs (nfs, cifs) is not recommended.
+
+> Docker daemon (`cf-builder` stateful set) can be run on block storage only.
+
+All of them can be externalized. See the next sections.
 
 ### Configuring external services
 
@@ -136,20 +195,66 @@ seed:
   mongoSeedJob:
     # -- Enable mongo seed job. Seeds the required data (default idp/user/account), creates cfuser and required databases.
     enabled: true
-    # -- Root user (required ONLY for seed job!)
-    mongodbRootUser: root
-    # -- Root password (required ONLY for seed job!).
-    mongodbRootPassword: password
+    # -- Root user in plain text (required ONLY for seed job!).
+    mongodbRootUser: "root"
+    # -- Root user from existing secret
+    mongodbRootUserSecretKeyRef: {}
+    # E.g.
+    # mongodbRootUserSecretKeyRef:
+    #   name: my-secret
+    #   key: mongodb-root-user
+
+    # -- Root password in plain text (required ONLY for seed job!).
+    mongodbRootPassword: "password"
+    # -- Root password from existing secret
+    mongodbRootPasswordSecretKeyRef: {}
+    # E.g.
+    # mongodbRootPasswordSecretKeyRef:
+    #   name: my-secret
+    #   key: mongodb-root-password
 
 
 global:
-  # -- MongoDB connection string. Will be used by ALL services to communicate with MongoDB.
+  # -- LEGACY (but still supported) - Use `.global.mongodbProtocol` + `.global.mongodbUser/mongodbUserSecretKeyRef` + `.global.mongodbPassword/mongodbPasswordSecretKeyRef` + `.global.mongodbHost/mongodbHostSecretKeyRef` + `.global.mongodbOptions` instead
+  # Default MongoDB URI. Will be used by ALL services to communicate with MongoDB.
   # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/
-  # Note! `defaultauthdb` is omitted here on purpose (i.e. mongodb://.../[defaultauthdb]).
-  # Mongo seed job will create and add `cfuser` (username and password are taken from `.Values.global.mongoURI`) with "ReadWrite" permissions to all of the required databases
-  mongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/
-  # -- Should be the same as mongoURI above
-  runtimeMongoURI: mongodb://cfuser:password@my-mongodb.prod.svc.cluster.local/
+  # Note! `defaultauthdb` is omitted on purpose (i.e. mongodb://.../[defaultauthdb]).
+  mongoURI: ""
+  # E.g.
+  # mongoURI: "mongodb://cfuser:mTiXcU2wafr9@cf-mongodb:27017/"
+
+  # -- Set mongodb protocol (`mongodb` / `mongodb+srv`)
+  mongodbProtocol: mongodb
+  # -- Set mongodb user in plain text
+  mongodbUser: "cfuser"
+  # -- Set mongodb user from existing secret
+  mongodbUserSecretKeyRef: {}
+  # E.g.
+  # mongodbUserSecretKeyRef:
+  #   name: my-secret
+  #   key: mongodb-user
+
+  # -- Set mongodb password in plain text
+  mongodbPassword: "password"
+  # -- Set monogdb password from existing secret
+  mongodbPasswordSecretKeyRef: {}
+  # E.g.
+  # mongodbPasswordSecretKeyRef:
+  #   name: my-secret
+  #   key: mongodb-password
+
+  # -- Set mongodb host in plain text
+  mongodbHost: "my-mongodb.prod.svc.cluster.local"
+  # -- Set mongodb host from existing secret
+  mongodbHostSecretKeyRef: {}
+  # E.g.
+  # mongodbHostSecretKeyRef:
+  #   name: my-secret
+  #   key: monogdb-host
+
+  # -- Set mongodb connection string options
+  # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-options
+  mongodbOptions: "retryWrites=true"
 
 mongodb:
   # -- Disable mongodb subchart installation
@@ -168,16 +273,6 @@ cat cert.key >> ca.pem
 kubectl create secret generic my-mongodb-tls --from-file=ca.pem
 ```
 
-  Or you can create certificate using templates provided in Codefresh Helm chart.
-  Add `.Values.secrets` into `values.yaml` as follows.
-```yaml
-secrets:
-  mongodb-tls:
-    enabled: true
-    data:
-      ca.pem: <base64 encoded sting>
-```
-
 *  Add `.Values.global.volumes` and `.Values.global.volumeMounts` to mount the secret into all the services.
 ```yaml
 global:
@@ -185,8 +280,7 @@ global:
     mongodb-tls:
       enabled: true
       type: secret
-      # Existing secret with TLS certificates (key: `ca.pem`)
-      # existingName: my-mongodb-tls
+      nameOverride: my-mongodb-tls
       optional: true
 
   volumeMounts:
@@ -196,6 +290,7 @@ global:
         subPath: ca.pem
 
   env:
+    MONGODB_SSL_ENABLED: true
     MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
     RUNTIME_MTLS_CERT_PATH: /etc/ssl/mongodb/ca.pem
     RUNTIME_MONGO_TLS: "true"
@@ -213,21 +308,55 @@ seed:
   postgresSeedJob:
     # -- Enable postgres seed job. Creates required user and databases.
     enabled: true
-    # -- (optional) "postgres" admin user (required ONLY for seed job!)
+    # -- (optional) "postgres" admin user in plain text (required ONLY for seed job!)
     # Must be a privileged user allowed to create databases and grant roles.
     # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
-    postgresUser: postgres
+    postgresUser: "postgres"
+    # -- (optional) "postgres" admin user from exising secret
+    postgresUserSecretKeyRef: {}
+    # E.g.
+    # postgresUserSecretKeyRef:
+    #   name: my-secret
+    #   key: postgres-user
+
     # -- (optional) Password for "postgres" admin user (required ONLY for seed job!)
-    postgresPassword: password
+    postgresPassword: "password"
+    # -- (optional) Password for "postgres" admin user from existing secret
+    postgresPasswordSecretKeyRef: {}
+    # E.g.
+    # postgresPasswordSecretKeyRef:
+    #   name: my-secret
+    #   key: postgres-password
 
 global:
-  # -- Postgresql hostname
-  postgresHostname: my-postgres.domain.us-east-1.rds.amazonaws.com
-  # -- Postgresql user
+  # -- Set postgres user in plain text
   postgresUser: cf_user
-  # -- Postgresql password
+  # -- Set postgres user from existing secret
+  postgresUserSecretKeyRef: {}
+  # E.g.
+  # postgresUserSecretKeyRef:
+  #   name: my-secret
+  #   key: postgres-user
+
+  # -- Set postgres password in plain text
   postgresPassword: password
-  # -- (optional) Postgresql server port
+  # -- Set postgres password from existing secret
+  postgresPasswordSecretKeyRef: {}
+  # E.g.
+  # postgresPasswordSecretKeyRef:
+  #   name: my-secret
+  #   key: postgres-password
+
+  # -- Set postgres service address in plain text.
+  postgresHostname: "my-postgres.domain.us-east-1.rds.amazonaws.com"
+  # -- Set postgres service from existing secret
+  postgresHostnameSecretKeyRef: {}
+  # E.g.
+  # postgresHostnameSecretKeyRef:
+  #   name: my-secret
+  #   key: postgres-hostname
+
+  # -- Set postgres port number
   postgresPort: 5432
 
 postgresql:
@@ -241,19 +370,26 @@ postgresql:
 
 ```yaml
 global:
-  # -- Redis hostname
-  redisUrl: my-redis.namespace.svc.cluster.local
-  # -- Redis password
+  # -- Set redis password in plain text
   redisPassword: password
-  # -- (optional) Redis port
+  # -- Set redis service port
   redisPort: 6379
+  # -- Set redis password from existing secret
+  redisPasswordSecretKeyRef: {}
+  # E.g.
+  # redisPasswordSecretKeyRef:
+  #   name: my-secret
+  #   key: redis-password
 
-  # Should be the same as above.
-  # Required for OfflineLogging feature is turned on. (i.e. when `.Values.global.firebaseSecret` is not provided)
-  runtimeRedisHost: my-redis.namespace.svc.cluster.local
-  runtimeRedisPassword: password
-  runtimeRedisPort: 6379
-  runtimeRedisDb: 2
+  # -- Set redis hostname in plain text. Takes precedence over `global.redisService`!
+  redisUrl: "my-redis.namespace.svc.cluster.local"
+  # -- Set redis hostname from existing secret.
+  redisUrlSecretKeyRef: {}
+  # E.g.
+  # redisUrlSecretKeyRef:
+  #   name: my-secret
+  #   key: redis-url
+
 
 redis:
   # -- Disable redis subchart installation
@@ -271,18 +407,6 @@ cat ca.crt tls.crt > tls.crt
 kubectl create secret tls my-redis-tls --cert=tls.crt --key=tls.key --dry-run=client -o yaml | kubectl apply -f -
 ```
 
-  Or you can create certificate using templates provided in Codefresh Helm chart.
-  Add `.Values.secrets` into `values.yaml` as follows.
-```yaml
-secrets:
-  redis-tls:
-    enabled: true
-    data:
-      ca.crt: <base64 encoded string>
-      tls.crt: <base64 encoded string>
-      tls.key: <base64 encoded string>
-```
-
 *  Add `.Values.global.volumes` and `.Values.global.volumeMounts` to mount the secret into all the services.
 ```yaml
 global:
@@ -291,7 +415,7 @@ global:
       enabled: true
       type: secret
       # Existing secret with TLS certificates (keys: `ca.crt` , `tls.crt`, `tls.key`)
-      # existingName: my-redis-tls
+      nameOverride: my-redis-tls
       optional: true
 
   volumeMounts:
@@ -315,12 +439,34 @@ global:
 
 ```yaml
 global:
-  # -- RabbitMQ hostname
-  rabbitmqHostname: my-rabbitmq.namespace.svc.cluster.local
-  # -- RabbitMQ user
+  # -- Set rabbitmq protocol (`amqp/amqps`)
+  rabbitmqProtocol: amqp
+  # -- Set rabbitmq username in plain text
   rabbitmqUsername: user
-  # -- RabbitMQ password
+  # -- Set rabbitmq username from existing secret
+  rabbitmqUsernameSecretKeyRef: {}
+  # E.g.
+  # rabbitmqUsernameSecretKeyRef:
+  #   name: my-secret
+  #   key: rabbitmq-username
+
+  # -- Set rabbitmq password in plain text
   rabbitmqPassword: password
+  # -- Set rabbitmq password from existing secret
+  rabbitmqPasswordSecretKeyRef: {}
+  # E.g.
+  # rabbitmqPasswordSecretKeyRef:
+  #   name: my-secret
+  #   key: rabbitmq-password
+
+  # -- Set rabbitmq service address in plain text. Takes precedence over `global.rabbitService`!
+  rabbitmqHostname: "my-rabbitmq.namespace.svc.cluster.local:5672"
+  # -- Set rabbitmq service address from existing secret.
+  rabbitmqHostnameSecretKeyRef: {}
+  # E.g.
+  # rabbitmqHostnameSecretKeyRef:
+  #   name: my-secret
+  #   key: rabbitmq-hostname
 
 rabbitmq:
   # -- Disable rabbitmq subchart installation
@@ -408,11 +554,6 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/success-codes: 200,404
     alb.ingress.kubernetes.io/target-type: ip
-  services:
-    # For ALB /* asterisk is required in path
-    cfapi:
-      - /api/*
-      - /ws/*
 ```
 
 ### Configuration with Private Registry
@@ -478,6 +619,10 @@ Use the example below to override repository for all templates:
 
 ```yaml
 
+global:
+  imagePullSecrets:
+    - cf-registry
+
 ingress-nginx:
   controller:
     image:
@@ -526,7 +671,7 @@ internal-gateway:
 helm-repo-manager:
   chartmuseum:
     image:
-      repository: codefresh/chartmuseum
+      repository: myregistry.domain.com/codefresh/chartmuseum
 
 cf-platform-analytics-platform:
   redis:
@@ -602,33 +747,6 @@ cfapi-kubernetes-endpoints:
 cfapi-test-reporting:
   !!merge <<: *cf-api
   enabled: true
-
-# Change ingress paths
-ingress:
-  services:
-    cfapi: null # Set default cfapi path to null!
-    cfapi-endpoints:
-      - /api/
-    cfapi-downloadlogmanager:
-      - /api/progress/download
-      - /api/public/progress/download
-    cfapi-admin:
-      - /api/admin/
-    cfapi-ws:
-      - /ws
-    cfapi-teams:
-      - /api/team
-    cfapi-kubernetes-endpoints:
-      - /api/kubernetes
-    cfapi-test-reporting:
-      - /api/testReporting
-    cfapi-kubernetesresourcemonitor:
-      - /api/k8s-monitor/
-    cfapi-environments:
-      - /api/environments-v2/argo/events
-    cfapi-gitops-resource-receiver:
-      - /api/gitops/resources
-      - /api/gitops/rollout
 ```
 
 ### High Availability
@@ -727,6 +845,234 @@ tasker-kubernetes:
 
 ```
 
+### Mounting private CA certs
+
+```yaml
+global:
+  env:
+    NODE_EXTRA_CA_CERTS: /etc/ssl/custom/ca.crt
+
+  volumes:
+    custom-ca:
+      enabled: true
+      type: secret
+      existingName: my-custom-ca-cert # exisiting K8s secret object with the CA cert
+      optional: true
+
+  volumeMounts:
+    custom-ca:
+      path:
+      - mountPath: /etc/ssl/custom/ca.crt
+        subPath: ca.crt
+```
+
+## Installing on OpenShift
+
+To deploy Codefresh On-Prem on OpenShift use the following values example:
+
+```yaml
+ingress:
+  ingressClassName: openshift-default
+
+global:
+  dnsService: dns-default
+  dnsNamespace: openshift-dns
+  clusterDomain: cluster.local
+
+# Requires privileged SCC.
+builder:
+  enabled: false
+
+cfapi:
+  podSecurityContext:
+    enabled: false
+
+cf-platform-analytics-platform:
+  redis:
+    master:
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
+
+cfsign:
+  podSecurityContext:
+    enabled: false
+  initContainers:
+    volume-permissions:
+      enabled: false
+
+cfui:
+  podSecurityContext:
+    enabled: false
+
+internal-gateway:
+  podSecurityContext:
+    enabled: false
+
+helm-repo-manager:
+  chartmuseum:
+    securityContext:
+      enabled: false
+
+consul:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+cronus:
+  podSecurityContext:
+    enabled: false
+
+ingress-nginx:
+  enabled: false
+
+mongodb:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+postgresql:
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+
+redis:
+  master:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+
+rabbitmq:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+# Requires privileged SCC.
+runner:
+  enabled: false
+```
+
+## Firebase Configuration
+
+As outlined in [prerequisites](#prerequisites), it's required to set up a Firebase database for builds logs streaming:
+
+- [Create a Database](https://firebase.google.com/docs/database/web/start#create_a_database).
+- Create a [Legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens) for authentication.
+- Set the following rules for the database:
+```json
+{
+   "rules": {
+       "build-logs": {
+           "$jobId":{
+               ".read": "!root.child('production/build-logs/'+$jobId).exists() || (auth != null && auth.admin == true) || (auth == null && data.child('visibility').exists() && data.child('visibility').val() == 'public') || ( auth != null && data.child('accountId').exists() && auth.accountId == data.child('accountId').val() )",
+               ".write": "auth != null && data.child('accountId').exists() && auth.accountId == data.child('accountId').val()"
+           }
+       },
+       "environment-logs": {
+           "$environmentId":{
+               ".read": "!root.child('production/environment-logs/'+$environmentId).exists() || ( auth != null && data.child('accountId').exists() && auth.accountId == data.child('accountId').val() )",
+               ".write": "auth != null && data.child('accountId').exists() && auth.accountId == data.child('accountId').val()"
+           }
+       }
+   }
+}
+```
+
+However, if you're in an air-gapped environment, you can omit this prerequisite and use a built-in logging system (i.e. `OfflineLogging` feature-flag).
+See [feature management](https://codefresh.io/docs/docs/installation/on-premises/on-prem-feature-management)
+
+
+## Additional configuration
+
+### Retention policy for builds and logs
+
+With this method, Codefresh by default deletes builds older than six months.
+
+The retention mechanism removes data from the following collections: `workflowproccesses`, `workflowrequests`, `workflowrevisions`
+
+```yaml
+cfapi:
+  env:
+    # Determines if automatic build deletion through the Cron job is enabled.
+    RETENTION_POLICY_IS_ENABLED: true
+    # The maximum number of builds to delete by a single Cron job. To avoid database issues, especially when there are large numbers of old builds, we recommend deleting them in small chunks. You can gradually increase the number after verifying that performance is not affected.
+    RETENTION_POLICY_BUILDS_TO_DELETE: 50
+    # The number of days for which to retain builds. Builds older than the defined retention period are deleted.
+    RETENTION_POLICY_DAYS: 180
+```
+
+### Retention policy for builds and logs
+> Configuration for Codefresh On-Prem >= 2.x
+
+> Previous configuration example (i.e. `RETENTION_POLICY_IS_ENABLED=true` ) is also supported in Codefresh On-Prem >= 2.x
+
+**For existing environments, for the retention mechanism to work, you must first drop the `created ` index in `workflowprocesses` collection. This requires a maintenance window that depends on the number of builds.**
+
+```yaml
+cfapi:
+  env:
+    # Determines if automatic build deletion is enabled.
+    TTL_RETENTION_POLICY_IS_ENABLED: true
+    # The number of days for which to retain builds, and can be between 30 (minimum) and 365 (maximum). Builds older than the defined retention period are deleted.
+    TTL_RETENTION_POLICY_IN_DAYS: 180
+```
+
+### Project's pipelines limit
+
+```yaml
+cfapi:
+  env:
+    # Determines project's pipelines limit (default: 500)
+    PROJECT_PIPELINES_LIMIT: 500
+```
+
+### Enable session cookie
+
+```yaml
+cfapi:
+  env:
+    # Generate a unique session cookie (cf-uuid) on each login
+    DISABLE_CONCURRENT_SESSIONS: true
+    # Customize cookie domain
+    CF_UUID_COOKIE_DOMAIN: .mydomain.com
+```
+
+> **Note!** Ingress host for [gitops-runtime](https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime) and ingress host for control plane must share the same root domain (i.e. `onprem.mydomain.com` and `runtime.mydomain.com`)
+
+### Configure CSP (Content Security Policy)
+
+`CONTENT_SECURITY_POLICY` is the string describing content policies. Use semi-colons to separate between policies. `CONTENT_SECURITY_POLICY_REPORT_TO` is a comma-separated list of JSON objects. Each object must have a name and an array of endpoints that receive the incoming CSP reports.
+
+For detailed information, see the [Content Security Policy article on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP).
+
+```yaml
+cfui:
+  env:
+    CONTENT_SECURITY_POLICY: "<YOUR SECURITY POLICIES>"
+    CONTENT_SECURITY_POLICY_REPORT_ONLY: "default-src 'self'; font-src 'self'
+      https://fonts.gstatic.com; script-src 'self' https://unpkg.com https://js.stripe.com;
+      style-src 'self' https://fonts.googleapis.com; 'unsafe-eval' 'unsafe-inline'"
+    CONTENT_SECURITY_POLICY_REPORT_TO: "<LIST OF ENDPOINTS AS JSON OBJECTS>"
+```
+
+### x-hub-signature-256 signature for GitHub AE
+
+For detailed information, see the [Securing your webhooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks/securing-your-webhooks) and [Webhooks](https://docs.github.com/en/github-ae@latest/rest/webhooks).
+
+```
+cfapi:
+  env:
+    USE_SHA256_GITHUB_SIGNATURE: "true"
+```
+
+
 ## Upgrading
 
 ### To 2.0.0
@@ -734,6 +1080,23 @@ tasker-kubernetes:
 This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible breaking change needing manual actions**.
 
 **Before applying the upgrade, read through this section!**
+
+#### ⚠️ New Services
+
+Codefesh 2.0 chart includes additional dependent microservices (charts):
+- `argo-platform`: Main Codefresh GitOps module.
+- `internal-gateway`: NGINX that proxies requests to the correct components (api-graphql, api-events, ui).
+- `argo-hub-platform`: Service for Argo Workflow templates.
+- `platform-analytics` and `etl-starter`: Service for [Pipelines dasboard](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard)
+
+These services require additional databases in MongoDB (`audit`/`read-models`/`platform-analytics-postgres`) and in Postgresql (`analytics` and `analytics_pre_aggregations`)
+The helm chart is configured to re-run seed jobs to create necessary databases and users during the upgrade.
+
+```yaml
+seed:
+  # -- Enable all seed jobs
+  enabled: true
+```
 
 #### ⚠️ New MongoDB Indexes
 
@@ -942,8 +1305,8 @@ seed:
 
 #### ⚠️ Migration to [Library Charts](https://helm.sh/docs/topics/library_charts/)
 
-All Codefresh subcharts templates (i.e. `cfapi`, `cfui`, `pipeline-manager`, `context-manager`, etc) has been migrated to use helm [library charts](https://helm.sh/docs/topics/library_charts/).
-That allows to unify values structure across all Codefresh owned charts. However, there are some **immutable** fields in the old charts which cannot be upgraded during a regular `helm upgrade`, thus additional manual actions are required.
+All Codefresh subchart templates (i.e. `cfapi`, `cfui`, `pipeline-manager`, `context-manager`, etc) have been migrated to use Helm [library charts](https://helm.sh/docs/topics/library_charts/).
+That allows unifying the values structure across all Codefresh-owned charts. However, there are some **immutable** fields in the old charts which cannot be upgraded during a regular `helm upgrade`, and require additional manual actions.
 
 Run the following commands before appying the upgrade.
 
@@ -969,23 +1332,64 @@ nomios:
     ...
 ```
 
-#### ⚠️ New Services
+### To 2.0.12
 
-Codefesh 2.0.0 chart includes additional dependent microservices(charts):
-- `argo-platform`: Main Codefresh GitOps module.
-- `internal-gateway`: NGINX that proxies requests to the correct components (api-graphql, api-events, ui).
-- `argo-hub-platform`: Service for Argo Workflow templates.
-- `platform-analytics` and `etl-starter`: Service for [Pipelines dasboard](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard)
+#### ⚠️ Legacy ChartMuseum subchart deprecation
 
-These services require two additional databases in MongoDB (`audit` and `read-models`) and in Postgresql (`analytics` and `analytics_pre_aggregations`)
-The helm chart is configured to re-run seed jobs to create necessary databases and users during the upgrade.
+Due to deprecation of legacy ChartMuseum subchart in favor of upstream [chartmuseum](https://github.com/chartmuseum/charts/tree/main/src/chartmuseum), you need to remove the old deployment before the upgrade due to **immutable** `matchLabels` field change in the deployment spec.
 
-```yaml
-seed:
-  # -- Enable all seed jobs
-  enabled: true
+```console
+kubectl delete deploy cf-chartmuseum --namespace $NAMESPACE
 ```
 
-The bare minimal workload footprint for the new services (without HPA or PDB) is `~4vCPU` and `~8Gi RAM`
+#### Affected values:
+
+- If you have `.Values.global.imageRegistry` specified, it **won't be** applied for the new chartmuseum subchart. Add image registry explicitly for the subchart as follows
+
+```yaml
+global:
+  imageRegistry: myregistry.domain.com
+
+helm-repo-manager:
+  chartmuseum:
+    image:
+      repository: myregistry.domain.com/codefresh/chartmuseum
+```
+
+### To 2.1.0
+
+#### Affected values:
+
+- [Legacy ChartMuseum subchart deprecation](#to-2012)
+- **Deprecated** (still supported for backward compatibility!) `global.mongoURI`
+- **Added** `global.mongodbProtocol` / `global.mongodbUser` / `global.mongodbPassword` / `global.mongodbHost` / `global.mongodbOptions`
+- **Added** `global.mongodbUserSecretKeyRef` / `global.mongodbPasswordSecretKeyRef` / `global.mongodbHostSecretKeyRef`
+- **Added** `seed.mongoSeedJob.mongodbRootUserSecretKeyRef` / `seed.mongoSeedJob.mongodbRootPasswordSecretKeyRef`
+- **Added** `seed.postgresSeedJob.postgresUserSecretKeyRef` / `seed.postgresSeedJob.postgresPasswordSecretKeyRef`
+- **Added** `global.firebaseUrlSecretKeyRef` / `global.firebaseSecretSecretKeyRef`
+- **Added** `global.postgresUserSecretKeyRef` / `global.postgresPasswordSecretKeyRef` / `global.postgresHostnameSecretKeyRef`
+- **Added** `global.rabbitmqUsernameSecretKeyRef` / `global.rabbitmqPasswordSecretKeyRef` / `global.rabbitmqHostnameSecretKeyRef`
+- **Added** `global.redisPasswordSecretKeyRef` / `global.redisUrlSecretKeyRef`
+- **Removed** `global.runtimeMongoURI` / `global.runtimeMongoDb` / `global.runtimeRedisHost` / `global.runtimeRedisPort` / `global.runtimeRedisPassword` / `global.runtimeRedisDb`
+
+## Rollback
+
+Use `helm history` to determine which release has worked, then use `helm rollback` to perform a rollback
+
+> When rollback from 2.x prune these resources due to immutabled fields changes
+
+```console
+kubectl delete sts cf-runner --namespace $NAMESPACE
+kubectl delete sts cf-builder --namespace $NAMESPACE
+kubectl delete deploy cf-chartmuseum --namespace $NAMESPACE
+kubectl delete job --namespace $NAMESPACE -l release=$RELEASE_NAME
+```
+
+```
+helm rollback $RELEASE_NAME $RELEASE_NUMBER \
+    --namespace $NAMESPACE \
+    --debug \
+    --wait
+```
 
 {{ template "chart.valuesSection" . }}

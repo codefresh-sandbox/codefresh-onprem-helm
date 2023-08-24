@@ -10,7 +10,7 @@
   "cfcrRepositoryPath": "admin-cf",
   "build": {
     "nodes": NumberInt(0),
-    "parallel": NumberInt(1),
+    "parallel": NumberInt(10),
     "strategy": "account"
   },
   "integrations": {
