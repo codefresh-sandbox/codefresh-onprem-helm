@@ -55,7 +55,7 @@ data:
     openssl genrsa -out $CA_KEY 4096
 
     echo "--- Generate ca.pem"
-    openssl req -new -x509 -days 1024 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.codefresh.io" -addext "subjectAltName = DNS:ca.{{ .Values.global.appUrl }}"
+    openssl req -new -x509 -days 3653 -key $CA_KEY -sha256 -out $CA_PEM -subj "/CN=ca.codefresh.io" -addext "subjectAltName = DNS:ca.{{ .Values.global.appUrl }}"
 
     echo "--- Generate server-key.pem"
     openssl genrsa -out $SERVER_KEY 4096
@@ -71,7 +71,7 @@ data:
     cat $EXTFILE
 
     echo "--- sign certificate $SERVER_PEM "
-    openssl x509 -req -days 1024 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
+    openssl x509 -req -days 3653 -sha256 -in $SERVER_CSR -CA $CA_PEM -CAkey $CA_KEY \
       -CAcreateserial -out $SERVER_PEM -extfile $EXTFILE || err "Failed to sign certificate"
 
     cp -v $SERVER_PEM $CLIENT_CERT

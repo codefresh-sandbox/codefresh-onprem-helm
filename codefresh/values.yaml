@@ -65,7 +65,7 @@ seed:
       tag: 13
     # -- (optional) "postgres" admin user in plain text (required ONLY for seed job!)
     # Must be a privileged user allowed to create databases and grant roles.
-    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
+    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used.
     postgresUser: ""
     # -- (optional) "postgres" admin user from exising secret
     postgresUserSecretKeyRef: {}
@@ -85,39 +85,6 @@ seed:
 
   ttlSecondsAfterFinished: 300
   backoffLimit: 10
-  affinity: {}
-  nodeSelector: {}
-  podSecurityContext: {}
-  resources: {}
-  tolerations: []
-
-# -- Pre/post-upgrade Job hooks. Updates images in `system/default` runtime.
-# @default -- See below
-hooks:
-  enabled: true
-  image:
-    registry: quay.io
-    repository: codefresh/mongosh
-    tag: 1.8.2
-  affinity: {}
-  nodeSelector: {}
-  podSecurityContext: {}
-  resources: {}
-  tolerations: []
-
-# -- Maintenance postgresql clean job.
-# Removes a certain number of the last records in the event store table.
-# @default -- See below
-postgresqlCleanJob:
-  enabled: true
-  image:
-    registry: quay.io
-    repository: codefresh/postgresql
-    tag: 13
-  schedule:  "0 0 * * *"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  backoffLimit: 0
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -200,7 +167,7 @@ global:
   # -- New Relic Key
   newrelicLicenseKey: ""
 
-  # -- Definitions to set up internal-gateway nginx resolver
+  # -- Definitions for internal-gateway nginx resolver
   dnsService: kube-dns
   dnsNamespace: kube-system
   clusterDomain: cluster.local
@@ -229,7 +196,7 @@ global:
 
   # -- Set mongodb password in plain text
   mongodbPassword: "mTiXcU2wafr9"
-  # -- Set monogdb password from existing secret
+  # -- Set mongodb password from existing secret
   mongodbPasswordSecretKeyRef: {}
   # E.g.
   # mongodbPasswordSecretKeyRef:
@@ -243,18 +210,13 @@ global:
   # E.g.
   # mongodbHostSecretKeyRef:
   #   name: my-secret
-  #   key: monogdb-host
+  #   key: mongodb-host
 
   # -- Set mongodb connection string options
   # Ref: https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-options
   mongodbOptions: "retryWrites=true"
   # -- Default MongoDB database name. Don't change!
   mongodbDatabase: codefresh
-
-  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` instead.
-  mongodbRootUser: ""
-  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` instead.
-  mongodbRootPassword: ""
 
 #-----------
 # Postgresql
@@ -292,9 +254,6 @@ global:
   postgresDatabase: codefresh
   # -- Default internal postgresql service address from bitnami/postgresql subchart
   postgresService: postgresql
-
-  # -- DEPRECATED - Use `.Values.seed.postgresSeedJob` instead
-  postgresSeedJob: {}
 
 #---------
 # RabbitMQ
@@ -427,27 +386,54 @@ global:
   # -- Default platform-analytics service port.
   platformAnalyticsPort: 80
 
-  # -- LEGACY - Keep `codefresh` as default!
+  # -- LEGACY - Keep as is!
   # Used for subcharts to access external secrets and configmaps.
   codefresh: codefresh
-  # -- Keep `true` as default!
   onprem: true
-
-  # -- LEGACY values. Keep as is.
   gceProject: ""
   stepsCatalogOnPremise: "1"
 
-  # -- DEPRECATED - Use `.Values.gencerts`
-  # Generate self-signed certificates for internal runtime. Used in on-prem environments.
-  certsJobs: false
+  # -- DEPRECATED
+  # Use `.Values.seed.mongoSeedJob` instead.
+  mongodbRootUser: ""
+  # Use `.Values.seed.mongoSeedJob` instead.
+  mongodbRootPassword: ""
+  # Use `.Values.seed.postgresSeedJob` instead
+  postgresSeedJob: {}
 
-  # -- DEPRECATED - Use `.Values.seed.mongoSeedJob` and `.Values.seed.postgresSeedJob` and instead
-  # Instantiate databases with seed data. Used in on-prem environments.
-  seedJobs: false
+# -- Pre/post-upgrade Job hooks.
+# Updates images in `system/default` runtime.
+# @default -- See below
+hooks:
+  enabled: true
+  image:
+    registry: quay.io
+    repository: codefresh/mongosh
+    tag: 1.8.2
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
 
-  # -- DEPRECATED - Use `.Values.global.imageRegistry` instead
-  privateRegistry: false
-  dockerRegistry: ""
+# -- Maintenance postgresql clean job.
+# Removes a certain number of the last records in the event store table.
+# @default -- See below
+postgresqlCleanJob:
+  enabled: true
+  image:
+    registry: quay.io
+    repository: codefresh/postgresql
+    tag: 13
+  schedule:  "0 0 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  backoffLimit: 0
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
 
 # -- runtimeImages
 # @default -- See below
@@ -466,42 +452,9 @@ runtimeImages:
   PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0
   TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.8
 
-# -- internal-gateway
-# @default -- See below
-internal-gateway:
-  enabled: true
-  # -- Do not change this value! Breaks chart logic
-  libraryMode: true
-
-  # -- Controller configuration
-  controller:
-    # -- Replicas number
-    replicas: 2
-
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-  hpa:
-    enabled: false
-  pdb:
-    enabled: false
-  affinity: {}
-  nodeSelector: {}
-  podSecurityContext: {}
-  tolerations: []
-
 #--------------------
 # Codefresh subcharts
 #--------------------
-# -- builder
-builder:
-  enabled: true
-  affinity: {}
-  nodeSelector: {}
-  podSecurityContext: {}
-  resources: {}
-  tolerations: []
 
 # -- cf-api
 cfapi: &cf-api
@@ -517,6 +470,8 @@ cfapi: &cf-api
     image:
       # -- Registry prefix
       registry: gcr.io/codefresh-enterprise
+      # -- Repository
+      repository: codefresh/cf-api
     # -- Env vars
     # @default -- See below
     env:
@@ -525,7 +480,6 @@ cfapi: &cf-api
       LOGGER_LEVEL: debug
       ON_PREMISE: true
       RUNTIME_MONGO_DB: codefresh
-      RABBIT_URL: $(EVENTBUS_URI)
   # -- Resource requests and limits
   resources:
     requests:
@@ -619,6 +573,29 @@ cfapi-test-reporting:
   !!merge <<: *cf-api
   enabled: false
 
+# -- internal-gateway
+# @default -- See below
+internal-gateway:
+  enabled: true
+  controller:
+    replicas: 2
+  container:
+    image:
+      registry: docker.io
+      repository: nginxinc/nginx-unprivileged
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  hpa:
+    enabled: false
+  pdb:
+    enabled: false
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  tolerations: []
+
 # -- broadcaster
 # @default -- See below
 cf-broadcaster:
@@ -628,6 +605,7 @@ cf-broadcaster:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-broadcaster
   env:
     RUNTIME_MONGO_DB: codefresh
   resources:
@@ -691,6 +669,7 @@ cf-platform-analytics-platform:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-platform-analytics
   redis:
     enabled: true
     nameOverride: redis-platform-analytics
@@ -719,6 +698,7 @@ cfsign:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-tls-sign
     # Explicit default volume mounts overrides due to legacy `cf-` prefix (backward compatibility)
     volumeMounts:
       cf-ca:
@@ -750,9 +730,12 @@ cfsign:
 # @default -- See below
 cfui:
   enabled: true
+  controller:
+    replicas: 2
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-ui
     env:
       ON_PREMISE: true
   podAnnotations:
@@ -778,6 +761,7 @@ charts-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/charts-manager
   resources:
     requests:
       cpu: 100m
@@ -799,6 +783,7 @@ cluster-providers:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cluster-providers
   resources:
     requests:
       cpu: 100m
@@ -831,6 +816,7 @@ context-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/context-manager
   resources:
     requests:
       cpu: 100m
@@ -852,6 +838,7 @@ cronus:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cronus
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -864,6 +851,7 @@ gitops-dashboard-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/gitops-dashboard-manager
   resources:
     requests:
       cpu: 100m
@@ -885,6 +873,7 @@ helm-repo-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/helm-repo-manager
   chartmuseum:
     publicHelmRepo: true
     ingress:
@@ -914,6 +903,7 @@ hermes:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/hermes
   redis:
     # Deprecation of a separate redis for hermes (CR-705)
     enabled: false
@@ -957,6 +947,7 @@ k8s-monitor:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-k8s-monitor
   resources:
     requests:
       cpu: 100m
@@ -978,6 +969,7 @@ kube-integration:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/kube-integration
   resources:
     requests:
       cpu: 100m
@@ -1029,6 +1021,7 @@ nomios:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/nomios
   ingress:
     main:
       enabled: false
@@ -1093,10 +1086,27 @@ rabbitmq:
       cpu: 200m
       memory: 256Mi
 
+# -- builder
+builder:
+  enabled: true
+  container:
+    image:
+      registry: docker.io
+      repository: docker
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
+
 # -- runner
 # @default -- See below
 runner:
   enabled: true
+  container:
+    image:
+      registry: docker.io
+      repository: docker
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1110,6 +1120,7 @@ pipeline-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/pipeline-manager
   resources:
     requests:
       cpu: 100m
@@ -1131,6 +1142,7 @@ runtime-environment-manager:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/runtime-environment-manager
     env:
       ON_PREMISE: true
   resources:
@@ -1153,6 +1165,7 @@ tasker-kubernetes:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh/tasker-kubernetes
   resources:
     requests:
       cpu: 100m
@@ -1176,6 +1189,7 @@ argo-hub-platform:
   container:
     image:
       registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-hub-platform
   imagePullSecrets:
     - '{{ .Release.Name }}-registry'
   resources:
@@ -1236,8 +1250,10 @@ argo-platform:
     kind: Deployment
     # -- Image
     image:
-      # -- Image repository
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql
+      # -- Registry
+      registry: gcr.io/codefresh-enterprise
+      # -- Repository
+      repository: codefresh-io/argo-platform-api-graphql
     # -- Env vars
     # @default -- See below
     env:
@@ -1296,7 +1312,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-abac
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-abac
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
       MONGODB_OPTIONS: *mongodb-options
@@ -1329,7 +1346,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-analytics-reporter
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-analytics-reporter
     env:
       ENABLED_DATABASE_TYPES: POSTGRES
       MONGODB_PROTOCOL: *mongodb-protocol
@@ -1375,7 +1393,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-events
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-api-events
     env:
       RABBITMQ_PROTOCOL: *rabbitmq-protocol
       RABBITMQ_URLS: $(RABBITMQ_PROTOCOL)://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST)
@@ -1410,7 +1429,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-audit
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-audit
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
       MONGODB_OPTIONS: *mongodb-options
@@ -1450,7 +1470,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-cron-executor
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-cron-executor
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
       MONGODB_OPTIONS: *mongodb-options
@@ -1490,7 +1511,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-event-handler
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-event-handler
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
       MONGODB_OPTIONS: *mongodb-options
@@ -1540,7 +1562,8 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      repository: gcr.io/codefresh-enterprise/codefresh-io/argo-platform-ui
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh-io/argo-platform-ui
     resources:
       requests:
         cpu: 100m

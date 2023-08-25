@@ -9,7 +9,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - [Prerequisites](#prerequisites)
 - [Get Repo Info](#get-repo-info)
 - [Install Chart](#install-chart)
-- [Helm Chart Configuration](#helm-chart-configuration)
+- [Chart Configuration](#chart-configuration)
   - [Persistent services](#persistent-services)
   - [Configuring external services](#configuring-external-services)
     - [External MongoDB](#external-mongodb)
@@ -30,13 +30,14 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - [Firebase Configuration](#firebase-configuration)
 - [Additional configuration](#additional-configuration)
   - [Retention policy for builds and logs](#retention-policy-for-builds-and-logs)
-  - [Project's pipelines limit](#projects-pipelines-limit)
+  - [Projects pipelines limit](#projects-pipelines-limit)
   - [Enable session cookie](#enable-session-cookie)
 - [Upgrading](#upgrading)
-  - [To 2.0.0](#to-200)
-  - [To 2.0.12](#to-2012)
-  - [To 2.1.0](#to-210)
+  - [To 2-0-0](#to-200)
+  - [To 2-0-12](#to-2012)
+  - [To 2-1-0](#to-210)
 - [Rollback](#rollback)
+- [Troubleshooting](#troubleshooting)
 - [Values](#values)
 
 ## Prerequisites
@@ -45,10 +46,9 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
-- Firebase [Realtime Database URL](https://firebase.google.com/docs/database/web/start#create_a_database) and [legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens) for it. See [Firebase Configuration](#firebase-configuration)
+- Firebase [Realtime Database URL](https://firebase.google.com/docs/database/web/start#create_a_database) with [legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens). See [Firebase Configuration](#firebase-configuration)
 - Valid TLS certificates for Ingress
 - When [external](#external-postgressql) PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
-
 
 ## Get Repo Info
 
@@ -121,10 +121,23 @@ ingress:
     # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
     existingSecret: ""
 
-# -- ingress-nginx
 ingress-nginx:
   # -- Enable ingress-nginx controller
   enabled: true
+```
+
+- *Or specify your own `.Values.ingress.ingressClassName` (disable built-in ingress-nginx subchart)*
+
+```yaml
+ingress:
+  # -- Enable the Ingress
+  enabled: true
+  # -- Set the ingressClass that is used for the ingress.
+  ingressClassName: nginx
+
+ingress-nginx:
+  # -- Disable ingress-nginx controller
+  enabled: false
 ```
 
 - Install the chart
@@ -152,7 +165,7 @@ helm upgrade --install cf codefresh/codefresh \
   ```
 
 
-## Helm Chart Configuration
+## Chart Configuration
 
 See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
 
@@ -168,7 +181,7 @@ The following table displays the list of **persistent** services created as part
 | :---        | :----   |  :--- |
 | MongoDB      | Stores all account data (account settings, users, projects, pipelines, builds etc.)       | 4.4.x   |
 | Postgresql   | Stores data about events for the account (pipeline updates, deletes, etc.). The audit log uses the data from this database.        | 13.x      |
-| Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 6.0.x      |
+| Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 7.0.x      |
 
 > Running on netfs (nfs, cifs) is not recommended.
 
@@ -236,7 +249,7 @@ global:
 
   # -- Set mongodb password in plain text
   mongodbPassword: "password"
-  # -- Set monogdb password from existing secret
+  # -- Set mongodb password from existing secret
   mongodbPasswordSecretKeyRef: {}
   # E.g.
   # mongodbPasswordSecretKeyRef:
@@ -244,7 +257,7 @@ global:
   #   key: mongodb-password
 
   # -- Set mongodb host in plain text
-  mongodbHost: "my-mongodb.prod.svc.cluster.local"
+  mongodbHost: "my-mongodb.prod.svc.cluster.local:27017"
   # -- Set mongodb host from existing secret
   mongodbHostSecretKeyRef: {}
   # E.g.
@@ -310,7 +323,7 @@ seed:
     enabled: true
     # -- (optional) "postgres" admin user in plain text (required ONLY for seed job!)
     # Must be a privileged user allowed to create databases and grant roles.
-    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
+    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used.
     postgresUser: "postgres"
     # -- (optional) "postgres" admin user from exising secret
     postgresUserSecretKeyRef: {}
@@ -1361,7 +1374,8 @@ helm-repo-manager:
 #### Affected values:
 
 - [Legacy ChartMuseum subchart deprecation](#to-2012)
-- **Deprecated** (still supported for backward compatibility!) `global.mongoURI`
+- **Changed** default ingress paths. All point to `internal-gateway` now. **Remove any overrides at `.Values.ingress.services`!**
+- **Deprecated** `global.mongoURI`. **Still supported for backward compatibility!**
 - **Added** `global.mongodbProtocol` / `global.mongodbUser` / `global.mongodbPassword` / `global.mongodbHost` / `global.mongodbOptions`
 - **Added** `global.mongodbUserSecretKeyRef` / `global.mongodbPasswordSecretKeyRef` / `global.mongodbHostSecretKeyRef`
 - **Added** `seed.mongoSeedJob.mongodbRootUserSecretKeyRef` / `seed.mongoSeedJob.mongodbRootPasswordSecretKeyRef`
@@ -1390,6 +1404,67 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
     --namespace $NAMESPACE \
     --debug \
     --wait
+```
+
+## Troubleshooting
+
+### Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired
+
+Builds are stuck in pending with `Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired`
+
+**Reason:** Runtime certificates have expiried.
+
+To check if runtime internal CA expired:
+
+```console
+kubectl -n $NAMESPACE get secret/cf-codefresh-certs-client -o jsonpath="{.data['ca\.pem']}" | base64 -d | openssl x509 -enddate -noout
+```
+
+**Resolution:** Replace internal CA and re-issue dind certs for runtime
+
+- Delete k8s secret with expired certificate
+```console
+kubectl -n $NAMESPACE delete secret cf-codefresh-certs-client
+```
+
+- Set `.Values.global.gencerts.enabled=true` (`.Values.global.certsJob=true` for onprem < 2.x version)
+
+```yaml
+# -- Job to generate internal runtime secrets.
+# @default -- See below
+gencerts:
+  enabled: true
+```
+
+- Upgrade Codefresh On-Prem Helm release. It will recreate `cf-codefresh-certs-client` secret
+```console
+helm upgrade --install cf codefresh/codefresh \
+    -f cf-values.yaml \
+    --namespace codefresh \
+    --create-namespace \
+    --debug \
+    --wait \
+    --timeout 15m
+```
+
+- Restart `cfapi` and `cfsign` deployments
+
+```console
+kubectl -n $NAMESPACE rollout restart deployment/cf-cfapi
+kubectl -n $NAMESPACE rollout restart deployment/cf-cfsign
+```
+
+**Case A:** Codefresh Runner installed with HELM chart ([charts/cf-runtime](https://github.com/codefresh-io/venona/tree/release-1.0/charts/cf-runtime))
+
+Re-apply the `cf-runtime` helm chart. Post-upgrade `gencerts-dind` helm hook will regenerate the dind certificates using a new CA.
+
+**Case B:** Codefresh Runner installed with legacy CLI ([codefresh runner init](https://codefresh-io.github.io/cli/runner/init/))
+
+Delete `codefresh-certs-server` k8s secret and run [./configure-dind-certs.sh](https://github.com/codefresh-io/venona/blob/release-1.0/charts/cf-runtime/files/configure-dind-certs.sh) in your runtime namespace.
+
+```console
+kubectl -n $NAMESPACE delete secret codefresh-certs-server
+./configure-dind-certs.sh -n $RUNTIME_NAMESPACE https://$CODEFRESH_HOST $CODEFRESH_API_TOKEN
 ```
 
 {{ template "chart.valuesSection" . }}

@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.1.0-alpha.1](https://img.shields.io/badge/Version-2.1.0--alpha.1-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
+![Version: 2.1.0-alpha.2](https://img.shields.io/badge/Version-2.1.0--alpha.2-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -9,7 +9,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - [Prerequisites](#prerequisites)
 - [Get Repo Info](#get-repo-info)
 - [Install Chart](#install-chart)
-- [Helm Chart Configuration](#helm-chart-configuration)
+- [Chart Configuration](#chart-configuration)
   - [Persistent services](#persistent-services)
   - [Configuring external services](#configuring-external-services)
     - [External MongoDB](#external-mongodb)
@@ -30,13 +30,14 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - [Firebase Configuration](#firebase-configuration)
 - [Additional configuration](#additional-configuration)
   - [Retention policy for builds and logs](#retention-policy-for-builds-and-logs)
-  - [Project's pipelines limit](#projects-pipelines-limit)
+  - [Projects pipelines limit](#projects-pipelines-limit)
   - [Enable session cookie](#enable-session-cookie)
 - [Upgrading](#upgrading)
-  - [To 2.0.0](#to-200)
-  - [To 2.0.12](#to-2012)
-  - [To 2.1.0](#to-210)
+  - [To 2-0-0](#to-200)
+  - [To 2-0-12](#to-2012)
+  - [To 2-1-0](#to-210)
 - [Rollback](#rollback)
+- [Troubleshooting](#troubleshooting)
 - [Values](#values)
 
 ## Prerequisites
@@ -45,7 +46,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 - Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure
 - GCR Service Account JSON `sa.json` (provided by Codefresh, contact support@codefresh.io)
-- Firebase [Realtime Database URL](https://firebase.google.com/docs/database/web/start#create_a_database) and [legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens) for it. See [Firebase Configuration](#firebase-configuration)
+- Firebase [Realtime Database URL](https://firebase.google.com/docs/database/web/start#create_a_database) with [legacy token](https://firebase.google.com/docs/database/rest/auth#legacy_tokens). See [Firebase Configuration](#firebase-configuration)
 - Valid TLS certificates for Ingress
 - When [external](#external-postgressql) PostgreSQL is used, `pg_cron` and `pg_partman` extensions **must be enabled** for [analytics](https://codefresh.io/docs/docs/dashboards/home-dashboard/#pipelines-dashboard) to work (see [AWS RDS example](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL_pg_cron.html#PostgreSQL_pg_cron.enable))
 
@@ -120,10 +121,23 @@ ingress:
     # -- Existing `kubernetes.io/tls` type secret with TLS certificates (keys: `tls.crt`, `tls.key`)
     existingSecret: ""
 
-# -- ingress-nginx
 ingress-nginx:
   # -- Enable ingress-nginx controller
   enabled: true
+```
+
+- *Or specify your own `.Values.ingress.ingressClassName` (disable built-in ingress-nginx subchart)*
+
+```yaml
+ingress:
+  # -- Enable the Ingress
+  enabled: true
+  # -- Set the ingressClass that is used for the ingress.
+  ingressClassName: nginx
+
+ingress-nginx:
+  # -- Disable ingress-nginx controller
+  enabled: false
 ```
 
 - Install the chart
@@ -150,7 +164,7 @@ helm upgrade --install cf codefresh/codefresh \
       --timeout 15m
   ```
 
-## Helm Chart Configuration
+## Chart Configuration
 
 See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
 
@@ -166,7 +180,7 @@ The following table displays the list of **persistent** services created as part
 | :---        | :----   |  :--- |
 | MongoDB      | Stores all account data (account settings, users, projects, pipelines, builds etc.)       | 4.4.x   |
 | Postgresql   | Stores data about events for the account (pipeline updates, deletes, etc.). The audit log uses the data from this database.        | 13.x      |
-| Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 6.0.x      |
+| Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 7.0.x      |
 
 > Running on netfs (nfs, cifs) is not recommended.
 
@@ -233,7 +247,7 @@ global:
 
   # -- Set mongodb password in plain text
   mongodbPassword: "password"
-  # -- Set monogdb password from existing secret
+  # -- Set mongodb password from existing secret
   mongodbPasswordSecretKeyRef: {}
   # E.g.
   # mongodbPasswordSecretKeyRef:
@@ -241,7 +255,7 @@ global:
   #   key: mongodb-password
 
   # -- Set mongodb host in plain text
-  mongodbHost: "my-mongodb.prod.svc.cluster.local"
+  mongodbHost: "my-mongodb.prod.svc.cluster.local:27017"
   # -- Set mongodb host from existing secret
   mongodbHostSecretKeyRef: {}
   # E.g.
@@ -307,7 +321,7 @@ seed:
     enabled: true
     # -- (optional) "postgres" admin user in plain text (required ONLY for seed job!)
     # Must be a privileged user allowed to create databases and grant roles.
-    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken.
+    # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used.
     postgresUser: "postgres"
     # -- (optional) "postgres" admin user from exising secret
     postgresUserSecretKeyRef: {}
@@ -1355,7 +1369,8 @@ helm-repo-manager:
 #### Affected values:
 
 - [Legacy ChartMuseum subchart deprecation](#to-2012)
-- **Deprecated** (still supported for backward compatibility!) `global.mongoURI`
+- **Changed** default ingress paths. All point to `internal-gateway` now. **Remove any overrides at `.Values.ingress.services`!**
+- **Deprecated** `global.mongoURI`. **Still supported for backward compatibility!**
 - **Added** `global.mongodbProtocol` / `global.mongodbUser` / `global.mongodbPassword` / `global.mongodbHost` / `global.mongodbOptions`
 - **Added** `global.mongodbUserSecretKeyRef` / `global.mongodbPasswordSecretKeyRef` / `global.mongodbHostSecretKeyRef`
 - **Added** `seed.mongoSeedJob.mongodbRootUserSecretKeyRef` / `seed.mongoSeedJob.mongodbRootPasswordSecretKeyRef`
@@ -1386,6 +1401,67 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
     --wait
 ```
 
+## Troubleshooting
+
+### Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired
+
+Builds are stuck in pending with `Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired`
+
+**Reason:** Runtime certificates have expiried.
+
+To check if runtime internal CA expired:
+
+```console
+kubectl -n $NAMESPACE get secret/cf-codefresh-certs-client -o jsonpath="{.data['ca\.pem']}" | base64 -d | openssl x509 -enddate -noout
+```
+
+**Resolution:** Replace internal CA and re-issue dind certs for runtime
+
+- Delete k8s secret with expired certificate
+```console
+kubectl -n $NAMESPACE delete secret cf-codefresh-certs-client
+```
+
+- Set `.Values.global.gencerts.enabled=true` (`.Values.global.certsJob=true` for onprem < 2.x version)
+
+```yaml
+# -- Job to generate internal runtime secrets.
+# @default -- See below
+gencerts:
+  enabled: true
+```
+
+- Upgrade Codefresh On-Prem Helm release. It will recreate `cf-codefresh-certs-client` secret
+```console
+helm upgrade --install cf codefresh/codefresh \
+    -f cf-values.yaml \
+    --namespace codefresh \
+    --create-namespace \
+    --debug \
+    --wait \
+    --timeout 15m
+```
+
+- Restart `cfapi` and `cfsign` deployments
+
+```console
+kubectl -n $NAMESPACE rollout restart deployment/cf-cfapi
+kubectl -n $NAMESPACE rollout restart deployment/cf-cfsign
+```
+
+**Case A:** Codefresh Runner installed with HELM chart ([charts/cf-runtime](https://github.com/codefresh-io/venona/tree/release-1.0/charts/cf-runtime))
+
+Re-apply the `cf-runtime` helm chart. Post-upgrade `gencerts-dind` helm hook will regenerate the dind certificates using a new CA.
+
+**Case B:** Codefresh Runner installed with legacy CLI ([codefresh runner init](https://codefresh-io.github.io/cli/runner/init/))
+
+Delete `codefresh-certs-server` k8s secret and run [./configure-dind-certs.sh](https://github.com/codefresh-io/venona/blob/release-1.0/charts/cf-runtime/files/configure-dind-certs.sh) in your runtime namespace.
+
+```console
+kubectl -n $NAMESPACE delete secret codefresh-certs-server
+./configure-dind-certs.sh -n $RUNTIME_NAMESPACE https://$CODEFRESH_HOST $CODEFRESH_API_TOKEN
+```
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -1401,8 +1477,9 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | argo-platform.api-graphql.env | object | See below | Env vars |
 | argo-platform.api-graphql.hpa | object | `{"enabled":false}` | HPA |
 | argo-platform.api-graphql.hpa.enabled | bool | `false` | Enable autoscaler |
-| argo-platform.api-graphql.image | object | `{"repository":"gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql"}` | Image |
-| argo-platform.api-graphql.image.repository | string | `"gcr.io/codefresh-enterprise/codefresh-io/argo-platform-api-graphql"` | Image repository |
+| argo-platform.api-graphql.image | object | `{"registry":"gcr.io/codefresh-enterprise","repository":"codefresh-io/argo-platform-api-graphql"}` | Image |
+| argo-platform.api-graphql.image.registry | string | `"gcr.io/codefresh-enterprise"` | Registry |
+| argo-platform.api-graphql.image.repository | string | `"codefresh-io/argo-platform-api-graphql"` | Repository |
 | argo-platform.api-graphql.kind | string | `"Deployment"` | Controller kind. Currently, only `Deployment` is supported |
 | argo-platform.api-graphql.pdb | object | `{"enabled":false}` | PDB |
 | argo-platform.api-graphql.pdb.enabled | bool | `false` | Enable pod disruption budget |
@@ -1417,17 +1494,18 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"affinity":{},"enabled":true,"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
+| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"docker"}},"enabled":true,"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
 | cf-platform-analytics-etlstarter.system-etl-postgres | object | `{"container":{"env":{"BLUE_GREEN_ENABLED":true}},"controller":{"cronjob":{"ttlSecondsAfterFinished":300}},"enabled":true}` | Only postgres ETL should be running in onprem |
 | cf-platform-analytics-platform | object | See below | platform-analytics |
-| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RABBIT_URL":"$(EVENTBUS_URI)","RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[]}` | cf-api |
-| cfapi.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RABBIT_URL":"$(EVENTBUS_URI)","RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise"}}` | Container configuration |
+| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise","repository":"codefresh/cf-api"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[]}` | cf-api |
+| cfapi.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh"},"image":{"registry":"gcr.io/codefresh-enterprise","repository":"codefresh/cf-api"}}` | Container configuration |
 | cfapi.container.env | object | See below | Env vars |
-| cfapi.container.image | object | `{"registry":"gcr.io/codefresh-enterprise"}` | Image |
+| cfapi.container.image | object | `{"registry":"gcr.io/codefresh-enterprise","repository":"codefresh/cf-api"}` | Image |
 | cfapi.container.image.registry | string | `"gcr.io/codefresh-enterprise"` | Registry prefix |
+| cfapi.container.image.repository | string | `"codefresh/cf-api"` | Repository |
 | cfapi.controller | object | `{"replicas":2}` | Controller configuration |
 | cfapi.controller.replicas | int | `2` | Replicas number |
 | cfapi.enabled | bool | `true` | Enable cf-api |
@@ -1457,7 +1535,6 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | global.broadcasterPort | int | `80` | Default broadcaster service port. |
 | global.broadcasterService | string | `"cf-broadcaster"` | Default broadcaster service name. |
 | global.builderService | string | `"builder"` | Default builder service name. |
-| global.certsJobs | bool | `false` | DEPRECATED - Use `.Values.gencerts` Generate self-signed certificates for internal runtime. Used in on-prem environments. |
 | global.cfapiEndpointsService | string | `"cfapi"` | Default API endpoints service name |
 | global.cfapiInternalPort | int | `3000` | Default API service port. |
 | global.cfapiService | string | `"cfapi"` | Default API service name. |
@@ -1466,18 +1543,17 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | global.chartsManagerService | string | `"charts-manager"` | Default charts-manager service name. |
 | global.clusterProvidersPort | int | `9000` | Default cluster-providers service port. |
 | global.clusterProvidersService | string | `"cluster-providers"` | Default cluster-providers service name. |
-| global.codefresh | string | `"codefresh"` | LEGACY - Keep `codefresh` as default! Used for subcharts to access external secrets and configmaps. |
+| global.codefresh | string | `"codefresh"` | LEGACY - Keep as is! Used for subcharts to access external secrets and configmaps. |
 | global.consulHttpPort | int | `8500` | Default Consul service port. |
 | global.consulService | string | `"consul-headless"` | Default Consul service name. |
 | global.contextManagerPort | int | `9000` | Default context-manager service port. |
 | global.contextManagerService | string | `"context-manager"` | Default context-manager service name. |
-| global.dnsService | string | `"kube-dns"` | Definitions to set up internal-gateway nginx resolver |
+| global.dnsService | string | `"kube-dns"` | Definitions for internal-gateway nginx resolver |
 | global.env | object | `{}` | Global Env vars |
 | global.firebaseSecret | string | `""` | Firebase Secret in plain text |
 | global.firebaseSecretSecretKeyRef | object | `{}` | Firebase Secret from existing secret |
 | global.firebaseUrl | string | `"https://codefresh-on-prem.firebaseio.com/on-prem"` | Firebase URL for logs streaming in plain text |
 | global.firebaseUrlSecretKeyRef | object | `{}` | Firebase URL for logs streaming from existing secret |
-| global.gceProject | string | `""` | LEGACY values. Keep as is. |
 | global.gitopsDashboardManagerDatabase | string | `"pipeline-manager"` | Default gitops-dashboarad-manager db collection. |
 | global.gitopsDashboardManagerPort | int | `9000` | Default gitops-dashboarad-manager service port. |
 | global.gitopsDashboardManagerService | string | `"gitops-dashboard-manager"` | Default gitops-dashboarad-manager service name. |
@@ -1493,16 +1569,14 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | global.mongodbHostSecretKeyRef | object | `{}` | Set mongodb host from existing secret |
 | global.mongodbOptions | string | `"retryWrites=true"` | Set mongodb connection string options Ref: https://www.mongodb.com/docs/manual/reference/connection-string/#connection-string-options |
 | global.mongodbPassword | string | `"mTiXcU2wafr9"` | Set mongodb password in plain text |
-| global.mongodbPasswordSecretKeyRef | object | `{}` | Set monogdb password from existing secret |
+| global.mongodbPasswordSecretKeyRef | object | `{}` | Set mongodb password from existing secret |
 | global.mongodbProtocol | string | `"mongodb"` | Set mongodb protocol (`mongodb` / `mongodb+srv`) |
-| global.mongodbRootPassword | string | `""` | DEPRECATED - Use `.Values.seed.mongoSeedJob` instead. |
-| global.mongodbRootUser | string | `""` | DEPRECATED - Use `.Values.seed.mongoSeedJob` instead. |
+| global.mongodbRootUser | string | `""` | DEPRECATED Use `.Values.seed.mongoSeedJob` instead. |
 | global.mongodbUser | string | `"cfuser"` | Set mongodb user in plain text |
 | global.mongodbUserSecretKeyRef | object | `{}` | Set mongodb user from existing secret |
 | global.natsPort | int | `4222` | Default nats service port. |
 | global.natsService | string | `"nats"` | Default nats service name. |
 | global.newrelicLicenseKey | string | `""` | New Relic Key |
-| global.onprem | bool | `true` | Keep `true` as default! |
 | global.pipelineManagerPort | int | `9000` | Default pipeline-manager service port. |
 | global.pipelineManagerService | string | `"pipeline-manager"` | Default pipeline-manager service name. |
 | global.platformAnalyticsPort | int | `80` | Default platform-analytics service port. |
@@ -1513,11 +1587,9 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | global.postgresPassword | string | `"eC9arYka4ZbH"` | Set postgres password in plain text |
 | global.postgresPasswordSecretKeyRef | object | `{}` | Set postgres password from existing secret |
 | global.postgresPort | int | `5432` | Set postgres port number |
-| global.postgresSeedJob | object | `{}` | DEPRECATED - Use `.Values.seed.postgresSeedJob` instead |
 | global.postgresService | string | `"postgresql"` | Default internal postgresql service address from bitnami/postgresql subchart |
 | global.postgresUser | string | `"postgres"` | Set postgres user in plain text |
 | global.postgresUserSecretKeyRef | object | `{}` | Set postgres user from existing secret |
-| global.privateRegistry | bool | `false` | DEPRECATED - Use `.Values.global.imageRegistry` instead |
 | global.rabbitService | string | `"rabbitmq:5672"` | Default internal rabbitmq service address from bitnami/rabbitmq subchart. |
 | global.rabbitmqHostname | string | `""` | Set rabbitmq service address in plain text. Takes precedence over `global.rabbitService`! |
 | global.rabbitmqHostnameSecretKeyRef | object | `{}` | Set rabbitmq service address from existing secret. |
@@ -1535,7 +1607,6 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | global.runnerService | string | `"runner"` | Default runner service name. |
 | global.runtimeEnvironmentManagerPort | int | `80` | Default runtime-environment-manager service port. |
 | global.runtimeEnvironmentManagerService | string | `"runtime-environment-manager"` | Default runtime-environment-manager service name. |
-| global.seedJobs | bool | `false` | DEPRECATED - Use `.Values.seed.mongoSeedJob` and `.Values.seed.postgresSeedJob` and instead Instantiate databases with seed data. Used in on-prem environments. |
 | global.storageClass | string | `""` | Global StorageClass for Persistent Volume(s) |
 | global.tlsSignPort | int | `4999` | Default tls-sign service port. |
 | global.tlsSignService | string | `"cfsign"` | Default tls-sign service name. |
@@ -1556,9 +1627,6 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | ingress.tls.key | string | `""` | Private key (base64 encoded) |
 | ingress.tls.secretName | string | `"star.codefresh.io"` | Default secret name to be created with provided `cert` and `key` below |
 | internal-gateway | object | See below | internal-gateway |
-| internal-gateway.controller | object | `{"replicas":2}` | Controller configuration |
-| internal-gateway.controller.replicas | int | `2` | Replicas number |
-| internal-gateway.libraryMode | bool | `true` | Do not change this value! Breaks chart logic |
 | k8s-monitor | object | See below | k8s-monitor |
 | kube-integration | object | See below | kube-integration |
 | mongodb | object | See below | mongodb Ref: https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml |
@@ -1583,7 +1651,7 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
 | seed.postgresSeedJob | object | See below | Postgres Seed Job. Required at first install. Creates required user and databases. |
 | seed.postgresSeedJob.postgresPassword | optional | `""` | Password for "postgres" admin user (required ONLY for seed job!) |
 | seed.postgresSeedJob.postgresPasswordSecretKeyRef | optional | `{}` | Password for "postgres" admin user from existing secret |
-| seed.postgresSeedJob.postgresUser | optional | `""` | "postgres" admin user in plain text (required ONLY for seed job!) Must be a privileged user allowed to create databases and grant roles. If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be taken. |
+| seed.postgresSeedJob.postgresUser | optional | `""` | "postgres" admin user in plain text (required ONLY for seed job!) Must be a privileged user allowed to create databases and grant roles. If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used. |
 | seed.postgresSeedJob.postgresUserSecretKeyRef | optional | `{}` | "postgres" admin user from exising secret |
-| tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"gcr.io/codefresh-enterprise"}},"enabled":true,"hpa":{"enabled":false},"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
+| tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"gcr.io/codefresh-enterprise","repository":"codefresh/tasker-kubernetes"}},"enabled":true,"hpa":{"enabled":false},"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
 | webTLS | object | `{"cert":"","enabled":false,"key":"","secretName":"star.codefresh.io"}` | DEPRECATED - Use `.Values.ingress.tls` instead TLS secret for Ingress |
