@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.1.0-alpha.2](https://img.shields.io/badge/Version-2.1.0--alpha.2-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
+![Version: 2.1.0-alpha.3](https://img.shields.io/badge/Version-2.1.0--alpha.3-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -33,9 +33,9 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [Projects pipelines limit](#projects-pipelines-limit)
   - [Enable session cookie](#enable-session-cookie)
 - [Upgrading](#upgrading)
-  - [To 2-0-0](#to-200)
-  - [To 2-0-12](#to-2012)
-  - [To 2-1-0](#to-210)
+  - [To 2.0.0](#to-2-0-0)
+  - [To 2.0.12](#to-2-0-12)
+  - [To 2.1.0](#to-2-1-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -1033,7 +1033,7 @@ cfapi:
     TTL_RETENTION_POLICY_IN_DAYS: 180
 ```
 
-### Project's pipelines limit
+### Projects pipelines limit
 
 ```yaml
 cfapi:
@@ -1365,6 +1365,8 @@ helm-repo-manager:
 ```
 
 ### To 2.1.0
+
+### [What's new in 2.1.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-21)
 
 #### Affected values:
 
