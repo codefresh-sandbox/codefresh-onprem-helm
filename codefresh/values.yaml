@@ -14,7 +14,7 @@ gencerts:
   image:
     registry: quay.io
     repository: codefresh/kubectl
-    tag: 1.27.1
+    tag: 1.28.2
   rbac:
     enabled: true
   ttlSecondsAfterFinished: 300
@@ -36,7 +36,7 @@ seed:
     image:
       registry: quay.io
       repository: codefresh/mongosh
-      tag: 1.8.2
+      tag: 2.0.0
     # -- Root user in plain text (required ONLY for seed job!).
     mongodbRootUser: "root"
     # -- Root user from existing secret
@@ -171,6 +171,18 @@ global:
   dnsService: kube-dns
   dnsNamespace: kube-system
   clusterDomain: cluster.local
+
+#--------
+# OIDC Provider
+#--------
+  # -- Default OIDC Provider service name (Provider URL).
+  oidcProviderService: ""
+  # -- Default OIDC Provider service port.
+  oidcProviderPort: 443
+  # -- Default OIDC Provider service protocol.
+  oidcProviderProtocol: "https"
+  # -- Default OIDC Provider service token endpoint.
+  oidcProviderTokenEndpoint: "/token"
 
 #--------
 # MongoDB
@@ -409,7 +421,7 @@ hooks:
   image:
     registry: quay.io
     repository: codefresh/mongosh
-    tag: 1.8.2
+    tag: 2.0.0
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -438,19 +450,21 @@ postgresqlCleanJob:
 # -- runtimeImages
 # @default -- See below
 runtimeImages:
-  COMPOSE_IMAGE: quay.io/codefresh/compose:1.3.0
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.10.3
-  DIND_IMAGE: quay.io/codefresh/dind:24.0.5-1.28.0
+  COMPOSE_IMAGE: quay.io/codefresh/compose:v2.20.3-1.4.0
+  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.11.0
+  DIND_IMAGE: quay.io/codefresh/dind:24.0.6-1.28.3
   DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.3.6
   DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.14
   DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.13
   DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.11
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.165.2
-  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.3
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.166.4
+  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.7
   GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.21
-  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.1.11
-  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.0
-  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.13.8
+  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.2.6
+  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.4
+  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.14.0
+  CR_6177_FIXER: alpine:edge
+  GC_BUILDER_IMAGE: alpine:edge
 
 #--------------------
 # Codefresh subcharts
@@ -480,6 +494,14 @@ cfapi: &cf-api
       LOGGER_LEVEL: debug
       ON_PREMISE: true
       RUNTIME_MONGO_DB: codefresh
+      RUNTIME_REDIS_DB: 0
+      OIDC_PROVIDER_URI: '{{ .Values.global.oidcProviderService }}'
+      OIDC_PROVIDER_PORT: '{{ .Values.global.oidcProviderPort }}'
+      OIDC_PROVIDER_PROTOCOL: '{{ .Values.global.oidcProviderProtocol }}'
+      OIDC_PROVIDER_TOKEN_ENDPOINT: '{{ .Values.global.oidcProviderTokenEndpoint }}'
+      OIDC_PROVIDER_CLIENT_ID: ""
+      OIDC_PROVIDER_CLIENT_SECRET: ""
+
   # -- Resource requests and limits
   resources:
     requests:
@@ -608,6 +630,7 @@ cf-broadcaster:
       repository: codefresh/cf-broadcaster
   env:
     RUNTIME_MONGO_DB: codefresh
+    REDIS_DB: 0
   resources:
     requests:
       cpu: 100m
@@ -720,6 +743,10 @@ cfsign:
   initContainers:
     volume-permissions:
       enabled: true
+      image:
+        registry: quay.io
+        repository: codefresh/curl
+        tag: 8.4.0
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -738,8 +765,6 @@ cfui:
       repository: codefresh/cf-ui
     env:
       ON_PREMISE: true
-  podAnnotations:
-    reloader.stakater.com/auto: '{{ randAlphaNum 5 | quote }}'
   resources:
     requests:
       cpu: 100m
@@ -990,7 +1015,7 @@ kube-integration:
 mongodb:
   enabled: true
   image:
-    tag: 4.4
+    tag: "5.0"
   architecture: standalone
   useStatefulSet: true
   auth:
@@ -1056,6 +1081,30 @@ postgresql:
         cpu: 200m
         memory: 256Mi
 
+# -- postgresql
+# @default -- See below
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/values.yaml
+postgresql-ha:
+  enabled: false
+  postgresql:
+    image:
+      registry: quay.io
+      repository: codefresh/postgresql-repmgr
+      tag: 13
+    username: postgres
+    password: "eC9arYka4ZbH"
+    database: "codefresh"
+    sharedPreloadLibraries: "pgaudit, repmgr, pg_partman_bgw, pg_cron"
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    extendedConf: |
+      pg_partman_bgw.interval = 3600
+      pg_partman_bgw.role = 'postgres'
+      pg_partman_bgw.dbname = 'postgres'
+      cron.database_name = 'postgres'
+
 # -- redis
 # @default -- See below
 # Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
@@ -1070,6 +1119,27 @@ redis:
       requests:
         cpu: 200m
         memory: 256Mi
+
+# -- redis-ha
+## Ref: https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha/values.yaml
+redis-ha:
+  enabled: false
+  haproxy:
+    enabled: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  auth: true
+  redisPassword: "hoC9szf7NtrU"
+  persistentVolume:
+    enabled: true
+    size: 10Gi
+  redis:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
 # -- rabbitmq
 # @default -- See below
@@ -1089,10 +1159,17 @@ rabbitmq:
 # -- builder
 builder:
   enabled: true
+  initContainers:
+    register:
+      image:
+        registry: quay.io
+        repository: codefresh/curl
+        tag: 8.4.0
   container:
     image:
       registry: docker.io
       repository: docker
+      tag: 24.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1103,10 +1180,17 @@ builder:
 # @default -- See below
 runner:
   enabled: true
+  initContainers:
+    register:
+      image:
+        registry: quay.io
+        repository: codefresh/curl
+        tag: 8.4.0
   container:
     image:
       registry: docker.io
       repository: docker
+      tag: 24.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1220,8 +1304,8 @@ argo-platform:
     cache-password: &cache-password '{{ coalesce .Values.redisPassword .Values.global.redisPassword }}'
     cache-port: &cache-port '{{ coalesce .Values.redisPort .Values.global.redisPort }}'
 
-    mongodb-readmodels-uri: &mongodb-readmodels-uri '{{ include "argo-patform-libs.calculate-mongo-uri" (dict "dbName" "audit" "mongoURI" .Values.global.mongoURI) | default "null" }}'
-    mongodb-audit-uri: &mongodb-audit-uri '{{ include "argo-patform-libs.calculate-mongo-uri" (dict "dbName" "read-models" "mongoURI" .Values.global.mongoURI) | default "null" }}'
+    mongodb-readmodels-uri: &mongodb-readmodels-uri '{{ include "argo-patform-libs.calculate-mongo-uri" (dict "dbName" "read-models" "mongoURI" .Values.global.mongoURI) | default "null" }}'
+    mongodb-audit-uri: &mongodb-audit-uri '{{ include "argo-patform-libs.calculate-mongo-uri" (dict "dbName" "audit" "mongoURI" .Values.global.mongoURI) | default "null" }}'
 
     pg-db-name: &pg-db-name analytics
     pg-host-name: &pg-host-name '{{ coalesce .Values.postgresHostname .Values.global.postgresHostname (printf "%s-%s" .Release.Name .Values.global.postgresService) }}'
@@ -1577,6 +1661,58 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+# -- cf-oidc-provider
+# @default -- See below
+cf-oidc-provider:
+  enabled: false
+  container:
+    image:
+      registry: gcr.io/codefresh-enterprise
+      repository: codefresh/cf-oidc-provider
+    env:
+      NODE_ENV: production
+      CF_PLATFORM_API_BASE_URL: '{{ printf "https://%s/api" .Values.global.appUrl }}'
+      OIDC_ISSUER: '{{ printf "https://%s" .Values.global.oidcProviderService }}'
+      OIDC_AUDIENCE: '{{ printf "https://%s" .Values.global.appUrl }}'
+      OIDC_JWKS_PRIVATE_KEYS_PATH: /secrets/jwks/cf-oidc-provider-jwks.json
+      OIDC_CF_PLATFORM_CLIENT_ID: ""
+      OIDC_CF_PLATFORM_CLIENT_SECRET: ""
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+
+    volumeMounts:
+      jwks-file:
+        path:
+        - mountPath: /secrets/jwks
+
+  volumes:
+    jwks-file:
+      enabled: true
+      type: secret
+      nameOverride: "cf-oidc-provider-jwks"
+      optional: false
+
+  service:
+    main:
+      ports:
+        http:
+          targetPort: 8080
+
+  ingress:
+    main:
+      enabled: true
+      labels: {}
+      annotations: {}
+      ingressClassName: ""
+      hosts:
+      - host: '{{ .Values.global.oidcProviderService }}'
+        paths:
+        - path: /
+      tls: []
+
 # -- codefresh-tunnel-server
 # @default -- See below
 # Don't enable! Not supported at the moment.
@@ -1605,4 +1741,16 @@ webTLS:
   key: ""
 
 # -- CI
-seed-e2e: {}
+seed-e2e:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: mongo
+    tag: latest
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 10
+  affinity: {}
+  nodeSelector: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
