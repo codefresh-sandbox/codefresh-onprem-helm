@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.2.0-rc.0
+version: 2.2.0-rc.1
 keywords:
   - codefresh
 home: https://codefresh.io/
@@ -14,11 +14,12 @@ maintainers:
 appVersion: 2.2.0
 annotations:
   artifacthub.io/alternativeName: "codefresh-onprem"
+  artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
     - kind: changed
-      description: Onprem 2.2.0-rc.0 pre-release
-    - kind: added
-      description: Added optional redis-ha subchart
+      description: Onprem 2.2.0-rc.1 pre-release
+    - kind: changed
+      description: Change default mongodb version to 5.0
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
@@ -231,7 +232,7 @@ dependencies:
     repository: oci://quay.io/codefresh/charts
     condition: argo-platform.enabled
   - name: argo-platform
-    version: "1.2527.0"
+    version: "*"
     repository: oci://quay.io/codefresh/charts
     condition: argo-platform.enabled
   - name: argo-hub-platform

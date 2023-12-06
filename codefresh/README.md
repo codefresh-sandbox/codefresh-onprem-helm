@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.2.0-rc.0](https://img.shields.io/badge/Version-2.2.0--rc.0-informational?style=flat-square) ![AppVersion: 2.2.0](https://img.shields.io/badge/AppVersion-2.2.0-informational?style=flat-square)
+![Version: 2.2.0-rc.1](https://img.shields.io/badge/Version-2.2.0--rc.1-informational?style=flat-square) ![AppVersion: 2.2.0](https://img.shields.io/badge/AppVersion-2.2.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -40,6 +40,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [To 2.0.17](#to-2-0-17)
   - [To 2.1.0](#to-2-1-0)
   - [To 2.1.7](#to-2-1-7)
+  - [To 2.2.0](#to-2-2-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -1781,6 +1782,34 @@ cf-broadcaster:
 > Since version 2.1.7 chart is pushed **only** to OCI registry at `oci://quay.io/codefresh/codefresh`
 
 > Versions prior to 2.1.7 are still available in ChartMuseum at `http://chartmuseum.codefresh.io/codefresh`
+
+### To 2.2.x
+
+### [What's new in 2.2.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-22)
+
+#### MongoDB 5.x
+
+Codefresh On-Prem 2.2.x uses MongoDB 5.x (4.x is still supported). If you run external MongoDB, it is **highly** recommended to upgrade it to 5.x after upgrading Codefresh On-Prem to 2.2.x.
+
+#### Redis HA
+
+> If you run external Redis, this is not applicable to you.
+
+Codefresh On-Prem 2.2.x adds (not replaces!) an **optional** Redis-HA (master/slave configuration with Sentinel sidecars for failover management) instead of a single Redis instance.
+To enable it, see the following values:
+
+```yaml
+global:
+  redisUrl: cf-redis-ha-haproxy # Replace `cf` with your Helm release name
+
+# -- Disable standalone Redis instance
+redis:
+  enabled: false
+
+# -- Enable Redis HA
+redis-ha:
+  enabled: true
+```
 
 ## Rollback
 

@@ -40,6 +40,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [To 2.0.17](#to-2-0-17)
   - [To 2.1.0](#to-2-1-0)
   - [To 2.1.7](#to-2-1-7)
+  - [To 2.2.0](#to-2-2-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -1789,6 +1790,33 @@ cf-broadcaster:
 
 > Versions prior to 2.1.7 are still available in ChartMuseum at `http://chartmuseum.codefresh.io/codefresh`
 
+### To 2.2.x
+
+### [What's new in 2.2.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-22)
+
+#### MongoDB 5.x
+
+Codefresh On-Prem 2.2.x uses MongoDB 5.x (4.x is still supported). If you run external MongoDB, it is **highly** recommended to upgrade it to 5.x after upgrading Codefresh On-Prem to 2.2.x.
+
+#### Redis HA
+
+> If you run external Redis, this is not applicable to you.
+
+Codefresh On-Prem 2.2.x adds (not replaces!) an **optional** Redis-HA (master/slave configuration with Sentinel sidecars for failover management) instead of a single Redis instance.
+To enable it, see the following values:
+
+```yaml
+global:
+  redisUrl: cf-redis-ha-haproxy # Replace `cf` with your Helm release name
+
+# -- Disable standalone Redis instance
+redis:
+  enabled: false
+
+# -- Enable Redis HA
+redis-ha:
+  enabled: true
+```
 
 ## Rollback
 
