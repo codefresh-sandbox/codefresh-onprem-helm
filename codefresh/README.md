@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.2.0-rc.1](https://img.shields.io/badge/Version-2.2.0--rc.1-informational?style=flat-square) ![AppVersion: 2.2.0](https://img.shields.io/badge/AppVersion-2.2.0-informational?style=flat-square)
+![Version: 2.2.0-rc.2](https://img.shields.io/badge/Version-2.2.0--rc.2-informational?style=flat-square) ![AppVersion: 2.2.0](https://img.shields.io/badge/AppVersion-2.2.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -1783,7 +1783,7 @@ cf-broadcaster:
 
 > Versions prior to 2.1.7 are still available in ChartMuseum at `http://chartmuseum.codefresh.io/codefresh`
 
-### To 2.2.x
+### To 2.2.0
 
 ### [What's new in 2.2.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-22)
 

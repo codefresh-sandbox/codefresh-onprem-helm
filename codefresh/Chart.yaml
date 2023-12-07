@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.2.0-rc.1
+version: 2.2.0-rc.2
 keywords:
   - codefresh
 home: https://codefresh.io/
@@ -17,9 +17,11 @@ annotations:
   artifacthub.io/prerelease: "true"
   artifacthub.io/changes: |
     - kind: changed
-      description: Onprem 2.2.0-rc.1 pre-release
+      description: Onprem 2.2.0-rc.2 pre-release
     - kind: changed
-      description: Change default mongodb version to 5.0
+      description: Update engine image
+    - kind: security
+      description: Update OSS images
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
@@ -29,11 +31,11 @@ dependencies:
     version: "0.3.1"
     condition: internal-gateway.enabled
   - name: consul
-    version: 10.14.3
+    version: 10.14.4
     repository: https://charts.bitnami.com/bitnami
     condition: consul.enabled
   - name: mongodb
-    version: 14.3.2
+    version: 14.4.1
     repository: https://charts.bitnami.com/bitnami
     condition: mongodb.enabled,mongo.enabled,global.mongoDeploy
   - name: postgresql
@@ -45,7 +47,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql-ha.enabled
   - name: redis
-    version: 18.1.6
+    version: 18.4.0
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
   - name: redis-ha
@@ -53,11 +55,11 @@ dependencies:
     version: 4.23.0
     condition: redis-ha.enabled
   - name: rabbitmq
-    version: 12.2.5
+    version: 12.5.6
     repository: https://charts.bitnami.com/bitnami
     condition: rabbitmq.enabled
   - name: nats
-    version: 7.10.3
+    version: 7.10.5
     repository: https://charts.bitnami.com/bitnami
     condition: nats.enabled
   - name: builder
@@ -69,7 +71,7 @@ dependencies:
     condition: runner.enabled
     version: 1.3.0
   - name: ingress-nginx
-    version: 4.7.1
+    version: 4.8.4
     repository: https://kubernetes.github.io/ingress-nginx
     condition: ingress-nginx.enabled
   - name: cluster-providers
