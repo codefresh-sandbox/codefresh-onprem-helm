@@ -457,7 +457,7 @@ runtimeImages:
   DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.14
   DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.13
   DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.11
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.168.2
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.168.3
   FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.7
   GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.21
   KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.2.6
@@ -1169,7 +1169,7 @@ builder:
     image:
       registry: docker.io
       repository: docker
-      tag: 24.0-dind
+      tag: 23.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1190,7 +1190,7 @@ runner:
     image:
       registry: docker.io
       repository: docker
-      tag: 24.0-dind
+      tag: 23.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
