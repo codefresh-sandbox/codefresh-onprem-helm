@@ -3,7 +3,7 @@ imageCredentials: {}
 # Pass sa.json (as a single line). Obtain GCR Service Account JSON (sa.json) at support@codefresh.io
 # E.g.:
 # imageCredentials:
-#   registry: gcr.io
+#   registry: us-docker.pkg.dev
 #   username: _json_key
 #   password: '{ "type": "service_account", "project_id": "codefresh-enterprise", "private_key_id": ... }'
 
@@ -183,6 +183,10 @@ global:
   oidcProviderProtocol: "https"
   # -- Default OIDC Provider service token endpoint.
   oidcProviderTokenEndpoint: "/token"
+  # -- Default OIDC Provider service client ID in plain text.
+  oidcProviderClientId: null
+  # -- Default OIDC Provider service client secret in plain text.
+  oidcProviderClientSecret: null
 
 #--------
 # MongoDB
@@ -457,14 +461,14 @@ runtimeImages:
   DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.14
   DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.13
   DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.11
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.169.0
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.169.8
   FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.7
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.21
+  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.27
   KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.2.6
-  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.4
+  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.5
   TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.14.0
-  CR_6177_FIXER: alpine:edge
-  GC_BUILDER_IMAGE: alpine:edge
+  CR_6177_FIXER: docker.io/library/alpine:edge
+  GC_BUILDER_IMAGE: docker.io/library/alpine:edge
 
 #--------------------
 # Codefresh subcharts
@@ -483,7 +487,7 @@ cfapi: &cf-api
     # -- Image
     image:
       # -- Registry prefix
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       # -- Repository
       repository: codefresh/cf-api
     # -- Env vars
@@ -499,8 +503,13 @@ cfapi: &cf-api
       OIDC_PROVIDER_PORT: '{{ .Values.global.oidcProviderPort }}'
       OIDC_PROVIDER_PROTOCOL: '{{ .Values.global.oidcProviderProtocol }}'
       OIDC_PROVIDER_TOKEN_ENDPOINT: '{{ .Values.global.oidcProviderTokenEndpoint }}'
-      OIDC_PROVIDER_CLIENT_ID: ""
-      OIDC_PROVIDER_CLIENT_SECRET: ""
+  secrets:
+    secret:
+      enabled: true
+      type: Opaque
+      stringData:
+        OIDC_PROVIDER_CLIENT_ID: '{{ .Values.global.oidcProviderClientId }}'
+        OIDC_PROVIDER_CLIENT_SECRET: '{{ .Values.global.oidcProviderClientSecret }}'
 
   # -- Resource requests and limits
   resources:
@@ -532,67 +541,67 @@ cfapi: &cf-api
 # cfapi roles
 # @ignored internal
 cfapi-internal:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored ws
 cfapi-ws:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored admin
 cfapi-admin:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored endpoints
 cfapi-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored terminators
 cfapi-terminators:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored sso-group-synchronizer
 cfapi-sso-group-synchronizer:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored buildmanager
 cfapi-buildmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored cacheevictmanager
 cfapi-cacheevictmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored eventsmanagersubscriptions
 cfapi-eventsmanagersubscriptions:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored kubernetesresourcemonitor
 cfapi-kubernetesresourcemonitor:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored environments
 cfapi-environments:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored gitops-resource-receiver
 cfapi-gitops-resource-receiver:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored downloadlogmanager
 cfapi-downloadlogmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored teams
 cfapi-teams:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored kubernetes-endpoints
 cfapi-kubernetes-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 # @ignored test-reporting
 cfapi-test-reporting:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: false
 
 # -- internal-gateway
@@ -605,6 +614,13 @@ internal-gateway:
     image:
       registry: docker.io
       repository: nginxinc/nginx-unprivileged
+  nginx:
+    config:
+      locations:
+        /api/auth/authenticate:
+          locationDirectives:
+              proxy_buffers: "4 180k"
+              proxy_buffer_size: "180k"
   resources:
     requests:
       cpu: 100m
@@ -626,7 +642,7 @@ cf-broadcaster:
     replicas: 3
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-broadcaster
   env:
     RUNTIME_MONGO_DB: codefresh
@@ -674,7 +690,7 @@ cf-platform-analytics-etlstarter:
 
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
     env:
       ENV: production
       DATASET_ID: etl
@@ -691,7 +707,7 @@ cf-platform-analytics-platform:
   mongodbDatabase: "platform-analytics-postgres"
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-platform-analytics
   redis:
     enabled: true
@@ -720,7 +736,7 @@ cfsign:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-tls-sign
     # Explicit default volume mounts overrides due to legacy `cf-` prefix (backward compatibility)
     volumeMounts:
@@ -761,7 +777,7 @@ cfui:
     replicas: 2
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-ui
     env:
       ON_PREMISE: true
@@ -785,7 +801,7 @@ charts-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/charts-manager
   resources:
     requests:
@@ -807,7 +823,7 @@ cluster-providers:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cluster-providers
   resources:
     requests:
@@ -840,7 +856,7 @@ context-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/context-manager
   resources:
     requests:
@@ -862,7 +878,7 @@ cronus:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cronus
   affinity: {}
   nodeSelector: {}
@@ -875,7 +891,7 @@ gitops-dashboard-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/gitops-dashboard-manager
   resources:
     requests:
@@ -897,7 +913,7 @@ helm-repo-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/helm-repo-manager
   chartmuseum:
     publicHelmRepo: true
@@ -927,7 +943,7 @@ hermes:
     replicas: 1
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/hermes
   redis:
     # Deprecation of a separate redis for hermes (CR-705)
@@ -971,7 +987,7 @@ k8s-monitor:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-k8s-monitor
   resources:
     requests:
@@ -993,7 +1009,7 @@ kube-integration:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/kube-integration
   resources:
     requests:
@@ -1045,7 +1061,7 @@ nomios:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/nomios
   ingress:
     main:
@@ -1168,8 +1184,8 @@ builder:
   container:
     image:
       registry: docker.io
-      repository: docker
-      tag: 23.0-dind
+      repository: library/docker
+      tag: 25.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1189,8 +1205,8 @@ runner:
   container:
     image:
       registry: docker.io
-      repository: docker
-      tag: 23.0-dind
+      repository: library/docker
+      tag: 25.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1203,7 +1219,7 @@ pipeline-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/pipeline-manager
   resources:
     requests:
@@ -1225,7 +1241,7 @@ runtime-environment-manager:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/runtime-environment-manager
     env:
       ON_PREMISE: true
@@ -1248,7 +1264,7 @@ tasker-kubernetes:
   enabled: true
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/tasker-kubernetes
   resources:
     requests:
@@ -1272,7 +1288,7 @@ argo-hub-platform:
       replicas: 1
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-hub-platform
   imagePullSecrets:
     - '{{ .Release.Name }}-registry'
@@ -1335,7 +1351,7 @@ argo-platform:
     # -- Image
     image:
       # -- Registry
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       # -- Repository
       repository: codefresh-io/argo-platform-api-graphql
     # -- Env vars
@@ -1396,7 +1412,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-abac
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
@@ -1430,7 +1446,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-analytics-reporter
     env:
       ENABLED_DATABASE_TYPES: POSTGRES
@@ -1477,7 +1493,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-api-events
     env:
       RABBITMQ_PROTOCOL: *rabbitmq-protocol
@@ -1513,7 +1529,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-audit
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
@@ -1554,7 +1570,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-cron-executor
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
@@ -1595,7 +1611,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-event-handler
     env:
       MONGODB_PROTOCOL: *mongodb-protocol
@@ -1646,7 +1662,7 @@ argo-platform:
     enabled: true
     kind: Deployment
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-platform-ui
     resources:
       requests:
@@ -1661,13 +1677,91 @@ argo-platform:
     affinity: {}
     tolerations: []
 
+  # -- broadcaster
+  # @default -- See below
+  broadcaster:
+    enabled: true
+    kind: Deployment
+    image:
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
+      repository: codefresh-io/argo-platform-broadcaster
+    env:
+      MONGODB_PROTOCOL: *mongodb-protocol
+      MONGODB_OPTIONS: *mongodb-options
+      RABBITMQ_PROTOCOL: *rabbitmq-protocol
+      MONGODB_READMODELS_URI: '{{ include "argo-patform-libs.env-vars.mongodb-readmodels-uri-env-var-value" . }}'
+      RABBITMQ_URLS: $(RABBITMQ_PROTOCOL)://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST)
+    secrets:
+      mongodb-protocol: *mongodb-protocol
+      mongodb-options: *mongodb-options
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      rabbitmq-protocol: *rabbitmq-protocol
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 1Gi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
+  # -- promotion-orchestrator
+  # @default -- See below
+  promotion-orchestrator:
+    enabled: true
+    kind: Deployment
+    image:
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
+      repository: codefresh-io/argo-platform-promotion-orchestrator
+    env:
+      MONGODB_PROTOCOL: *mongodb-protocol
+      MONGODB_OPTIONS: *mongodb-options
+      RABBITMQ_PROTOCOL: *rabbitmq-protocol
+      MONGODB_READMODELS_URI: '{{ include "argo-patform-libs.env-vars.mongodb-readmodels-uri-env-var-value" . }}'
+      RABBITMQ_URLS: $(RABBITMQ_PROTOCOL)://$(RABBITMQ_USER):$(RABBITMQ_PASSWORD)@$(RABBITMQ_HOST)
+    secrets:
+      mongodb-protocol: *mongodb-protocol
+      mongodb-options: *mongodb-options
+      mongodb-host: *mongodb-host
+      mongodb-password: *mongodb-password
+      mongodb-user: *mongodb-user
+      mongodb-readmodels-uri: *mongodb-readmodels-uri
+      rabbitmq-protocol: *rabbitmq-protocol
+      rabbitmq-host: *rabbitmq-host
+      rabbitmq-password: *rabbitmq-password
+      rabbitmq-port: *rabbitmq-port
+      rabbitmq-user: *rabbitmq-user
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 1Gi
+    hpa:
+      enabled: false
+    pdb:
+      enabled: false
+    affinity: {}
+    tolerations: []
+
 # -- cf-oidc-provider
 # @default -- See below
 cf-oidc-provider:
   enabled: false
   container:
     image:
-      registry: gcr.io/codefresh-enterprise
+      registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh/cf-oidc-provider
     env:
       NODE_ENV: production
@@ -1675,9 +1769,6 @@ cf-oidc-provider:
       OIDC_ISSUER: '{{ printf "https://%s" .Values.global.oidcProviderService }}'
       OIDC_AUDIENCE: '{{ printf "https://%s" .Values.global.appUrl }}'
       OIDC_JWKS_PRIVATE_KEYS_PATH: /secrets/jwks/cf-oidc-provider-jwks.json
-      OIDC_CF_PLATFORM_CLIENT_ID: ""
-      OIDC_CF_PLATFORM_CLIENT_SECRET: ""
-
     resources:
       requests:
         cpu: 100m
@@ -1687,6 +1778,14 @@ cf-oidc-provider:
       jwks-file:
         path:
         - mountPath: /secrets/jwks
+
+  secrets:
+    secret:
+      enabled: true
+      type: Opaque
+      stringData:
+        OIDC_CF_PLATFORM_CLIENT_ID: '{{ .Values.global.oidcProviderClientId }}'
+        OIDC_CF_PLATFORM_CLIENT_SECRET: '{{ .Values.global.oidcProviderClientSecret }}'
 
   volumes:
     jwks-file:
@@ -1754,3 +1853,6 @@ seed-e2e:
   podSecurityContext: {}
   resources: {}
   tolerations: []
+
+ci:
+  enabled: false

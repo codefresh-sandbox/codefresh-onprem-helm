@@ -41,6 +41,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [To 2.1.0](#to-2-1-0)
   - [To 2.1.7](#to-2-1-7)
   - [To 2.2.0](#to-2-2-0)
+  - [To 2.3.0](#to-2-3-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -53,7 +54,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 
 ## Prerequisites
 
-- Kubernetes **>= 1.22.0**
+- Kubernetes **>= 1.25 && <= 1.29** (Supported versions mean that installation passed for the versions listed; however, it **may** work on older k8s versions as well)
 - Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure (with [resizing](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/) available)
 - Minimal 4vCPU and 8Gi Memory available in the cluster (for production usage the recommended minimal cluster capacity is at least 12vCPUs and 36Gi Memory)
@@ -80,7 +81,7 @@ Edit default `values.yaml` or create empty `cf-values.yaml`
 ```yaml
 # -- Credentials for Image Pull Secret object
 imageCredentials:
-  registry: gcr.io
+  registry: us-docker.pkg.dev
   username: _json_key
   password: '{ "type": "service_account", "project_id": "codefresh-enterprise", "private_key_id": ... }'
 ```
@@ -1214,7 +1215,31 @@ OpenID Connect (OIDC) allows Codefresh Builds to access resources in your cloud 
 
 > **NOTE!** In production usage use [External Secrets Operator](https://external-secrets.io/latest/) or [HashiCorp Vault](https://developer.hashicorp.com/vault/docs/platform/k8s) to create secrets. The following example uses `kubectl` for brevity.
 
-```shell
+For JWKS use **Public and Private Keypair Set** (if generated at [mkjwk.org](https://mkjwk.org/)), for example:
+
+`cf-oidc-provider-jwks.json`:
+```json
+{
+    "keys": [
+        {
+            "p": "...",
+            "kty": "RSA",
+            "q": "...",
+            "d": "...",
+            "e": "AQAB",
+            "use": "sig",
+            "qi": "...",
+            "dp": "...",
+            "alg": "RS256",
+            "dq": "...",
+            "n": "..."
+        }
+    ]
+}
+```
+
+
+```console
 # Creating secret containing JWKS.
 # The secret KEY is `cf-oidc-provider-jwks.json`. It then referenced in `OIDC_JWKS_PRIVATE_KEYS_PATH` environment variable in `cf-oidc-provider`.
 # The secret NAME is referenced in `.volumes.jwks-file.nameOverride` (volumeMount is configured in the chart already)
@@ -1237,6 +1262,12 @@ kubectl create secret generic cf-oidc-provider-client-secret \
 global:
   # -- Set OIDC Provider URL
   oidcProviderService: "oidc.mydomain.com"
+  # -- Default OIDC Provider service client ID in plain text.
+  # Optional! If specified here, no need to specify CLIENT_ID/CLIENT_SECRET env vars in cfapi and cf-oidc-provider below.
+  oidcProviderClientId: null
+  # -- Default OIDC Provider service client secret in plain text.
+  # Optional! If specified here, no need to specify CLIENT_ID/CLIENT_SECRET env vars in cfapi and cf-oidc-provider below.
+  oidcProviderClientSecret: null
 
 cfapi:
   # -- Set additional variables for cfapi
@@ -1818,6 +1849,28 @@ redis-ha:
   enabled: true
 ```
 
+### To 2.3.0
+
+### [What's new in 2.3.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-23)
+
+This major release changes default registry for Codefresh **private** images from GCR (`gcr.io`) to GAR (`us-docker.pkg.dev`)
+
+Default `.Values.imageCredentials` for Onprem **v2.2.x and below**
+```yaml
+imageCredentials:
+  registry: gcr.io
+  username: _json_key
+  password: <YOUR_SERVICE_ACCOUNT_JSON_HERE>
+```
+
+Default `.Values.imageCredentials` for Onprem **v2.3.x and above**
+```yaml
+imageCredentials:
+  registry: us-docker.pkg.dev
+  username: _json_key
+  password: <YOUR_SERVICE_ACCOUNT_JSON_HERE>
+```
+
 ## Rollback
 
 Use `helm history` to determine which release has worked, then use `helm rollback` to perform a rollback
@@ -1831,7 +1884,7 @@ kubectl delete deploy cf-chartmuseum --namespace $NAMESPACE
 kubectl delete job --namespace $NAMESPACE -l release=$RELEASE_NAME
 ```
 
-```
+```console
 helm rollback $RELEASE_NAME $RELEASE_NUMBER \
     --namespace $NAMESPACE \
     --debug \
