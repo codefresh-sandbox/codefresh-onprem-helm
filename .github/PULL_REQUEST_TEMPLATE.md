@@ -4,6 +4,8 @@
 
 ## Notes
 
-## CI
+## PR Comments
 
-To trigger `onprem-ci` pipeline add `/test` comment in your PR
+Add the following comments to the PR:
+
+`/test` - to trigger Onprem CI Build

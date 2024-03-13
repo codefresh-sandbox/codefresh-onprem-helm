@@ -14,7 +14,7 @@ gencerts:
   image:
     registry: quay.io
     repository: codefresh/kubectl
-    tag: 1.28.4
+    tag: 1.29.2
   rbac:
     enabled: true
   ttlSecondsAfterFinished: 300
@@ -762,7 +762,7 @@ cfsign:
       image:
         registry: quay.io
         repository: codefresh/curl
-        tag: 8.4.0
+        tag: 8.5.0
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1811,12 +1811,6 @@ cf-oidc-provider:
         paths:
         - path: /
       tls: []
-
-# -- codefresh-tunnel-server
-# @default -- See below
-# Don't enable! Not supported at the moment.
-codefresh-tunnel-server:
-  enabled: false
 
 # -- DEPRECATED - Use `.imageCredentials` instead
 # dockerconfig (for `kcfi` tool backward compatibility) for Image Pull Secret. Obtain GCR Service Account JSON (sa.json) at support@codefresh.io

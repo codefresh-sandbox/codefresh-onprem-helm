@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.3.0-rc.1](https://img.shields.io/badge/Version-2.3.0--rc.1-informational?style=flat-square) ![AppVersion: 2.3.0](https://img.shields.io/badge/AppVersion-2.3.0-informational?style=flat-square)
+![Version: 2.3.0-rc.2](https://img.shields.io/badge/Version-2.3.0--rc.2-informational?style=flat-square) ![AppVersion: 2.3.0](https://img.shields.io/badge/AppVersion-2.3.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -2008,7 +2008,6 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | charts-manager | object | See below | charts-manager |
 | ci.enabled | bool | `false` |  |
 | cluster-providers | object | See below | cluster-providers |
-| codefresh-tunnel-server | object | See below | codefresh-tunnel-server Don't enable! Not supported at the moment. |
 | consul | object | See below | consul Ref: https://github.com/bitnami/charts/blob/main/bitnami/consul/values.yaml |
 | context-manager | object | See below | context-manager |
 | cronus | object | See below | cronus |
