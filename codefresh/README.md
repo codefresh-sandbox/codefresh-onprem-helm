@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.3.0-rc.2](https://img.shields.io/badge/Version-2.3.0--rc.2-informational?style=flat-square) ![AppVersion: 2.3.0](https://img.shields.io/badge/AppVersion-2.3.0-informational?style=flat-square)
+![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square) ![AppVersion: 2.3.0](https://img.shields.io/badge/AppVersion-2.3.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -782,7 +782,7 @@ The chart installs the non-HA version of Codefresh by default. If you want to ru
 ```yaml
 cfapi:
   hpa:
-    enabed: true
+    enabled: true
     # These are the defaults for all Codefresh subcharts
     # minReplicas: 2
     # maxReplicas: 10
@@ -1845,7 +1845,9 @@ redis-ha:
 
 ### [What's new in 2.3.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-23)
 
-This major release changes default registry for Codefresh **private** images from GCR (`gcr.io`) to GAR (`us-docker.pkg.dev`)
+⚠️ This major release changes default registry for Codefresh **private** images from GCR (`gcr.io`) to GAR (`us-docker.pkg.dev`)
+
+Update `.Values.imageCredentials.registry` to `us-docker.pkg.dev` if it's explicitly set to `gcr.io` in your values file.
 
 Default `.Values.imageCredentials` for Onprem **v2.2.x and below**
 ```yaml
