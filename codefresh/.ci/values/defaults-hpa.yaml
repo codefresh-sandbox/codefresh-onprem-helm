@@ -102,12 +102,17 @@ global:
     key: redis-url
 
 cfapi:
+  rbac:
+    namespaced: false
   hpa:
     enabled: true
   resources:
     requests:
       cpu: 300m
       memory: 1024Mi
+  container:
+    env:
+      DEFAULT_SYSTEM_TYPE: CLASSIC
 
 ingress:
   enabled: true
@@ -158,5 +163,9 @@ argo-platform:
       enabled: true
 
   abac:
+    hpa:
+      enabled: true
+
+  promotion-orchestrator:
     hpa:
       enabled: true

@@ -4,52 +4,57 @@ global:
 
 cfapi: &cf-api
   enabled: false
+  rbac:
+    namespaced: false
 
+cfapi-auth:
+  <<: *cf-api
+  enabled: true
 cfapi-internal:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-ws:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-admin:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-terminators:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-sso-group-synchronizer:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-buildmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-cacheevictmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-eventsmanagersubscriptions:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-kubernetesresourcemonitor:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-environments:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-gitops-resource-receiver:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-downloadlogmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-teams:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-kubernetes-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-test-reporting:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
