@@ -1,40 +1,43 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.4.0-rc.1
+version: 2.5.0-rc.1
 keywords:
   - codefresh
 home: https://codefresh.io/
 icon: https://avatars1.githubusercontent.com/u/11412079?v=3
 sources:
-  - https://github.com/codefresh-io/cf-helm
+  - https://github.com/codefresh-io/codefresh-onprem-helm
 maintainers:
   - name: codefresh
     url: https://codefresh-io.github.io/
-appVersion: 2.4.0
+appVersion: 2.5.0
 annotations:
   artifacthub.io/prerelease: "true"
   artifacthub.io/alternativeName: "codefresh-onprem"
-  artifacthub.io/containsSecurityUpdates: "true"
+  # artifacthub.io/containsSecurityUpdates: "true"
+  # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: Onprem 2.4.0-rc.1 pre-release
-    - kind: changed
-      description: Update MongoDB image to 6.0
+      description: "Initial onprem 2.5.0-rc.1 release"
+    - kind: fixed
+      description: "Fix global.mongodbPassword updates via values.yaml"
     - kind: added
-      description: Added cfapi-auth role
+      description: "Add checksum/secret annotation for argo-platform pods"
+    - kind: fixed
+      description: "Make cf-codefresh-set-mongodb-compat-version job optional via .Values.mongodb.migration.enabled value"
     - kind: changed
-      description: Update internal-gateway to 0.7.0 for cfapi-auth
+      description: "Update runtime images"
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
     version: 0.18.1
   - name: internal-gateway
     repository: oci://quay.io/codefresh/charts
-    version: 0.7.0
+    version: 0.9.0
     condition: internal-gateway.enabled
   - name: consul
-    version: 11.1.9
+    version: 11.3.13
     repository: https://charts.bitnami.com/bitnami
     condition: consul.enabled
   - name: mongodb
@@ -50,7 +53,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql-ha.enabled
   - name: redis
-    version: 18.19.2
+    version: 20.0.3
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
   - name: redis-ha
@@ -58,11 +61,11 @@ dependencies:
     version: 4.26.1
     condition: redis-ha.enabled
   - name: rabbitmq
-    version: 12.15.0
+    version: 14.6.9
     repository: https://charts.bitnami.com/bitnami
     condition: rabbitmq.enabled
   - name: nats
-    version: 7.18.1
+    version: 8.3.2
     repository: https://charts.bitnami.com/bitnami
     condition: nats.enabled
   - name: builder
@@ -86,7 +89,7 @@ dependencies:
     repository: oci://quay.io/codefresh/charts
     condition: kube-integration.enabled
   - name: charts-manager
-    version: "*"
+    version: "~1.17.0"
     repository: oci://quay.io/codefresh/charts
     condition: charts-manager.enabled
   - name: cfsign

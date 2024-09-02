@@ -454,19 +454,19 @@ postgresqlCleanJob:
 # -- runtimeImages
 # @default -- See below
 runtimeImages:
-  COMPOSE_IMAGE: quay.io/codefresh/compose:v2.20.3-1.4.0
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.11.4
-  DIND_IMAGE: quay.io/codefresh/dind:25.0.4-1.28.5
-  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.3.11
-  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.14
-  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.13
-  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.11
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.169.9
+  COMPOSE_IMAGE: quay.io/codefresh/compose:v2.28.1-1.5.0
+  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.11.6
+  DIND_IMAGE: quay.io/codefresh/dind:26.1.4-1.28.7
+  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.3.13
+  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.17
+  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.16
+  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.14
+  ENGINE_IMAGE: quay.io/codefresh/engine:1.174.7
   FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.7
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.27
+  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.1.28
   KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.2.6
   PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.5
-  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.14.0
+  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.14.1
   CR_6177_FIXER: docker.io/library/alpine:edge
   GC_BUILDER_IMAGE: docker.io/library/alpine:edge
 
@@ -1047,6 +1047,7 @@ mongodb:
       cpu: 200m
       memory: 256Mi
   migration:
+    enabled: false
     featureCompatibilityVersion: "5.0"
 
 # -- nats
@@ -1191,7 +1192,7 @@ builder:
     image:
       registry: docker.io
       repository: library/docker
-      tag: 26.0-dind
+      tag: 27.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1212,7 +1213,7 @@ runner:
     image:
       registry: docker.io
       repository: library/docker
-      tag: 26.0-dind
+      tag: 27.0-dind
   affinity: {}
   nodeSelector: {}
   podSecurityContext: {}
@@ -1411,6 +1412,9 @@ argo-platform:
     affinity: {}
     # -- Set pod's tolerations
     tolerations: []
+    # -- Set pod's annotations
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/api-graphql/secret.yaml") . | sha256sum }}'
 
   # -- abac
   # @default -- See below
@@ -1445,6 +1449,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/abac/secret.yaml") . | sha256sum }}'
 
   # -- analytics-reporter
   # @default -- See below
@@ -1492,6 +1498,8 @@ argo-platform:
     affinity: {}
     volumes: []
     volumeMounts: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/analytics-reporter/secret.yaml") . | sha256sum }}'
 
   # -- api-events
   # @default -- See below
@@ -1522,6 +1530,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/api-events/secret.yaml") . | sha256sum }}'
 
   # -- argocd-hooks
   # @default -- See below
@@ -1569,6 +1579,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/audit/secret.yaml") . | sha256sum }}'
 
   # -- cron-executor
   # @default -- See below
@@ -1610,6 +1622,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/cron-executor/secret.yaml") . | sha256sum }}'
 
   # -- event-handler
   # @default -- See below
@@ -1649,6 +1663,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/event-handler/secret.yaml") . | sha256sum }}'
 
   # -- runtime-manager
   # @default -- See below
@@ -1721,6 +1737,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/broadcaster/secret.yaml") . | sha256sum }}'
 
   # -- promotion-orchestrator
   # @default -- See below
@@ -1763,6 +1781,8 @@ argo-platform:
       enabled: false
     affinity: {}
     tolerations: []
+    podAnnotations:
+      checksum/secret: '{{ include (print $.Template.BasePath "/promotion-orchestrator/secret.yaml") . | sha256sum }}'
 
 # -- cf-oidc-provider
 # @default -- See below

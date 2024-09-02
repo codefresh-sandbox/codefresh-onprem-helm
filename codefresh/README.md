@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.4.0-rc.1](https://img.shields.io/badge/Version-2.4.0--rc.1-informational?style=flat-square) ![AppVersion: 2.4.0](https://img.shields.io/badge/AppVersion-2.4.0-informational?style=flat-square)
+![Version: 2.5.0-rc.1](https://img.shields.io/badge/Version-2.5.0--rc.1-informational?style=flat-square) ![AppVersion: 2.5.0](https://img.shields.io/badge/AppVersion-2.5.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -42,6 +42,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [To 2.1.7](#to-2-1-7)
   - [To 2.2.0](#to-2-2-0)
   - [To 2.3.0](#to-2-3-0)
+  - [To 2.4.0](#to-2-4-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -722,53 +723,56 @@ cfapi: &cf-api
   hpa:
     enabled: true
 # Enable cf-api roles
+cfapi-auth:
+  <<: *cf-api
+  enabled: true
 cfapi-internal:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-ws:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-admin:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-terminators:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-sso-group-synchronizer:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-buildmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-cacheevictmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-eventsmanagersubscriptions:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-kubernetesresourcemonitor:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-environments:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-gitops-resource-receiver:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-downloadlogmanager:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-teams:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-kubernetes-endpoints:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 cfapi-test-reporting:
-  !!merge <<: *cf-api
+  <<: *cf-api
   enabled: true
 ```
 
@@ -1885,6 +1889,35 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
     --wait
 ```
 
+### To 2.4.0
+
+### [What's new in 2.4.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-24)
+
+#### New cfapi-auth role
+
+New `cfapi-auth` role is introduced in 2.4.x.
+
+If you run onprem with [multi-role cfapi configuration](#configuration-with-multi-role-cf-api), make sure to **enable** `cfapi-auth` role:
+
+```yaml
+cfapi-auth:
+  <<: *cf-api
+  enabled: true
+```
+
+#### Default SYSTEM_TYPE for acccounts
+
+Since 2.4.x, `SYSTEM_TYPE` is changed to `PROJECT_ONE` by default.
+
+If you want to preserve original `CLASSIC` values, update cfapi environment variables:
+
+```yaml
+cfapi:
+  container:
+    env:
+      DEFAULT_SYSTEM_TYPE: CLASSIC
+```
+
 ## Troubleshooting
 
 ### Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired
@@ -1967,6 +2000,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | argo-platform.api-graphql.kind | string | `"Deployment"` | Controller kind. Currently, only `Deployment` is supported |
 | argo-platform.api-graphql.pdb | object | `{"enabled":false}` | PDB |
 | argo-platform.api-graphql.pdb.enabled | bool | `false` | Enable pod disruption budget |
+| argo-platform.api-graphql.podAnnotations | object | `{"checksum/secret":"{{ include (print $.Template.BasePath \"/api-graphql/secret.yaml\") . | sha256sum }}"}` | Set pod's annotations |
 | argo-platform.api-graphql.resources | object | See below | Resource limits and requests |
 | argo-platform.api-graphql.secrets | object | See below | Secrets |
 | argo-platform.api-graphql.tolerations | list | `[]` | Set pod's tolerations |
@@ -1980,7 +2014,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"26.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.4.0"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
+| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"27.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.4.0"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-oidc-provider | object | See below | cf-oidc-provider |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
