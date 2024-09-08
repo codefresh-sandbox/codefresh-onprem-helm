@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.5.0-rc.1
+version: 2.5.0
 keywords:
   - codefresh
 home: https://codefresh.io/
@@ -18,16 +18,10 @@ annotations:
   # artifacthub.io/containsSecurityUpdates: "true"
   # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
-    - kind: changed
-      description: "Initial onprem 2.5.0-rc.1 release"
     - kind: fixed
-      description: "Fix global.mongodbPassword updates via values.yaml"
-    - kind: added
-      description: "Add checksum/secret annotation for argo-platform pods"
-    - kind: fixed
-      description: "Make cf-codefresh-set-mongodb-compat-version job optional via .Values.mongodb.migration.enabled value"
+      description: "Fix E2E tests"
     - kind: changed
-      description: "Update runtime images"
+      description: "Update feature flags"
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
