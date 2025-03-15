@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.6.0
+version: 2.7.0
 keywords:
   - codefresh
 home: https://codefresh.io/
@@ -11,7 +11,7 @@ sources:
 maintainers:
   - name: codefresh
     url: https://codefresh-io.github.io/
-appVersion: 2.6.0
+appVersion: 2.7.0
 annotations:
   artifacthub.io/prerelease: "true"
   artifacthub.io/alternativeName: "codefresh-onprem"
@@ -19,17 +19,17 @@ annotations:
   # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |
     - kind: changed
-      description: "Initial onprem 2.6 release"
+      description: "Initial 2.7 release"
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
     version: 0.18.1
   - name: internal-gateway
     repository: oci://quay.io/codefresh/charts
-    version: 0.9.0
+    version: 0.10.2
     condition: internal-gateway.enabled
   - name: consul
-    version: 11.3.21
+    version: 11.4.10
     repository: https://charts.bitnami.com/bitnami
     condition: consul.enabled
   - name: mongodb
@@ -45,7 +45,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql-ha.enabled
   - name: redis
-    version: 20.3.0
+    version: 20.11.3
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
   - name: redis-ha
@@ -53,21 +53,21 @@ dependencies:
     version: 4.26.1
     condition: redis-ha.enabled
   - name: rabbitmq
-    version: 14.7.0
+    version: 15.3.3
     repository: https://charts.bitnami.com/bitnami
     condition: rabbitmq.enabled
   - name: nats
-    version: 8.4.9
+    version: 9.0.6
     repository: https://charts.bitnami.com/bitnami
     condition: nats.enabled
   - name: builder
     repository: oci://quay.io/codefresh/charts
     condition: builder.enabled
-    version: 1.3.0
+    version: 1.4.0
   - name: runner
     repository: oci://quay.io/codefresh/charts
     condition: runner.enabled
-    version: 1.3.0
+    version: 1.4.0
   - name: ingress-nginx
     version: 4.11.2
     repository: https://kubernetes.github.io/ingress-nginx

@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.6.0](https://img.shields.io/badge/Version-2.6.0-informational?style=flat-square) ![AppVersion: 2.6.0](https://img.shields.io/badge/AppVersion-2.6.0-informational?style=flat-square)
+![Version: 2.7.0](https://img.shields.io/badge/Version-2.7.0-informational?style=flat-square) ![AppVersion: 2.7.0](https://img.shields.io/badge/AppVersion-2.7.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -33,6 +33,8 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [Projects pipelines limit](#projects-pipelines-limit)
   - [Enable session cookie](#enable-session-cookie)
   - [X-Frame-Options response header](#x-frame-options-response-header)
+  - [Auto-index creation in MongoDB](#auto-index-creation-in-mongodb)
+  - [Image digests in containers](#image-digests-in-containers)
 - [Configuring OIDC Provider](#configuring-oidc-provider)
 - [Upgrading](#upgrading)
   - [To 2.0.0](#to-200)
@@ -45,6 +47,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [To 2.4.0](#to-240)
   - [To 2.5.0](#to-250)
   - [To 2.6.0](#to-260)
+  - [To 2.7.0](#to-270)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -203,7 +206,7 @@ However, you might need to use external services like [MongoDB Atlas Database](h
 
 #### External MongoDB
 
-**Important:** Recommended version of Mongo is 4.4.x
+**Important:** Recommended version of Mongo is 6.x
 
 ```yaml
 seed:
@@ -1201,6 +1204,68 @@ cfapi:
     USE_SHA256_GITHUB_SIGNATURE: "true"
 ```
 
+### Auto-index creation in MongoDB
+
+In Codefresh On-Prem 2.6.x, the `cfapi` can create indexes in MongoDB automatically. This feature is disabled by default. To enable it, set the following environment variable:
+
+> **Note!** Enabling this feature can cause performance degradation during the index creation process.
+
+> **Note!** It is recommended to add indexes during a maintenance window. The indexes list is provided in `codefresh/files/indexes/<MAJOR.MINOR>/<collection_name>.json` files.
+
+```yaml
+cfapi:
+  container:
+    env:
+      MONGOOSE_AUTO_INDEX: "true"
+```
+
+```yaml
+argo-platform:
+  api-graphql:
+    env:
+      MONGO_AUTOMATIC_INDEX_CREATION: "true"
+```
+
+Ref:
+- [Create an Index in Atlas DB](https://www.mongodb.com/docs/atlas/atlas-ui/indexes/#create-an-index)
+- [Create an Index with mongosh](https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/)
+
+### Image digests in containers
+
+In Codefresh On-Prem 2.6.x all Codefresh owner microservices include image digests in the default subchart values.
+
+For example, default values for `cfapi` might look like this:
+
+```yaml
+container:
+  image:
+    registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
+    repository: codefresh/cf-api
+    tag: 21.268.1
+    digest: "sha256:bae42f8efc18facc2bf93690fce4ab03ef9607cec4443fada48292d1be12f5f8"
+    pullPolicy: IfNotPresent
+```
+
+this resulting in the following image reference in the pod spec:
+
+```yaml
+spec:
+  containers:
+    - name: cfapi
+      image: us-docker.pkg.dev/codefresh-enterprise/gcr.io/codefresh/cf-api:21.268.1@sha256:bae42f8efc18facc2bf93690fce4ab03ef9607cec4443fada48292d1be12f5f8
+```
+
+> **Note!** When the `digest` is providerd, the `tag` is ignored! You can omit digest and use tag only like the following `values.yaml` example:
+
+```yaml
+cfapi:
+  container:
+    image:
+      tag: 21.268.1
+      # -- Set empty tag for digest
+      digest: ""
+```
+
 ## Configuring OIDC Provider
 
 OpenID Connect (OIDC) allows Codefresh Builds to access resources in your cloud provider (such as AWS, Azure, GCP), without needing to store cloud credentials as long-lived pipeline secret variables.
@@ -1928,6 +1993,45 @@ cfapi:
 
 ### [What's new in 2.6.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-26)
 
+#### Affected values
+
+[Image digests in containers](#image-digests-in-containers)
+
+#### Auto-index creation in MongoDB
+
+[Auto-index creation in MongoDB](#auto-index-creation-in-mongodb)
+
+### To 2.7.0
+
+### [What's new in 2.7.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-27)
+
+#### Affected values
+
+- Added option to provide global `tolerations`/`nodeSelector`/`affinity` for all Codefresh subcharts
+> **Note!** These global settings will not be applied to Bitnami subcharts (e.g. `mongodb`, `redis`, `rabbitmq`, `postgres`. etc)
+
+```yaml
+global:
+  tolerations:
+    - key: "key"
+      operator: "Equal"
+      value: "value"
+      effect: "NoSchedule"
+
+  nodeSelector:
+    key: "value"
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "key"
+                operator: "In"
+                values:
+                  - "value"
+```
+
 ## Troubleshooting
 
 ### Error: Failed to validate connection to Docker daemon; caused by Error: certificate has expired
@@ -1989,6 +2093,10 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 ./configure-dind-certs.sh -n $RUNTIME_NAMESPACE https://$CODEFRESH_HOST $CODEFRESH_API_TOKEN
 ```
 
+### Consul Error: Refusing to rejoin cluster because the server has been offline for more than the configured server_rejoin_age_max
+
+After platform upgrade, Consul fails with the error `refusing to rejoin cluster because the server has been offline for more than the configured server_rejoin_age_max - consider wiping your data dir`. There is [known issue](https://github.com/hashicorp/consul/issues/20722) of **hashicorp/consul** behaviour. Try to wipe out or delete the consul PV with config data and restart Consul StatefulSet.
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -2024,7 +2132,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"27.3-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.10.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
+| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"28.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.11.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-oidc-provider | object | See below | cf-oidc-provider |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
@@ -2087,6 +2195,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | gencerts | object | See below | Job to generate internal runtime secrets. Required at first install. |
 | gitops-dashboard-manager | object | See below | gitops-dashboard-manager |
 | global | object | See below | Global parameters |
+| global.affinity | object | `{}` | Global affinity constraints Apply affinity to all Codefresh subcharts. Will not be applied on Bitnami subcharts. |
 | global.appProtocol | string | `"https"` | Application protocol. |
 | global.appUrl | string | `"onprem.codefresh.local"` | Application root url. Will be used in Ingress objects as hostname |
 | global.broadcasterPort | int | `80` | Default broadcaster service port. |
@@ -2116,7 +2225,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | global.gitopsDashboardManagerService | string | `"gitops-dashboard-manager"` | Default gitops-dashboarad-manager service name. |
 | global.helmRepoManagerService | string | `"helm-repo-manager"` | Default helm-repo-manager service name. |
 | global.hermesService | string | `"hermes"` | Default hermes service name. |
-| global.imagePullSecrets | list | `[]` | Global Docker registry secret names as array |
+| global.imagePullSecrets | list | `["codefresh-registry"]` | Global Docker registry secret names as array |
 | global.imageRegistry | string | `""` | Global Docker image registry |
 | global.kubeIntegrationPort | int | `9000` | Default kube-integration service port. |
 | global.kubeIntegrationService | string | `"kube-integration"` | Default kube-integration service name. |
@@ -2134,6 +2243,7 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | global.natsPort | int | `4222` | Default nats service port. |
 | global.natsService | string | `"nats"` | Default nats service name. |
 | global.newrelicLicenseKey | string | `""` | New Relic Key |
+| global.nodeSelector | object | `{}` | Global nodeSelector constraints Apply nodeSelector to all Codefresh subcharts. Will not be applied on Bitnami subcharts. |
 | global.oidcProviderClientId | string | `nil` | Default OIDC Provider service client ID in plain text. |
 | global.oidcProviderClientSecret | string | `nil` | Default OIDC Provider service client secret in plain text. |
 | global.oidcProviderPort | int | `443` | Default OIDC Provider service port. |
@@ -2170,9 +2280,11 @@ kubectl -n $NAMESPACE delete secret codefresh-certs-server
 | global.runnerService | string | `"runner"` | Default runner service name. |
 | global.runtimeEnvironmentManagerPort | int | `80` | Default runtime-environment-manager service port. |
 | global.runtimeEnvironmentManagerService | string | `"runtime-environment-manager"` | Default runtime-environment-manager service name. |
+| global.security | object | `{"allowInsecureImages":true}` | Bitnami |
 | global.storageClass | string | `""` | Global StorageClass for Persistent Volume(s) |
 | global.tlsSignPort | int | `4999` | Default tls-sign service port. |
 | global.tlsSignService | string | `"cfsign"` | Default tls-sign service name. |
+| global.tolerations | list | `[]` | Global tolerations constraints Apply toleratons to all Codefresh subcharts. Will not be applied on Bitnami subcharts. |
 | helm-repo-manager | object | See below | helm-repo-manager |
 | hermes | object | See below | hermes |
 | hooks | object | See below | Pre/post-upgrade Job hooks. Updates images in `system/default` runtime. |
