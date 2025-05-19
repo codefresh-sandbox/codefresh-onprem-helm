@@ -1,6 +1,6 @@
 ## Codefresh On-Premises
 
-![Version: 2.7.0](https://img.shields.io/badge/Version-2.7.0-informational?style=flat-square) ![AppVersion: 2.7.0](https://img.shields.io/badge/AppVersion-2.7.0-informational?style=flat-square)
+![Version: 2.8.0](https://img.shields.io/badge/Version-2.8.0-informational?style=flat-square) ![AppVersion: 2.7.0](https://img.shields.io/badge/AppVersion-2.7.0-informational?style=flat-square)
 
 Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/getting-started/intro-to-codefresh/) to Kubernetes.
 
@@ -24,6 +24,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [Configuration with ALB (Application Load Balancer)](#configuration-with-alb-application-load-balancer)
   - [Configuration with Private Registry](#configuration-with-private-registry)
   - [Configuration with multi-role CF-API](#configuration-with-multi-role-cf-api)
+  - [Indexes in MongoDB](#indexes-in-mongodb)
   - [High Availability](#high-availability)
   - [Mounting private CA certs](#mounting-private-ca-certs)
 - [Installing on OpenShift](#installing-on-openshift)
@@ -33,21 +34,21 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
   - [Projects pipelines limit](#projects-pipelines-limit)
   - [Enable session cookie](#enable-session-cookie)
   - [X-Frame-Options response header](#x-frame-options-response-header)
-  - [Auto-index creation in MongoDB](#auto-index-creation-in-mongodb)
   - [Image digests in containers](#image-digests-in-containers)
 - [Configuring OIDC Provider](#configuring-oidc-provider)
 - [Upgrading](#upgrading)
-  - [To 2.0.0](#to-200)
-  - [To 2.0.12](#to-2012)
-  - [To 2.0.17](#to-2017)
-  - [To 2.1.0](#to-210)
-  - [To 2.1.7](#to-217)
-  - [To 2.2.0](#to-220)
-  - [To 2.3.0](#to-230)
-  - [To 2.4.0](#to-240)
-  - [To 2.5.0](#to-250)
-  - [To 2.6.0](#to-260)
-  - [To 2.7.0](#to-270)
+  - [To 2.0.0](#to-2-0-0)
+  - [To 2.0.12](#to-2-0-12)
+  - [To 2.0.17](#to-2-0-17)
+  - [To 2.1.0](#to-2-1-0)
+  - [To 2.1.7](#to-2-1-7)
+  - [To 2.2.0](#to-2-2-0)
+  - [To 2.3.0](#to-2-3-0)
+  - [To 2.4.0](#to-2-4-0)
+  - [To 2.5.0](#to-2-5-0)
+  - [To 2.6.0](#to-2-6-0)
+  - [To 2.7.0](#to-2-7-0)
+  - [To 2.8.0](#to-2-8-0)
 - [Rollback](#rollback)
 - [Troubleshooting](#troubleshooting)
 - [Values](#values)
@@ -59,7 +60,7 @@ Helm chart for deploying [Codefresh On-Premises](https://codefresh.io/docs/docs/
 
 ## Prerequisites
 
-- Kubernetes **>= 1.28 && <= 1.31** (Supported versions mean that installation passed for the versions listed; however, it **may** work on older k8s versions as well)
+- Kubernetes **>= 1.28 && <= 1.32** (Supported versions mean that installation passed for the versions listed; however, it **may** work on older k8s versions as well)
 - Helm **3.8.0+**
 - PV provisioner support in the underlying infrastructure (with [resizing](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/) available)
 - Minimal 4vCPU and 8Gi Memory available in the cluster (for production usage the recommended minimal cluster capacity is at least 12vCPUs and 36Gi Memory)
@@ -78,6 +79,8 @@ See [Use OCI-based registries](https://helm.sh/docs/topics/registries/)
 ## Install Chart
 
 **Important:** only helm 3.8.0+ is supported
+
+**Important:** Read about [Indexes in MongoDB](#indexes-in-mongodb) before installation
 
 Edit default `values.yaml` or create empty `cf-values.yaml`
 
@@ -115,6 +118,11 @@ global:
   # firebaseSecretSecretKeyRef:
   #   name: my-secret
   #   key: firebase-secret
+
+  env:
+    MONGOOSE_AUTO_INDEX: "true"
+    MONGO_AUTOMATIC_INDEX_CREATION: "true"
+
 ```
 
 - Specify `.Values.ingress.tls.cert` and `.Values.ingress.tls.key` OR `.Values.ingress.tls.existingSecret`
@@ -182,11 +190,12 @@ helm show values codefresh/codefresh
 
 The following table displays the list of **persistent** services created as part of the on-premises installation:
 
-| Database      | Purpose | Latest supported version     |
+| Database      | Purpose | Required version     |
 | :---        | :----   |  :--- |
-| MongoDB      | Stores all account data (account settings, users, projects, pipelines, builds etc.)       | 4.4.x   |
-| Postgresql   | Stores data about events for the account (pipeline updates, deletes, etc.). The audit log uses the data from this database.        | 13.x      |
+| MongoDB      | Stores all account data (account settings, users, projects, pipelines, builds etc.)       | 7.x   |
+| Postgresql   | Stores data about events for the account (pipeline updates, deletes, etc.). The audit log uses the data from this database.        | 17.x      |
 | Redis   | Used for caching, and as a key-value store for cron trigger manager.        | 7.0.x      |
+| RabbitMQ  | Used for message queueing.        | 4.0.x      |
 
 > Running on netfs (nfs, cifs) is not recommended.
 
@@ -205,8 +214,6 @@ The chart contains required dependencies for the corresponding services
 However, you might need to use external services like [MongoDB Atlas Database](https://www.mongodb.com/atlas/database) or [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/). In order to use them, adjust the values accordingly:
 
 #### External MongoDB
-
-**Important:** Recommended version of Mongo is 6.x
 
 ```yaml
 seed:
@@ -318,8 +325,6 @@ global:
 
 #### External PostgresSQL
 
-**Important:** Recommended version of Postgres is 13.x
-
 ```yaml
 seed:
   postgresSeedJob:
@@ -382,8 +387,6 @@ postgresql:
 ```
 
 #### External Redis
-
-**Important:** Recommended version of Redis is 7.x
 
 ```yaml
 global:
@@ -458,8 +461,6 @@ global:
 ```
 
 #### External RabbitMQ
-
-**Important:** Recommended version of RabbitMQ is 3.x
 
 ```yaml
 global:
@@ -780,6 +781,58 @@ cfapi-test-reporting:
   <<: *cf-api
   enabled: true
 ```
+
+⚠️ ⚠️ ⚠️
+### Indexes in MongoDB
+⚠️ ⚠️ ⚠️
+
+Indexes in MongoDB are essential for efficient query performance, especially as your data grows. Without proper indexes, MongoDB must perform full collection scans to find matching documents, which can significantly slow down operations and increase resource usage. For production environments, ensuring that all frequently queried fields are indexed is vital to maintain optimal performance and scalability.
+
+Auto-index creation in MongoDB is disabled by default in Codefresh On-Prem to prevent unexpected performance issues in production environments during upgrades. When enabled, MongoDB will automatically create indexes for fields used in queries, which can lead to high CPU and disk usage, increased I/O, and potential service disruptions—especially on large datasets. By requiring manual index management, administrators can plan index creation during maintenance windows, ensuring system stability and predictable performance before upgrading Codefresh On-Prem.
+
+It is critical to ensure that your MongoDB indexes are always aligned with the latest recommended state for your Codefresh On-Prem version. Outdated or missing indexes can lead to degraded performance, slow queries, and increased resource consumption. Always review release notes and update or create indexes as specified during upgrades or when new collections/fields are introduced. Regularly auditing and maintaining your indexes helps ensure optimal system reliability and scalability.
+
+The indexes list is located at the [codefresh-io/codefresh-onprem-helm](https://github.com/codefresh-io/codefresh-onprem-helm/tree/onprem-2.8.0/indexes) repository.
+The indexes are stored in JSON files with keys and options specified.
+
+The directory structure is:
+
+```console
+codefresh-onprem-helm
+├── indexes
+│   ├── <DB_NAME> # MongoDB database name
+│   │   ├── <COLLECTION_NAME>.json # MongoDB indexes for the specified collection
+```
+
+#### Enabling auto-index creation
+
+For first-time installations, you **must** enable auto-index creation by setting the following values:
+
+```yaml
+global:
+  env:
+    MONGOOSE_AUTO_INDEX: "true"
+    MONGO_AUTOMATIC_INDEX_CREATION: "true"
+```
+
+You **should** disable it for the next upgrades by setting these variables to `false`:
+
+```yaml
+global:
+  env:
+    MONGOOSE_AUTO_INDEX: "false"
+    MONGO_AUTOMATIC_INDEX_CREATION: "false"
+```
+
+#### Creating Indexes manually
+
+> **Note!** If you have a large amount of MongoDB data, it is recommended to create indexes manually. Enabling auto-index creation can cause performance degradation during the index creation process with large datasets.
+
+Depending on your MongoDB service (e.g., Atlas, self-hosted), you can create indexes using the MongoDB shell or the Atlas UI.
+
+Ref:
+- [Create an Index in Atlas DB](https://www.mongodb.com/docs/atlas/atlas-ui/indexes/#create-an-index)
+- [Create an Index with mongosh](https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/)
 
 ### High Availability
 
@@ -1204,32 +1257,6 @@ cfapi:
     USE_SHA256_GITHUB_SIGNATURE: "true"
 ```
 
-### Auto-index creation in MongoDB
-
-In Codefresh On-Prem 2.6.x, the `cfapi` can create indexes in MongoDB automatically. This feature is disabled by default. To enable it, set the following environment variable:
-
-> **Note!** Enabling this feature can cause performance degradation during the index creation process.
-
-> **Note!** It is recommended to add indexes during a maintenance window. The indexes list is provided in `codefresh/files/indexes/<MAJOR.MINOR>/<collection_name>.json` files.
-
-```yaml
-cfapi:
-  container:
-    env:
-      MONGOOSE_AUTO_INDEX: "true"
-```
-
-```yaml
-argo-platform:
-  api-graphql:
-    env:
-      MONGO_AUTOMATIC_INDEX_CREATION: "true"
-```
-
-Ref:
-- [Create an Index in Atlas DB](https://www.mongodb.com/docs/atlas/atlas-ui/indexes/#create-an-index)
-- [Create an Index with mongosh](https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/)
-
 ### Image digests in containers
 
 In Codefresh On-Prem 2.6.x all Codefresh owner microservices include image digests in the default subchart values.
@@ -1458,7 +1485,7 @@ Use [obtain-oidc-id-token](https://github.com/codefresh-io/steps/blob/822afc0a9a
 
 ## Upgrading
 
-### To 2.0.0
+### To 2-0-0
 
 This major chart version change (v1.4.X -> v2.0.0) contains some **incompatible breaking change needing manual actions**.
 
@@ -1767,7 +1794,7 @@ helm-repo-manager:
       repository: myregistry.domain.com/codefresh/chartmuseum
 ```
 
-### To 2.0.17
+### To 2-0-17
 
 #### ⚠️ Affected values
 
@@ -1841,7 +1868,7 @@ argo-platform:
       repository: codefresh-io/argo-platform-ui
 ```
 
-### To 2.1.0
+### To 2-1-0
 
 ### [What's new in 2.1.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-21)
 
@@ -1877,14 +1904,14 @@ cf-broadcaster:
     REDIS_DB: 0
 ```
 
-### To 2.1.7
+### To 2-1-7
 
 ⚠️⚠️⚠️
 > Since version 2.1.7 chart is pushed **only** to OCI registry at `oci://quay.io/codefresh/codefresh`
 
 > Versions prior to 2.1.7 are still available in ChartMuseum at `http://chartmuseum.codefresh.io/codefresh`
 
-### To 2.2.0
+### To 2-2-0
 
 ### [What's new in 2.2.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-22)
 
@@ -1912,7 +1939,7 @@ redis-ha:
   enabled: true
 ```
 
-### To 2.3.0
+### To 2-3-0
 
 ### [What's new in 2.3.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-23)
 
@@ -1956,7 +1983,7 @@ helm rollback $RELEASE_NAME $RELEASE_NUMBER \
     --wait
 ```
 
-### To 2.4.0
+### To 2-4-0
 
 ### [What's new in 2.4.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-24)
 
@@ -1985,11 +2012,11 @@ cfapi:
       DEFAULT_SYSTEM_TYPE: CLASSIC
 ```
 
-### To 2.5.0
+### To 2-5-0
 
 ### [What's new in 2.5.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-25)
 
-### To 2.6.0
+### To 2-6-0
 
 ### [What's new in 2.6.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-26)
 
@@ -2001,7 +2028,7 @@ cfapi:
 
 [Auto-index creation in MongoDB](#auto-index-creation-in-mongodb)
 
-### To 2.7.0
+### To 2-7-0
 
 ### [What's new in 2.7.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-27)
 
@@ -2031,6 +2058,73 @@ global:
                 values:
                   - "value"
 ```
+
+### To 2-8-0
+
+### [What's new in 2.8.x](https://codefresh.io/docs/docs/whats-new/on-prem-release-notes/#on-premises-version-28)
+
+### ⚠️ ⚠️ ⚠️ Breaking changes. Read before upgrading!
+
+### MongoDB update
+
+Default MongoDB image is changed from 6.x to 7.x.
+
+If you run external MongoDB (i.e. [Atlas](https://cloud.mongodb.com)), it is **required** to upgrade it to 7.x after upgrading Codefresh On-Prem to 2.8.x.
+
+For backward compatibility (in case you need to rollback to 6.x), you can set [`featureCompatibilityVersion`](https://www.mongodb.com/docs/v6.0/reference/command/setFeatureCompatibilityVersion/) to `6.0` in your values file.
+
+```yaml
+mongodb:
+  migration:
+    enabled: true
+    featureCompatibilityVersion: "6.0"
+```
+
+### PostgreSQL update
+
+Default PostgreSQL image is changed from 13.x to 17.x
+
+If you run external PostgreSQL, follow the [official instructions](https://www.postgresql.org/docs/17/upgrading.html) to upgrade to 17.x.
+
+⚠️ ⚠️ ⚠️ If you run built-in PostgreSQL `bitnami/postgresql` subchart, direct upgrade is not supported. You need to backup your data, delete the old PostgreSQL StatefulSet with PVCs and restore the data into a new PostgreSQL StatefulSet.
+
+```console
+PGUSER=postgres
+PGHOST=cf-postgresql
+PGPORT=5432
+PGPASSWORD=postgres
+BACKUP_DIR=/tmp/pg_backup
+BACKUP_SQL=backup.sql
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+NAMESPACE=codefresh
+
+# Backup PostgreSQL data
+pg_dumpall --verbose > "$BACKUP_DIR/$BACKUP_SQL.$TIMESTAMP" 2>> "$LOG_FILE"
+
+# Delete old PostgreSQL StatefulSet
+STS_NAME=$(kubectl get sts -n $NAMESPACE -l app.kubernetes.io/instance=$RELEASE_NAME -l app.kubernetes.io/name=postgresql -o jsonpath='{.items[0].metadata.name}')
+PVC_NAME=$(kubectl get pvc -n $NAMESPACE -l app.kubernetes.io/instance=$RELEASE_NAME -l app.kubernetes.io/name=postgresql -o jsonpath='{.items[0].metadata.name}')
+
+kubectl delete sts $STS_NAME -n $NAMESPACE
+kubectl delete pvc $PVC_NAME -n $NAMESPACE
+
+# Perform Codefresh On-Prem upgrade to 2.8.x
+
+# Restore PostgreSQL data
+psql -U -f "$BACKUP_DIR/$BACKUP_SQL.$TIMESTAMP" >> "$LOG_FILE" 2>&1
+```
+
+### RabbitMQ update
+
+Default RabbitMQ image is changed from 3.x to 4.x
+
+####  Affected values
+
+- Added option to provide `.Values.global.tolerations`/`.Values.global.nodeSelector`/`.Values.global.affinity` for all Codefresh subcharts
+
+- Changed default location for public images from `quay.io/codefresh` to `us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh`
+
+- `.Values.hooks` was splitted into `.Values.hooks.mongodb` and `.Values.hooks.consul`
 
 ## Troubleshooting
 
@@ -2132,15 +2226,15 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"28.0-dind"}},"enabled":true,"initContainers":{"register":{"image":{"registry":"quay.io","repository":"codefresh/curl","tag":"8.11.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
+| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"28.0-dind"}},"enabled":true,"imagePullSecrets":[],"initContainers":{"register":{"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/curl","tag":"8.11.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-oidc-provider | object | See below | cf-oidc-provider |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
 | cf-platform-analytics-etlstarter.redis.enabled | bool | `false` | Disable redis subchart |
 | cf-platform-analytics-etlstarter.system-etl-postgres | object | `{"container":{"env":{"BLUE_GREEN_ENABLED":true}},"controller":{"cronjob":{"ttlSecondsAfterFinished":300}},"enabled":true}` | Only postgres ETL should be running in onprem |
 | cf-platform-analytics-platform | object | See below | platform-analytics |
-| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"DEFAULT_SYSTEM_TYPE":"PROJECT_ONE","GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","OIDC_PROVIDER_PORT":"{{ .Values.global.oidcProviderPort }}","OIDC_PROVIDER_PROTOCOL":"{{ .Values.global.oidcProviderProtocol }}","OIDC_PROVIDER_TOKEN_ENDPOINT":"{{ .Values.global.oidcProviderTokenEndpoint }}","OIDC_PROVIDER_URI":"{{ .Values.global.oidcProviderService }}","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh","RUNTIME_REDIS_DB":0},"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}},"secrets":{"secret":{"enabled":true,"stringData":{"OIDC_PROVIDER_CLIENT_ID":"{{ .Values.global.oidcProviderClientId }}","OIDC_PROVIDER_CLIENT_SECRET":"{{ .Values.global.oidcProviderClientSecret }}"},"type":"Opaque"}},"tolerations":[]}` | cf-api |
-| cfapi-internal.<<.affinity | object | `{}` |  |
+| cfapi | object | `{"affinity":{},"container":{"env":{"AUDIT_AUTO_CREATE_DB":true,"DEFAULT_SYSTEM_TYPE":"PROJECT_ONE","GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","OIDC_PROVIDER_PORT":"{{ .Values.global.oidcProviderPort }}","OIDC_PROVIDER_PROTOCOL":"{{ .Values.global.oidcProviderProtocol }}","OIDC_PROVIDER_TOKEN_ENDPOINT":"{{ .Values.global.oidcProviderTokenEndpoint }}","OIDC_PROVIDER_URI":"{{ .Values.global.oidcProviderService }}","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh","RUNTIME_REDIS_DB":0},"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}},"controller":{"replicas":2},"enabled":true,"hpa":{"enabled":false,"maxReplicas":10,"minReplicas":2,"targetCPUUtilizationPercentage":70},"imagePullSecrets":[],"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":"50%"},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}},"secrets":{"secret":{"enabled":true,"stringData":{"OIDC_PROVIDER_CLIENT_ID":"{{ .Values.global.oidcProviderClientId }}","OIDC_PROVIDER_CLIENT_SECRET":"{{ .Values.global.oidcProviderClientSecret }}"},"type":"Opaque"}},"tolerations":[]}` | cf-api |
+| cfapi-internal.<<.affinity | object | `{}` | Affinity configuration |
 | cfapi-internal.<<.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"DEFAULT_SYSTEM_TYPE":"PROJECT_ONE","GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","OIDC_PROVIDER_PORT":"{{ .Values.global.oidcProviderPort }}","OIDC_PROVIDER_PROTOCOL":"{{ .Values.global.oidcProviderProtocol }}","OIDC_PROVIDER_TOKEN_ENDPOINT":"{{ .Values.global.oidcProviderTokenEndpoint }}","OIDC_PROVIDER_URI":"{{ .Values.global.oidcProviderService }}","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh","RUNTIME_REDIS_DB":0},"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}}` | Container configuration |
 | cfapi-internal.<<.container.env | object | See below | Env vars |
 | cfapi-internal.<<.container.image | object | `{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}` | Image |
@@ -2154,18 +2248,17 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | cfapi-internal.<<.hpa.maxReplicas | int | `10` | Maximum number of replicas |
 | cfapi-internal.<<.hpa.minReplicas | int | `2` | Minimum number of replicas |
 | cfapi-internal.<<.hpa.targetCPUUtilizationPercentage | int | `70` | Average CPU utilization percentage |
-| cfapi-internal.<<.nodeSelector | object | `{}` |  |
+| cfapi-internal.<<.imagePullSecrets | list | `[]` | Image pull secrets |
+| cfapi-internal.<<.nodeSelector | object | `{}` | Node selector configuration |
 | cfapi-internal.<<.pdb | object | `{"enabled":false,"minAvailable":"50%"}` | Pod disruption budget configuration |
 | cfapi-internal.<<.pdb.enabled | bool | `false` | Enable PDB |
 | cfapi-internal.<<.pdb.minAvailable | string | `"50%"` | Minimum number of replicas in percentage |
-| cfapi-internal.<<.podSecurityContext | object | `{}` |  |
+| cfapi-internal.<<.podSecurityContext | object | `{}` | Pod security context configuration |
 | cfapi-internal.<<.resources | object | `{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}}` | Resource requests and limits |
-| cfapi-internal.<<.secrets.secret.enabled | bool | `true` |  |
-| cfapi-internal.<<.secrets.secret.stringData.OIDC_PROVIDER_CLIENT_ID | string | `"{{ .Values.global.oidcProviderClientId }}"` |  |
-| cfapi-internal.<<.secrets.secret.stringData.OIDC_PROVIDER_CLIENT_SECRET | string | `"{{ .Values.global.oidcProviderClientSecret }}"` |  |
-| cfapi-internal.<<.secrets.secret.type | string | `"Opaque"` |  |
-| cfapi-internal.<<.tolerations | list | `[]` |  |
+| cfapi-internal.<<.secrets | object | `{"secret":{"enabled":true,"stringData":{"OIDC_PROVIDER_CLIENT_ID":"{{ .Values.global.oidcProviderClientId }}","OIDC_PROVIDER_CLIENT_SECRET":"{{ .Values.global.oidcProviderClientSecret }}"},"type":"Opaque"}}` | Secrets configuration |
+| cfapi-internal.<<.tolerations | list | `[]` | Tolerations configuration |
 | cfapi-internal.enabled | bool | `false` |  |
+| cfapi.affinity | object | `{}` | Affinity configuration |
 | cfapi.container | object | `{"env":{"AUDIT_AUTO_CREATE_DB":true,"DEFAULT_SYSTEM_TYPE":"PROJECT_ONE","GITHUB_API_PATH_PREFIX":"/api/v3","LOGGER_LEVEL":"debug","OIDC_PROVIDER_PORT":"{{ .Values.global.oidcProviderPort }}","OIDC_PROVIDER_PROTOCOL":"{{ .Values.global.oidcProviderProtocol }}","OIDC_PROVIDER_TOKEN_ENDPOINT":"{{ .Values.global.oidcProviderTokenEndpoint }}","OIDC_PROVIDER_URI":"{{ .Values.global.oidcProviderService }}","ON_PREMISE":true,"RUNTIME_MONGO_DB":"codefresh","RUNTIME_REDIS_DB":0},"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}}` | Container configuration |
 | cfapi.container.env | object | See below | Env vars |
 | cfapi.container.image | object | `{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/cf-api"}` | Image |
@@ -2179,10 +2272,15 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | cfapi.hpa.maxReplicas | int | `10` | Maximum number of replicas |
 | cfapi.hpa.minReplicas | int | `2` | Minimum number of replicas |
 | cfapi.hpa.targetCPUUtilizationPercentage | int | `70` | Average CPU utilization percentage |
+| cfapi.imagePullSecrets | list | `[]` | Image pull secrets |
+| cfapi.nodeSelector | object | `{}` | Node selector configuration |
 | cfapi.pdb | object | `{"enabled":false,"minAvailable":"50%"}` | Pod disruption budget configuration |
 | cfapi.pdb.enabled | bool | `false` | Enable PDB |
 | cfapi.pdb.minAvailable | string | `"50%"` | Minimum number of replicas in percentage |
+| cfapi.podSecurityContext | object | `{}` | Pod security context configuration |
 | cfapi.resources | object | `{"limits":{},"requests":{"cpu":"200m","memory":"256Mi"}}` | Resource requests and limits |
+| cfapi.secrets | object | `{"secret":{"enabled":true,"stringData":{"OIDC_PROVIDER_CLIENT_ID":"{{ .Values.global.oidcProviderClientId }}","OIDC_PROVIDER_CLIENT_SECRET":"{{ .Values.global.oidcProviderClientSecret }}"},"type":"Opaque"}}` | Secrets configuration |
+| cfapi.tolerations | list | `[]` | Tolerations configuration |
 | cfsign | object | See below | tls-sign |
 | cfui | object | See below | cf-ui |
 | charts-manager | object | See below | charts-manager |
@@ -2191,6 +2289,7 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | consul | object | See below | consul Ref: https://github.com/bitnami/charts/blob/main/bitnami/consul/values.yaml |
 | context-manager | object | See below | context-manager |
 | cronus | object | See below | cronus |
+| developmentChart | bool | `false` |  |
 | dockerconfigjson | object | `{}` | DEPRECATED - Use `.imageCredentials` instead dockerconfig (for `kcfi` tool backward compatibility) for Image Pull Secret. Obtain GCR Service Account JSON (sa.json) at support@codefresh.io ```shell GCR_SA_KEY_B64=$(cat sa.json | base64) DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n') ``` E.g.: dockerconfigjson:   auths:     gcr.io:       auth: <DOCKER_CFG_VAR> |
 | gencerts | object | See below | Job to generate internal runtime secrets. Required at first install. |
 | gitops-dashboard-manager | object | See below | gitops-dashboard-manager |
@@ -2287,13 +2386,16 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | global.tolerations | list | `[]` | Global tolerations constraints Apply toleratons to all Codefresh subcharts. Will not be applied on Bitnami subcharts. |
 | helm-repo-manager | object | See below | helm-repo-manager |
 | hermes | object | See below | hermes |
-| hooks | object | See below | Pre/post-upgrade Job hooks. Updates images in `system/default` runtime. |
+| hooks | object | See below | Pre/post-upgrade Job hooks. |
+| hooks.consul | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/kubectl","tag":"1.33.0"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Recreates `consul-headless` service due to duplicated ports in Service during the upgrade. |
+| hooks.mongodb | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/mongosh","tag":"2.5.0"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Updates images in `system/default` runtime. |
 | imageCredentials | object | `{}` | Credentials for Image Pull Secret object |
-| ingress | object | `{"annotations":{"nginx.ingress.kubernetes.io/configuration-snippet":"more_set_headers \"X-Request-ID: $request_id\";\nproxy_set_header X-Request-ID $request_id;\n","nginx.ingress.kubernetes.io/service-upstream":"true","nginx.ingress.kubernetes.io/ssl-redirect":"false","nginx.org/redirect-to-https":"false"},"enabled":true,"ingressClassName":"nginx-codefresh","nameOverride":"","services":{"internal-gateway":["/"]},"tls":{"cert":"","enabled":false,"existingSecret":"","key":"","secretName":"star.codefresh.io"}}` | Ingress |
+| ingress | object | `{"annotations":{"nginx.ingress.kubernetes.io/service-upstream":"true","nginx.ingress.kubernetes.io/ssl-redirect":"false","nginx.org/redirect-to-https":"false"},"enabled":true,"ingressClassName":"nginx-codefresh","labels":{},"nameOverride":"","services":{"internal-gateway":["/"]},"tls":{"cert":"","enabled":false,"existingSecret":"","key":"","secretName":"star.codefresh.io"}}` | Ingress |
 | ingress-nginx | object | See below | ingress-nginx Ref: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml |
 | ingress.annotations | object | See below | Set annotations for ingress. |
 | ingress.enabled | bool | `true` | Enable the Ingress |
 | ingress.ingressClassName | string | `"nginx-codefresh"` | Set the ingressClass that is used for the ingress. Default `nginx-codefresh` is created from `ingress-nginx` controller subchart |
+| ingress.labels | object | `{}` | Set labels for ingress |
 | ingress.nameOverride | string | `""` | Override Ingress resource name |
 | ingress.services | object | See below | Default services and corresponding paths |
 | ingress.tls.cert | string | `""` | Certificate (base64 encoded) |
@@ -2304,9 +2406,11 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | internal-gateway | object | See below | internal-gateway |
 | k8s-monitor | object | See below | k8s-monitor |
 | kube-integration | object | See below | kube-integration |
+| mailer.enabled | bool | `false` |  |
 | mongodb | object | See below | mongodb Ref: https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml |
 | nats | object | See below | nats Ref: https://github.com/bitnami/charts/blob/main/bitnami/nats/values.yaml |
 | nomios | object | See below | nomios |
+| payments.enabled | bool | `false` |  |
 | pipeline-manager | object | See below | pipeline-manager |
 | postgresql | object | See below | postgresql Ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml |
 | postgresql-ha | object | See below | postgresql Ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/values.yaml |
@@ -2317,6 +2421,7 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | runner | object | See below | runner |
 | runtime-environment-manager | object | See below | runtime-environment-manager |
 | runtimeImages | object | See below | runtimeImages |
+| salesforce-reporter.enabled | bool | `false` |  |
 | seed | object | See below | Seed jobs |
 | seed-e2e | object | `{"affinity":{},"backoffLimit":10,"enabled":false,"image":{"registry":"docker.io","repository":"mongo","tag":"latest"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[],"ttlSecondsAfterFinished":300}` | CI |
 | seed.enabled | bool | `true` | Enable all seed jobs |
@@ -2330,5 +2435,6 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | seed.postgresSeedJob.postgresPasswordSecretKeyRef | optional | `{}` | Password for "postgres" admin user from existing secret |
 | seed.postgresSeedJob.postgresUser | optional | `""` | "postgres" admin user in plain text (required ONLY for seed job!) Must be a privileged user allowed to create databases and grant roles. If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used. |
 | seed.postgresSeedJob.postgresUserSecretKeyRef | optional | `{}` | "postgres" admin user from exising secret |
-| tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/tasker-kubernetes"}},"enabled":true,"hpa":{"enabled":false},"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
+| segment-reporter.enabled | bool | `false` |  |
+| tasker-kubernetes | object | `{"affinity":{},"container":{"image":{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/tasker-kubernetes"}},"enabled":true,"hpa":{"enabled":false},"imagePullSecrets":[],"nodeSelector":{},"pdb":{"enabled":false},"podSecurityContext":{},"resources":{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}},"tolerations":[]}` | tasker-kubernetes |
 | webTLS | object | `{"cert":"","enabled":false,"key":"","secretName":"star.codefresh.io"}` | DEPRECATED - Use `.Values.ingress.tls` instead TLS secret for Ingress |

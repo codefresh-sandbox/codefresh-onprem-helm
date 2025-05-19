@@ -12,9 +12,9 @@ imageCredentials: {}
 gencerts:
   enabled: true
   image:
-    registry: quay.io
+    registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
     repository: codefresh/kubectl
-    tag: 1.31.2
+    tag: 1.33.0
   rbac:
     enabled: true
   ttlSecondsAfterFinished: 300
@@ -34,9 +34,9 @@ seed:
   mongoSeedJob:
     enabled: true
     image:
-      registry: quay.io
+      registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
       repository: codefresh/mongosh
-      tag: 2.3.7
+      tag: 2.5.0
     # -- Root user in plain text (required ONLY for seed job!).
     mongodbRootUser: "root"
     # -- Root user from existing secret
@@ -60,9 +60,9 @@ seed:
   postgresSeedJob:
     enabled: true
     image:
-      registry: quay.io
+      registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
       repository: codefresh/postgresql
-      tag: 13
+      tag: 17
     # -- (optional) "postgres" admin user in plain text (required ONLY for seed job!)
     # Must be a privileged user allowed to create databases and grant roles.
     # If omitted, username and password from `.Values.global.postgresUser/postgresPassword` will be used.
@@ -122,9 +122,8 @@ ingress:
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.org/redirect-to-https: "false"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      more_set_headers "X-Request-ID: $request_id";
-      proxy_set_header X-Request-ID $request_id;
+  # -- Set labels for ingress
+  labels: {}
 
 # -- Global parameters
 # @default -- See below
@@ -435,19 +434,33 @@ global:
     allowInsecureImages: true
 
 # -- Pre/post-upgrade Job hooks.
-# Updates images in `system/default` runtime.
 # @default -- See below
 hooks:
-  enabled: true
-  image:
-    registry: quay.io
-    repository: codefresh/mongosh
-    tag: 2.3.7
-  affinity: {}
-  nodeSelector: {}
-  podSecurityContext: {}
-  resources: {}
-  tolerations: []
+  # -- Updates images in `system/default` runtime.
+  mongodb:
+    enabled: true
+    image:
+      registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
+      repository: codefresh/mongosh
+      tag: 2.5.0
+    affinity: {}
+    nodeSelector: {}
+    podSecurityContext: {}
+    resources: {}
+    tolerations: []
+  # -- Recreates `consul-headless` service due to duplicated ports in Service during the upgrade.
+  consul:
+    enabled: true
+    image:
+      registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
+      repository: codefresh/kubectl
+      tag: 1.33.0
+    affinity: {}
+    nodeSelector: {}
+    podSecurityContext: {}
+    resources: {}
+    tolerations: []
+
 
 # -- Maintenance postgresql clean job.
 # Removes a certain number of the last records in the event store table.
@@ -455,9 +468,9 @@ hooks:
 postgresqlCleanJob:
   enabled: true
   image:
-    registry: quay.io
+    registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
     repository: codefresh/postgresql
-    tag: 13
+    tag: 17
   schedule:  "0 0 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
@@ -471,19 +484,19 @@ postgresqlCleanJob:
 # -- runtimeImages
 # @default -- See below
 runtimeImages:
-  COMPOSE_IMAGE: quay.io/codefresh/compose:v2.32.2-1.5.2
-  CONTAINER_LOGGER_IMAGE: quay.io/codefresh/cf-container-logger:1.12.2
-  DIND_IMAGE: quay.io/codefresh/dind:26.1.4-1.28.8
-  DOCKER_BUILDER_IMAGE: quay.io/codefresh/cf-docker-builder:1.4.2
-  DOCKER_PULLER_IMAGE: quay.io/codefresh/cf-docker-puller:8.0.18
-  DOCKER_PUSHER_IMAGE: quay.io/codefresh/cf-docker-pusher:6.0.16
-  DOCKER_TAG_PUSHER_IMAGE: quay.io/codefresh/cf-docker-tag-pusher:1.3.15
-  ENGINE_IMAGE: quay.io/codefresh/engine:1.177.4
-  FS_OPS_IMAGE: quay.io/codefresh/fs-ops:1.2.8
-  GIT_CLONE_IMAGE: quay.io/codefresh/cf-git-cloner:10.2.0
-  KUBE_DEPLOY: quay.io/codefresh/cf-deploy-kubernetes:16.2.6
-  PIPELINE_DEBUGGER_IMAGE: quay.io/codefresh/cf-debugger:1.3.7
-  TEMPLATE_ENGINE: quay.io/codefresh/pikolo:0.14.2
+  COMPOSE_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/compose:v2.32.2-1.5.2
+  CONTAINER_LOGGER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-container-logger:1.12.5
+  DIND_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/dind:26.1.4-1.28.8
+  DOCKER_BUILDER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-docker-builder:1.4.4
+  DOCKER_PULLER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-docker-puller:8.0.20
+  DOCKER_PUSHER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-docker-pusher:6.0.17
+  DOCKER_TAG_PUSHER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-docker-tag-pusher:1.3.15
+  ENGINE_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/engine:1.177.8
+  FS_OPS_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/fs-ops:1.2.10
+  GIT_CLONE_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-git-cloner:10.2.0
+  KUBE_DEPLOY: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-deploy-kubernetes:16.2.6
+  PIPELINE_DEBUGGER_IMAGE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/cf-debugger:1.3.9
+  TEMPLATE_ENGINE: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/pikolo:0.14.3
   CR_6177_FIXER: docker.io/library/alpine:3.21
   GC_BUILDER_IMAGE: docker.io/library/alpine:3.21
 
@@ -495,6 +508,8 @@ runtimeImages:
 cfapi: &cf-api
   # -- Enable cf-api
   enabled: true
+  # -- Image pull secrets
+  imagePullSecrets: []
   # -- Controller configuration
   controller:
     # -- Replicas number
@@ -521,6 +536,7 @@ cfapi: &cf-api
       OIDC_PROVIDER_PROTOCOL: '{{ .Values.global.oidcProviderProtocol }}'
       OIDC_PROVIDER_TOKEN_ENDPOINT: '{{ .Values.global.oidcProviderTokenEndpoint }}'
       DEFAULT_SYSTEM_TYPE: PROJECT_ONE
+  # -- Secrets configuration
   secrets:
     secret:
       enabled: true
@@ -528,7 +544,6 @@ cfapi: &cf-api
       stringData:
         OIDC_PROVIDER_CLIENT_ID: '{{ .Values.global.oidcProviderClientId }}'
         OIDC_PROVIDER_CLIENT_SECRET: '{{ .Values.global.oidcProviderClientSecret }}'
-
   # -- Resource requests and limits
   resources:
     requests:
@@ -551,9 +566,13 @@ cfapi: &cf-api
     enabled: false
     # -- Minimum number of replicas in percentage
     minAvailable: "50%"
+  # -- Affinity configuration
   affinity: {}
+  # -- Node selector configuration
   nodeSelector: {}
+  # -- Pod security context configuration
   podSecurityContext: {}
+  # -- Tolerations configuration
   tolerations: []
 
 # cfapi roles
@@ -660,6 +679,7 @@ internal-gateway:
 # @default -- See below
 cf-broadcaster:
   enabled: true
+  imagePullSecrets: []
   controller:
     replicas: 3
   container:
@@ -691,6 +711,7 @@ cf-platform-analytics-etlstarter:
   redis:
     # -- Disable redis subchart
     enabled: false
+  imagePullSecrets: []
   controller:
     # - Disable default deployment controller
     enabled: false
@@ -727,6 +748,7 @@ cf-platform-analytics-etlstarter:
 cf-platform-analytics-platform:
   nameOverride: platform-analytics
   mongodbDatabase: "platform-analytics-postgres"
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -756,6 +778,7 @@ cf-platform-analytics-platform:
 # @default -- See below
 cfsign:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -782,7 +805,7 @@ cfsign:
     volume-permissions:
       enabled: true
       image:
-        registry: quay.io
+        registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
         repository: codefresh/curl
         tag: 8.11.1
   affinity: {}
@@ -795,6 +818,7 @@ cfsign:
 # @default -- See below
 cfui:
   enabled: true
+  imagePullSecrets: []
   controller:
     replicas: 2
   container:
@@ -821,6 +845,7 @@ cfui:
 # @default -- See below
 charts-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -843,6 +868,7 @@ charts-manager:
 # @default -- See below
 cluster-providers:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -876,6 +902,7 @@ consul:
 # @default -- See below
 context-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -898,6 +925,7 @@ context-manager:
 # @default -- See below
 cronus:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -911,6 +939,7 @@ cronus:
 # @default -- See below
 gitops-dashboard-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -933,6 +962,7 @@ gitops-dashboard-manager:
 # @default -- See below
 helm-repo-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -944,7 +974,7 @@ helm-repo-manager:
     ingress:
       enabled: false
     image:
-      repository: quay.io/codefresh/chartmuseum
+      repository: us-docker.pkg.dev/codefresh-inc/public-gcr-io/codefresh/chartmuseum
       tag: 8795e993
   resources:
     requests:
@@ -963,6 +993,7 @@ helm-repo-manager:
 # -- hermes
 # @default -- See below
 hermes:
+  imagePullSecrets: []
   controller:
     replicas: 1
   container:
@@ -986,7 +1017,7 @@ ingress-nginx:
   enabled: true
   controller:
     enableAnnotationValidations: true
-    allowSnippetAnnotations: true
+    allowSnippetAnnotations: false
     ingressClassResource:
       enabled: true
       default: false
@@ -1006,11 +1037,14 @@ ingress-nginx:
       proxy-body-size: "5M"
       log-format-escape-json: "true"
       log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x-forward-for": "$proxy_add_x_forwarded_for", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol", "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time, "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent", "http_x_github_delivery": "$http_x_github_delivery", "http_x_hook_uuid": "$http_x_hook_uuid", "metadata": { "correlationId": "$request_id", "service": "ingress", "time": "$time_iso8601" } }'
+      http-snippet: |
+        proxy_set_header X-Request-ID $request_id;
 
 # -- k8s-monitor
 # @default -- See below
 k8s-monitor:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1033,6 +1067,7 @@ k8s-monitor:
 # @default -- See below
 kube-integration:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1056,8 +1091,6 @@ kube-integration:
 # Ref: https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
 mongodb:
   enabled: true
-  image:
-    tag: "6.0"
   architecture: standalone
   useStatefulSet: true
   auth:
@@ -1069,8 +1102,8 @@ mongodb:
       cpu: 200m
       memory: 256Mi
   migration:
-    enabled: false
-    featureCompatibilityVersion: "5.0"
+    enabled: true
+    featureCompatibilityVersion: "6.0"
 
 # -- nats
 # @default -- See below
@@ -1088,6 +1121,7 @@ nats:
 # @default -- See below
 nomios:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1106,9 +1140,9 @@ nomios:
 postgresql:
   enabled: true
   image:
-    registry: quay.io
+    registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
     repository: codefresh/postgresql
-    tag: 13
+    tag: 17
   auth:
     enablePostgresUser: true
     postgresPassword: "eC9arYka4ZbH"
@@ -1133,9 +1167,9 @@ postgresql-ha:
   enabled: false
   postgresql:
     image:
-      registry: quay.io
+      registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
       repository: codefresh/postgresql-repmgr
-      tag: 13
+      tag: 17
     username: postgres
     password: "eC9arYka4ZbH"
     database: "codefresh"
@@ -1192,7 +1226,7 @@ redis-ha:
 rabbitmq:
   enabled: true
   image:
-    tag: 3.13.7-debian-12-r5
+    tag: "4.0"
   replicaCount: 1
   auth:
     username: user
@@ -1206,10 +1240,11 @@ rabbitmq:
 # -- builder
 builder:
   enabled: true
+  imagePullSecrets: []
   initContainers:
     register:
       image:
-        registry: quay.io
+        registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
         repository: codefresh/curl
         tag: 8.11.1
   container:
@@ -1227,10 +1262,11 @@ builder:
 # @default -- See below
 runner:
   enabled: true
+  imagePullSecrets: []
   initContainers:
     register:
       image:
-        registry: quay.io
+        registry: us-docker.pkg.dev/codefresh-inc/public-gcr-io
         repository: codefresh/curl
         tag: 8.11.1
   container:
@@ -1248,6 +1284,7 @@ runner:
 # @default -- See below
 pipeline-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1270,6 +1307,7 @@ pipeline-manager:
 # @default -- See below
 runtime-environment-manager:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1293,6 +1331,7 @@ runtime-environment-manager:
 # -- tasker-kubernetes
 tasker-kubernetes:
   enabled: true
+  imagePullSecrets: []
   container:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
@@ -1321,8 +1360,7 @@ argo-hub-platform:
     image:
       registry: us-docker.pkg.dev/codefresh-enterprise/gcr.io
       repository: codefresh-io/argo-hub-platform
-  imagePullSecrets:
-    - '{{ .Release.Name }}-registry'
+  imagePullSecrets: []
   resources:
     requests:
       cpu: 100m
@@ -1905,4 +1943,18 @@ seed-e2e:
   tolerations: []
 
 ci:
+  enabled: false
+
+developmentChart: false
+
+mailer:
+  enabled: false
+
+payments:
+  enabled: false
+
+segment-reporter:
+  enabled: false
+
+salesforce-reporter:
   enabled: false
