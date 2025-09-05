@@ -19,6 +19,8 @@ annotations:
   # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |-
     - kind: changed
+      description: 'fix: tom (#20)'
+    - kind: changed
       description: 'feat: bob (#18)'
 dependencies:
   - name: cf-common
