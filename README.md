@@ -2195,6 +2195,7 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| alice | string | `"bob"` |  |
 | argo-hub-platform | object | See below | argo-hub-platform |
 | argo-platform | object | See below | argo-platform |
 | argo-platform.abac | object | See below | abac |
