@@ -1963,3 +1963,5 @@ segment-reporter:
 
 salesforce-reporter:
   enabled: false
+
+foo: bar
