@@ -2206,9 +2206,9 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | argo-platform.api-graphql.env | object | See below | Env vars |
 | argo-platform.api-graphql.hpa | object | `{"enabled":false}` | HPA |
 | argo-platform.api-graphql.hpa.enabled | bool | `false` | Enable autoscaler |
-| argo-platform.api-graphql.image | object | `{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh-io/argo-platform-api-graphql"}` | Image |
+| argo-platform.api-graphql.image | object | `{"registry":"us-docker.pkg.dev/codefresh-enterprise/gcr.io","repository":"codefresh/argo-platform-api-graphql"}` | Image |
 | argo-platform.api-graphql.image.registry | string | `"us-docker.pkg.dev/codefresh-enterprise/gcr.io"` | Registry |
-| argo-platform.api-graphql.image.repository | string | `"codefresh-io/argo-platform-api-graphql"` | Repository |
+| argo-platform.api-graphql.image.repository | string | `"codefresh/argo-platform-api-graphql"` | Repository |
 | argo-platform.api-graphql.kind | string | `"Deployment"` | Controller kind. Currently, only `Deployment` is supported |
 | argo-platform.api-graphql.pdb | object | `{"enabled":false}` | PDB |
 | argo-platform.api-graphql.pdb.enabled | bool | `false` | Enable pod disruption budget |
@@ -2226,7 +2226,7 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | argo-platform.runtime-monitor | object | See below | runtime-monitor Don't enable! Not used in onprem! |
 | argo-platform.ui | object | See below | ui |
 | argo-platform.useExternalSecret | bool | `false` | Use regular k8s secret object. Keep `false`! |
-| builder | object | `{"affinity":{},"container":{"image":{"registry":"docker.io","repository":"library/docker","tag":"28.0-dind"}},"enabled":true,"imagePullSecrets":[],"initContainers":{"register":{"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/curl","tag":"8.11.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
+| builder | object | `{"affinity":{},"enabled":true,"imagePullSecrets":[],"initContainers":{"register":{"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/curl","tag":"8.14.1"}}},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | builder |
 | cf-broadcaster | object | See below | broadcaster |
 | cf-oidc-provider | object | See below | cf-oidc-provider |
 | cf-platform-analytics-etlstarter | object | See below | etl-starter |
@@ -2376,7 +2376,6 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | global.redisService | string | `"redis-master"` | Default internal redis service address from bitnami/redis subchart |
 | global.redisUrl | string | `""` | Set redis hostname in plain text. Takes precedence over `global.redisService`! |
 | global.redisUrlSecretKeyRef | object | `{}` | Set redis hostname from existing secret. |
-| global.runnerService | string | `"runner"` | Default runner service name. |
 | global.runtimeEnvironmentManagerPort | int | `80` | Default runtime-environment-manager service port. |
 | global.runtimeEnvironmentManagerService | string | `"runtime-environment-manager"` | Default runtime-environment-manager service name. |
 | global.security | object | `{"allowInsecureImages":true}` | Bitnami |
@@ -2387,8 +2386,9 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | helm-repo-manager | object | See below | helm-repo-manager |
 | hermes | object | See below | hermes |
 | hooks | object | See below | Pre/post-upgrade Job hooks. |
-| hooks.consul | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/kubectl","tag":"1.33.0"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Recreates `consul-headless` service due to duplicated ports in Service during the upgrade. |
+| hooks.consul | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/kubectl","tag":"1.33.3"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Recreates `consul-headless` service due to duplicated ports in Service during the upgrade. |
 | hooks.mongodb | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/mongosh","tag":"2.5.0"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Updates images in `system/default` runtime. |
+| hooks.rabbitmq | object | `{"affinity":{},"enabled":true,"image":{"registry":"us-docker.pkg.dev/codefresh-inc/public-gcr-io","repository":"codefresh/rabbitmqadmin","tag":"2.8.0"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[]}` | Enable stable feature flags in RabbitMQ. |
 | imageCredentials | object | `{}` | Credentials for Image Pull Secret object |
 | ingress | object | `{"annotations":{"nginx.ingress.kubernetes.io/service-upstream":"true","nginx.ingress.kubernetes.io/ssl-redirect":"false","nginx.org/redirect-to-https":"false"},"enabled":true,"ingressClassName":"nginx-codefresh","labels":{},"nameOverride":"","services":{"internal-gateway":["/"]},"tls":{"cert":"","enabled":false,"existingSecret":"","key":"","secretName":"star.codefresh.io"}}` | Ingress |
 | ingress-nginx | object | See below | ingress-nginx Ref: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml |
@@ -2418,7 +2418,6 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | rabbitmq | object | See below | rabbitmq Ref: https://github.com/bitnami/charts/blob/main/bitnami/rabbitmq/values.yaml |
 | redis | object | See below | redis Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml |
 | redis-ha | object | `{"auth":true,"enabled":false,"haproxy":{"enabled":true,"resources":{"requests":{"cpu":"100m","memory":"128Mi"}}},"persistentVolume":{"enabled":true,"size":"10Gi"},"redis":{"resources":{"requests":{"cpu":"100m","memory":"128Mi"}}},"redisPassword":"hoC9szf7NtrU"}` | redis-ha # Ref: https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha/values.yaml |
-| runner | object | See below | runner |
 | runtime-environment-manager | object | See below | runtime-environment-manager |
 | runtimeImages | object | See below | runtimeImages |
 | salesforce-reporter.enabled | bool | `false` |  |
@@ -2426,6 +2425,8 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | seed-e2e | object | `{"affinity":{},"backoffLimit":10,"enabled":false,"image":{"registry":"docker.io","repository":"mongo","tag":"latest"},"nodeSelector":{},"podSecurityContext":{},"resources":{},"tolerations":[],"ttlSecondsAfterFinished":300}` | CI |
 | seed.enabled | bool | `true` | Enable all seed jobs |
 | seed.mongoSeedJob | object | See below | Mongo Seed Job. Required at first install. Seeds the required data (default idp/user/account), creates cfuser and required databases. |
+| seed.mongoSeedJob.env | object | `{}` | Extra env variables for seed job. |
+| seed.mongoSeedJob.mongodbRootOptions | string | `""` | Extra options for connection string (e.g. `authSource=admin`). |
 | seed.mongoSeedJob.mongodbRootPassword | string | `"XT9nmM8dZD"` | Root password in plain text (required ONLY for seed job!). |
 | seed.mongoSeedJob.mongodbRootPasswordSecretKeyRef | object | `{}` | Root password from existing secret |
 | seed.mongoSeedJob.mongodbRootUser | string | `"root"` | Root user in plain text (required ONLY for seed job!). |
