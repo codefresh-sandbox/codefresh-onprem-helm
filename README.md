@@ -2291,6 +2291,7 @@ After platform upgrade, Consul fails with the error `refusing to rejoin cluster 
 | cronus | object | See below | cronus |
 | developmentChart | bool | `false` |  |
 | dockerconfigjson | object | `{}` | DEPRECATED - Use `.imageCredentials` instead dockerconfig (for `kcfi` tool backward compatibility) for Image Pull Secret. Obtain GCR Service Account JSON (sa.json) at support@codefresh.io ```shell GCR_SA_KEY_B64=$(cat sa.json | base64) DOCKER_CFG_VAR=$(echo -n "_json_key:$(echo ${GCR_SA_KEY_B64} | base64 -d)" | base64 | tr -d '\n') ``` E.g.: dockerconfigjson:   auths:     gcr.io:       auth: <DOCKER_CFG_VAR> |
+| foo | string | `"bar"` |  |
 | gencerts | object | See below | Job to generate internal runtime secrets. Required at first install. |
 | gitops-dashboard-manager | object | See below | gitops-dashboard-manager |
 | global | object | See below | Global parameters |
