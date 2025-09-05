@@ -19,9 +19,7 @@ annotations:
   # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |-
     - kind: changed
-      description: 'feat: foo (#8)'
-    - kind: changed
-      description: 'onprem: 2.9 (#6)'
+      description: 'feat: bar (#13)'
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
