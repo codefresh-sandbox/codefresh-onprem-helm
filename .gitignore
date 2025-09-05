@@ -29,3 +29,6 @@ dry-run/**
 **/values-dev.yaml
 **/dry-run.yaml
 .debug/**
+
+# .lock files
+**/Chart.lock
