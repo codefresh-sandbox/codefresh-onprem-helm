@@ -1,7 +1,7 @@
 apiVersion: v2
 description: Helm Chart for Codefresh On-Prem
 name: codefresh
-version: 2.9.0
+version: 2.9.1
 keywords:
   - codefresh
 home: https://codefresh.io/
@@ -19,9 +19,7 @@ annotations:
   # supported kinds are added, changed, deprecated, removed, fixed and security.
   artifacthub.io/changes: |-
     - kind: changed
-      description: 'feat: foo (#8)'
-    - kind: changed
-      description: 'onprem: 2.9 (#6)'
+      description: 'codefresh/2.9.0: prepare chart content for release (#10)'
 dependencies:
   - name: cf-common
     repository: oci://quay.io/codefresh/charts
